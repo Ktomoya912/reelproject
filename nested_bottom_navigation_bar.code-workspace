@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../flutterNew/nested_bottom_navigation_bar"
+		},
+		{
+			"path": "../flutterNew/bottom_navigation_bar"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
