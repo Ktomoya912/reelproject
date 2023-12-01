@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //使い方
 //ファイルの上部でimport '.titleAppBar.dart';と置く
-//その後、Scaffold内で"appBar: TitleAppBar(title: 通知)""のように宣言
+//その後、Scaffold内で"appBar: TitleAppBar(title: "通知")"のように宣言
 //この時のtitleには表示ページ名を載せる
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title; //ページ名
