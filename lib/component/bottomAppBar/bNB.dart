@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 import '/page/home/home.dart';
 import '/page/event/event.dart';
 import '/page/job/job.dart';
@@ -29,6 +31,8 @@ class BNB extends StatelessWidget {
 
   //ページ移動関数
   static void _onItemTapped(int i, BuildContext con) {
+    Navigator.pop(con, true);
+
     Navigator.push(
         con,
         PageRouteBuilder(
@@ -39,12 +43,13 @@ class BNB extends StatelessWidget {
   // build()
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
-      backgroundColor: Colors.orange.shade200, //バーの色
+      backgroundColor: store.subColor, //バーの色
 
       //選択されたアイコンとラベルの色
-      selectedItemColor: Color.fromARGB(255, 255, 140, 0),
+      selectedItemColor: store.mainColor,
 
       //選択されたアイコンのテーマ
       selectedIconTheme: const IconThemeData(size: 45),

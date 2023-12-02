@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 
 //使い方
 //ファイルの上部でimport '.titleAppBar.dart';と置く
@@ -19,6 +21,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
       //アップバー
       appBar: AppBar(
@@ -28,10 +31,10 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 40,
-              color: Colors.blue), //書体
+              color: store.mainColor), //書体
         ),
         backgroundColor: Colors.white, //背景
-        iconTheme: IconThemeData(color: Colors.grey), //戻るボタン
+        iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
         centerTitle: true, //中央揃え
         toolbarHeight: 100, //アップバーの高さ
 
@@ -45,12 +48,12 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: Colors.white,
+                    color: store.blackColor,
                   ),
                 ), //ページ説明文字
                 centerTitle: true, //中央揃え
                 automaticallyImplyLeading: false, //戻るボタンの非表示
-                backgroundColor: Colors.blue, //背景
+                backgroundColor: store.subColor, //背景
               ),
               height: 30, //高さ
             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 
 //使い方
 //ファイルの上部でimport 'normalBottomAppBar.dart';と置く
@@ -10,8 +12,9 @@ class NormalBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return BottomAppBar(
-      color: Theme.of(context).primaryColor,
+      color: store.subColor,
       height: 40,
     );
   }
