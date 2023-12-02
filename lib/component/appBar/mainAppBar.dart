@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 
 //使い方
 //ファイルの上部でimport '.mainAppBar.dart';と置く
@@ -14,23 +16,31 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return Size.fromHeight(50);
+    return Size(double.infinity, 80.0);
   }
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return AppBar(
         //アップバータイトル
         title: Text(
           "REEL", //文字
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30), //書体
+          style: TextStyle(
+              color: store.mainColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 40), //書体
         ),
+        backgroundColor: store.subColor,
+        toolbarHeight: 100, //アップバーの高さ
+        automaticallyImplyLeading: false, //戻るボタンの非表示
         centerTitle: true,
         //アップバーアイコン
         actions: <Widget>[
           //通知ボタン
           IconButton(
             icon: const Icon(Icons.add_alert),
+            color: store.mainColor,
             //通知ページへ移動(push)
             onPressed: () {
               Navigator.push(

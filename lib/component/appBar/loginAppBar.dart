@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 
 //使い方
 //ファイルの上部でimport '.loginAppBar.dart';と置く
@@ -15,14 +17,19 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
         //アップバー
         appBar: AppBar(
       //アップバータイトル
       title: Text(
         "REEL", //文字
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30), //書体
+        style: TextStyle(
+            color: store.mainColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 40), //書体
       ),
+      backgroundColor: store.subColor,
       centerTitle: true, //中央ぞろえ
       toolbarHeight: 80, //高さ
       automaticallyImplyLeading: false, //戻るボタンの非表示
@@ -34,13 +41,13 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             TextButton(
               onPressed: () {
-                // ボタンが押されたときに発動される処理(自由に変更可)
+                store.changeGC(!store.jedgeGC);
               },
               child: Text(
                 "法人の方はこちら",
                 style: TextStyle(
-                  fontSize: 15, //文字の大きさ
-                  color: Colors.white, //テキストの色
+                  fontSize: 17, //文字の大きさ
+                  color: store.mainColor, //テキストの色
                   decoration: TextDecoration.underline, //下線
                 ),
               ),

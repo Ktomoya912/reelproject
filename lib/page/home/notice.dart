@@ -11,19 +11,21 @@ class _NoticeState extends State<Notice> {
   final int index = 0; //BottomAppBarのIcon番号
   final String title = "通知"; //AppBarに表示する文字
 
-  //イベント通知タイトルリスト
-  var eventTitleList = ["【イベント開催間近】", "【イベント開催間近】", "【イベント開催間近】"];
-  //イベント通知サブタイトルリスト
-  var eventSubTitleList = ["開催間近", "開催間近", "開催間近"];
-  //イベント通知アイコンリスト
-  var eventIconList = [Icons.favorite, Icons.favorite, Icons.favorite];
+  final List<Map<String, dynamic>> eventList = [
+    {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+    {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+    {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+    {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+    {"title": "【イベント開催間近】", "subtitle": "開催間近"}
+  ];
 
-  //イベント通知タイトルリスト
-  var jobTitleList = ["【求人期限間近】", "【求人期限間近】", "【求人期限間近】"];
-  //イベント通知サブタイトルリスト
-  var jobSubTitleList = ["開催間近", "開催間近", "開催間近"];
-  //イベント通知アイコンリスト
-  var jobIconList = [Icons.work, Icons.work, Icons.work];
+  final List<Map<String, dynamic>> jobList = [
+    {"title": "【求人期限間近】", "subtitle": "開催間近"},
+    {"title": "【求人期限間近】", "subtitle": "開催間近"},
+    {"title": "【求人期限間近】", "subtitle": "開催間近"},
+    {"title": "【求人期限間近】", "subtitle": "開催間近"},
+    {"title": "【求人期限間近】", "subtitle": "開催間近"},
+  ];
 
   bool jedge = true; //イベント:true, 求人:false
 
@@ -112,12 +114,8 @@ class _NoticeState extends State<Notice> {
           //リスト
           ListViewChange(
             jedge: jedge,
-            eventTitleList: eventTitleList,
-            eventSubTitleList: eventSubTitleList,
-            eventIconList: eventIconList,
-            jobTitleList: jobTitleList,
-            jobSubTitleList: jobSubTitleList,
-            jobIconList: jobIconList,
+            eventList: eventList,
+            jobList: jobList,
           ),
         ],
       ),
@@ -132,40 +130,29 @@ class _NoticeState extends State<Notice> {
 class ListViewChange extends StatelessWidget {
   const ListViewChange({
     super.key,
-    required this.eventTitleList,
-    required this.eventSubTitleList,
-    required this.eventIconList,
-    required this.jobTitleList,
-    required this.jobSubTitleList,
-    required this.jobIconList,
+    required this.eventList,
+    required this.jobList,
     required this.jedge,
   });
 
   //引数
-  final List<String> eventTitleList;
-  final List<String> eventSubTitleList;
-  final List<IconData> eventIconList;
-  final List<String> jobTitleList;
-  final List<String> jobSubTitleList;
-  final List<IconData> jobIconList;
+  final List<Map<String, dynamic>> eventList;
+  final List<Map<String, dynamic>> jobList;
   final bool jedge;
 
   //使用するリスト一覧
-  static var titleList = [];
-  static var subTitleList = [];
-  static var iconList = [];
+  static List<Map<String, dynamic>> list = [{}];
+  static var icon = Icons.favorite;
 
   @override
   Widget build(BuildContext context) {
     //jedgeによって使用するリスト決定
     if (jedge) {
-      titleList = eventTitleList;
-      subTitleList = eventSubTitleList;
-      iconList = eventIconList;
+      list = eventList;
+      icon = Icons.favorite;
     } else {
-      titleList = jobTitleList;
-      subTitleList = jobSubTitleList;
-      iconList = jobIconList;
+      list = jobList;
+      icon = Icons.work;
     }
 
     return Expanded(
@@ -192,7 +179,7 @@ class ListViewChange extends StatelessWidget {
                                   shape: BoxShape.circle, //円形に
                                   color: Colors.orange.shade100), //アイコン周囲円の色
                               //円内のアイコン
-                              child: Icon(iconList[index],
+                              child: Icon(icon,
                                   size: 45, color: Colors.orange)), //アイコンの色
                           //右側の矢印アイコン
                           trailing: Padding(
@@ -204,13 +191,13 @@ class ListViewChange extends StatelessWidget {
                               color: Colors.grey,
                             ),
                           ),
-                          title: Text(titleList[index]), //タイトル
-                          subtitle: Text(subTitleList[index]), //サブタイトル
+                          title: Text(list[index]["title"]), //タイトル
+                          subtitle: Text(list[index]["subtitle"]), //サブタイトル
                           visualDensity: VisualDensity(
                               vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
                           onTap: () {}))); //ボタンを押した際の挙動
         },
-        itemCount: titleList.length, //リスト数
+        itemCount: list.length, //リスト数
       ),
     );
   }
