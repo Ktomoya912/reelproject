@@ -45,8 +45,14 @@ class ToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final toggleStore = Provider.of<ChangeToggleButton>(context); //プロバイダ
     final colorStore = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    return SizedBox(
+    return Container(
         height: height, //高さ
+        //下線
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: colorStore.greyColor),
+          ),
+        ),
         child: ToggleButtons(
             //ボタンの文字と枠
             children: <Widget>[
@@ -57,7 +63,7 @@ class ToggleButton extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15)))),
               SizedBox(
-                  width: mediaQueryData.size.width / 2 - 3,
+                  width: mediaQueryData.size.width / 2,
                   child: Center(
                       child: Text(rightTitle,
                           style: TextStyle(
@@ -67,9 +73,10 @@ class ToggleButton extends StatelessWidget {
             color: colorStore.greyColor, //選択されていないときの色
             selectedColor: colorStore.mainColor, //選択されているときの色
             fillColor: colorStore.thinColor, //選択されているときの背景色
-            borderColor: colorStore.greyColor, //枠線の色
-            selectedBorderColor: colorStore.greyColor, //選択時の枠線の色
-            borderWidth: 1, //枠線の太さ
+            borderColor: colorStore.thinColor, //枠線の色
+            //selectedBorderColor: colorStore.thinColor, //選択時の枠線の色
+            //borderWidth: 0, //枠線の太さ
+            renderBorder: false, //枠線なし
             //ボタン選択関連
             isSelected: toggleStore._toggleList, //ボタンが反応しているか否か
             //ボタンが押された時の動作

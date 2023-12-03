@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/changeGeneralCorporation.dart';
+import '/page/home/noticeDetail.dart';
 
 //通知一覧クラス
 class NoticeListView extends StatelessWidget {
@@ -8,10 +9,12 @@ class NoticeListView extends StatelessWidget {
     super.key,
     required this.jedgeEJ,
     required this.noticeList,
+    required this.content,
   });
 
   final int jedgeEJ; //イベントか求人かジャッジ
   final List<List<Map<String, dynamic>>> noticeList; //通知タイトル
+  final String content; //通知詳細内容
 
   //アイコン
   static List icon = [Icons.favorite, Icons.work];
@@ -64,7 +67,19 @@ class NoticeListView extends StatelessWidget {
                               noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
                           visualDensity: VisualDensity(
                               vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
-                          onTap: () {}))); //ボタンを押した際の挙動
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        NoticeDetail(
+                                          noticeList: noticeList,
+                                          jedgeEJ: jedgeEJ,
+                                          index: index,
+                                          content: content,
+                                        )));
+                          }))); //ボタンを押した際の挙動
         },
         itemCount: noticeList[jedgeEJ].length, //リスト数
       ),

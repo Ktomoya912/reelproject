@@ -5,6 +5,7 @@ import '/component/appBar/titleAppBar.dart';
 import '/component/Button/toggleButton.dart';
 import '/component/listView/NoticeListView.dart';
 
+//通知一覧画面作成クラス
 class Notice extends StatefulWidget {
   @override
   State<Notice> createState() => _NoticeState();
@@ -14,15 +15,32 @@ class _NoticeState extends State<Notice> {
   final int index = 0; //BottomAppBarのIcon番号
   final String title = "通知"; //AppBarに表示する文字
 
+  String content = "イベント開催期間が迫っています";
+
   List<List<Map<String, dynamic>>> noticeList = [
     [
-      {"title": "【イベント開催間近】", "subtitle": "開催間近"},
-      {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+      {
+        "title": "【イベント開催間近1】",
+        "subtitle": "開催間近",
+      },
+      {
+        "title": "【イベント開催間近2】",
+        "subtitle": "開催間近",
+      },
     ],
     [
-      {"title": "【イベント開催間近】", "subtitle": "開催間近"},
-      {"title": "【イベント開催間近】", "subtitle": "開催間近"},
-      {"title": "【イベント開催間近】", "subtitle": "開催間近"},
+      {
+        "title": "【求人期限間近1】",
+        "subtitle": "期限間近",
+      },
+      {
+        "title": "【求人期限間近2】",
+        "subtitle": "期限間近",
+      },
+      {
+        "title": "【求人期限間近3】",
+        "subtitle": "期限間近",
+      }
     ]
   ];
 
@@ -51,7 +69,10 @@ class _NoticeState extends State<Notice> {
 
                 //リスト
                 NoticeListView(
-                    jedgeEJ: store.onButtonIndex, noticeList: noticeList),
+                  jedgeEJ: store.onButtonIndex,
+                  noticeList: noticeList,
+                  content: content,
+                ),
               ],
             ),
 
