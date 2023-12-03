@@ -73,19 +73,21 @@ class NoticeContent extends StatelessWidget {
         //横に空間を開けるため
         child: SizedBox(
             width: _mediaQueryData.size.width - 100, //横の空間の合計だけ引く
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              //タイトル
-              Text(
-                title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                //内容
-                child: Text(content),
-              )
-            ])),
+            child: Column(
+                //左詰め
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //タイトル
+                  Text(
+                    title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    //内容
+                    child: Text(content),
+                  )
+                ])),
       ),
     ));
   }
