@@ -30,6 +30,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             fontSize: 40), //書体
       ),
       backgroundColor: store.subColor,
+      elevation: 0.0, //影なし
       centerTitle: true, //中央ぞろえ
       toolbarHeight: 80, //高さ
       automaticallyImplyLeading: false, //戻るボタンの非表示

@@ -11,7 +11,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //一般の色(定数)
   static const Color generalMainColor = Color.fromARGB(255, 224, 119, 0);
   static const Color generalSubColor = Color.fromARGB(255, 238, 188, 126);
-  static const Color generalThinColor = Color.fromARGB(255, 255, 228, 187);
+  static const Color generalThinColor = Color.fromARGB(255, 255, 214, 153);
   static const Color generalBlackColor = Color.fromARGB(255, 49, 30, 0);
 
   //法人の色(定数)
