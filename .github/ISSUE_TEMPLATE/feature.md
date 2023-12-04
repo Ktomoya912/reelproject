@@ -1,6 +1,7 @@
 ---
 name: 機能追加テンプレート
-about: none
+about: 機能の追加に関するissue
+labels: feature
 ---
 ## :cyclone: やるべきこと
 

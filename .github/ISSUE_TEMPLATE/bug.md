@@ -1,6 +1,7 @@
 ---
 name: バグ報告テンプレート
-about: none
+about: バグの報告に関するissue
+labels: bug
 ---
 ## :cyclone: バグの概要
 
