@@ -10,7 +10,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-        label: ":bug: 概要"
+      label: ":bug: 概要"
       description: 発生したバグについて教えてください
       placeholder: Tell us what you see!
     validations:
