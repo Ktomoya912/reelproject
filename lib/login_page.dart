@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   bool _autoLogin = false; // チェックボックスの状態を管理する変数
-  late bool userisgeneral;
+  late bool userisgeneral;//hyamamotos
   late int seed;
 
   @override
