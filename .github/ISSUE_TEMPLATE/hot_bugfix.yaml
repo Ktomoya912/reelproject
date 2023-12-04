@@ -1,0 +1,44 @@
+name: Hot Bug Report
+description: バグ修正のためのissue
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: input
+    id: :cyclone:概要
+    attributes:
+      label: 概要
+      description: バグの概要を記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: :cyclone:再現手順
+    attributes:
+      label: 再現手順
+      description: バグの再現手順を記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: :cyclone:期待する動作
+    attributes:
+      label: 期待する動作
+      description: 期待する動作を記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: :cyclone:実際の動作
+    attributes:
+      label: 実際の動作
+      description: 実際の動作を記載してください
+    validations:
+      required: true
+  - type: textarea
+    id: :cyclone:修正箇所
+    attributes:
+      label: 修正コード
+      description: 修正する必要のあるコードを記載してください(オプション)
+      placeholder: |        
+        void main() {
+          runApp(MyApp());
+        }
+      render: dart
