@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/page/Home/Home.dart';
 import '/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/login/login_page.dart';
 
 void main() {
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
+            home: LoginPage(),
           );
         }));
   }
