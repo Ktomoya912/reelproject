@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/login/forgot_password_page.dart';
 import 'package:reelproject/login/new_menber_general.dart';
+import 'package:reelproject/login/ask_page.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/login/pass_change.dart';
 import 'package:reelproject/page/home/home.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 //パスを指定して、forgot_password_page.dartをインポート
@@ -157,7 +159,7 @@ class LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordPage()),
+                            builder: (context) => const PassChange()),
                       );
                     },
                     splashColor: Colors.transparent, // splashColorを透明にする。
@@ -175,7 +177,8 @@ class LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordPage()),
+                            // builder: (context) => const ForgotPasswordPage()),
+                            builder: (context) => const AskPage()),
                       );
                     },
                     splashColor: Colors.transparent, // splashColorを透明にする。
@@ -184,6 +187,9 @@ class LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  )
                 ],
               ),
             ),
