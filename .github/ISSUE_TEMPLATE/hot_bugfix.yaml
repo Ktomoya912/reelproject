@@ -10,11 +10,12 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: ":bug: 概要"
+      label: "🐛概要"
       description: 発生したバグについて教えてください
       placeholder: Tell us what you see!
     validations:
       required: true
+  
   - type: markdown
     attributes:
       value: |
@@ -22,7 +23,7 @@ body:
   - type: textarea
     id: reproduction
     attributes:
-      label: ":bug: 再現手順"
+      label: "🐛再現手順"
       description: バグの再現方法を教えてください
       value: |
         1.
@@ -33,14 +34,14 @@ body:
   - type: textarea
     id: expected-behavior
     attributes:
-      label: ":bug: 期待する動作"
+      label: "🐛期待する動作"
       description: その機能がするべきはずの動作を教えてください
     validations:
       required: false
   - type: dropdown
     id: browsers
     attributes:
-      label: ":bug: 使用したデバイスを教えてください"
+      label: "🐛使用したデバイスを教えてください"
       multiple: true
       options:
         - Firefox
@@ -52,13 +53,13 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: ":bug: Relevant log output"
+      label: "🐛Relevant log output"
       description: 関連するログの出力をコピーしてペーストしてください。 これは自動的にコードにフォーマットされるので、バックティックは不要です。
       render: shell
   - type: textarea
     id: other
     attributes:
-      label: ":bug: その他(other)"
+      label: "🐛その他(other)"
       description: その他、バグに関する情報があれば教えてください
     validations:
       required: false
