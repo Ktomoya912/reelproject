@@ -24,11 +24,12 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
     return ChangeNotifierProvider(
-        create: (context) => ChangeGeneralCorporation(),
-        child: Builder(builder: (BuildContext context) {
-          return Scaffold(
-            appBar: LoginAppBar(store: store),
-            body: Center(
+      create: (context) => ChangeGeneralCorporation(),
+      child: Builder(builder: (BuildContext context) {
+        return Scaffold(
+          appBar: LoginAppBar(store: store),
+          body: SingleChildScrollView(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,14 +46,13 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const NewMemberGeneral()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       '新規会員登録はこちら',
                       style: TextStyle(color: Colors.blue),
@@ -63,9 +63,6 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // mainAxisSize: MainAxisSize.min,
-
                     children: <Widget>[
                       const Text(
                         'メールアドレス',
@@ -113,11 +110,9 @@ class LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Checkbox(
-                            value: _autoLogin, // チェックボックスの状態
+                            value: _autoLogin,
                             onChanged: (bool? value) {
-                              // チェックボックスの状態が変更されたときのコールバック
                               setState(() {
-                                // setStateメソッドを使って、ウィジェットを再構築し、新しい状態でCheckboxを描画
                                 _autoLogin = value ?? false;
                               });
                             },
@@ -130,7 +125,6 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // ログインボタンが押されたときの処理をここに追加予定
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Home()),
@@ -152,14 +146,13 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ForgotPasswordPage()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       'パスワードを忘れた方はこちら',
                       style: TextStyle(color: Colors.blue),
@@ -170,14 +163,13 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ForgotPasswordPage()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       'お問い合わせはこちら',
                       style: TextStyle(color: Colors.blue),
@@ -186,18 +178,20 @@ class LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            bottomNavigationBar: BottomAppBar(
-              color: store.mainColor,
-              height: 40,
-              child: const Text(
-                '© 2023 REEL',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
+          ),
+          bottomNavigationBar: BottomAppBar(
+            color: store.mainColor,
+            height: 40,
+            child: const Text(
+              '© 2023 REEL',
+              style: TextStyle(
+                color: Colors.white,
               ),
+              textAlign: TextAlign.center,
             ),
-          );
-        }));
+          ),
+        );
+      }),
+    );
   }
 }
