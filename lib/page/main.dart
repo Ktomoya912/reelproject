@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/changeGeneralCorporation.dart';
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            routerConfig: _appRouter.config(),
+            routerConfig: _appRouter.config(), //auto_route
           );
         }));
   }

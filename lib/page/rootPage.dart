@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:reelproject/appRouter/appRouter.dart';
 
+//ログイン以外のアプリレイヤー
+//ボトムアップバーは共有で、それ以外が変更される
 @RoutePage()
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
@@ -10,6 +12,8 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
+      //このレイヤーから移動可能なRoute
+      //ホーム、イベント、求人、マイページに移動可能
       routes: const [
         HomeRouterRoute(),
         EventRouterRoute(),
