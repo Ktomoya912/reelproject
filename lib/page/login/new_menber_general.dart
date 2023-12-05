@@ -61,7 +61,8 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     width: 300,
                     child: Text(
                       '生年月日',
-                      style: TextStyle(fontSize: 15),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const Padding(
