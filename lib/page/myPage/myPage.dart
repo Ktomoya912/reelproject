@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/changeGeneralCorporation.dart';
-import '/component/bottomAppBar/bNB.dart';
 import '/component/appBar/TitleAppBar.dart';
 
 @RoutePage()
