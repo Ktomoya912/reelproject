@@ -5,14 +5,14 @@ import 'package:reelproject/page/home/home.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:provider/provider.dart';
 
-class NewMemberGeneral extends StatefulWidget {
-  const NewMemberGeneral({Key? key}) : super(key: key);
+class NewMemberCompany extends StatefulWidget {
+  const NewMemberCompany({Key? key}) : super(key: key);
 
   @override
-  NewMemberGeneralState createState() => NewMemberGeneralState();
+  NewMemberCompanyState createState() => NewMemberCompanyState();
 }
 
-class NewMemberGeneralState extends State<NewMemberGeneral> {
+class NewMemberCompanyState extends State<NewMemberCompany> {
   String? selectedGender;
 
   @override
@@ -46,7 +46,12 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     padding: EdgeInsets.all(5.0),
                   ),
                   const TextEnterBox(
-                      label: 'ユーザー名', hinttext: '氏名', width: 300),
+                      label: '法人名', hinttext: '例：ChaO！株式会社', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  const TextEnterBox(
+                      label: 'ユーザー名', hinttext: '例：ChaO！株式会社', width: 300),
                   const Padding(
                     padding: EdgeInsets.all(10.0),
                   ),
@@ -57,12 +62,54 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   const Padding(
                     padding: EdgeInsets.all(10.0),
                   ),
+                  const TextEnterBox(
+                      label: '電話番号', hinttext: '例：09012345678', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(20.0),
+                  ),
+
+                  // ここから住所入力
+                  const SizedBox(
+                    width: 300,
+                    child: Text(
+                      '住所',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(5.0),
+                  ),
+                  const TextEnterBox(
+                      label: '郵便番号', hinttext: '例：1234567', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  const TextEnterBox(
+                      label: '都道府県', hinttext: '例：高知県', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  const TextEnterBox(
+                      label: '市区町村', hinttext: '例：高知市', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  const TextEnterBox(
+                      label: '番地', hinttext: '例：1-1-1', width: 300),
+                  const Padding(
+                    padding: EdgeInsets.all(20.0),
+                  ),
                   const SizedBox(
                     width: 300,
                     child: Text(
                       '生年月日',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const Padding(
@@ -170,7 +217,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const NewMemberGeneral()),
+                                builder: (context) => const NewMemberCompany()),
                           );
                         },
                         splashColor: Colors.transparent, // splashColorを透明にする。
@@ -202,6 +249,10 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                       minimumSize: const Size(300, 50),
                     ),
                     child: const Text('同意する'),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
