@@ -4,6 +4,7 @@ import 'package:reelproject/component/bottomAppBar/normalBottomAppBar.dart';
 import 'package:reelproject/page/home/home.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:provider/provider.dart';
+import 'package:reelproject/overlay/rule/rule_screen.dart'; //オーバレイで表示される画面のファイル
 
 class NewMemberGeneral extends StatefulWidget {
   const NewMemberGeneral({Key? key}) : super(key: key);
@@ -160,10 +161,10 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                 InkWell(
                   onTap: () {
                     // パスワードを忘れた場合の画面に遷移
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NewMemberGeneral()),
+                    RuleScreen().show(
+                      //これでおーばーれい表示
+                      context: context,
+                      text: 'Please wait a moment',
                     );
                   },
                   splashColor: Colors.transparent, // splashColorを透明にする。
