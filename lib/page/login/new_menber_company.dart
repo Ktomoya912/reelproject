@@ -5,6 +5,7 @@ import 'package:reelproject/page/home/home.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/rule_screen.dart'; //オーバレイで表示される画面のファイル
+import 'package:reelproject/component/finishScreen/finishScreen.dart';
 
 class NewMemberCompany extends StatefulWidget {
   const NewMemberCompany({Key? key}) : super(key: key);
@@ -231,7 +232,15 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 // ログインボタンが押されたときの処理をここに追加予定
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Home()),
+                  // MaterialPageRoute(builder: (context) => Home()),
+                  MaterialPageRoute(
+                      builder: (context) => const FinishScreen(
+                          appbarText: "会員登録完了",
+                          appIcon: Icons.task_alt,
+                          finishText: "会員登録が完了いたしました。",
+                          text:
+                              "法人会員登録ありがとうございます。\nこちらで法人確認を行ったあと、法人会員登録完了メールをご登録メールアドレスへと送信いたしますので、メールが届くまで今しばらくお待ちください。\n万が一法人会員登録完了メールが１か月以上届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
+                          buttonText: "ログイン画面に戻る")),
                 );
               },
               style: ElevatedButton.styleFrom(
