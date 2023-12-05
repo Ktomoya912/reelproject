@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/login/forgot_password_page.dart';
+import 'package:reelproject/login/new_menber_company.dart';
 import 'package:reelproject/login/new_menber_general.dart';
 import 'package:reelproject/login/ask_page.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
@@ -48,11 +48,19 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const NewMemberGeneral()),
-                      );
+                      if (store.jedgeGC) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NewMemberGeneral()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NewMemberCompany()),
+                        );
+                      }
                     },
                     splashColor: Colors.transparent,
                     child: const Text(

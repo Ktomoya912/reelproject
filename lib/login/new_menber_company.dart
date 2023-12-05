@@ -5,14 +5,14 @@ import 'package:reelproject/page/home/home.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:provider/provider.dart';
 
-class NewMemberGeneral extends StatefulWidget {
-  const NewMemberGeneral({Key? key}) : super(key: key);
+class NewMemberCompany extends StatefulWidget {
+  const NewMemberCompany({Key? key}) : super(key: key);
 
   @override
-  NewMemberGeneralState createState() => NewMemberGeneralState();
+  NewMemberCompanyState createState() => NewMemberCompanyState();
 }
 
-class NewMemberGeneralState extends State<NewMemberGeneral> {
+class NewMemberCompanyState extends State<NewMemberCompany> {
   String? selectedGender;
 
   @override
@@ -45,8 +45,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   const Padding(
                     padding: EdgeInsets.all(5.0),
                   ),
-                  const TextEnterBox(
-                      label: 'ユーザー名', hinttext: '氏名', width: 300),
+                  const TextEnterBox(label: '法人名', hinttext: '氏名', width: 300),
                   const Padding(
                     padding: EdgeInsets.all(10.0),
                   ),
@@ -169,7 +168,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const NewMemberGeneral()),
+                                builder: (context) => const NewMemberCompany()),
                           );
                         },
                         splashColor: Colors.transparent, // splashColorを透明にする。
