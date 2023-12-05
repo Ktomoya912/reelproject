@@ -23,7 +23,7 @@ class ButtonSet extends StatelessWidget {
       onPressed: () {
         // ボタンが押されたときの処理をここに追加予定
         Navigator.pop(context, true);
-        Navigator.pop(context, true);
+        // Navigator.pop(context, true);
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
