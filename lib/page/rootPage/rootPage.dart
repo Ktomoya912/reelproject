@@ -5,7 +5,7 @@ import '/provider/changeGeneralCorporation.dart';
 
 import 'package:reelproject/appRouter/appRouter.dart';
 
-//ログイン以外のアプリレイヤー
+//ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
 @RoutePage()
 class RootPage extends StatelessWidget {
@@ -15,15 +15,17 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return AutoTabsScaffold(
+        //移動可能なRoutes
         routes: const [
           HomeRouterRoute(),
           EventRouterRoute(),
           JobRouterRoute(),
           MyPageRouterRoute(),
         ],
+        //ボトムアップバー
         bottomNavigationBuilder: (_, tabsRouter) {
           return BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex,
+              currentIndex: tabsRouter.activeIndex, //現在の位置
               type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
               backgroundColor: store.subColor, //バーの色
 
@@ -64,14 +66,16 @@ class RootPage extends StatelessWidget {
               onTap: (int index) {
                 // 選択中じゃないタブをTapした場合
                 if (tabsRouter.activeIndex != index) {
+                  //ネストされたルーターのスタック情報を破棄(初期化される)
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();
+                  //選択したタブへ移動
                   tabsRouter.setActiveIndex(index);
                 }
                 // 選択中のタブをTapした場合
                 else {
-                  // ネストされたルーターのスタック情報を破棄
+                  // ネストされたルーターのスタック情報を破棄(初期化される)
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();
