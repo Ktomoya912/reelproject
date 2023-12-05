@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
-import 'package:reelproject/login/login_page.dart';
+import 'package:reelproject/page/login/login_page.dart';
 
 //使い方
 //現在はログイン画面に戻る処理のみ

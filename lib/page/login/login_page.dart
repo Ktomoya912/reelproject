@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/login/new_menber_company.dart';
-import 'package:reelproject/login/new_menber_general.dart';
-import 'package:reelproject/login/ask_page.dart';
+import 'package:reelproject/page/login/forgot_password_page.dart';
+import 'package:reelproject/page/login/new_menber_general.dart';
+import 'package:reelproject/page/login/ask_page.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
-import 'package:reelproject/login/pass_change.dart';
+import 'package:reelproject/page/login/pass_change.dart';
 import 'package:reelproject/page/home/home.dart';
 import 'package:provider/provider.dart';
 import '/component/appBar/loginAppBar.dart';
@@ -48,19 +48,11 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (store.jedgeGC) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewMemberGeneral()),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewMemberCompany()),
-                        );
-                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NewMemberGeneral()),
+                      );
                     },
                     splashColor: Colors.transparent,
                     child: const Text(

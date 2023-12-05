@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/page/Home/Home.dart';
 import '/provider/changeGeneralCorporation.dart';
-import 'package:reelproject/login/login_page.dart';
+import 'package:reelproject/page/login/login_page.dart';
 
 void main() {
   runApp(MyApp());
