@@ -5,8 +5,8 @@ import 'package:reelproject/page/login/ask_page.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
 import 'package:reelproject/page/login/pass_change.dart';
 import 'package:reelproject/page/home/home.dart';
-import 'package:provider/provider.dart'; //パッケージをインポート
-//パスを指定して、forgot_password_page.dartをインポート
+import 'package:provider/provider.dart';
+import '/component/appBar/loginAppBar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,18 +20,18 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    //シード値を設定することによって関連の色を生成するようにする
   }
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
     return ChangeNotifierProvider(
-        create: (context) => ChangeGeneralCorporation(),
-        child: Builder(builder: (BuildContext context) {
-          return Scaffold(
-            appBar: LoginAppBar(store: store),
-            body: Center(
+      create: (context) => ChangeGeneralCorporation(),
+      child: Builder(builder: (BuildContext context) {
+        return Scaffold(
+          appBar: LoginAppBar(store: store),
+          body: SingleChildScrollView(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,14 +48,13 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const NewMemberGeneral()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       '新規会員登録はこちら',
                       style: TextStyle(color: Colors.blue),
@@ -66,9 +65,6 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // mainAxisSize: MainAxisSize.min,
-
                     children: <Widget>[
                       const Text(
                         'メールアドレス',
@@ -116,11 +112,9 @@ class LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Checkbox(
-                            value: _autoLogin, // チェックボックスの状態
+                            value: _autoLogin,
                             onChanged: (bool? value) {
-                              // チェックボックスの状態が変更されたときのコールバック
                               setState(() {
-                                // setStateメソッドを使って、ウィジェットを再構築し、新しい状態でCheckboxを描画
                                 _autoLogin = value ?? false;
                               });
                             },
@@ -133,14 +127,13 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // ログインボタンが押されたときの処理をここに追加予定
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Home()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: store.subColor, //onPrimaryは非推奨らしい
+                          backgroundColor: store.subColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -155,14 +148,13 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const PassChange()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       'パスワードを忘れた方はこちら',
                       style: TextStyle(color: Colors.blue),
@@ -173,7 +165,6 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // パスワードを忘れた場合の画面に遷移
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -181,7 +172,7 @@ class LoginPageState extends State<LoginPage> {
                             builder: (context) => const AskPage()),
                       );
                     },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    splashColor: Colors.transparent,
                     child: const Text(
                       'お問い合わせはこちら',
                       style: TextStyle(color: Colors.blue),
@@ -193,82 +184,20 @@ class LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            bottomNavigationBar: BottomAppBar(
-              color: store.mainColor,
-              height: 40,
-              child: const Text(
-                '© 2023 REEL',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        }));
-  }
-}
-
-class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LoginAppBar({
-    super.key,
-    required this.store,
-  });
-
-  final ChangeGeneralCorporation store;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(80);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      //アップバータイトル
-      title: const Text(
-        "REEL", //文字
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 44,
-            color: Colors.white), //書体
-      ),
-      backgroundColor: store.mainColor, //背景
-      iconTheme: const IconThemeData(color: Colors.grey), //戻るボタン
-      centerTitle: true, //中央揃え
-      toolbarHeight: 80, //アップバーの高さ
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20, top: 50),
-          child: InkWell(
-            onTap: () {
-              // パスワードを忘れた場合の画面に遷移
-
-              store.changeGC(!store.jedgeGC);
-            },
-            splashColor: Colors.transparent, // splashColorを透明にする。
-            child: store.jedgeGC
-                ? const Text(
-                    '法人の方はこちら',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                      decorationThickness: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text(
-                    '個人の方はこちら',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                      decorationThickness: 2,
-                      color: Colors.white,
-                    ),
-                  ),
           ),
-        ),
-      ],
+          bottomNavigationBar: BottomAppBar(
+            color: store.mainColor,
+            height: 40,
+            child: const Text(
+              '© 2023 REEL',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }),
     );
   }
 }
