@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/changeGeneralCorporation.dart';
 
 import 'package:reelproject/appRouter/appRouter.dart';
 
@@ -11,44 +13,70 @@ class RootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter(
-      //このレイヤーから移動可能なRoute
-      //ホーム、イベント、求人、マイページに移動可能
-      routes: const [
-        HomeRouterRoute(),
-        EventRouterRoute(),
-        JobRouterRoute(),
-        MyPageRouterRoute(),
-      ],
-      builder: (context, child) {
-        // タブが切り替わると発火します
-        final tabsRouter = context.tabsRouter;
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: tabsRouter.activeIndex,
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'ホーム',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.celebration),
-                label: 'イベント',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.work),
-                label: '求人',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'マイページ',
-              ),
-            ],
-            onDestinationSelected: tabsRouter.setActiveIndex,
-          ),
-        );
-      },
-    );
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return AutoTabsScaffold(
+        routes: const [
+          HomeRouterRoute(),
+          EventRouterRoute(),
+          JobRouterRoute(),
+          MyPageRouterRoute(),
+        ],
+        bottomNavigationBuilder: (_, tabsRouter) {
+          return BottomNavigationBar(
+              currentIndex: tabsRouter.activeIndex,
+              type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
+              backgroundColor: store.subColor, //バーの色
+
+              //選択されたアイコンとラベルの色
+              selectedItemColor: store.mainColor,
+
+              //選択されたアイコンのテーマ
+              selectedIconTheme: const IconThemeData(size: 45),
+              //選択されていないアイコンのテーマ
+              unselectedIconTheme: const IconThemeData(size: 30),
+
+              //選択されたタイトルのスタイル
+              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              //選択されていないタイトルのスタイル
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.bold),
+              selectedFontSize: 12, //選択されたフォントのスタイル
+
+              //使用中アイコン情報
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'ホーム',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.celebration),
+                  label: 'イベント',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.work),
+                  label: '求人',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'マイページ',
+                ),
+              ],
+              onTap: (int index) {
+                // 選択中じゃないタブをTapした場合
+                if (tabsRouter.activeIndex != index) {
+                  tabsRouter
+                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
+                      ?.popUntilRoot();
+                  tabsRouter.setActiveIndex(index);
+                }
+                // 選択中のタブをTapした場合
+                else {
+                  // ネストされたルーターのスタック情報を破棄
+                  tabsRouter
+                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
+                      ?.popUntilRoot();
+                }
+              });
+        });
   }
 }
