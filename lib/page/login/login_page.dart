@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/page/login/forgot_password_page.dart';
 import 'package:reelproject/page/login/new_menber_general.dart';
 import 'package:reelproject/page/login/ask_page.dart';
 import 'package:reelproject/provider/changeGeneralCorporation.dart';
