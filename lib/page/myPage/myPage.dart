@@ -11,6 +11,8 @@ class MyPageRouterPage extends AutoRouter {
 
 @RoutePage()
 class MyPage extends StatefulWidget {
+  const MyPage({super.key});
+
   @override
   State<MyPage> createState() => _MyPageState();
 }
@@ -20,7 +22,7 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       //アップバー
       appBar: TitleAppBar(title: title),
 
@@ -65,18 +67,18 @@ class ScrollMyPageDetail extends StatelessWidget {
               ),
             ),
             //アイコンと名前の間に空白
-            Padding(
-              padding: const EdgeInsets.all(4.0),
+            const Padding(
+              padding: EdgeInsets.all(4.0),
               child: Text("ユーザ名",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ), //ユーザー名
             //空白
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             //下の詳細部分
             //アイコン部分との空白
-            Container(
+            SizedBox(
                 width: _mediaQueryData.size.width,
                 height: 1000,
                 child: MyPageListView(
@@ -119,7 +121,8 @@ class MyPageListView extends StatelessWidget {
             ),
           ),
           child: Text(tagTitle,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
         ),
         Expanded(
           //通知一覧
@@ -136,28 +139,27 @@ class MyPageListView extends StatelessWidget {
                         ),
                       ),
                       //リストの内容
-                      child: Expanded(
-                          //リストの一つ一つを作成するListTitle
-                          child: ListTile(
-                              //左のアイコン
-                              //Containerで円を作っている
-                              leading: Icon(list[index]["icon"],
-                                  size: 45, color: store.mainColor), //アイコンの色
-                              //右側の矢印アイコン
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 30,
-                                color: store.greyColor,
-                              ),
-                              title: Text(list[index]["title"]), //タイトル
-                              onTap: () {
-                                // Navigator.push(
-                                //     context,
-                                //     PageRouteBuilder(
-                                //         pageBuilder: (context, animation,
-                                //                 secondaryAnimation) =>
-                                //             ));
-                              }))); //ボタンを押した際の挙動
+                      //リストの一つ一つを作成するListTitle
+                      child: ListTile(
+                          //左のアイコン
+                          //Containerで円を作っている
+                          leading: Icon(list[index]["icon"],
+                              size: 45, color: store.mainColor), //アイコンの色
+                          //右側の矢印アイコン
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 30,
+                            color: store.greyColor,
+                          ),
+                          title: Text(list[index]["title"]), //タイトル
+                          onTap: () {
+                            // Navigator.push(
+                            //     context,
+                            //     PageRouteBuilder(
+                            //         pageBuilder: (context, animation,
+                            //                 secondaryAnimation) =>
+                            //             ));
+                          })); //ボタンを押した際の挙動
             },
             itemCount: list.length, //リスト数
           ),

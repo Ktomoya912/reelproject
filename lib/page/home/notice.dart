@@ -113,49 +113,47 @@ class NoticeListView extends StatelessWidget {
                     ),
                   ),
                   //リストの内容
-                  child: Expanded(
-                      //リストの一つ一つを作成するListTitle
-                      child: ListTile(
-                          //左のアイコン
-                          //Containerで円を作っている
-                          leading: Container(
-                              height: 70, //アイコン高さ
-                              width: 70, //アイコン幅
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle, //円形に
-                                  color: store.subColor), //アイコン周囲円の色
-                              //円内のアイコン
-                              child: Icon(icon[jedgeEJ],
-                                  size: 45, color: store.mainColor)), //アイコンの色
-                          //右側の矢印アイコン
-                          trailing: Padding(
-                            padding: const EdgeInsets.all(
-                                15.0), //このままだと真ん中に来ないため空間を作る
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 30,
-                              color: store.greyColor,
-                            ),
-                          ),
-                          title:
-                              Text(noticeList[jedgeEJ][index]["title"]), //タイトル
-                          subtitle: Text(
-                              noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
-                          visualDensity: VisualDensity(
-                              vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
+                  //リストの一つ一つを作成するListTitle
+                  child: ListTile(
+                      //左のアイコン
+                      //Containerで円を作っている
+                      leading: Container(
+                          height: 70, //アイコン高さ
+                          width: 70, //アイコン幅
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, //円形に
+                              color: store.subColor), //アイコン周囲円の色
+                          //円内のアイコン
+                          child: Icon(icon[jedgeEJ],
+                              size: 45, color: store.mainColor)), //アイコンの色
+                      //右側の矢印アイコン
+                      trailing: Padding(
+                        padding:
+                            const EdgeInsets.all(15.0), //このままだと真ん中に来ないため空間を作る
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 30,
+                          color: store.greyColor,
+                        ),
+                      ),
+                      title: Text(noticeList[jedgeEJ][index]["title"]), //タイトル
+                      subtitle:
+                          Text(noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
+                      visualDensity: VisualDensity(
+                          vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
                                         NoticeDetail(
                                           noticeList: noticeList,
                                           jedgeEJ: jedgeEJ,
                                           index: index,
                                           content: content,
                                         )));
-                          }))); //ボタンを押した際の挙動
+                      })); //ボタンを押した際の挙動
         },
         itemCount: noticeList[jedgeEJ].length, //リスト数
       ),
