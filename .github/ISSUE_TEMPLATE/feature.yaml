@@ -12,7 +12,7 @@ body:
     id: feature-summary
     attributes:
       label: "🚀機能概要"
-      description: 追加したい機能について教えてください
+      description: 追加したい機能について教えてください。
       placeholder: Tell us what you want!
     validations:
       required: true
@@ -26,22 +26,24 @@ body:
     id: reason
     attributes:
       label: "🚀なぜこの機能が必要なのか"
-      description: この機能が必要な理由を教えてください
-    validations:
-      required: false
+      description: この機能が必要な理由を教えてください。
+
 
   - type: textarea
     id: implementation
     attributes:
       label: "🚀実装案"
-      description: あなたが考える機能の実装方法を教えてください
-    validations:
-      required: false
+      description: あなたが考える機能の実装方法を教えてください。
+
 
   - type: textarea
     id: other
     attributes:
       label: "🚀その他(other)"
-      description: その他、機能追加に関する情報があれば教えてください
-    validations:
-      required: false
+      description: その他、機能追加に関する情報があれば教えてください。
+
+  - type: textarea
+    id: url
+    attributes:
+      label: "🔍️参考サイト"
+      description: 参考にした、もしくは参考してほしいサイトがあればそのリンクを貼ってください。
