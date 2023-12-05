@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 //import '/provider/changeGeneralCorporation.dart';
 import '/component/appBar/titleAppBar.dart';
-import '/component/bottomAppBar/bNB.dart';
 
 //通知詳細クラス
 //このクラスをpopすると任意の通知内容を開くことができる
@@ -20,8 +19,6 @@ class NoticeDetail extends StatelessWidget {
   final List<List<Map<String, dynamic>>> noticeList; //通知タイトル
   final String content; //文章内容
 
-  static const int i = 0; //BottomAppBarのIcon番号
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +31,6 @@ class NoticeDetail extends StatelessWidget {
       body: NoticeContent(
         title: noticeList[jedgeEJ][index]["title"],
         content: content,
-      ),
-
-      //ボトムアップバー
-      bottomNavigationBar: BNB(
-        index: i,
       ),
     );
   }
