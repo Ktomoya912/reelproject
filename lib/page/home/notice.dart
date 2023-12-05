@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/component/bottomAppBar/bNB.dart';
 import '/component/appBar/titleAppBar.dart';
 import '/component/Button/toggleButton.dart';
 import '/provider/changeGeneralCorporation.dart';
@@ -13,7 +12,6 @@ class Notice extends StatefulWidget {
 }
 
 class _NoticeState extends State<Notice> {
-  final int index = 0; //BottomAppBarのIcon番号
   final String title = "通知"; //AppBarに表示する文字
 
   String content = "イベント開催期間が迫っています";
@@ -76,9 +74,6 @@ class _NoticeState extends State<Notice> {
                 ),
               ],
             ),
-
-            //ボトムナビゲーションバー
-            bottomNavigationBar: BNB(index: index),
           );
         }));
   }

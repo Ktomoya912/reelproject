@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:auto_route/auto_route.dart';
 import '/provider/changeGeneralCorporation.dart';
 import '/component/bottomAppBar/bNB.dart';
 import '/component/appBar/TitleAppBar.dart';
 
+@RoutePage()
+class MyPageRouterPage extends AutoRouter {
+  const MyPageRouterPage({super.key});
+}
+
+@RoutePage()
 class MyPage extends StatefulWidget {
   @override
   State<MyPage> createState() => _MyPageState();
@@ -11,7 +18,6 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   static const title = "マイページ";
-  final int index = 3; //BottomAppBarのIcon番号
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +27,6 @@ class _MyPageState extends State<MyPage> {
 
       //内部
       body: ScrollMyPageDetail(),
-
-      //ボトムナビゲーションバー
-      bottomNavigationBar: BNB(index: index),
     );
   }
 }
