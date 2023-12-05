@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'rule_screen_controller.dart';
 
-import './textBox/rureText.dart';
+import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:provider/provider.dart'; //パッケージをインポート
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -51,6 +52,7 @@ class RuleScreen {
 
     final overlay = OverlayEntry(
       builder: (context) {
+        final store = Provider.of<ChangeGeneralCorporation>(context);
         return Material(
           color: Colors.black.withAlpha(150),
           child: Center(
@@ -113,8 +115,7 @@ class RuleScreen {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             minimumSize: const Size(130, 40),
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 115, 0),
+                            backgroundColor: store.mainColor,
                           ),
                           child: const Text("閉じる",
                               style: TextStyle(color: Colors.white)),
