@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+//import 'package:provider/provider.dart';
+//import '/provider/changeGeneralCorporation.dart';
 import '/component/appBar/titleAppBar.dart';
 import '/component/bottomAppBar/bNB.dart';
 
@@ -24,7 +24,6 @@ class NoticeDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
       //アップバー
       appBar: TitleAppBar(
@@ -35,7 +34,6 @@ class NoticeDetail extends StatelessWidget {
       body: NoticeContent(
         title: noticeList[jedgeEJ][index]["title"],
         content: content,
-        store: store,
       ),
 
       //ボトムアップバー
@@ -51,16 +49,15 @@ class NoticeContent extends StatelessWidget {
   const NoticeContent({
     super.key,
     required this.title,
-    required this.store,
     required this.content,
   });
 
   final String title; //タイトル
   final String content; //内容
-  final store; //プロバイダ
 
   @override
   Widget build(BuildContext context) {
+    //final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     MediaQueryData _mediaQueryData = MediaQuery.of(context); //サイズ取得
     return
         //スクロール
