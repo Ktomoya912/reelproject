@@ -194,12 +194,14 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   // MaterialPageRoute(builder: (context) => Home()),
                   MaterialPageRoute(
                       builder: (context) => const FinishScreen(
-                          appbarText: "会員登録完了",
-                          appIcon: Icons.task_alt,
-                          finishText: "会員登録が完了いたしました。",
-                          text:
-                              "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                          buttonText: "ログイン画面に戻る")),
+                            appbarText: "会員登録完了",
+                            appIcon: Icons.task_alt,
+                            finishText: "会員登録が完了いたしました。",
+                            text:
+                                "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
+                            buttonText: "ログイン画面に戻る",
+                            jedgeBottomAppBar: true,
+                          )),
                 );
               },
               style: ElevatedButton.styleFrom(

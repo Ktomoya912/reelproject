@@ -100,12 +100,14 @@ class PassChangeState extends State<PassChange> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                               builder: (context) => const FinishScreen(
-                                  appbarText: "パスワード再設定",
-                                  appIcon: Icons.mail_outlined,
-                                  finishText: "送信完了",
-                                  text:
-                                      "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
-                                  buttonText: "ログイン画面に戻る")),
+                                    appbarText: "パスワード再設定",
+                                    appIcon: Icons.mail_outlined,
+                                    finishText: "送信完了",
+                                    text:
+                                        "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
+                                    buttonText: "ログイン画面に戻る",
+                                    jedgeBottomAppBar: true,
+                                  )),
                         );
                       },
                       style: ElevatedButton.styleFrom(
