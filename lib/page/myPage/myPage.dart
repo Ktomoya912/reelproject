@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/changeGeneralCorporation.dart';
-import '/component/appBar/TitleAppBar.dart';
+import 'package:reelproject/component/appBar/titleAppBar.dart';
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -18,13 +18,14 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  static const title = "マイページ";
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: TitleAppBar(title: title),
+      appBar: TitleAppBar(
+        title: "マイページ",
+        jedgeBuck: true,
+      ),
 
       //内部
       body: ScrollMyPageDetail(),

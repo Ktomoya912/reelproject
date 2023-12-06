@@ -40,7 +40,10 @@ class FinishScreen extends StatelessWidget {
       questionButtonWidget = QuestionButton();
     }
     return Scaffold(
-      appBar: TitleAppBar(title: appbarText),
+      appBar: TitleAppBar(
+        title: appbarText,
+        jedgeBuck: false,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

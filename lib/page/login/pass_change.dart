@@ -24,7 +24,10 @@ class PassChangeState extends State<PassChange> {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
     return Scaffold(
-      appBar: const TitleAppBar(title: "パスワード再設定"),
+      appBar: const TitleAppBar(
+        title: "パスワード再設定",
+        jedgeBuck: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
