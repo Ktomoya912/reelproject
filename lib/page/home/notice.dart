@@ -61,7 +61,6 @@ class _NoticeState extends State<Notice> {
               children: [
                 //イベント、求人切り替えボタン
                 //四角で囲む(上ボタンの幅選択)
-
                 ToggleButton(
                   mediaQueryData: _mediaQueryData,
                   leftTitle: "イベント",
