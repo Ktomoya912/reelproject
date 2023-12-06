@@ -25,7 +25,10 @@ class AskPageState extends State<AskPage> {
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
     return Scaffold(
-      appBar: const TitleAppBar(title: "問い合わせ"),
+      appBar: const TitleAppBar(
+        title: "問い合わせ",
+        jedgeBuck: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

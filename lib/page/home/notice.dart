@@ -52,7 +52,10 @@ class _NoticeState extends State<Notice> {
           final store = Provider.of<ChangeToggleButton>(context); //プロバイダ
           return Scaffold(
             //アップバー
-            appBar: TitleAppBar(title: title),
+            appBar: TitleAppBar(
+              title: title,
+              jedgeBuck: true,
+            ),
 
             body: Column(
               children: [

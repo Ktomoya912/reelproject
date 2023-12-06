@@ -27,7 +27,10 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
     return Scaffold(
-      appBar: const TitleAppBar(title: "新規会員登録"),
+      appBar: const TitleAppBar(
+        title: "新規会員登録",
+        jedgeBuck: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

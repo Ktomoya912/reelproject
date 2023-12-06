@@ -25,6 +25,7 @@ class NoticeDetail extends StatelessWidget {
       //アップバー
       appBar: TitleAppBar(
         title: noticeList[jedgeEJ][index]["subtitle"],
+        jedgeBuck: true,
       ),
 
       //内容

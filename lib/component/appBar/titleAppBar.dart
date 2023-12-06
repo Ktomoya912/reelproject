@@ -8,10 +8,12 @@ import '/provider/changeGeneralCorporation.dart';
 //この時のtitleには表示ページ名を載せる
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title; //ページ名
+  final bool jedgeBuck; //戻るボタンを表示するか否か
 
   const TitleAppBar({
     super.key,
     required this.title,
+    required this.jedgeBuck,
   });
 
   @override
@@ -33,6 +35,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: 40,
               color: store.mainColor), //書体
         ),
+        automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
         backgroundColor: Colors.white, //背景
         elevation: 0.0, //影なし
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
