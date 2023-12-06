@@ -34,7 +34,11 @@ class FinishScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<ChangeGeneralCorporation>(context);
+    StatelessWidget questionButtonWidget = Container(); //お問合せボタンのWidget
+    //直前のページがお問合せである場合、完了ページではお問合せボタンを表示しない
+    if (this.appbarText != "問い合わせ") {
+      questionButtonWidget = QuestionButton();
+    }
     return Scaffold(
       appBar: TitleAppBar(title: appbarText),
       body: Center(
@@ -95,31 +99,45 @@ class FinishScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            OutlinedButton(
-              //ボタン設置
-              onPressed: () {
-                // ボタンが押されたときの処理をここに追加予定
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AskPage()),
-                );
-              },
-
-              style: OutlinedButton.styleFrom(
-                //下線付きボタンにするためoutlinedbuttonにしている
-                side: BorderSide.none, //ここで周りの線を消している
-              ),
-              child: Text("お問い合わせ",
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: store.mainColor,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                  )),
-            ),
+            questionButtonWidget,
           ],
         ),
       ),
       bottomNavigationBar: const NormalBottomAppBar(),
+    );
+  }
+}
+
+//お問合せボタンコンポーネント
+class QuestionButton extends StatelessWidget {
+  const QuestionButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return OutlinedButton(
+      //ボタン設置
+      onPressed: () {
+        // ボタンが押されたときの処理をここに追加予定
+        Navigator.pop(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const AskPage()),
+        );
+      },
+
+      style: OutlinedButton.styleFrom(
+        //下線付きボタンにするためoutlinedbuttonにしている
+        side: BorderSide.none, //ここで周りの線を消している
+      ),
+      child: Text("お問い合わせ",
+          style: TextStyle(
+            fontSize: 17,
+            color: store.mainColor,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
+          )),
     );
   }
 }
