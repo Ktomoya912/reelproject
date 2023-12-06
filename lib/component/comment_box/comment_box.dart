@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 //使い方
 //ファイルの上部でimport 'comentBox.dart';と置く
 //その後、body内で"const ComentBox();"のように宣言
-class ComentBox extends StatelessWidget {
+class CommentBox extends StatelessWidget {
   final double boxWidth;
   final double boxHeight;
   // final int lenMax;//保留
   // static int leax = 30;
 
-  const ComentBox({
+  const CommentBox({
     super.key,
     required this.boxWidth,
     required this.boxHeight,

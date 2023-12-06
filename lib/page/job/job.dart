@@ -8,6 +8,8 @@ class JobRouterPage extends AutoRouter {
 
 @RoutePage()
 class Job extends StatefulWidget {
+  const Job({super.key});
+
   @override
   State<Job> createState() => _JobState();
 }
@@ -16,6 +18,6 @@ class _JobState extends State<Job> {
   final int index = 2; //BottomAppBarのIcon番号
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

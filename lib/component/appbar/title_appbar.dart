@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 //使い方
 //ファイルの上部でimport '.titleAppBar.dart';と置く
@@ -18,7 +18,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return Size(double.infinity, 80.0);
+    return const Size(double.infinity, 80.0);
   }
 
   @override
@@ -44,7 +44,9 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
         //画面説明アップバー
         bottom: PreferredSize(
-            child: Container(
+            preferredSize: const Size.fromHeight(5),
+            child: SizedBox(
+              height: 30,
               child: AppBar(
                 //アップバー内にアップバー(ページ説明のため)
                 title: Text(
@@ -59,10 +61,8 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 automaticallyImplyLeading: false, //戻るボタンの非表示
                 backgroundColor: store.subColor, //背景
                 elevation: 0.0, //影なし
-              ),
-              height: 30, //高さ
-            ),
-            preferredSize: Size.fromHeight(5)), //高さ
+              ), //高さ
+            )), //高さ
       ),
     );
   }

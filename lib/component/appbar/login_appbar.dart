@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoginAppBar({

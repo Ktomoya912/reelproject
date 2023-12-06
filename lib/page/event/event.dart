@@ -8,6 +8,8 @@ class EventRouterPage extends AutoRouter {
 
 @RoutePage()
 class Event extends StatefulWidget {
+  const Event({super.key});
+
   @override
   State<Event> createState() => _EventState();
 }
@@ -16,6 +18,6 @@ class _EventState extends State<Event> {
   final int index = 1; //BottomAppBarのIcon番号
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

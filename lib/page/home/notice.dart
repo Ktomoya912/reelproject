@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/component/appBar/titleAppBar.dart';
-import '/component/Button/toggleButton.dart';
-import '/provider/changeGeneralCorporation.dart';
-import '/page/home/noticeDetail.dart';
+import '../../component/appbar/title_appbar.dart';
+import '/component/Button/toggle_button.dart';
+import '/provider/change_general_corporation.dart';
+import 'notice_detail.dart';
 
 //通知一覧画面作成クラス
 class Notice extends StatefulWidget {
+  const Notice({super.key});
+
   @override
   State<Notice> createState() => _NoticeState();
 }
@@ -45,7 +47,7 @@ class _NoticeState extends State<Notice> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQueryData = MediaQuery.of(context);
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     return ChangeNotifierProvider(
         create: (context) => ChangeToggleButton(),
         child: Builder(builder: (BuildContext context) {
@@ -62,7 +64,7 @@ class _NoticeState extends State<Notice> {
                 //イベント、求人切り替えボタン
                 //四角で囲む(上ボタンの幅選択)
                 ToggleButton(
-                  mediaQueryData: _mediaQueryData,
+                  mediaQueryData: mediaQueryData,
                   leftTitle: "イベント",
                   rightTitle: "求人",
                   height: 50,
@@ -141,7 +143,7 @@ class NoticeListView extends StatelessWidget {
                       title: Text(noticeList[jedgeEJ][index]["title"]), //タイトル
                       subtitle:
                           Text(noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
-                      visualDensity: VisualDensity(
+                      visualDensity: const VisualDensity(
                           vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
                       onTap: () {
                         Navigator.push(

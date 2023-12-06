@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
-import '/provider/changeGeneralCorporation.dart';
-import 'package:reelproject/component/appBar/titleAppBar.dart';
+import '/provider/change_general_corporation.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -49,7 +49,7 @@ class ScrollMyPageDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQueryData = MediaQuery.of(context);
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return SingleChildScrollView(
       child: Center(
@@ -80,10 +80,10 @@ class ScrollMyPageDetail extends StatelessWidget {
             //下の詳細部分
             //アイコン部分との空白
             SizedBox(
-                width: _mediaQueryData.size.width,
+                width: mediaQueryData.size.width,
                 height: 1000,
                 child: MyPageListView(
-                  mediaQueryData: _mediaQueryData,
+                  mediaQueryData: mediaQueryData,
                   store: store,
                   list: userSettingList,
                   tagTitle: "ユーザ設定",

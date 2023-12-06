@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
-//import '/provider/changeGeneralCorporation.dart';
-import '/component/appBar/titleAppBar.dart';
+//import '/provider/change_general_corporation.dart';
+import '../../component/appbar/title_appbar.dart';
 
 //通知詳細クラス
 //このクラスをpopすると任意の通知内容を開くことができる
@@ -14,8 +14,8 @@ class NoticeDetail extends StatelessWidget {
     required this.content,
   });
 
-  final index; //index個目の通知
-  final jedgeEJ; //イベント、求人区別
+  final int index; //index個目の通知
+  final int jedgeEJ; //イベント、求人区別
   final List<List<Map<String, dynamic>>> noticeList; //通知タイトル
   final String content; //文章内容
 
@@ -51,7 +51,7 @@ class NoticeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    MediaQueryData _mediaQueryData = MediaQuery.of(context); //サイズ取得
+    MediaQueryData mediaQueryData = MediaQuery.of(context); //サイズ取得
     return
         //スクロール
         SingleChildScrollView(
@@ -62,7 +62,7 @@ class NoticeContent extends StatelessWidget {
       child: Center(
         //横に空間を開けるため
         child: SizedBox(
-            width: _mediaQueryData.size.width - 100, //横の空間の合計だけ引く
+            width: mediaQueryData.size.width - 100, //横の空間の合計だけ引く
             child: Column(
                 //左詰め
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +70,8 @@ class NoticeContent extends StatelessWidget {
                   //タイトル
                   Text(
                     title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
