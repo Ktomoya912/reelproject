@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:reelproject/appRouter/appRouter.dart';
+import 'package:reelproject/app_router/app_router.dart';
 
 //アプリ全体を包括するレイヤー
 @RoutePage()

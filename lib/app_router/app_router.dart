@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 
-import 'package:reelproject/page/rootPage/rootPage.dart';
+import 'package:reelproject/page/root_page/root_page.dart';
 import 'package:reelproject/page/home/home.dart';
 import 'package:reelproject/page/event/event.dart';
 import 'package:reelproject/page/job/job.dart';
-import 'package:reelproject/page/myPage/myPage.dart';
-import 'package:reelproject/page/rootPage/changeRootPage.dart';
+import 'package:reelproject/page/mypage/mypage.dart';
+import 'package:reelproject/page/root_page/change_root_page.dart';
 import 'package:reelproject/page/login/login_page.dart';
 
-part 'appRouter.gr.dart';
+part 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends _$AppRouter {

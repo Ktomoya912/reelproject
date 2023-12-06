@@ -2,10 +2,10 @@ import 'package:reelproject/page/login/ask_page.dart';
 import 'package:flutter/material.dart';
 // import 'normalBottomAppBar.dart';
 // import 'titleAppBar.dart';
-import 'package:reelproject/component/buttonSet/buttonSet.dart';
-import 'package:reelproject/component/appBar/titleAppBar.dart';
-import 'package:reelproject/component/bottomAppBar/normalBottomAppBar.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/component/button_set/button_set.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 
 //使い方
@@ -34,14 +34,14 @@ class FinishScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget BottomAppBar = SizedBox();
+    Widget bottomAppBar = const SizedBox();
     if (jedgeBottomAppBar) {
-      BottomAppBar = NormalBottomAppBar();
+      bottomAppBar = const NormalBottomAppBar();
     }
     StatelessWidget questionButtonWidget = Container(); //お問合せボタンのWidget
     //直前のページがお問合せである場合、完了ページではお問合せボタンを表示しない
-    if (this.appbarText != "問い合わせ") {
-      questionButtonWidget = QuestionButton();
+    if (appbarText != "問い合わせ") {
+      questionButtonWidget = const QuestionButton();
     }
     return Scaffold(
       appBar: TitleAppBar(
@@ -110,7 +110,7 @@ class FinishScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar,
+      bottomNavigationBar: bottomAppBar,
     );
   }
 }

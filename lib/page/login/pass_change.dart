@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:reelproject/component/finishScreen/finishScreen.dart';
-import 'package:reelproject/component/buttonSet/buttonSet.dart';
-import 'package:reelproject/component/appBar/titleAppBar.dart';
-import 'package:reelproject/component/bottomAppBar/normalBottomAppBar.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 
 class PassChange extends StatefulWidget {

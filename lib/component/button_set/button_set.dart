@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 //import 'package:reelproject/page/login/login_page.dart';
 

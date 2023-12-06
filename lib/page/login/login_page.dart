@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/appRouter/appRouter.dart';
+import 'package:reelproject/app_router/app_router.dart';
 import 'package:reelproject/page/login/new_menber_company.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/page/login/new_menber_general.dart';
 import 'package:reelproject/page/login/ask_page.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/page/login/pass_change.dart';
 import 'package:provider/provider.dart';
-import '/component/appBar/loginAppBar.dart';
+import '../../component/appbar/login_appbar.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {

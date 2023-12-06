@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
-import 'package:reelproject/appRouter/appRouter.dart';
+import '/provider/change_general_corporation.dart';
+import 'package:reelproject/app_router/app_router.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,6 +9,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final _appRouter = AppRouter();
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

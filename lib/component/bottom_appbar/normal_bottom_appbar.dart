@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 //使い方
 //ファイルの上部でimport 'normalBottomAppBar.dart';と置く

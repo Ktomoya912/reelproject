@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/component/appBar/titleAppBar.dart';
-import 'package:reelproject/component/bottomAppBar/normalBottomAppBar.dart';
-import 'package:reelproject/page/home/home.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/rule_screen.dart'; //オーバレイで表示される画面のファイル
-import 'package:reelproject/component/finishScreen/finishScreen.dart';
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 class NewMemberGeneral extends StatefulWidget {
   const NewMemberGeneral({Key? key}) : super(key: key);

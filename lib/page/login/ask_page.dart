@@ -1,11 +1,10 @@
-import 'dart:ui';
-import 'package:reelproject/component/finishScreen/finishScreen.dart';
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
-import 'package:reelproject/component/bottomAppBar/normalBottomAppBar.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:reelproject/component/appBar/titleAppBar.dart';
-import 'package:reelproject/component/comentBox/comentBox.dart';
-import 'package:reelproject/provider/changeGeneralCorporation.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/comment_box/comment_box.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 
 class AskPage extends StatefulWidget {
@@ -66,7 +65,7 @@ class AskPageState extends State<AskPage> {
               ),
             ),
 
-            const ComentBox(boxWidth: 300.0, boxHeight: 200.0),
+            const CommentBox(boxWidth: 300.0, boxHeight: 200.0),
 
             const SizedBox(
               height: 35,

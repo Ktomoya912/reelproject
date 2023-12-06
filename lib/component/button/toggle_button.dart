@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 //ToggleButtonにて使用するボタンが押されているか否かの判定bool
 class ChangeToggleButton with ChangeNotifier {
@@ -55,21 +55,6 @@ class ToggleButton extends StatelessWidget {
         ),
         child: ToggleButtons(
             //ボタンの文字と枠
-            children: <Widget>[
-              SizedBox(
-                  width: mediaQueryData.size.width / 2,
-                  child: Center(
-                      child: Text(leftTitle,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)))),
-              SizedBox(
-                  width: mediaQueryData.size.width / 2,
-                  child: Center(
-                      child: Text(rightTitle,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15))))
-            ],
-            //色関連
             color: colorStore.greyColor, //選択されていないときの色
             selectedColor: colorStore.mainColor, //選択されているときの色
             fillColor: colorStore.thinColor, //選択されているときの背景色
@@ -82,6 +67,21 @@ class ToggleButton extends StatelessWidget {
             //ボタンが押された時の動作
             onPressed: (index) {
               toggleStore.changeToggleList(index);
-            }));
+            },
+            //ボタンの文字と枠
+            children: <Widget>[
+              SizedBox(
+                  width: mediaQueryData.size.width / 2,
+                  child: Center(
+                      child: Text(leftTitle,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)))),
+              SizedBox(
+                  width: mediaQueryData.size.width / 2,
+                  child: Center(
+                      child: Text(rightTitle,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15))))
+            ]));
   }
 }

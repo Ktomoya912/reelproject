@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 //使い方
 //ファイルの上部でimport '.mainAppBar.dart';と置く
@@ -16,7 +16,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return Size(double.infinity, 80.0);
+    return const Size(double.infinity, 80.0);
   }
 
   @override

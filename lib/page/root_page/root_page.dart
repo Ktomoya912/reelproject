@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
-import 'package:reelproject/appRouter/appRouter.dart';
+import 'package:reelproject/app_router/app_router.dart';
 
 //ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
