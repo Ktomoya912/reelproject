@@ -230,6 +230,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
             ElevatedButton(
               onPressed: () {
                 // ログインボタンが押されたときの処理をここに追加予定
+                Navigator.pop(context); //pop
                 Navigator.push(
                   context,
                   // MaterialPageRoute(builder: (context) => Home()),
