@@ -19,7 +19,7 @@ class FinishScreen extends StatelessWidget {
   final String text;
   final String buttonText;
   // final Widget appBar;
-  // final Widget bottomBar;
+  final bool jedgeBottomAppBar;
 
   const FinishScreen({
     super.key,
@@ -29,11 +29,15 @@ class FinishScreen extends StatelessWidget {
     required this.text,
     required this.buttonText,
     // required this.appBar,
-    // required this.bottomBar,
+    required this.jedgeBottomAppBar,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget BottomAppBar = SizedBox();
+    if (jedgeBottomAppBar) {
+      BottomAppBar = NormalBottomAppBar();
+    }
     StatelessWidget questionButtonWidget = Container(); //お問合せボタンのWidget
     //直前のページがお問合せである場合、完了ページではお問合せボタンを表示しない
     if (this.appbarText != "問い合わせ") {
@@ -106,7 +110,7 @@ class FinishScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const NormalBottomAppBar(),
+      bottomNavigationBar: BottomAppBar,
     );
   }
 }
