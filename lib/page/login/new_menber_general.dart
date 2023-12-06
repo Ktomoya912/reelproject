@@ -45,7 +45,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             const Padding(
               padding: EdgeInsets.all(5.0),
             ),
-            const TextEnterBox(label: 'ユーザー名', hinttext: '氏名', width: 300),
+            const TextEnterBox(label: 'ユーザー名', hinttext: '例：高知太郎', width: 300),
             const Padding(
               padding: EdgeInsets.all(10.0),
             ),
