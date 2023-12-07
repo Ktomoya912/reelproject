@@ -1,0 +1,65 @@
+name: 不具合報告(Bug report)
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグ報告に感謝します。
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "🐛概要"
+      description: 発生したバグについて教えてください
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  
+  - type: markdown
+    attributes:
+      value: |
+        以下、オプションです。よろしければご記入ください。
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "🐛再現手順"
+      description: バグの再現方法を教えてください
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "🐛期待する動作"
+      description: その機能がするべきはずの動作を教えてください
+    validations:
+      required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: "🐛使用したデバイスを教えてください"
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - ios
+        - android
+  - type: textarea
+    id: logs
+    attributes:
+      label: "🐛Relevant log output"
+      description: 関連するログの出力をコピーしてペーストしてください。 これは自動的にコードにフォーマットされるので、バックティックは不要です。
+      render: shell
+  - type: textarea
+    id: other
+    attributes:
+      label: "🐛その他(other)"
+      description: その他、バグに関する情報があれば教えてください
+    validations:
+      required: false
