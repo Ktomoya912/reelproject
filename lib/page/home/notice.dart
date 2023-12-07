@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/component/bottomAppBar/bNB.dart';
-import '/component/appBar/titleAppBar.dart';
-import '/component/Button/toggleButton.dart';
-import '/provider/changeGeneralCorporation.dart';
-import '/page/home/noticeDetail.dart';
+import '../../component/appbar/title_appbar.dart';
+import '/component/Button/toggle_button.dart';
+import '/provider/change_general_corporation.dart';
+import 'notice_detail.dart';
 
 //通知一覧画面作成クラス
 class Notice extends StatefulWidget {
+  const Notice({super.key});
+
   @override
   State<Notice> createState() => _NoticeState();
 }
 
 class _NoticeState extends State<Notice> {
-  final int index = 0; //BottomAppBarのIcon番号
   final String title = "通知"; //AppBarに表示する文字
 
   String content = "イベント開催期間が迫っています";
@@ -47,22 +47,24 @@ class _NoticeState extends State<Notice> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQueryData = MediaQuery.of(context);
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     return ChangeNotifierProvider(
         create: (context) => ChangeToggleButton(),
         child: Builder(builder: (BuildContext context) {
           final store = Provider.of<ChangeToggleButton>(context); //プロバイダ
           return Scaffold(
             //アップバー
-            appBar: TitleAppBar(title: title),
+            appBar: TitleAppBar(
+              title: title,
+              jedgeBuck: true,
+            ),
 
             body: Column(
               children: [
                 //イベント、求人切り替えボタン
                 //四角で囲む(上ボタンの幅選択)
-
                 ToggleButton(
-                  mediaQueryData: _mediaQueryData,
+                  mediaQueryData: mediaQueryData,
                   leftTitle: "イベント",
                   rightTitle: "求人",
                   height: 50,
@@ -76,9 +78,6 @@ class _NoticeState extends State<Notice> {
                 ),
               ],
             ),
-
-            //ボトムナビゲーションバー
-            bottomNavigationBar: BNB(index: index),
           );
         }));
   }
@@ -118,49 +117,47 @@ class NoticeListView extends StatelessWidget {
                     ),
                   ),
                   //リストの内容
-                  child: Expanded(
-                      //リストの一つ一つを作成するListTitle
-                      child: ListTile(
-                          //左のアイコン
-                          //Containerで円を作っている
-                          leading: Container(
-                              height: 70, //アイコン高さ
-                              width: 70, //アイコン幅
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle, //円形に
-                                  color: store.subColor), //アイコン周囲円の色
-                              //円内のアイコン
-                              child: Icon(icon[jedgeEJ],
-                                  size: 45, color: store.mainColor)), //アイコンの色
-                          //右側の矢印アイコン
-                          trailing: Padding(
-                            padding: const EdgeInsets.all(
-                                15.0), //このままだと真ん中に来ないため空間を作る
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 30,
-                              color: store.greyColor,
-                            ),
-                          ),
-                          title:
-                              Text(noticeList[jedgeEJ][index]["title"]), //タイトル
-                          subtitle: Text(
-                              noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
-                          visualDensity: VisualDensity(
-                              vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
+                  //リストの一つ一つを作成するListTitle
+                  child: ListTile(
+                      //左のアイコン
+                      //Containerで円を作っている
+                      leading: Container(
+                          height: 70, //アイコン高さ
+                          width: 70, //アイコン幅
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, //円形に
+                              color: store.subColor), //アイコン周囲円の色
+                          //円内のアイコン
+                          child: Icon(icon[jedgeEJ],
+                              size: 45, color: store.mainColor)), //アイコンの色
+                      //右側の矢印アイコン
+                      trailing: Padding(
+                        padding:
+                            const EdgeInsets.all(15.0), //このままだと真ん中に来ないため空間を作る
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 30,
+                          color: store.greyColor,
+                        ),
+                      ),
+                      title: Text(noticeList[jedgeEJ][index]["title"]), //タイトル
+                      subtitle:
+                          Text(noticeList[jedgeEJ][index]["subtitle"]), //サブタイトル
+                      visualDensity: const VisualDensity(
+                          vertical: 1.5), //listTitleの大きさを広げている(1.5倍)
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
                                         NoticeDetail(
                                           noticeList: noticeList,
                                           jedgeEJ: jedgeEJ,
                                           index: index,
                                           content: content,
                                         )));
-                          }))); //ボタンを押した際の挙動
+                      })); //ボタンを押した際の挙動
         },
         itemCount: noticeList[jedgeEJ].length, //リスト数
       ),

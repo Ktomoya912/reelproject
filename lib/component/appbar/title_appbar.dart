@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/provider/changeGeneralCorporation.dart';
+import '/provider/change_general_corporation.dart';
 
 //使い方
 //ファイルの上部でimport '.titleAppBar.dart';と置く
@@ -8,15 +8,17 @@ import '/provider/changeGeneralCorporation.dart';
 //この時のtitleには表示ページ名を載せる
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title; //ページ名
+  final bool jedgeBuck; //戻るボタンを表示するか否か
 
   const TitleAppBar({
     super.key,
     required this.title,
+    required this.jedgeBuck,
   });
 
   @override
   Size get preferredSize {
-    return Size(double.infinity, 80.0);
+    return const Size(double.infinity, 80.0);
   }
 
   @override
@@ -33,6 +35,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: 40,
               color: store.mainColor), //書体
         ),
+        automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
         backgroundColor: Colors.white, //背景
         elevation: 0.0, //影なし
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
@@ -41,7 +44,9 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
         //画面説明アップバー
         bottom: PreferredSize(
-            child: Container(
+            preferredSize: const Size.fromHeight(5),
+            child: SizedBox(
+              height: 30,
               child: AppBar(
                 //アップバー内にアップバー(ページ説明のため)
                 title: Text(
@@ -56,10 +61,8 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 automaticallyImplyLeading: false, //戻るボタンの非表示
                 backgroundColor: store.subColor, //背景
                 elevation: 0.0, //影なし
-              ),
-              height: 30, //高さ
-            ),
-            preferredSize: Size.fromHeight(5)), //高さ
+              ), //高さ
+            )), //高さ
       ),
     );
   }

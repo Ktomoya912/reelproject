@@ -8,7 +8,7 @@
             "name": "reelproject",
             "request": "launch",
             "type": "dart",
-            "program": "lib/page/main.dart",
+            "program": "lib/main.dart",
         },
         {
             "name": "reelproject (profile mode)",
