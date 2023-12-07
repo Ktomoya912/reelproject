@@ -28,7 +28,7 @@ class RootPage extends StatelessWidget {
           return ConvexAppBar(
             //見た目
             backgroundColor: store.mainColor, //背景
-            items: [
+            items: const [
               TabItem(icon: Icons.home, title: 'ホーム'),
               TabItem(icon: Icons.celebration, title: 'イベント'),
               TabItem(icon: Icons.work, title: '求人'),
