@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../component/appbar/title_appbar.dart';
-import '/component/Button/toggle_button.dart';
+import '/component/button/toggle_button.dart';
 import '/provider/change_general_corporation.dart';
 import 'notice_detail.dart';
 
