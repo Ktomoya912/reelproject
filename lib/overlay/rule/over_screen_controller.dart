@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart' show immutable;
 
 typedef CloseLoadingScreen = bool Function();
-typedef UpdateLoadingScreen = bool Function(String text);
+typedef UpdateLoadingScreen = bool Function();
 
 @immutable
-class RuleScreenControl {
+class OverScreenControl {
   final CloseLoadingScreen close;
   final UpdateLoadingScreen update;
 
-  const RuleScreenControl({
+  const OverScreenControl({
     required this.close,
     required this.update,
   });

@@ -3,7 +3,7 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
-import 'package:reelproject/overlay/rule/rule_screen.dart'; //オーバレイで表示される画面のファイル
+import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 class NewMemberGeneral extends StatefulWidget {
@@ -168,7 +168,6 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     RuleScreen().show(
                       //これでおーばーれい表示
                       context: context,
-                      text: 'Please wait a moment',
                     );
                   },
                   splashColor: Colors.transparent, // splashColorを透明にする。

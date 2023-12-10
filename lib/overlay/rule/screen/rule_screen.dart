@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'rule_screen_controller.dart';
+import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
@@ -16,19 +16,17 @@ class RuleScreen {
 
   RuleScreen._sharedInstance();
 
-  RuleScreenControl? controller;
+  OverScreenControl? controller;
 
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
-    required String text,
   }) {
-    if (controller?.update(text) ?? false) {
+    if (controller?.update() ?? false) {
       return;
     } else {
       controller = showOverlay(
         context: context,
-        text: text,
       );
     }
   }
@@ -39,12 +37,10 @@ class RuleScreen {
     controller = null;
   }
 
-  RuleScreenControl showOverlay({
+  OverScreenControl showOverlay({
     required BuildContext context,
-    required String text,
   }) {
     final text0 = StreamController<String>();
-    text0.add(text);
 
     final state = Overlay.of(context);
     // final renderBox = context.findRenderObject() as RenderBox;
@@ -131,14 +127,13 @@ class RuleScreen {
 
     state.insert(overlay);
 
-    return RuleScreenControl(
+    return OverScreenControl(
       close: () {
         text0.close();
         overlay.remove();
         return true;
       },
-      update: (text) {
-        text0.add(text);
+      update: () {
         return true;
       },
     );
