@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/component/appbar/title_appbar.dart';
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -22,7 +21,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: TitleAppBar(
+      appBar: MypageAppBar(
         title: "マイページ",
         jedgeBuck: true,
       ),
@@ -39,18 +38,152 @@ class ScrollMyPageDetail extends StatelessWidget {
     super.key,
   });
 
-  //ユーザー設定ListView
-  static const List<Map<String, dynamic>> userSettingList = [
-    {
-      "title": "会員情報確認・編集",
-      "icon": Icons.favorite,
-    },
-  ];
+  //一般向けマイページリスト
+  static const Map<String, List<Map<String, dynamic>>> generalMypageMap = {
+    //ユーザ設定
+    "settingList": [
+      {
+        "title": "会員情報確認・編集",
+        "icon": Icons.manage_accounts,
+      },
+    ],
+    //メニュー
+    "menuList": [
+      {
+        "title": "イベント閲覧履歴",
+        "icon": Icons.history,
+      },
+      {
+        "title": "お気に入りイベントリスト",
+        "icon": Icons.favorite,
+      },
+      {
+        "title": "求人閲覧履歴",
+        "icon": Icons.history,
+      },
+      {
+        "title": "お気に入り求人リスト",
+        "icon": Icons.favorite,
+      },
+      {
+        "title": "応募履歴",
+        "icon": Icons.task,
+      }
+    ],
+    //その他
+    "elseList": [
+      {
+        "title": "お問い合わせ",
+        "icon": Icons.chat_bubble,
+      },
+      {
+        "title": "利用規約",
+        "icon": Icons.article,
+      },
+      {
+        "title": "ログアウト",
+        "icon": Icons.logout,
+      },
+      {
+        "title": "退会申請",
+        "icon": Icons.waving_hand,
+      },
+    ],
+  };
+
+  //法人向けマイページリスト
+  static const Map<String, List<Map<String, dynamic>>> companyMypageMap = {
+    //ユーザ設定
+    "settingList": [
+      {
+        "title": "会員情報確認・編集",
+        "icon": Icons.manage_accounts,
+      },
+    ],
+    //投稿
+    "postList": [
+      {
+        "title": "イベント広告投稿",
+        "icon": Icons.post_add,
+      },
+      {
+        "title": "求人広告投稿",
+        "icon": Icons.post_add,
+      },
+      {
+        "title": "投稿一覧",
+        "icon": Icons.summarize,
+      },
+      {
+        "title": "未振り込み投稿一覧",
+        "icon": Icons.money_off,
+      },
+      {
+        "title": "振込口座確認",
+        "icon": Icons.request_quote,
+      },
+    ],
+    //メニュー
+    "menuList": [
+      {
+        "title": "イベント閲覧履歴",
+        "icon": Icons.history,
+      },
+      {
+        "title": "お気に入りイベントリスト",
+        "icon": Icons.favorite,
+      },
+      {
+        "title": "求人閲覧履歴",
+        "icon": Icons.history,
+      },
+      {
+        "title": "お気に入り求人リスト",
+        "icon": Icons.favorite,
+      },
+    ],
+    //その他
+    "elseList": [
+      {
+        "title": "お問い合わせ",
+        "icon": Icons.chat_bubble,
+      },
+      {
+        "title": "利用規約",
+        "icon": Icons.article,
+      },
+      {
+        "title": "ログアウト",
+        "icon": Icons.logout,
+      },
+      {
+        "title": "退会申請",
+        "icon": Icons.waving_hand,
+      },
+    ],
+  };
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //マイページのリストで使用するWidget
+    Widget generalCompanyMypageList;
+
+    //一般、法人の切り替えにより、使用するリストを変更
+    if (store.jedgeGC) {
+      generalCompanyMypageList = GeneralMypage(
+        mediaQueryData: mediaQueryData,
+        store: store,
+        mypageList: generalMypageMap,
+      );
+    } else {
+      generalCompanyMypageList = CompanyMypage(
+          mediaQueryData: mediaQueryData,
+          store: store,
+          mypageList: companyMypageMap);
+    }
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -59,12 +192,19 @@ class ScrollMyPageDetail extends StatelessWidget {
             //上に空白
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 150, //アイコン高さ
-                width: 150, //アイコン幅
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, //円形に
-                    color: store.subColor), //アイコン周囲円の色
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 150, //アイコン高さ
+                    width: 150, //アイコン幅
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, //円形に
+                        color: store.subColor), //アイコン周囲円の色
+                  ),
+                ],
               ),
             ),
             //アイコンと名前の間に空白
@@ -75,19 +215,11 @@ class ScrollMyPageDetail extends StatelessWidget {
             ), //ユーザー名
             //空白
             const SizedBox(
-              height: 10,
+              height: 30,
             ),
             //下の詳細部分
             //アイコン部分との空白
-            SizedBox(
-                width: mediaQueryData.size.width,
-                height: 1000,
-                child: MyPageListView(
-                  mediaQueryData: mediaQueryData,
-                  store: store,
-                  list: userSettingList,
-                  tagTitle: "ユーザ設定",
-                )),
+            generalCompanyMypageList,
           ],
         ),
       ),
@@ -95,6 +227,114 @@ class ScrollMyPageDetail extends StatelessWidget {
   }
 }
 
+//一般向けマイページスクロール
+class GeneralMypage extends StatelessWidget {
+  const GeneralMypage({
+    super.key,
+    required this.mediaQueryData,
+    required this.store,
+    required this.mypageList,
+  });
+
+  final MediaQueryData mediaQueryData;
+  final ChangeGeneralCorporation store;
+  final Map<String, List<Map<String, dynamic>>> mypageList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 130,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["settingList"]!,
+              tagTitle: "ユーザ設定",
+            )),
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 380,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["menuList"]!,
+              tagTitle: "メニュー",
+            )),
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 300,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["elseList"]!,
+              tagTitle: "その他",
+            )),
+      ],
+    );
+  }
+}
+
+//法人向けマイページスクロール
+class CompanyMypage extends StatelessWidget {
+  const CompanyMypage({
+    super.key,
+    required this.mediaQueryData,
+    required this.store,
+    required this.mypageList,
+  });
+
+  final MediaQueryData mediaQueryData;
+  final ChangeGeneralCorporation store;
+  final Map<String, List<Map<String, dynamic>>> mypageList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 130,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["settingList"]!,
+              tagTitle: "ユーザ設定",
+            )),
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 380,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["postList"]!,
+              tagTitle: "投稿",
+            )),
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 300,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["menuList"]!,
+              tagTitle: "メニュー",
+            )),
+        SizedBox(
+            width: mediaQueryData.size.width,
+            height: 300,
+            child: MyPageListView(
+              mediaQueryData: mediaQueryData,
+              store: store,
+              list: mypageList["elseList"]!,
+              tagTitle: "その他",
+            )),
+      ],
+    );
+  }
+}
+
+//マイページリストを作成するクラス
 class MyPageListView extends StatelessWidget {
   const MyPageListView({
     super.key,
@@ -109,63 +349,178 @@ class MyPageListView extends StatelessWidget {
   final List<Map<String, dynamic>> list;
   final String tagTitle;
 
+  static double widthPower = 11 / 12; //横幅の倍率定数
+  static double lineWidth = 1.3; //線の太さ定数
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start, //左詰め
       children: [
-        Container(
-          width: _mediaQueryData.size.width,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: store.greyColor), //リストを区別する線
+        Center(
+          child: Container(
+            width: _mediaQueryData.size.width * widthPower,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    color: store.greyColor, width: lineWidth), //リストを区別する線
+              ),
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: _mediaQueryData.size.width / 50,
+                ),
+                Text(tagTitle,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 15)),
+              ],
             ),
           ),
-          child: Text(tagTitle,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
         ),
         Expanded(
           //通知一覧
           child: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              return
-                  //四角作成(これの大きさがリストの高さをになっている)
-                  Container(
-                      //height: 60, //リストの高さ
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom:
-                              BorderSide(color: store.greyColor), //リストを区別する線
-                        ),
+              return Column(
+                children: [
+                  //リストの内容
+                  //リストの一つ一つを作成するListTitle
+                  ListTile(
+                      //左のアイコン
+                      leading: Icon(list[index]["icon"],
+                          size: 35, color: store.mainColor), //アイコンの色
+                      //右側の矢印アイコン
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 25,
+                        color: store.greyColor,
                       ),
-                      //リストの内容
-                      //リストの一つ一つを作成するListTitle
-                      child: ListTile(
-                          //左のアイコン
-                          //Containerで円を作っている
-                          leading: Icon(list[index]["icon"],
-                              size: 45, color: store.mainColor), //アイコンの色
-                          //右側の矢印アイコン
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 30,
+                      title: Text(list[index]["title"]), //タイトル
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal:
+                              _mediaQueryData.size.width / 20), //タイル内の余白
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     PageRouteBuilder(
+                        //         pageBuilder: (context, animation,
+                        //                 secondaryAnimation) =>
+                        //             ));
+                      }),
+                  Container(
+                    width: _mediaQueryData.size.width * widthPower,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
                             color: store.greyColor,
-                          ),
-                          title: Text(list[index]["title"]), //タイトル
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     PageRouteBuilder(
-                            //         pageBuilder: (context, animation,
-                            //                 secondaryAnimation) =>
-                            //             ));
-                          })); //ボタンを押した際の挙動
+                            width: lineWidth), //リストを区別する線
+                      ),
+                    ),
+                  )
+                ],
+              ); //ボタンを押した際の挙動
             },
             itemCount: list.length, //リスト数
           ),
         ),
       ],
     );
+  }
+}
+
+//appbar
+class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title; //ページ名
+  final bool jedgeBuck; //戻るボタンを表示するか否か
+
+  const MypageAppBar({
+    super.key,
+    required this.title,
+    required this.jedgeBuck,
+  });
+
+  @override
+  Size get preferredSize {
+    return const Size(double.infinity, 80.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return Scaffold(
+
+        //アップバー
+        appBar: AppBar(
+      //アップバータイトル
+      title: Text(
+        "REEL", //文字
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 40,
+            color: store.mainColor), //書体
+      ),
+      automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
+      backgroundColor: Colors.white, //背景
+      elevation: 0.0, //影なし
+      iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
+      centerTitle: true, //中央揃え
+      toolbarHeight: 100, //アップバーの高さ
+
+      //画面説明アップバー
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(5),
+          child: SizedBox(
+            height: 30,
+            child: AppBar(
+              //アップバー内にアップバー(ページ説明のため)
+              title: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: store.blackColor,
+                ),
+              ), //ページ説明文字
+              centerTitle: true, //中央揃え
+              automaticallyImplyLeading: false, //戻るボタンの非表示
+              backgroundColor: store.subColor, //背景
+              elevation: 0.0, //影なし
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 5),
+                  child: InkWell(
+                    onTap: () {
+                      store.changeGC(!store.jedgeGC);
+                    },
+                    splashColor: Colors.transparent, // splashColorを透明にする。
+                    child: store.jedgeGC
+                        ? const Text(
+                            '法人の方はこちら',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.black,
+                              decorationThickness: 2,
+                              color: Colors.black,
+                            ),
+                          )
+                        : const Text(
+                            '個人の方はこちら',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.black,
+                              decorationThickness: 2,
+                              color: Colors.black,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            ), //高さ
+          )), //高さ
+    ));
   }
 }
