@@ -11,7 +11,7 @@ import '../../component/appbar/login_appbar.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
   @override
   LoginPageState createState() => LoginPageState();
 }

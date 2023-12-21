@@ -7,7 +7,7 @@ import 'package:reelproject/overlay/rule/rule_screen.dart'; //オーバレイで
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 class NewMemberGeneral extends StatefulWidget {
-  const NewMemberGeneral({Key? key}) : super(key: key);
+  const NewMemberGeneral({super.key});
 
   @override
   NewMemberGeneralState createState() => NewMemberGeneralState();
@@ -229,8 +229,8 @@ class TextEnterBox extends StatelessWidget {
     required this.label,
     required this.hinttext,
     required this.width,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -256,11 +256,11 @@ class PasswordInput extends StatefulWidget {
   final ValueChanged<bool> onVisibilityToggle;
 
   const PasswordInput({
-    Key? key,
+    super.key,
     required this.labelText,
     this.isObscure = true,
     required this.onVisibilityToggle,
-  }) : super(key: key);
+  });
 
   @override
   PasswordInputState createState() => PasswordInputState();
