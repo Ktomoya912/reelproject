@@ -6,11 +6,11 @@ class PasswordInput extends StatefulWidget {
   final ValueChanged<bool> onVisibilityToggle;
 
   const PasswordInput({
-    Key? key,
+    super.key,
     required this.labelText,
     this.isObscure = true,
     required this.onVisibilityToggle,
-  }) : super(key: key);
+  });
 
   @override
   PasswordInputState createState() => PasswordInputState();
