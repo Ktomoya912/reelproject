@@ -7,7 +7,7 @@ import 'package:reelproject/component/form/text_enter_box.dart';
 //表示するのはユーザ名、メールアドレス、電話番号、住所、生年月日、性別
 class CompanyForm extends StatefulWidget {
   final bool enable;
-  const CompanyForm({Key? key, required this.enable}) : super(key: key);
+  const CompanyForm({super.key, required this.enable});
 
   @override
   CompanyFormState createState() => CompanyFormState();

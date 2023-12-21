@@ -9,7 +9,7 @@ import 'package:reelproject/component/form/password_input.dart';
 import 'package:reelproject/component/form/company_form.dart';
 
 class NewMemberCompany extends StatefulWidget {
-  const NewMemberCompany({Key? key}) : super(key: key);
+  const NewMemberCompany({super.key});
 
   @override
   NewMemberCompanyState createState() => NewMemberCompanyState();
