@@ -313,7 +313,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 300,
+            height: 330,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -381,6 +381,7 @@ class MyPageListView extends StatelessWidget {
         Expanded(
           //通知一覧
           child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(), //スクロール禁止
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
