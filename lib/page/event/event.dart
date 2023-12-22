@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
-//import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
 import 'package:reelproject/component/listView/event_advertisment_list.dart';
 
