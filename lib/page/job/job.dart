@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
 
+//求人ページ
 @RoutePage()
 class JobRouterPage extends AutoRouter {
   const JobRouterPage({super.key});

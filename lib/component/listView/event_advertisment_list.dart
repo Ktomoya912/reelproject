@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 
-//イベント広告リスト
+//イベント広告リストコンポーネント
 class EventAdvertisementList extends StatelessWidget {
   const EventAdvertisementList({
     super.key,
@@ -128,8 +128,7 @@ class EventAdvertisementList extends StatelessWidget {
                   addWidth,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: store.greyColor, width: lineWidth), //リストを区別する線
+                  bottom: BorderSide(color: store.greyColor, width: lineWidth),
                 ),
               ),
             ),

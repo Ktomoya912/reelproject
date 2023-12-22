@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 
 //検索アップバー
-//ただし、bodyにて使用すること
+//ただしbodyにて使用すること
 class EventJobSearchBar extends StatefulWidget implements PreferredSizeWidget {
   const EventJobSearchBar({
     super.key,
