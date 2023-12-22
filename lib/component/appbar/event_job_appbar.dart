@@ -4,17 +4,55 @@ import '/provider/change_general_corporation.dart';
 
 //検索アップバー
 //ただし、bodyにて使用すること
-class EventJobSearchBar extends StatefulWidget {
+class EventJobSearchBar extends StatefulWidget implements PreferredSizeWidget {
   const EventJobSearchBar({
     super.key,
     required this.tagList,
     required this.favoriteHistoryList,
     required this.title,
+    required this.mediaQueryData,
   });
 
   final List tagList; //表示するタグのリスト
   final List<Map<String, dynamic>> favoriteHistoryList; //表示するお気に入り、閲覧履歴リスト
   final String title; //タイトル
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Size get preferredSize {
+    //タイトルバーの最大、最小サイズ
+    double titleSize = mediaQueryData.size.height / 25;
+    //最大
+    if (titleSize > 50.0) {
+      titleSize = 50;
+    }
+    //最小
+    else if (titleSize < 30.0) {
+      titleSize = 30;
+    }
+
+    //appbarの高さ設定
+    double height = mediaQueryData.size.height; //画面の高さ
+    double appbarSize =
+        //上の空間の高さ
+        height / 20 +
+            //検索バーの高さ
+            40 +
+            //タグと検索バーの間の高さ
+            height / 80 +
+            //タグの高さ
+            40 +
+            8 +
+            8 +
+            //タグとリストの間の高さ
+            height / 93 +
+            //リストの高さ
+            100 +
+            //タイトルバーの高さ
+            titleSize;
+
+    return Size(double.infinity, appbarSize);
+  }
 
   @override
   State<EventJobSearchBar> createState() => EventJobSearchBarState();
@@ -36,10 +74,9 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     //タイトルバーの最大、最小サイズ
-    double titleSize = mediaQueryData.size.height / 25;
+    double titleSize = widget.mediaQueryData.size.height / 25;
     //最大
     if (titleSize > 50.0) {
       titleSize = 50;
@@ -55,12 +92,12 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
           children: [
             //高さ調整(一番上の空間)
             SizedBox(
-              height: mediaQueryData.size.height / 20,
+              height: widget.mediaQueryData.size.height / 20,
             ),
             //検索バー
             SizedBox(
               height: 40, //検索バーの高さ,
-              width: mediaQueryData.size.width * widthPower, //検索バーの幅
+              width: widget.mediaQueryData.size.width * widthPower, //検索バーの幅
               child: TextField(
                 cursorColor: store.mainColor, //カーソルの色
                 controller: _controller,
@@ -103,7 +140,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
             ),
             //高さ調整
             SizedBox(
-              height: mediaQueryData.size.height / 80,
+              height: widget.mediaQueryData.size.height / 80,
             ),
             //タグリスト
             //横スクロール
@@ -134,26 +171,26 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
             //高さ調整
             SizedBox(
-              height: mediaQueryData.size.height / 80,
+              height: widget.mediaQueryData.size.height / 80,
             ),
 
             //お気に入り、閲覧履歴リスト
             SizedBox(
-                width: mediaQueryData.size.width,
-                //height: 100,
+                width: widget.mediaQueryData.size.width,
                 child: FavoriteHistoryList(
-                  mediaQueryData: mediaQueryData,
+                  mediaQueryData: widget.mediaQueryData,
                   store: store,
                   list: widget.favoriteHistoryList,
                 )),
 
             //タイトルバー
-            Container(
+            Expanded(
+                child: Container(
               height: titleSize,
-              width: mediaQueryData.size.width,
+              width: widget.mediaQueryData.size.width,
               color: store.thinColor,
               child: Center(child: Text(widget.title)),
-            )
+            )),
           ],
         ),
       ),

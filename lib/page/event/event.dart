@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 //import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
+import 'package:reelproject/component/listView/event_advertisment_list.dart';
 
 @RoutePage()
 class EventRouterPage extends AutoRouter {
@@ -46,13 +47,54 @@ class _EventState extends State<Event> {
     },
   ];
 
+  //イベント広告のリスト
+  //titleに文字数制限を設ける
+  static List<Map<String, dynamic>> advertisementList = [
+    {
+      "title": "３年ぶりに開催をする川上神社夏祭り", //タイトル
+      "day": "2021/8/1", //日付
+      "time": "10:00~20:00", //時間
+      "place": "香美市川上町", //場所
+    },
+    {
+      "title": "川上神社夏祭り2",
+      "day": "2021/8/1",
+      "time": "10:00~20:00",
+      "place": "香美市川上町",
+    },
+    {
+      "title": "川上神社夏祭り3",
+      "day": "2021/8/1",
+      "time": "10:00~20:00",
+      "place": "香美市川上町",
+    },
+    {
+      "title": "川上神社夏祭り4",
+      "day": "2021/8/1",
+      "time": "10:00~20:00",
+      "place": "香美市川上町",
+    },
+    {
+      "title": "川上神社夏祭り5",
+      "day": "2021/8/1",
+      "time": "10:00~20:00",
+      "place": "香美市川上町",
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     return Scaffold(
-      body: EventJobSearchBar(
+        appBar: EventJobSearchBar(
           tagList: tagList,
           favoriteHistoryList: favoriteHistoryList,
-          title: "おすすめイベント"),
-    );
+          title: "おすすめイベント",
+          mediaQueryData: mediaQueryData,
+        ),
+        body: EventAdvertisementList(
+          advertisementList: advertisementList,
+          mediaQueryData: mediaQueryData,
+        ));
   }
 }
