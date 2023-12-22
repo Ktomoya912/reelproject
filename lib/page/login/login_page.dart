@@ -62,7 +62,7 @@ class LoginPageState extends State<LoginPage> {
                 },
                 splashColor: Colors.transparent,
                 child: const Text(
-                  '新規会員登録はこちら あを追加',
+                  '新規会員登録はこちら',
                   style: TextStyle(color: Colors.blue),
                 ),
               ),
