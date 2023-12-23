@@ -5,6 +5,8 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:reelproject/component/form/general_form.dart';
+import 'package:reelproject/component/form/password_input.dart';
 
 class NewMemberGeneral extends StatefulWidget {
   const NewMemberGeneral({super.key});
@@ -37,115 +39,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             const SizedBox(
               height: 50,
             ),
-            const Text(
-              '以下に必要事項をご記入ください。',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-            ),
-            const TextEnterBox(
-                label: 'ユーザー名', hinttext: '英数字と_のみ使用可', width: 300),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-            ),
-            const TextEnterBox(
-                label: 'メールアドレス', hinttext: '例：info@example.com', width: 300),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-            ),
-            const SizedBox(
-              width: 300,
-              child: Text(
-                '生年月日',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-            ),
-            const SizedBox(
-              width: 300,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    TextEnterBox(label: '西暦', hinttext: '', width: 100),
-                    Text('年', style: TextStyle(fontSize: 15)),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                    ),
-                    TextEnterBox(label: '', hinttext: '', width: 50),
-                    Text('月', style: TextStyle(fontSize: 15)),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                    ),
-                    TextEnterBox(label: '', hinttext: '', width: 50),
-                    Text('日', style: TextStyle(fontSize: 15)),
-                  ]),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-            ),
-            const SizedBox(
-              width: 300,
-            ),
-            const SizedBox(
-              width: 300,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Radio(
-                  value: 'male',
-                  groupValue: selectedGender,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedGender = value;
-                    });
-                  },
-                ),
-                const Text('男性',
-                    style: TextStyle(
-                      fontSize: 15,
-                    )),
-                const Padding(
-                  padding: EdgeInsets.all(15.0),
-                ),
-                Radio(
-                  value: 'female',
-                  groupValue: selectedGender,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedGender = value;
-                    });
-                  },
-                ),
-                const Text('女性',
-                    style: TextStyle(
-                      fontSize: 15,
-                    )),
-                const Padding(
-                  padding: EdgeInsets.all(15.0),
-                ),
-                Radio(
-                  value: 'other',
-                  groupValue: selectedGender,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedGender = value;
-                    });
-                  },
-                ),
-                const Text('その他',
-                    style: TextStyle(
-                      fontSize: 15,
-                    )),
-              ],
-            ),
+            const GeneralForm(enable: true), //法人名とメールアドレスはへ変更できるならtrue
             const Padding(
               padding: EdgeInsets.all(10.0),
             ),
@@ -209,93 +103,12 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                 ),
                 minimumSize: const Size(300, 50),
               ),
-              child: const Text('同意する'),
+              child: const Text('同意する',style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
       ),
       bottomNavigationBar: const NormalBottomAppBar(),
-    );
-  }
-}
-
-class TextEnterBox extends StatelessWidget {
-  //入力を生成するコード
-  final String? label;
-  final String? hinttext;
-  final double width;
-  const TextEnterBox({
-    required this.label,
-    required this.hinttext,
-    required this.width,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: TextFormField(
-        textAlign: TextAlign.start,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-          hintText: hinttext,
-        ),
-      ),
-    );
-  }
-}
-
-class PasswordInput extends StatefulWidget {
-  final String labelText;
-  final bool isObscure;
-  final ValueChanged<bool> onVisibilityToggle;
-
-  const PasswordInput({
-    super.key,
-    required this.labelText,
-    this.isObscure = true,
-    required this.onVisibilityToggle,
-  });
-
-  @override
-  PasswordInputState createState() => PasswordInputState();
-}
-
-class PasswordInputState extends State<PasswordInput> {
-  late bool _isObscure;
-
-  @override
-  void initState() {
-    super.initState();
-    _isObscure = widget.isObscure;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: TextFormField(
-        obscureText: _isObscure,
-        decoration: InputDecoration(
-          labelText: widget.labelText,
-          border: const OutlineInputBorder(),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-          suffixIcon: IconButton(
-            icon: Icon(_isObscure ? Icons.visibility_off : Icons.visibility),
-            onPressed: () {
-              setState(() {
-                _isObscure = !_isObscure;
-                widget.onVisibilityToggle(_isObscure);
-              });
-            },
-          ),
-        ),
-      ),
     );
   }
 }
