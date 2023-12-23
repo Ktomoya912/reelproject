@@ -38,7 +38,7 @@ class JobAdvertisementList extends StatelessWidget {
     double addWidth = 0;
     //横のほうが広くなった場合
     if (mediaQueryData.size.width > mediaQueryData.size.height) {
-      addWidth = (mediaQueryData.size.width - mediaQueryData.size.height) / 15;
+      addWidth = (mediaQueryData.size.width - mediaQueryData.size.height) / 3;
     }
 
     return ListView.builder(
@@ -61,8 +61,7 @@ class JobAdvertisementList extends StatelessWidget {
                         width: (mediaQueryData.size.width / 100) + addWidth),
                     //左の文
                     SizedBox(
-                      width:
-                          (mediaQueryData.size.width / 12 * 6) - (addWidth / 2),
+                      width: (mediaQueryData.size.width / 12 * 6) - (addWidth),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start, //左寄せ
                         mainAxisSize: MainAxisSize.min, //縦方向真ん中寄せ
@@ -107,7 +106,7 @@ class JobAdvertisementList extends StatelessWidget {
                     SizedBox(
                       height: buttonWidthPower + 10, //ボタン全体の高さ,
                       width: (mediaQueryData.size.width / 12 * 5) -
-                          (addWidth / 2) +
+                          (addWidth) +
                           10,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end, //右寄せ
@@ -192,7 +191,7 @@ class JobAdvertisementList extends StatelessWidget {
             Container(
               width: mediaQueryData.size.width -
                   (mediaQueryData.size.width / 20) -
-                  addWidth,
+                  addWidth * 2,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: store.greyColor, width: lineWidth),
