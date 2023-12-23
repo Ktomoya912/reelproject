@@ -8,11 +8,15 @@ import 'package:reelproject/app_router/app_router.dart';
 
 //ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
+
 @RoutePage()
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
 
   @override
+
+  //移動可能なRoutes
+
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return AutoTabsScaffold(
@@ -23,39 +27,9 @@ class RootPage extends StatelessWidget {
           JobRouterRoute(),
           MyPageRouterRoute(),
         ],
+
         //ボトムアップバー
         bottomNavigationBuilder: (_, tabsRouter) {
-          // return ConvexAppBar(
-          //   //見た目
-          //   backgroundColor: store.mainColor, //背景
-          //   items: const [
-          //     TabItem(icon: Icons.home, title: 'ホーム'),
-          //     TabItem(icon: Icons.celebration, title: 'イベント'),
-          //     TabItem(icon: Icons.work, title: '求人'),
-          //     TabItem(icon: Icons.person, title: 'マイページ'),
-          //   ],
-          //   onTap: (int index) => {
-          //     // 選択中じゃないタブをTapした場合
-          //     if (tabsRouter.activeIndex != index)
-          //       {
-          //         //ネストされたルーターのスタック情報を破棄(初期化される)
-          //         tabsRouter
-          //             .innerRouterOf<StackRouter>(tabsRouter.current.name)
-          //             ?.popUntilRoot(),
-          //         //選択したタブへ移動
-          //         tabsRouter.setActiveIndex(index)
-          //       }
-          //     // 選択中のタブをTapした場合
-          //     else
-          //       {
-          //         // ネストされたルーターのスタック情報を破棄(初期化される)
-          //         tabsRouter
-          //             .innerRouterOf<StackRouter>(tabsRouter.current.name)
-          //             ?.popUntilRoot()
-          //       }
-          //   },
-          // );
-          //以前のボトムアップバー
           return BottomNavigationBar(
               currentIndex: tabsRouter.activeIndex, //現在の位置
               type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
@@ -96,22 +70,18 @@ class RootPage extends StatelessWidget {
                 ),
               ],
               onTap: (int index) {
-                // 選択中じゃないタブをTapした場合
+                //ネストされたルーターのスタック情報を破棄(初期化される)
+                tabsRouter
+                    .innerRouterOf<StackRouter>(tabsRouter.current.name)
+                    ?.popUntilRoot();
+                //選択したタブへ移動
+                // // 選択中じゃないタブをTapした場合
                 if (tabsRouter.activeIndex != index) {
-                  //ネストされたルーターのスタック情報を破棄(初期化される)
-                  tabsRouter
-                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
-                      ?.popUntilRoot();
                   //選択したタブへ移動
+                  //context.pushRoute(pushRoutes[index]);
                   tabsRouter.setActiveIndex(index);
                 }
-                // 選択中のタブをTapした場合
-                else {
-                  // ネストされたルーターのスタック情報を破棄(初期化される)
-                  tabsRouter
-                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
-                      ?.popUntilRoot();
-                }
+                // // 選択中のタブをTapした場合
               });
         });
   }
