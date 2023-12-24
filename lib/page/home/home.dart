@@ -19,11 +19,291 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final int index = 0; //BottomAppBarのIcon番号
+
+  //ボタンリスト
+  Map<String, List<Map<String, dynamic>>> buttonList = {
+    //一般ボタンリスト
+    "general": [
+      {
+        "title": "お気に入り",
+        "icon": Icons.favorite,
+      },
+      {
+        "title": "応募履歴",
+        "icon": Icons.task,
+      },
+    ],
+    //法人ボタンリスト
+    "company": [
+      {
+        "title": "お気に入り",
+        "icon": Icons.favorite,
+      },
+      {
+        "title": "広告投稿",
+        "icon": Icons.post_add,
+      },
+      {
+        "title": "投稿一覧",
+        "icon": Icons.summarize,
+      }
+    ]
+  };
+
+  //閲覧履歴リスト
+  List<Map<String, dynamic>> historyList = [
+    {
+      "title": "イベントタイトル",
+    },
+    {
+      "title": "イベントタイトル",
+    },
+    {
+      "title": "イベントタイトル",
+    },
+    {
+      "title": "イベントタイトル",
+    },
+    {
+      "title": "イベントタイトル",
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //注目イベント、求人コーナーのサイズ
+    double attentionSize =
+        (mediaQueryData.size.height / 2) + (mediaQueryData.size.width / 2);
+    if (attentionSize > mediaQueryData.size.height * (3.3 / 5)) {
+      attentionSize = mediaQueryData.size.height * (3.3 / 5);
+    } else if (attentionSize < mediaQueryData.size.width * (4 / 5)) {
+      attentionSize = mediaQueryData.size.width * (4 / 5);
+    }
+
+    //中間ボタンのサイズ
+    double centerButtonSize =
+        (mediaQueryData.size.height / 20) + (mediaQueryData.size.width / 18);
+    if (centerButtonSize > mediaQueryData.size.height * (1 / 10)) {
+      centerButtonSize = mediaQueryData.size.height * (1 / 10);
+    } else if (centerButtonSize < mediaQueryData.size.width * (1 / 10)) {
+      centerButtonSize = mediaQueryData.size.width * (1 / 10);
+    }
+    return Scaffold(
       //アップバー
-      appBar: MainAppBar(nextPage: Notice()),
+      appBar: const MainAppBar(nextPage: Notice()),
+      body: SingleChildScrollView(
+        // SingleChildScrollViewで子ウィジェットをラップ
+        child: Column(
+          //mainAxisSize: MainAxisSize.min, //横方向に真ん中
+          crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
+          children: [
+            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            //注目イベント、求人コーナー
+            Container(
+              height: attentionSize * (2 / 3),
+              width: attentionSize,
+              decoration: BoxDecoration(
+                color: store.subColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            //中央ボタン
+            //一般ボタン
+            if (store.jedgeGC)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄せ
+                children: [
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["general"]?[0],
+                  ),
+                  SizedBox(width: centerButtonSize * 2), //ボタン間の空間
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["general"]?[1],
+                  ),
+                ],
+              )
+            //法人ボタン
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄せ
+                children: [
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["company"]?[0],
+                  ),
+                  SizedBox(width: centerButtonSize), //ボタン間の空間
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["company"]?[1],
+                  ),
+                  SizedBox(width: centerButtonSize), //ボタン間の空間
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["company"]?[2],
+                  ),
+                ],
+              ),
+            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            //閲覧履歴
+            SizedBox(
+              width: attentionSize,
+              height: attentionSize * 0.7,
+              child: Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("閲覧履歴"),
+                    ],
+                  ),
+                  //全ての閲覧履歴を見るボタン
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: store.mainColor,
+                        ),
+                        child: const Text('全ての閲覧履歴を見る'),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: mediaQueryData.size.height / 60), //ボタン間の空間
+                  //閲覧履歴リスト
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        //履歴の数だけボタンを作成
+                        for (int i = 0; i < historyList.length; i++)
+                          HistoryButton(
+                              mediaQueryData: mediaQueryData,
+                              attentionSize: attentionSize,
+                              store: store,
+                              historyList: historyList,
+                              i: i),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//閲覧履歴ボタン
+class HistoryButton extends StatelessWidget {
+  const HistoryButton({
+    super.key,
+    required this.mediaQueryData,
+    required this.attentionSize,
+    required this.store,
+    required this.historyList,
+    required this.i,
+  });
+
+  final MediaQueryData mediaQueryData;
+  final double attentionSize;
+  final ChangeGeneralCorporation store;
+  final List<Map<String, dynamic>> historyList;
+  final int i;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              //タップ処理
+            },
+            child:
+                Stack(alignment: AlignmentDirectional.bottomCenter, children: [
+              //画像
+              Container(
+                width: attentionSize * 0.4,
+                height: attentionSize * 0.4,
+                decoration: BoxDecoration(
+                  color: store.thinColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              //タイトル枠
+              Container(
+                width: attentionSize * 0.4,
+                height: attentionSize * 0.1,
+                decoration: BoxDecoration(
+                  color: store.subColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                ),
+                //タイトル
+                child: Center(child: Text(historyList[i]["title"])),
+              ),
+            ]),
+          ),
+          SizedBox(width: mediaQueryData.size.width / 50),
+        ], //ボタン間の空間
+      ),
+    );
+  }
+}
+
+//中央のボタンを作成するクラス
+class CenterButton extends StatelessWidget {
+  const CenterButton({
+    super.key,
+    required this.centerButtonSize,
+    required this.buttonList,
+  });
+
+  final double centerButtonSize;
+  final Map<String, dynamic>? buttonList;
+
+  @override
+  Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return
+        //周りの円
+        Column(
+      children: [
+        Ink(
+          height: centerButtonSize, //高さ
+          width: centerButtonSize, //幅
+          //円の装飾
+          decoration: ShapeDecoration(
+            color: store.subColor,
+            shape: const CircleBorder(), //円形
+          ),
+          //円の中のアイコン
+          child: SizedBox(
+            child: IconButton(
+              icon: Icon(
+                buttonList?["icon"],
+                size: centerButtonSize * (2 / 3),
+                color: store.blackColor,
+              ), //アイコン
+              color: Colors.white,
+              //ボタンを押した時の動作
+              onPressed: () {},
+            ),
+          ),
+        ),
+        Text(buttonList?["title"]),
+      ],
     );
   }
 }

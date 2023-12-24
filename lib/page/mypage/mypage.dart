@@ -354,12 +354,18 @@ class MyPageListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //横幅が想定より大きくなった場合、横の幅を広げる
+    double addWidth = 0;
+    //横のほうが広くなった場合
+    if (_mediaQueryData.size.width > _mediaQueryData.size.height) {
+      addWidth = (_mediaQueryData.size.width - _mediaQueryData.size.height);
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start, //左詰め
       children: [
         Center(
           child: Container(
-            width: _mediaQueryData.size.width * widthPower,
+            width: _mediaQueryData.size.width * widthPower - addWidth,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -400,8 +406,8 @@ class MyPageListView extends StatelessWidget {
                       title: Text(list[index]["title"]), //タイトル
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 5,
-                          horizontal:
-                              _mediaQueryData.size.width / 20), //タイル内の余白
+                          horizontal: _mediaQueryData.size.width / 20 +
+                              addWidth / 2), //タイル内の余白
                       onTap: () {
                         // Navigator.push(
                         //     context,
@@ -411,7 +417,7 @@ class MyPageListView extends StatelessWidget {
                         //             ));
                       }),
                   Container(
-                    width: _mediaQueryData.size.width * widthPower,
+                    width: _mediaQueryData.size.width * widthPower - addWidth,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
