@@ -1,0 +1,18 @@
+name: 助けが欲しい！[Help Wanted]
+description: File a help wanted
+title: "[Help]: "
+labels: ["help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        皆で議論をしましょう！
+  - type: textarea
+    id: what-help
+    attributes:
+      label: "💫概要"
+      description: どの部分で困っていますか？
+      placeholder: Let us know what you need help with!
+    validations:
+      required: true
+
