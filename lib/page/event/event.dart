@@ -90,9 +90,13 @@ class _EventState extends State<Event> {
           title: "おすすめイベント",
           mediaQueryData: mediaQueryData,
         ),
-        body: EventAdvertisementList(
-          advertisementList: advertisementList,
-          mediaQueryData: mediaQueryData,
+        body: Column(
+          children: [
+            EventAdvertisementList(
+              advertisementList: advertisementList,
+              mediaQueryData: mediaQueryData,
+            ),
+          ],
         ));
   }
 }

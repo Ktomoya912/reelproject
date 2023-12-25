@@ -91,9 +91,13 @@ class _JobState extends State<Job> {
           title: "おすすめ求人",
           mediaQueryData: mediaQueryData,
         ),
-        body: JobAdvertisementList(
-          advertisementList: advertisementList,
-          mediaQueryData: mediaQueryData,
+        body: Column(
+          children: [
+            JobAdvertisementList(
+              advertisementList: advertisementList,
+              mediaQueryData: mediaQueryData,
+            ),
+          ],
         ));
   }
 }

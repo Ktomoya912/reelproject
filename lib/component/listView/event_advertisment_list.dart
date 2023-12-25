@@ -39,100 +39,107 @@ class EventAdvertisementList extends StatelessWidget {
       addWidth = (mediaQueryData.size.width - mediaQueryData.size.height) / 3;
     }
 
-    return ListView.builder(
-      itemCount: advertisementList.length, //要素数
-      itemBuilder: (BuildContext context, int index) {
-        return Column(
-          children: [
-            //ボタン
-            InkWell(
-              onTap: () {
-                //タップ処理
-              },
-              child:
-                  //ボタン全体のサイズ
-                  SizedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
-                  children: [
+    return Expanded(
+      child: ListView.builder(
+        itemCount: advertisementList.length, //要素数
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: [
+              //ボタン
+              InkWell(
+                onTap: () {
+                  //タップ処理
+                },
+                child:
+                    //ボタン全体のサイズ
                     SizedBox(
-                        width: (mediaQueryData.size.width / 100) + addWidth),
-                    //左の文
-                    SizedBox(
-                      width: (mediaQueryData.size.width / 12 * 6) - (addWidth),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start, //左寄せ
-                        mainAxisSize: MainAxisSize.min, //縦方向真ん中寄せ
-                        children: [
-                          //タイトル
-                          Text(
-                            advertisementList.elementAt(index)["title"],
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 23),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start, //左寄せ
-                            children: [
-                              //開催日
-                              Text(
-                                  dayString +
-                                      advertisementList.elementAt(index)["day"],
-                                  style: const TextStyle(fontSize: 18)),
-                              //開催時
-                              Text(
-                                  timeString +
-                                      advertisementList
-                                          .elementAt(index)["time"],
-                                  style: const TextStyle(fontSize: 18)),
-                              //開催場所
-                              Text(
-                                  placeString +
-                                      advertisementList
-                                          .elementAt(index)["place"],
-                                  style: const TextStyle(fontSize: 18)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    //画像
-                    SizedBox(
-                      height: buttonWidthPower + 10, //ボタン全体の高さ,
-                      width: (mediaQueryData.size.width / 12 * 5) - (addWidth),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end, //右寄せ
-                        children: [
-                          Container(
-                            height: imageWidthPower,
-                            width: imageWidthPower,
-                            decoration: BoxDecoration(
-                              color: store.mainColor,
-                              borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
+                    children: [
+                      SizedBox(
+                          width: (mediaQueryData.size.width / 100) + addWidth),
+                      //左の文
+                      SizedBox(
+                        width:
+                            (mediaQueryData.size.width / 12 * 6) - (addWidth),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start, //左寄せ
+                          mainAxisSize: MainAxisSize.min, //縦方向真ん中寄せ
+                          children: [
+                            //タイトル
+                            Text(
+                              advertisementList.elementAt(index)["title"],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 23),
                             ),
-                          ),
-                        ],
+                            Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start, //左寄せ
+                              children: [
+                                //開催日
+                                Text(
+                                    dayString +
+                                        advertisementList
+                                            .elementAt(index)["day"],
+                                    style: const TextStyle(fontSize: 18)),
+                                //開催時
+                                Text(
+                                    timeString +
+                                        advertisementList
+                                            .elementAt(index)["time"],
+                                    style: const TextStyle(fontSize: 18)),
+                                //開催場所
+                                Text(
+                                    placeString +
+                                        advertisementList
+                                            .elementAt(index)["place"],
+                                    style: const TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                        width: (mediaQueryData.size.width / 100) + addWidth),
-                  ],
+                      //画像
+                      SizedBox(
+                        height: buttonWidthPower + 10, //ボタン全体の高さ,
+                        width:
+                            (mediaQueryData.size.width / 12 * 5) - (addWidth),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end, //右寄せ
+                          children: [
+                            Container(
+                              height: imageWidthPower,
+                              width: imageWidthPower,
+                              decoration: BoxDecoration(
+                                color: store.mainColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                          width: (mediaQueryData.size.width / 100) + addWidth),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            //下線
-            Container(
-              width: mediaQueryData.size.width -
-                  (mediaQueryData.size.width / 20) -
-                  addWidth * 2,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: store.greyColor, width: lineWidth),
+              //下線
+              Container(
+                width: mediaQueryData.size.width -
+                    (mediaQueryData.size.width / 20) -
+                    addWidth * 2,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom:
+                        BorderSide(color: store.greyColor, width: lineWidth),
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

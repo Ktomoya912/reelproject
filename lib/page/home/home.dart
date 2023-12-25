@@ -3,6 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import '/page/home/notice.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/page/mypage/apply_hist.dart';
+import 'package:reelproject/page/mypage/posted_list.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -27,10 +29,12 @@ class _HomeState extends State<Home> {
       {
         "title": "お気に入り",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
       {
         "title": "応募履歴",
         "icon": Icons.task,
+        "push": ApplyHist(),
       },
     ],
     //法人ボタンリスト
@@ -38,14 +42,17 @@ class _HomeState extends State<Home> {
       {
         "title": "お気に入り",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
+        "push": ApplyHist(),
       },
       {
         "title": "投稿一覧",
         "icon": Icons.summarize,
+        "push": PostedList(),
       }
     ]
   };
@@ -297,7 +304,13 @@ class CenterButton extends StatelessWidget {
               ), //アイコン
               color: Colors.white,
               //ボタンを押した時の動作
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            buttonList?["push"]));
+              },
             ),
           ),
         ),
