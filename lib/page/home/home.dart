@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/apply_hist.dart';
 import 'package:reelproject/page/mypage/posted_list.dart';
+import 'package:reelproject/page/mypage/watch_history.dart';
+import 'package:reelproject/page/mypage/favorite_list.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -27,14 +29,19 @@ class _HomeState extends State<Home> {
     //一般ボタンリスト
     "general": [
       {
+        "title": "閲覧履歴",
+        "icon": Icons.favorite,
+        "push": const WatchHistory(),
+      },
+      {
         "title": "お気に入り",
         "icon": Icons.favorite,
-        "push": ApplyHist(),
+        "push": const FavoriteList(),
       },
       {
         "title": "応募履歴",
         "icon": Icons.task,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
     ],
     //法人ボタンリスト
@@ -42,17 +49,17 @@ class _HomeState extends State<Home> {
       {
         "title": "お気に入り",
         "icon": Icons.favorite,
-        "push": ApplyHist(),
+        "push": const FavoriteList(),
       },
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
       {
         "title": "投稿一覧",
         "icon": Icons.summarize,
-        "push": PostedList(),
+        "push": const PostedList(),
       }
     ]
   };
@@ -132,6 +139,11 @@ class _HomeState extends State<Home> {
                     centerButtonSize: centerButtonSize,
                     buttonList: buttonList["general"]?[1],
                   ),
+                  SizedBox(width: centerButtonSize), //ボタン間の空間
+                  CenterButton(
+                    centerButtonSize: centerButtonSize,
+                    buttonList: buttonList["general"]?[2],
+                  ),
                 ],
               )
             //法人ボタン
@@ -177,7 +189,14 @@ class _HomeState extends State<Home> {
                           foregroundColor: store.mainColor,
                         ),
                         child: const Text('全ての閲覧履歴を見る'),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      const WatchHistory()));
+                        },
                       ),
                     ],
                   ),
