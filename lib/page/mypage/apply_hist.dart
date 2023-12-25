@@ -53,9 +53,13 @@ class _ApplyHistState extends State<ApplyHist> {
           title: "応募履歴",
           jedgeBuck: true,
         ),
-        body: JobAdvertisementList(
-          advertisementList: applyHistList,
-          mediaQueryData: mediaQueryData,
+        body: Column(
+          children: [
+            JobAdvertisementList(
+              advertisementList: applyHistList,
+              mediaQueryData: mediaQueryData,
+            ),
+          ],
         ));
   }
 }

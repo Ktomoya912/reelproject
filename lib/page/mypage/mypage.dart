@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 //push先
 import 'apply_hist.dart'; //応募履歴
+import 'posted_list.dart'; //投稿一覧
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -128,7 +129,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "投稿一覧",
         "icon": Icons.summarize,
-        "push": ApplyHist(),
+        "push": PostedList(),
       },
       {
         "title": "未振り込み投稿一覧",
