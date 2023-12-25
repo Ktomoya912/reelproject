@@ -74,23 +74,22 @@ class _HomeState extends State<Home> {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
-    //注目イベント、求人コーナーのサイズ
-    double attentionSize =
-        (mediaQueryData.size.height / 2) + (mediaQueryData.size.width / 2);
-    if (attentionSize > mediaQueryData.size.height * (3.3 / 5)) {
-      attentionSize = mediaQueryData.size.height * (3.3 / 5);
-    } else if (attentionSize < mediaQueryData.size.width * (4 / 5)) {
-      attentionSize = mediaQueryData.size.width * (4 / 5);
+    //横画面サイズにより幅設定
+    double widthBlank = (mediaQueryData.size.width / 2) - 300;
+    if (widthBlank < 0) {
+      widthBlank = 0;
+    }
+    double blank = mediaQueryData.size.width / 20;
+    double width = mediaQueryData.size.width - (widthBlank * 2) - blank;
+
+    // //中間ボタンのサイズ
+    double centerButtonSize = (mediaQueryData.size.width / 7);
+    if (centerButtonSize > 100) {
+      centerButtonSize = 80;
+    } else if (centerButtonSize < 60) {
+      centerButtonSize = 60;
     }
 
-    //中間ボタンのサイズ
-    double centerButtonSize =
-        (mediaQueryData.size.height / 20) + (mediaQueryData.size.width / 18);
-    if (centerButtonSize > mediaQueryData.size.height * (1 / 10)) {
-      centerButtonSize = mediaQueryData.size.height * (1 / 10);
-    } else if (centerButtonSize < mediaQueryData.size.width * (1 / 10)) {
-      centerButtonSize = mediaQueryData.size.width * (1 / 10);
-    }
     return Scaffold(
       //アップバー
       appBar: const MainAppBar(nextPage: Notice()),
@@ -100,17 +99,17 @@ class _HomeState extends State<Home> {
           //mainAxisSize: MainAxisSize.min, //横方向に真ん中
           crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
           children: [
-            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            SizedBox(height: mediaQueryData.size.height / 30), //空間
             //注目イベント、求人コーナー
             Container(
-              height: attentionSize * (2 / 3),
-              width: attentionSize,
+              height: width / 10 * 7,
+              width: width,
               decoration: BoxDecoration(
                 color: store.subColor,
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
             //中央ボタン
             //一般ボタン
             if (store.jedgeGC)
@@ -121,7 +120,7 @@ class _HomeState extends State<Home> {
                     centerButtonSize: centerButtonSize,
                     buttonList: buttonList["general"]?[0],
                   ),
-                  SizedBox(width: centerButtonSize * 2), //ボタン間の空間
+                  SizedBox(width: centerButtonSize), //ボタン間の空間
                   CenterButton(
                     centerButtonSize: centerButtonSize,
                     buttonList: buttonList["general"]?[1],
@@ -149,11 +148,11 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-            SizedBox(height: mediaQueryData.size.height / 30), //ボタン間の空間
+            SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
             //閲覧履歴
             SizedBox(
-              width: attentionSize,
-              height: attentionSize * 0.7,
+              width: width,
+              height: width * 0.7,
               child: Column(
                 children: [
                   const Row(
@@ -185,7 +184,7 @@ class _HomeState extends State<Home> {
                         for (int i = 0; i < historyList.length; i++)
                           HistoryButton(
                               mediaQueryData: mediaQueryData,
-                              attentionSize: attentionSize,
+                              width: width,
                               store: store,
                               historyList: historyList,
                               i: i),
@@ -207,17 +206,17 @@ class HistoryButton extends StatelessWidget {
   const HistoryButton({
     super.key,
     required this.mediaQueryData,
-    required this.attentionSize,
     required this.store,
     required this.historyList,
     required this.i,
+    required this.width,
   });
 
   final MediaQueryData mediaQueryData;
-  final double attentionSize;
   final ChangeGeneralCorporation store;
   final List<Map<String, dynamic>> historyList;
   final int i;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -232,8 +231,8 @@ class HistoryButton extends StatelessWidget {
                 Stack(alignment: AlignmentDirectional.bottomCenter, children: [
               //画像
               Container(
-                width: attentionSize * 0.4,
-                height: attentionSize * 0.4,
+                width: width * 0.4,
+                height: width * 0.4,
                 decoration: BoxDecoration(
                   color: store.thinColor,
                   borderRadius: BorderRadius.circular(10),
@@ -241,8 +240,8 @@ class HistoryButton extends StatelessWidget {
               ),
               //タイトル枠
               Container(
-                width: attentionSize * 0.4,
-                height: attentionSize * 0.1,
+                width: width * 0.4,
+                height: width * 0.1,
                 decoration: BoxDecoration(
                   color: store.subColor,
                   borderRadius: const BorderRadius.only(
