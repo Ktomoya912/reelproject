@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
+//push先
+import 'apply_hist.dart'; //応募履歴
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -45,6 +47,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
+        "push": ApplyHist(),
       },
     ],
     //メニュー
@@ -52,22 +55,27 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "イベント閲覧履歴",
         "icon": Icons.history,
+        "push": ApplyHist(),
       },
       {
         "title": "お気に入りイベントリスト",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
       {
         "title": "求人閲覧履歴",
         "icon": Icons.history,
+        "push": ApplyHist(),
       },
       {
         "title": "お気に入り求人リスト",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
       {
         "title": "応募履歴",
         "icon": Icons.task,
+        "push": ApplyHist(),
       }
     ],
     //その他
@@ -75,18 +83,22 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
+        "push": ApplyHist(),
       },
       {
         "title": "利用規約",
         "icon": Icons.article,
+        "push": ApplyHist(),
       },
       {
         "title": "ログアウト",
         "icon": Icons.logout,
+        "push": ApplyHist(),
       },
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
+        "push": ApplyHist(),
       },
     ],
   };
@@ -98,6 +110,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
+        "push": ApplyHist(),
       },
     ],
     //投稿
@@ -105,22 +118,27 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "イベント広告投稿",
         "icon": Icons.post_add,
+        "push": ApplyHist(),
       },
       {
         "title": "求人広告投稿",
         "icon": Icons.post_add,
+        "push": ApplyHist(),
       },
       {
         "title": "投稿一覧",
         "icon": Icons.summarize,
+        "push": ApplyHist(),
       },
       {
         "title": "未振り込み投稿一覧",
         "icon": Icons.money_off,
+        "push": ApplyHist(),
       },
       {
         "title": "振込口座確認",
         "icon": Icons.request_quote,
+        "push": ApplyHist(),
       },
     ],
     //メニュー
@@ -128,18 +146,22 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "イベント閲覧履歴",
         "icon": Icons.history,
+        "push": ApplyHist(),
       },
       {
         "title": "お気に入りイベントリスト",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
       {
         "title": "求人閲覧履歴",
         "icon": Icons.history,
+        "push": ApplyHist(),
       },
       {
         "title": "お気に入り求人リスト",
         "icon": Icons.favorite,
+        "push": ApplyHist(),
       },
     ],
     //その他
@@ -147,18 +169,22 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
+        "push": ApplyHist(),
       },
       {
         "title": "利用規約",
         "icon": Icons.article,
+        "push": ApplyHist(),
       },
       {
         "title": "ログアウト",
         "icon": Icons.logout,
+        "push": ApplyHist(),
       },
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
+        "push": ApplyHist(),
       },
     ],
   };
@@ -403,12 +429,12 @@ class MyPageListView extends StatelessWidget {
                           horizontal:
                               _mediaQueryData.size.width / 20), //タイル内の余白
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     PageRouteBuilder(
-                        //         pageBuilder: (context, animation,
-                        //                 secondaryAnimation) =>
-                        //             ));
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        list[index]["push"]));
                       }),
                   Container(
                     width: _mediaQueryData.size.width * widthPower,
