@@ -4,15 +4,18 @@ import 'package:reelproject/component/listView/event_advertisment_list.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/button/toggle_button.dart';
 import 'package:provider/provider.dart';
+//import 'package:reelproject/page/event/event.dart';
 
-class PostedList extends StatefulWidget {
-  const PostedList({super.key});
+class NoPostList extends StatefulWidget {
+  const NoPostList({
+    super.key,
+  });
 
   @override
-  State<PostedList> createState() => _PostedListState();
+  State<NoPostList> createState() => _NoPostListState();
 }
 
-class _PostedListState extends State<PostedList> {
+class _NoPostListState extends State<NoPostList> {
   //求人広告のリスト
   //titleに文字数制限を設ける
   static List<Map<String, dynamic>> jobList = [
@@ -89,11 +92,16 @@ class _PostedListState extends State<PostedList> {
         create: (context) => ChangeToggleButton(),
         child: Builder(builder: (BuildContext context) {
           final store = Provider.of<ChangeToggleButton>(context); //プロバイダ
-
+          // String title = "投稿イベント広告一覧";
+          // if (store.onButtonIndex == 0) {
+          //   title = "投稿イベント広告一覧";
+          // } else {
+          //   title = "投稿求人広告一覧";
+          // }
           return Scaffold(
             //アップバー
             appBar: const TitleAppBar(
-              title: "投稿一覧",
+              title: "未振り込み投稿一覧",
               jedgeBuck: true,
             ),
 
