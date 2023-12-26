@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/page/event/event_detail.dart';
 
 //イベント広告リストコンポーネント
 class EventAdvertisementList extends StatelessWidget {
@@ -48,6 +49,12 @@ class EventAdvertisementList extends StatelessWidget {
               //ボタン
               InkWell(
                 onTap: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  EventDetail()));
                   //タップ処理
                 },
                 child:

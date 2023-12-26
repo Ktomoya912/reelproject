@@ -7,6 +7,7 @@ import 'apply_hist.dart'; //応募履歴
 import 'posted_list.dart'; //投稿一覧
 import 'watch_history.dart'; //閲覧履歴
 import 'favorite_list.dart'; //お気に入りリスト
+import 'no_post_list.dart'; //投稿なしリスト
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -109,12 +110,7 @@ class ScrollMyPageDetail extends StatelessWidget {
     //投稿
     "postList": [
       {
-        "title": "イベント広告投稿",
-        "icon": Icons.post_add,
-        "push": ApplyHist(),
-      },
-      {
-        "title": "求人広告投稿",
+        "title": "広告投稿",
         "icon": Icons.post_add,
         "push": ApplyHist(),
       },
@@ -126,7 +122,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "未振り込み投稿一覧",
         "icon": Icons.money_off,
-        "push": ApplyHist(),
+        "push": NoPostList(),
       },
       {
         "title": "振込口座確認",
