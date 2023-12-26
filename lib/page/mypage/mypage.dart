@@ -5,6 +5,8 @@ import '/provider/change_general_corporation.dart';
 //push先
 import 'apply_hist.dart'; //応募履歴
 import 'posted_list.dart'; //投稿一覧
+import 'watch_history.dart'; //閲覧履歴
+import 'favorite_list.dart'; //お気に入りリスト
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -54,24 +56,14 @@ class ScrollMyPageDetail extends StatelessWidget {
     //メニュー
     "menuList": [
       {
-        "title": "イベント閲覧履歴",
+        "title": "閲覧履歴",
         "icon": Icons.history,
-        "push": ApplyHist(),
+        "push": WatchHistory(),
       },
       {
-        "title": "お気に入りイベントリスト",
+        "title": "お気に入りリスト",
         "icon": Icons.favorite,
-        "push": ApplyHist(),
-      },
-      {
-        "title": "求人閲覧履歴",
-        "icon": Icons.history,
-        "push": ApplyHist(),
-      },
-      {
-        "title": "お気に入り求人リスト",
-        "icon": Icons.favorite,
-        "push": ApplyHist(),
+        "push": FavoriteList(),
       },
       {
         "title": "応募履歴",
@@ -145,24 +137,14 @@ class ScrollMyPageDetail extends StatelessWidget {
     //メニュー
     "menuList": [
       {
-        "title": "イベント閲覧履歴",
+        "title": "閲覧履歴",
         "icon": Icons.history,
-        "push": ApplyHist(),
+        "push": WatchHistory(),
       },
       {
-        "title": "お気に入りイベントリスト",
+        "title": "お気に入りリスト",
         "icon": Icons.favorite,
-        "push": ApplyHist(),
-      },
-      {
-        "title": "求人閲覧履歴",
-        "icon": Icons.history,
-        "push": ApplyHist(),
-      },
-      {
-        "title": "お気に入り求人リスト",
-        "icon": Icons.favorite,
-        "push": ApplyHist(),
+        "push": FavoriteList(),
       },
     ],
     //その他
@@ -282,7 +264,7 @@ class GeneralMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 380,
+            height: 280,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -340,7 +322,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 330,
+            height: 200,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
