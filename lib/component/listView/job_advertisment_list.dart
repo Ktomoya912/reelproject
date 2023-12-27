@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/page/job/job_detail.dart';
 
 //求人広告リストコンポーネント
 class JobAdvertisementList extends StatelessWidget {
@@ -50,6 +51,12 @@ class JobAdvertisementList extends StatelessWidget {
               //ボタン
               InkWell(
                 onTap: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const JobDetail()));
                   //タップ処理
                 },
                 child:
