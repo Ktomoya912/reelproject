@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 //push先
 import 'general_mem_inf_conf.dart'; //会員情報確認
+import 'company_mem_inf_conf.dart'; //会員情報確認
 import 'apply_hist.dart'; //応募履歴
 import 'posted_list.dart'; //投稿一覧
 import 'watch_history.dart'; //閲覧履歴
@@ -52,7 +53,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
-        "push": GeneraMemInfConf(),
+        "push": GeneralMemInfConf(),
       },
     ],
     //メニュー
@@ -105,7 +106,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
-        "push": ApplyHist(),
+        "push": CompanyMemInfConf(),
       },
     ],
     //投稿

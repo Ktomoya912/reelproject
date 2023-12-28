@@ -3,43 +3,43 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
-import '../../component/form/general_form.dart';
+import '../../component/form/company_form.dart';
 import '../login/pass_change.dart';
 //push先
 
 
 @RoutePage()
-class GeneralMemInfConfChangeRouterPage extends AutoRouter {
-  const GeneralMemInfConfChangeRouterPage({super.key});
+class CompanyMemInfConfChangeRouterPage extends AutoRouter {
+  const CompanyMemInfConfChangeRouterPage({super.key});
 }
 
 @RoutePage()
-class GeneralMemInfConfChange extends StatefulWidget {
-  const GeneralMemInfConfChange({super.key});
+class CompanyMemInfConfChange extends StatefulWidget {
+  const CompanyMemInfConfChange({super.key});
 
   @override
-  State<GeneralMemInfConfChange> createState() => _GeneralMemInfConfChangeState();
+  State<CompanyMemInfConfChange> createState() => _CompanyMemInfConfChangeState();
 }
 
-class _GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
+class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: GeneralMemInfConfChangeAppBar(
+      appBar: CompanyMemInfConfChangeAppBar(
         title: "会員情報",
         jedgeBuck: true,
       ),
 
       //内部
-      body: ScrollGeneralMemInfConfChangeDetail(),
+      body: ScrollCompanyMemInfConfChangeDetail(),
     );
   }
 }
 
 //スクロール可能なマイページの一覧画面
-class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
-  const ScrollGeneralMemInfConfChangeDetail({
+class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
+  const ScrollCompanyMemInfConfChangeDetail({
     super.key,
   });
 
@@ -97,7 +97,7 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
           //下の詳細部分
           //アイコン部分との空白
 
-          const GeneralForm(enable: false),
+          const CompanyForm(enable: false),
 
                     ElevatedButton(
             onPressed: () {
@@ -130,12 +130,12 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
 //マイページリストを作成するクラス
 
 //appbar
-class GeneralMemInfConfChangeAppBar extends StatelessWidget
+class CompanyMemInfConfChangeAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title; //ページ名
   final bool jedgeBuck; //戻るボタンを表示するか否か
 
-  const GeneralMemInfConfChangeAppBar({
+  const CompanyMemInfConfChangeAppBar({
     super.key,
     required this.title,
     required this.jedgeBuck,

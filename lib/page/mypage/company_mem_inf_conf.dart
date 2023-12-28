@@ -2,44 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
-import 'general_mem_inf_change.dart';
 import '../login/pass_change.dart';
+import 'company_mem_inf_change.dart';
 //push先
 
 @RoutePage()
-class GeneralMemInfConfRouterPage extends AutoRouter {
-  const GeneralMemInfConfRouterPage({super.key});
+class CompanyMemInfConfRouterPage extends AutoRouter {
+  const CompanyMemInfConfRouterPage({super.key});
 }
 
 @RoutePage()
-class GeneralMemInfConf extends StatefulWidget {
-  const GeneralMemInfConf({super.key});
+class CompanyMemInfConf extends StatefulWidget {
+  const CompanyMemInfConf({super.key});
 
   @override
-  State<GeneralMemInfConf> createState() => _GeneralMemInfConfState();
+  State<CompanyMemInfConf> createState() => _CompanyMemInfConfState();
 }
 
-class _GeneralMemInfConfState extends State<GeneralMemInfConf> {
+class _CompanyMemInfConfState extends State<CompanyMemInfConf> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: GeneralMemInfConfAppBar(
+      appBar: CompanyMemInfConfAppBar(
         title: "会員情報",
         jedgeBuck: true,
       ),
 
       //内部
-      body: ScrollGeneralMemInfConfDetail(),
+      body: ScrollCompanyMemInfConfDetail(),
     );
   }
 }
 
 //スクロール可能なマイページの一覧画面
-class ScrollGeneralMemInfConfDetail extends StatelessWidget {
-  const ScrollGeneralMemInfConfDetail({
+class ScrollCompanyMemInfConfDetail extends StatelessWidget {
+  const ScrollCompanyMemInfConfDetail({
     super.key,
   });
+
+  //一般向けマイページリスト
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +85,28 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    '法人名',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: store.greyColor,
+                    ),
+                  ),
+                  const Text(
+                    '　法人名',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Divider(
+                    color: store.greyColor,
+                    thickness: 3,
+                    endIndent: 20,
+                  ),
+                  const Padding(padding: EdgeInsets.all(10)),
+                  Text(
                     'ユーザ名',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -113,7 +137,51 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    '　メールアドレス',
+                    '　info@example.com',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Divider(
+                    color: store.greyColor,
+                    thickness: 3,
+                    endIndent: 20,
+                  ),
+                  const Padding(padding: EdgeInsets.all(10)),
+                  Text(
+                    '電話番号',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: store.greyColor,
+                    ),
+                  ),
+                  const Text(
+                    '　0738-666-666',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Divider(
+                    color: store.greyColor,
+                    thickness: 3,
+                    endIndent: 20,
+                  ),
+                  const Padding(padding: EdgeInsets.all(10)),
+                  Text(
+                    '住所',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: store.greyColor,
+                    ),
+                  ),
+                  const Text(
+                    '　高知県香美市土佐山田町',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -171,13 +239,13 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                   ),
                 ]),
           ),
-          const Padding(padding: EdgeInsets.all(30)),
+          const Padding(padding: const EdgeInsets.all(30)),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const GeneralMemInfConfChange(),
+                  builder: (context) => const CompanyMemInfConfChange(),
                 ),
               );
             },
@@ -196,7 +264,8 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>const PassChange(), //今はログイン前のパスワード再設定画面に遷移
+                  builder: (context) =>
+                      const PassChange(), //今はログイン前のパスワード再設定画面に遷移
                 ),
               );
             },
@@ -218,12 +287,12 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
 //マイページリストを作成するクラス
 
 //appbar
-class GeneralMemInfConfAppBar extends StatelessWidget
+class CompanyMemInfConfAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title; //ページ名
   final bool jedgeBuck; //戻るボタンを表示するか否か
 
-  const GeneralMemInfConfAppBar({
+  const CompanyMemInfConfAppBar({
     super.key,
     required this.title,
     required this.jedgeBuck,
