@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 
 import 'package:reelproject/app_router/app_router.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 //ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
@@ -30,44 +31,18 @@ class RootPage extends StatelessWidget {
 
         //ボトムアップバー
         bottomNavigationBuilder: (_, tabsRouter) {
-          return BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex, //現在の位置
-              type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
-              backgroundColor: store.subColor, //バーの色
-
-              //選択されたアイコンとラベルの色
-              selectedItemColor: store.mainColor,
-
-              //選択されたアイコンのテーマ
-              selectedIconTheme: const IconThemeData(size: 45),
-              //選択されていないアイコンのテーマ
-              unselectedIconTheme: const IconThemeData(size: 30),
-
-              //選択されたタイトルのスタイル
-              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              //選択されていないタイトルのスタイル
-              unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.bold),
-              selectedFontSize: 12, //選択されたフォントのスタイル
-
-              //使用中アイコン情報
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'ホーム',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.celebration),
-                  label: 'イベント',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.work),
-                  label: '求人',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'マイページ',
-                ),
+          return CurvedNavigationBar(
+              color: store.subColor,
+              buttonBackgroundColor: store.subColor,
+              backgroundColor: Colors.white,
+              animationCurve: Curves.easeInOutQuart,
+              animationDuration: const Duration(milliseconds: 400), //アニメーションの時間
+              index: tabsRouter.activeIndex, //現在の位置,
+              items: const <Widget>[
+                Icon(Icons.home, size: 30),
+                Icon(Icons.celebration, size: 30),
+                Icon(Icons.work, size: 30),
+                Icon(Icons.person, size: 30),
               ],
               onTap: (int index) {
                 //ネストされたルーターのスタック情報を破棄(初期化される)
@@ -81,8 +56,60 @@ class RootPage extends StatelessWidget {
                   //context.pushRoute(pushRoutes[index]);
                   tabsRouter.setActiveIndex(index);
                 }
-                // // 選択中のタブをTapした場合
               });
+          // return BottomNavigationBar(
+          //     currentIndex: tabsRouter.activeIndex, //現在の位置
+          //     type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
+          //     backgroundColor: store.subColor, //バーの色
+
+          //     //選択されたアイコンとラベルの色
+          //     selectedItemColor: store.mainColor,
+
+          //     //選択されたアイコンのテーマ
+          //     selectedIconTheme: const IconThemeData(size: 45),
+          //     //選択されていないアイコンのテーマ
+          //     unselectedIconTheme: const IconThemeData(size: 30),
+
+          //     //選択されたタイトルのスタイル
+          //     selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          //     //選択されていないタイトルのスタイル
+          //     unselectedLabelStyle:
+          //         const TextStyle(fontWeight: FontWeight.bold),
+          //     selectedFontSize: 12, //選択されたフォントのスタイル
+
+          //     //使用中アイコン情報
+          //     items: const [
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.home),
+          //         label: 'ホーム',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.celebration),
+          //         label: 'イベント',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.work),
+          //         label: '求人',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.person),
+          //         label: 'マイページ',
+          //       ),
+          //     ],
+          //     onTap: (int index) {
+          //       //ネストされたルーターのスタック情報を破棄(初期化される)
+          //       tabsRouter
+          //           .innerRouterOf<StackRouter>(tabsRouter.current.name)
+          //           ?.popUntilRoot();
+          //       //選択したタブへ移動
+          //       // // 選択中じゃないタブをTapした場合
+          //       if (tabsRouter.activeIndex != index) {
+          //         //選択したタブへ移動
+          //         //context.pushRoute(pushRoutes[index]);
+          //         tabsRouter.setActiveIndex(index);
+          //       }
+          //       // // 選択中のタブをTapした場合
+          //     });
         });
   }
 }
