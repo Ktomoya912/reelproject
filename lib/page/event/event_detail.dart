@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/component/listView/review.dart';
 
 class EventDetail extends StatefulWidget {
   const EventDetail({super.key});
@@ -49,6 +50,30 @@ class _EventDetailState extends State<EventDetail> {
     "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
     //レビュー数
     "reviewNumber": 100,
+    //レビュー内容
+    "review": [
+      {
+        "reviewerName": "名前aiueo",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "testfffff\n\nfffff", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      },
+      {
+        "reviewerName": "名前kakikukeko",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "test", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      },
+      {
+        "reviewerName": "名前sasisuseso",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "test", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      }
+    ]
   };
 
   bool favoriteJedge = false; //お気に入り判定
@@ -376,6 +401,15 @@ class _EventDetailState extends State<EventDetail> {
                               ),
                             ]),
                       ),
+                    //空白
+                    SizedBox(
+                      height: mediaQueryData.size.height / 30,
+                    ),
+
+                    Review(
+                      width: width,
+                      eventDetailList: eventDetailList,
+                    ),
                   ],
                 ),
               ),
