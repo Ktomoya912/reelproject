@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
+import 'package:reelproject/component/appbar/detail_appbar.dart';
 
 class JobDetail extends StatefulWidget {
   const JobDetail({super.key});
@@ -73,7 +74,13 @@ class _JobDetailState extends State<JobDetail> {
         "reviewDetail": "test", //レビュー内容
         "reviewDate": "2021年8月1日", //レビュー日時
       }
-    ]
+    ],
+
+    //この広告を投稿したか
+    "postJedge": true,
+
+    //掲載期間
+    "postTerm": "2023年12月10日"
   };
 
   bool favoriteJedge = false; //お気に入り判定
@@ -99,6 +106,14 @@ class _JobDetailState extends State<JobDetail> {
     double width = mediaQueryData.size.width - (widthBlank * 2);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
+      //アップバー
+      appBar: DetailAppbar(
+        postJedge: JobDetailList["postJedge"],
+        eventJobJedge: "job",
+        postTerm: JobDetailList["postTerm"],
+        mediaQueryData: mediaQueryData,
+      ),
+      //body
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -121,9 +136,7 @@ class _JobDetailState extends State<JobDetail> {
                 child: Column(
                   children: [
                     //上の空間
-                    SizedBox(
-                      height: mediaQueryData.size.height * 0.05,
-                    ),
+
                     //画像
                     Stack(children: [
                       Container(
@@ -132,60 +145,47 @@ class _JobDetailState extends State<JobDetail> {
                         //width: width,
                         color: Colors.blue,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: width * 0.09, //高さ
-                          width: width * 0.09, //幅
-                          //円の装飾
-                          decoration: BoxDecoration(
-                            color: store.whiteColor,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          //円の中のアイコン
-                          child: IconButton(
-                              onPressed: () => {Navigator.pop(context)},
-                              icon: Icon(Icons.arrow_back,
-                                  color: store.greyColor)),
-                        ),
-                      )
                     ]),
                     //タイトル
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //タイトル
-                        SizedBox(
-                          width: width * 0.8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              JobDetailList["title"],
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            JobDetailList["title"],
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
+
                         //お気に入りボタン
-                        SizedBox(
-                          width: width * 0.2 - 5,
-                          child: ToggleButtons(
-                            color: store.greyColor, //選択していない時の色
-                            selectedColor: store.mainColor, //選択時の色
-                            fillColor: store.thinColor, //選択時の背景色
-                            splashColor: store.subColor, //選択時のアクションの色
-                            borderRadius: BorderRadius.circular(50.0), //角丸
-                            isSelected: [favoriteJedge], //on off
-                            //ボタンを押した時の処理
-                            onPressed: (int index) => setState(() {
-                              favoriteJedge = !favoriteJedge;
-                            }),
-                            //アイコン
-                            children: const <Widget>[
-                              Icon(Icons.favorite, size: 40),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            ToggleButtons(
+                              color: store.greyColor, //選択していない時の色
+                              selectedColor: store.mainColor, //選択時の色
+                              fillColor: store.thinColor, //選択時の背景色
+                              splashColor: store.subColor, //選択時のアクションの色
+                              borderRadius: BorderRadius.circular(50.0), //角丸
+                              isSelected: [favoriteJedge], //on off
+                              //ボタンを押した時の処理
+                              onPressed: (int index) => setState(() {
+                                favoriteJedge = !favoriteJedge;
+                              }),
+                              //アイコン
+                              children: const <Widget>[
+                                Icon(Icons.favorite, size: 40),
+                              ],
+                            ),
+                            //空白
+                            SizedBox(
+                              width: width / 30,
+                            ),
+                          ],
                         ),
                       ],
                     ),

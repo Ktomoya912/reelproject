@@ -10,8 +10,13 @@ import 'posted_list.dart'; //投稿一覧
 import 'watch_history.dart'; //閲覧履歴
 import 'favorite_list.dart'; //お気に入りリスト
 import 'no_post_list.dart'; //投稿なしリスト
+<<<<<<< HEAD
 import 'transfer_to.dart'; //口座情報確認
 import 'apply_conf.dart'; //口座情報確認
+=======
+import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
+import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
+>>>>>>> develop
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -116,7 +121,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
-        "push": ApplyHist(),
+        "push": EventFeeSelect(),
       },
       {
         "title": "投稿一覧",
@@ -136,7 +141,11 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "振込口座確認",
         "icon": Icons.request_quote,
+<<<<<<< HEAD
         "push": TransferTo(),
+=======
+        "push": JobFeeSelect(),
+>>>>>>> develop
       },
     ],
     //メニュー
