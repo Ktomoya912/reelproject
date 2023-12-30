@@ -1,16 +1,45 @@
-# reelproject
+# REEL Project
+## コード規約
+```bash
+$ flutter analyze
+```
+上記コマンドでコード規約に違反している箇所を確認できます。
+このコマンドによって出力された内容を修正してください。
+訂正がめんどくさい場合は、以下のコマンドで自動修正できます。
+```bash
+$ dart fix --apply
+```
 
-A new Flutter project.
+## GitHubの使い方
+### 1. ブランチの作成と命名規則
+- ブランチの作成は、developブランチから行う
+- ブランチ名は、以下の命名規則に従う
+  - ブランチ名は、`feature/機能名`とする
+  - 機能名は、英語で記述する
+  - 単語の区切りは、`_`とする
+  - 例: `feature/add_user`
 
-## Getting Started
+| ブランチ名 | 用途 |
+|:-----------|:-----|
+| feature/機能名 | 新規機能の追加 |
+| fix/機能名 | バグの修正 |
+| hotfix/機能名 | 緊急のバグ修正 |
+| refactor/機能名 | リファクタリング |
+| remove/機能名 | 機能の削除 |
+| test/機能名 | テストの追加 |
 
-This project is a starting point for a Flutter application.
+### 2. コミットメッセージの書き方
+- コミットメッセージは、以下の命名規則に従う
+  - コミットメッセージは、`prefix: コミットメッセージ`とする
+  - prefixは、以下のいずれかとする
+    - `add:` 新規機能の追加
+    - `fix:` バグの修正
+    - `hotfix:` 緊急のバグ修正
+    - `refactor:` リファクタリング
+    - `remove:` 機能の削除
+    - `test:` テストの追加
+  - コミットメッセージは、英語で記述する
+  - 単語の区切りは、`_`とする
+  - 例: `add: add_user`
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
