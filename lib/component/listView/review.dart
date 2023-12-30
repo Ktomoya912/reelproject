@@ -100,19 +100,20 @@ class Review extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: width / 20), //空白
+
             Center(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: TextButton(
-                  child: Text('タップして評価    ★★★★★',
-                      style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: width / 25,
-                          fontWeight: FontWeight.bold)),
-                  onPressed: () {},
-                ),
+              child: TextButton(
+                child: Text('タップして評価    ★★★★★',
+                    style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: width / 25,
+                        fontWeight: FontWeight.bold)),
+                onPressed: () {},
               ),
             ),
+
+            SizedBox(height: width / 20), //空白
 
             TextButton(
               child: Text.rich(
@@ -137,18 +138,6 @@ class Review extends StatelessWidget {
 
             SizedBox(height: width / 20), //空白
 
-            //仕切り線
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey[400]!, //枠線の色
-                    width: 2, //枠線の太さ
-                  ),
-                ),
-              ),
-            ),
-
             //レビューがない場合
             if (eventDetailList["review"].length == 0)
               const Center(
@@ -158,93 +147,153 @@ class Review extends StatelessWidget {
                 ),
               ),
 
+            //仕切り線
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey[400]!, //枠線の色
+                      width: 2, //枠線の太さ
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
             //レビュー本体
             SizedBox(
-              height: (160 * eventDetailList["review"].length).toDouble(),
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minHeight: 130, //最小の高さ
-                        ),
-                        child: Container(
-                          //height: 150,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey[400]!, //枠線の色
-                                width: 2, //枠線の太さ
+              //height: (160 * eventDetailList["review"].length).toDouble(),
+              child: Column(
+                children: [
+                  for (int index = 0;
+                      index < eventDetailList["review"].length;
+                      index++)
+                    Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minHeight: 130, //最小の高さ
+                          ),
+                          child: Container(
+                            //height: 150,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey[400]!, //枠線の色
+                                  width: 2, //枠線の太さ
+                                ),
                               ),
                             ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //ユーザー情報
-                              Row(
-                                children: [
-                                  //ユーザー画像
-                                  Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //ユーザー情報
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    //ユーザー画像
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        SizedBox(width: width / 50), //空白
+                                        //ユーザー名
+                                        Text(eventDetailList["review"][index]
+                                            ["reviewerName"]),
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(width: width / 50), //空白
-                                  //ユーザー名
-                                  Text(eventDetailList["review"][index]
-                                      ["reviewerName"]),
-                                ],
-                              ),
-                              SizedBox(height: width / 60), //空白
-                              //評価
-                              Row(
-                                children: [
-                                  //星(色あり)
-                                  for (int i = 0;
-                                      i <
-                                          eventDetailList["review"][index]
-                                              ["reviewPoint"];
-                                      i++)
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow[800],
-                                      size: 15,
-                                    ),
-                                  //星(色なし)
-                                  for (int i = 0;
-                                      i <
-                                          5 -
-                                              eventDetailList["review"][index]
-                                                  ["reviewPoint"];
-                                      i++)
-                                    Icon(Icons.star,
-                                        color: Colors.grey[400], size: 15),
-                                  SizedBox(width: width / 60), //空白
-                                  //評価日時
-                                  Text(
-                                      eventDetailList["review"][index]
-                                              ["reviewDate"]
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey[500])),
-                                ],
-                              ),
-                              SizedBox(height: width / 60), //空白
-                              //レビュー内容
-                              Text(eventDetailList["review"][index]
-                                  ["reviewDetail"]),
-                            ],
+
+                                    //通報ボタン
+                                    IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return SimpleDialog(
+                                                title: const Text(
+                                                  "通報",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    child: const Text(
+                                                        "不適切なレビューとして報告"),
+                                                  ),
+                                                  SimpleDialogOption(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    child:
+                                                        const Text("スパムとして報告"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.more_vert,
+                                          color: Colors.grey[500],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: width / 60), //空白
+                                //評価
+                                Row(
+                                  children: [
+                                    //星(色あり)
+                                    for (int i = 0;
+                                        i <
+                                            eventDetailList["review"][index]
+                                                ["reviewPoint"];
+                                        i++)
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.yellow[800],
+                                        size: 15,
+                                      ),
+                                    //星(色なし)
+                                    for (int i = 0;
+                                        i <
+                                            5 -
+                                                eventDetailList["review"][index]
+                                                    ["reviewPoint"];
+                                        i++)
+                                      Icon(Icons.star,
+                                          color: Colors.grey[400], size: 15),
+                                    SizedBox(width: width / 60), //空白
+                                    //評価日時
+                                    Text(
+                                        eventDetailList["review"][index]
+                                                ["reviewDate"]
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey[500])),
+                                  ],
+                                ),
+                                SizedBox(height: width / 60), //空白
+                                //レビュー内容
+                                Text(eventDetailList["review"][index]
+                                    ["reviewDetail"]),
+                              ],
+                            ),
                           ),
-                        ),
-                      ));
-                },
-                itemCount: eventDetailList["review"].length,
+                        )),
+                ],
               ),
             ),
           ],
