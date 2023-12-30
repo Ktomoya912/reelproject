@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reelproject/component/appbar/detail_appbar.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
@@ -73,7 +74,13 @@ class _EventDetailState extends State<EventDetail> {
         "reviewDetail": "test", //レビュー内容
         "reviewDate": "2021年8月1日", //レビュー日時
       }
-    ]
+    ],
+
+    //この広告を投稿したか
+    "postJedge": true,
+
+    //掲載期間
+    "postTerm": "2023年12月10日"
   };
 
   bool favoriteJedge = false; //お気に入り判定
@@ -135,6 +142,14 @@ class _EventDetailState extends State<EventDetail> {
     double width = mediaQueryData.size.width - (widthBlank * 2);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
+      //アップバー
+      appBar: DetailAppbar(
+        postJedge: eventDetailList["postJedge"],
+        eventJobJedge: "event",
+        postTerm: eventDetailList["postTerm"],
+        mediaQueryData: mediaQueryData,
+      ),
+      //body
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -156,10 +171,6 @@ class _EventDetailState extends State<EventDetail> {
                 width: width,
                 child: Column(
                   children: [
-                    //上の空間
-                    SizedBox(
-                      height: mediaQueryData.size.height * 0.05,
-                    ),
                     //画像
                     Stack(children: [
                       Container(
@@ -168,23 +179,6 @@ class _EventDetailState extends State<EventDetail> {
                         //width: width,
                         color: Colors.blue,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: width * 0.09, //高さ
-                          width: width * 0.09, //幅
-                          //円の装飾
-                          decoration: BoxDecoration(
-                            color: store.whiteColor,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          //円の中のアイコン
-                          child: IconButton(
-                              onPressed: () => {Navigator.pop(context)},
-                              icon: Icon(Icons.arrow_back,
-                                  color: store.greyColor)),
-                        ),
-                      )
                     ]),
                     //タイトル
                     Row(
