@@ -56,7 +56,7 @@ class _EventDetailState extends State<EventDetail> {
         "reviewerName": "名前aiueo",
         //"reviewerImage" : "test"   //予定
         "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "testfffff\n\nfffff", //レビュー内容
+        "reviewDetail": "testfffff\n\n\n\n\n\n\nfffff", //レビュー内容
         "reviewDate": "2021年8月1日", //レビュー日時
       },
       {
@@ -188,40 +188,44 @@ class _EventDetailState extends State<EventDetail> {
                     ]),
                     //タイトル
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //タイトル
-                        SizedBox(
-                          width: width * 0.8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              eventDetailList["title"],
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            eventDetailList["title"],
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
+
                         //お気に入りボタン
-                        SizedBox(
-                          width: width * 0.2 - 5,
-                          child: ToggleButtons(
-                            color: store.greyColor, //選択していない時の色
-                            selectedColor: store.mainColor, //選択時の色
-                            fillColor: store.thinColor, //選択時の背景色
-                            splashColor: store.subColor, //選択時のアクションの色
-                            borderRadius: BorderRadius.circular(50.0), //角丸
-                            isSelected: [favoriteJedge], //on off
-                            //ボタンを押した時の処理
-                            onPressed: (int index) => setState(() {
-                              favoriteJedge = !favoriteJedge;
-                            }),
-                            //アイコン
-                            children: const <Widget>[
-                              Icon(Icons.favorite, size: 40),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            ToggleButtons(
+                              color: store.greyColor, //選択していない時の色
+                              selectedColor: store.mainColor, //選択時の色
+                              fillColor: store.thinColor, //選択時の背景色
+                              splashColor: store.subColor, //選択時のアクションの色
+                              borderRadius: BorderRadius.circular(50.0), //角丸
+                              isSelected: [favoriteJedge], //on off
+                              //ボタンを押した時の処理
+                              onPressed: (int index) => setState(() {
+                                favoriteJedge = !favoriteJedge;
+                              }),
+                              //アイコン
+                              children: const <Widget>[
+                                Icon(Icons.favorite, size: 40),
+                              ],
+                            ),
+                            //空白
+                            SizedBox(
+                              width: width / 30,
+                            ),
+                          ],
                         ),
                       ],
                     ),
