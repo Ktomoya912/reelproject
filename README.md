@@ -42,4 +42,7 @@ $ dart fix --apply
   - 単語の区切りは、`_`とする
   - 例: `add: add_user`
 
-
+### 3. プルリクエストのやり方
+プルリクエストを以下PRと記述する。
+- PRは以下の通りに行う。
+  - developから派生したブランチ(featureやfixなど)は`master`ブランチではなく、`develop`ブランチに向けてPRを発行する。
