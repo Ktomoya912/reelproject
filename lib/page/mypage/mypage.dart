@@ -10,6 +10,7 @@ import 'posted_list.dart'; //投稿一覧
 import 'watch_history.dart'; //閲覧履歴
 import 'favorite_list.dart'; //お気に入りリスト
 import 'no_post_list.dart'; //投稿なしリスト
+import 'transfer_to.dart'; //口座情報確認
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -129,7 +130,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "振込口座確認",
         "icon": Icons.request_quote,
-        "push": ApplyHist(),
+        "push": TransferTo(),
       },
     ],
     //メニュー
