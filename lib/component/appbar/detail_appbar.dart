@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import '../../page/mypage/impression.dart';
+import '../../page/Job/post_mem_list.dart';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({
@@ -58,7 +59,8 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                       showModalBottomSheet<int>(
                           context: context,
                           builder: (BuildContext context) {
-                            return Column(
+                            return SingleChildScrollView(
+                                child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -96,12 +98,13 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                     leading:
                                         const Icon(Icons.signal_cellular_alt),
                                     title: const Text('インプレッション'),
-                                    onTap: (){
+                                    onTap: () {
                                       Navigator.of(context).pop(1);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const Impressions(),
+                                          builder: (context) =>
+                                              const Impressions(),
                                         ),
                                       );
                                     },
@@ -127,7 +130,16 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                       tileColor: Colors.white, //背景
                                       leading: const Icon(Icons.fact_check),
                                       title: const Text('応募者確認'),
-                                      onTap: () => Navigator.of(context).pop(2),
+                                      onTap: () => {
+                                        Navigator.of(context).pop(2),
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PostMemList(),
+                                          ),
+                                        ),
+                                      },
                                     ),
                                   ),
                                 Container(
@@ -196,7 +208,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                   child: Text("投稿期間 : $postTerm まで"),
                                 ),
                               ],
-                            );
+                            ));
                           });
                     }
                   },
