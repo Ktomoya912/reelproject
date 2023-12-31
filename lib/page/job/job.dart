@@ -38,11 +38,11 @@ class _JobState extends State<Job> {
   static List<Map<String, dynamic>> favoriteHistoryList = [
     {
       "icon": Icons.history,
-      "title": "求人閲覧履歴",
+      "title": "閲覧履歴",
     },
     {
       "icon": Icons.favorite,
-      "title": "お気に入り求人リスト",
+      "title": "お気に入りリスト",
     },
   ];
 

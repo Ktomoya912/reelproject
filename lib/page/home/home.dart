@@ -7,6 +7,8 @@ import 'package:reelproject/page/mypage/apply_hist.dart';
 import 'package:reelproject/page/mypage/posted_list.dart';
 import 'package:reelproject/page/mypage/watch_history.dart';
 import 'package:reelproject/page/mypage/favorite_list.dart';
+import 'package:reelproject/page/job/job_detail.dart';
+import 'package:reelproject/page/event/event_detail.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -30,7 +32,7 @@ class _HomeState extends State<Home> {
     "general": [
       {
         "title": "閲覧履歴",
-        "icon": Icons.favorite,
+        "icon": Icons.history,
         "push": const WatchHistory(),
       },
       {
@@ -269,7 +271,17 @@ class HistoryButton extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              //タップ処理
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const JobDetail()));
+              // Navigator.push(
+              //         context,
+              //         PageRouteBuilder(
+              //             pageBuilder:
+              //                 (context, animation, secondaryAnimation) =>
+              //                     const EventDetail()));
             },
             child:
                 Stack(alignment: AlignmentDirectional.bottomCenter, children: [
