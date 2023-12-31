@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import '../../page/mypage/impression.dart';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({
@@ -95,7 +96,15 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                     leading:
                                         const Icon(Icons.signal_cellular_alt),
                                     title: const Text('インプレッション'),
-                                    onTap: () => Navigator.of(context).pop(1),
+                                    onTap: (){
+                                      Navigator.of(context).pop(1);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Impressions(),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 if (eventJobJedge == "job")
