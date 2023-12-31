@@ -176,7 +176,6 @@ class TransferTo extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const NormalBottomAppBar(),
     );
   }
 }
