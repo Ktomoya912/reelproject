@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Review extends StatelessWidget {
+class Review extends StatefulWidget {
   const Review({
     super.key,
     required this.width,
@@ -11,9 +11,21 @@ class Review extends StatelessWidget {
   final Map<String, dynamic> eventDetailList;
 
   @override
+  State<Review> createState() => _ReviewState();
+}
+
+class _ReviewState extends State<Review> {
+  final List<bool> _isSelected = [
+    true,
+    false,
+    false,
+    false,
+    false
+  ]; //星の色を変えるための変数
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        width: width - 20,
+    return SizedBox(
+        width: widget.width - 20,
         //height: 400,
         //color: Colors.blue,
         child: Column(
@@ -27,20 +39,20 @@ class Review extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: width / 20), //空白
+            SizedBox(height: widget.width / 20), //空白
 
             Row(
               children: [
-                SizedBox(width: width / 15), //空白
+                SizedBox(width: widget.width / 15), //空白
                 //平均評価
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${eventDetailList["reviewPoint"].toString()} ",
+                      "${widget.eventDetailList["reviewPoint"].toString()} ",
                       style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: width / 8,
+                        fontSize: widget.width / 8,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline, //下線
                         decorationThickness: 2, // 下線の太さの設定
@@ -50,14 +62,14 @@ class Review extends StatelessWidget {
                       " 5段階評価中",
                       style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: width / 35,
+                        fontSize: widget.width / 35,
                         fontWeight: FontWeight.bold,
                       ),
                     )
                   ],
                 ),
 
-                SizedBox(width: width / 9), //空白
+                SizedBox(width: widget.width / 9), //空白
 
                 //評価分布
                 Column(
@@ -69,24 +81,24 @@ class Review extends StatelessWidget {
                           Text(
                             "${i + 1} ",
                             style: TextStyle(
-                              fontSize: width / 40,
+                              fontSize: widget.width / 40,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Stack(children: [
                             Container(
-                              height: width / 40,
-                              width: width / 2,
+                              height: widget.width / 40,
+                              width: widget.width / 2,
                               decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             Container(
-                              height: width / 40,
-                              width: width /
+                              height: widget.width / 40,
+                              width: widget.width /
                                   2 *
-                                  eventDetailList["ratioStarReviews"][i],
+                                  widget.eventDetailList["ratioStarReviews"][i],
                               decoration: BoxDecoration(
                                 color: Colors.yellow[800],
                                 borderRadius: BorderRadius.circular(10),
@@ -95,51 +107,173 @@ class Review extends StatelessWidget {
                           ])
                         ],
                       ),
-                    Text("${eventDetailList["reviewNumber"]}件のレビュー")
+                    Text("${widget.eventDetailList["reviewNumber"]}件のレビュー")
                   ],
                 ),
               ],
             ),
-            SizedBox(height: width / 20), //空白
+            SizedBox(height: widget.width / 20), //空白
 
             Center(
               child: TextButton(
                 child: Text('タップして評価    ★★★★★',
                     style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: width / 25,
+                        fontSize: widget.width / 25,
                         fontWeight: FontWeight.bold)),
-                onPressed: () {},
+                //評価ポップアップ
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('評価を選択してください'),
+                        content: SizedBox(
+                          width: widget.width * 0.5,
+                          height: 220,
+                          child: Column(
+                            children: [
+                              Text("※レビューは一般公開され、あなたのアカウント情報が含まれます",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.grey[600])),
+                              //空白
+                              SizedBox(height: widget.width / 40),
+                              //動的に星の色を変える
+                              StatefulBuilder(
+                                builder: (BuildContext context,
+                                        StateSetter setState) =>
+                                    ToggleButtons(
+                                  fillColor: Colors.white, //選択中の色
+                                  borderWidth: 0, //枠線の太さ
+                                  borderColor: Colors.white, //枠線の色
+                                  selectedBorderColor: Colors.white, //選択中の枠線の色
+
+                                  onPressed: (int index) {
+                                    setState(() {
+                                      for (int buttonIndex = 0;
+                                          buttonIndex <= index;
+                                          buttonIndex++) {
+                                        _isSelected[buttonIndex] = true;
+                                      }
+                                      for (int buttonIndex = index + 1;
+                                          buttonIndex < 5;
+                                          buttonIndex++) {
+                                        _isSelected[buttonIndex] = false;
+                                      }
+                                    });
+                                  },
+
+                                  isSelected: _isSelected,
+                                  children: List.generate(
+                                    5,
+                                    (index) => Icon(
+                                      Icons.star,
+                                      color: _isSelected[index]
+                                          ? Colors.yellow[800]
+                                          : Colors.grey,
+                                      size: 30,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              //空白
+                              SizedBox(height: widget.width / 40),
+                              Container(
+                                  width: widget.width * 0.5,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 203, 202, 202),
+                                        width: 1.5),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: const SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        maxLines: null,
+                                        maxLength: 500,
+                                        style: TextStyle(fontSize: 13),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'ここに入力',
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('投稿'),
+                            onPressed: () {
+                              //Navigator.of(context).pop();
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('投稿確認'),
+                                    content: const Text('この内容で投稿しますか？'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('投稿'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text('投稿完了'),
+                                                content:
+                                                    const Text('投稿が完了しました'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('閉じる'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text('キャンセル'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('閉じる'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
             ),
 
-            SizedBox(height: width / 20), //空白
-
-            TextButton(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                        child: Icon(
-                      Icons.edit_square,
-                      color: Colors.yellow[800],
-                    )), //引数「child」で表示するアイコンを指定
-                    TextSpan(
-                        text: '  レビューを書く',
-                        style: TextStyle(
-                            color: Colors.yellow[800],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15)),
-                  ],
-                ),
-              ),
-              onPressed: () {},
-            ),
-
-            SizedBox(height: width / 20), //空白
+            SizedBox(height: widget.width / 20), //空白
 
             //レビューがない場合
-            if (eventDetailList["review"].length == 0)
+            if (widget.eventDetailList["review"].length == 0)
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(30.0),
@@ -168,7 +302,7 @@ class Review extends StatelessWidget {
               child: Column(
                 children: [
                   for (int index = 0;
-                      index < eventDetailList["review"].length;
+                      index < widget.eventDetailList["review"].length;
                       index++)
                     Padding(
                         padding: const EdgeInsets.all(5.0),
@@ -206,10 +340,10 @@ class Review extends StatelessWidget {
                                                 BorderRadius.circular(30),
                                           ),
                                         ),
-                                        SizedBox(width: width / 50), //空白
+                                        SizedBox(width: widget.width / 50), //空白
                                         //ユーザー名
-                                        Text(eventDetailList["review"][index]
-                                            ["reviewerName"]),
+                                        Text(widget.eventDetailList["review"]
+                                            [index]["reviewerName"]),
                                       ],
                                     ),
 
@@ -228,14 +362,64 @@ class Review extends StatelessWidget {
                                                 ),
                                                 children: [
                                                   SimpleDialogOption(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
+                                                    onPressed: () => {
+                                                      Navigator.pop(context),
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                '通報完了'),
+                                                            content: const Text(
+                                                                '不適切なレビューとして報告が完了しました'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                child:
+                                                                    const Text(
+                                                                        '閉じる'),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      )
+                                                    },
                                                     child: const Text(
                                                         "不適切なレビューとして報告"),
                                                   ),
                                                   SimpleDialogOption(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
+                                                    onPressed: () => {
+                                                      Navigator.pop(context),
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                '通報完了'),
+                                                            content: const Text(
+                                                                'スパムとして報告が完了しました'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                child:
+                                                                    const Text(
+                                                                        '閉じる'),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      )
+                                                    },
                                                     child:
                                                         const Text("スパムとして報告"),
                                                   ),
@@ -250,15 +434,15 @@ class Review extends StatelessWidget {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: width / 60), //空白
+                                SizedBox(height: widget.width / 60), //空白
                                 //評価
                                 Row(
                                   children: [
                                     //星(色あり)
                                     for (int i = 0;
                                         i <
-                                            eventDetailList["review"][index]
-                                                ["reviewPoint"];
+                                            widget.eventDetailList["review"]
+                                                [index]["reviewPoint"];
                                         i++)
                                       Icon(
                                         Icons.star,
@@ -269,15 +453,15 @@ class Review extends StatelessWidget {
                                     for (int i = 0;
                                         i <
                                             5 -
-                                                eventDetailList["review"][index]
-                                                    ["reviewPoint"];
+                                                widget.eventDetailList["review"]
+                                                    [index]["reviewPoint"];
                                         i++)
                                       Icon(Icons.star,
                                           color: Colors.grey[400], size: 15),
-                                    SizedBox(width: width / 60), //空白
+                                    SizedBox(width: widget.width / 60), //空白
                                     //評価日時
                                     Text(
-                                        eventDetailList["review"][index]
+                                        widget.eventDetailList["review"][index]
                                                 ["reviewDate"]
                                             .toString(),
                                         style: TextStyle(
@@ -285,9 +469,9 @@ class Review extends StatelessWidget {
                                             color: Colors.grey[500])),
                                   ],
                                 ),
-                                SizedBox(height: width / 60), //空白
+                                SizedBox(height: widget.width / 60), //空白
                                 //レビュー内容
-                                Text(eventDetailList["review"][index]
+                                Text(widget.eventDetailList["review"][index]
                                     ["reviewDetail"]),
                               ],
                             ),
