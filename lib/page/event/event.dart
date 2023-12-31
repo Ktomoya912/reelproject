@@ -37,11 +37,11 @@ class _EventState extends State<Event> {
   static List<Map<String, dynamic>> favoriteHistoryList = [
     {
       "icon": Icons.history,
-      "title": "イベント閲覧履歴",
+      "title": "閲覧履歴",
     },
     {
       "icon": Icons.favorite,
-      "title": "お気に入りイベントリスト",
+      "title": "お気に入りリスト",
     },
   ];
 

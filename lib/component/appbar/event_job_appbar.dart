@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/page/mypage/watch_history.dart'; //閲覧履歴
+import 'package:reelproject/page/mypage/favorite_list.dart'; //お気に入りリスト
 
 //検索アップバー
 //ただしbodyにて使用すること
@@ -257,12 +259,11 @@ class FavoriteHistoryList extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(
                 horizontal: _mediaQueryData.size.width / 20), //タイル内の余白
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     PageRouteBuilder(
-              //         pageBuilder: (context, animation,
-              //                 secondaryAnimation) =>
-              //             ));
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          WatchHistory()));
             }),
         Container(
           width: _mediaQueryData.size.width,
@@ -294,12 +295,12 @@ class FavoriteHistoryList extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(
                 horizontal: _mediaQueryData.size.width / 20), //タイル内の余白
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     PageRouteBuilder(
-              //         pageBuilder: (context, animation,
-              //                 secondaryAnimation) =>
-              //             ));
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        FavoriteList(),
+                  ));
             }),
         // Container(
         //   width: _mediaQueryData.size.width,

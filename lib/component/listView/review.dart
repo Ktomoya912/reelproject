@@ -180,7 +180,7 @@ class _ReviewState extends State<Review> {
                               SizedBox(height: widget.width / 40),
                               Container(
                                   width: widget.width,
-                                  height: 105,
+                                  height: 100,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color: const Color.fromARGB(
