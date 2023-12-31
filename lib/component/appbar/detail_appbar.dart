@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
-import '../../page/mypage/impressions.dart';
+import '../../page/mypage/impression.dart';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({

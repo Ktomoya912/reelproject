@@ -13,7 +13,6 @@ class ImpressionsRouterPage extends AutoRouter {
 @RoutePage()
 class Impressions extends StatefulWidget {
   const Impressions({super.key});
-
   @override
   State<Impressions> createState() => _ImpressionsState();
 }
