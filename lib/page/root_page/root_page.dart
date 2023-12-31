@@ -31,32 +31,35 @@ class RootPage extends StatelessWidget {
 
         //ボトムアップバー
         bottomNavigationBuilder: (_, tabsRouter) {
-          return CurvedNavigationBar(
-              color: store.subColor,
-              buttonBackgroundColor: store.subColor,
-              backgroundColor: Colors.white,
-              animationCurve: Curves.easeInOutQuart,
-              animationDuration: const Duration(milliseconds: 400), //アニメーションの時間
-              index: tabsRouter.activeIndex, //現在の位置,
-              items: const <Widget>[
-                IconWithText(icon: Icons.home, text: 'ホーム'),
-                IconWithText(icon: Icons.celebration, text: 'イベント'),
-                IconWithText(icon: Icons.work, text: '求人'),
-                IconWithText(icon: Icons.person, text: 'マイページ'),
-              ],
-              onTap: (int index) {
-                //ネストされたルーターのスタック情報を破棄(初期化される)
-                tabsRouter
-                    .innerRouterOf<StackRouter>(tabsRouter.current.name)
-                    ?.popUntilRoot();
-                //選択したタブへ移動
-                // // 選択中じゃないタブをTapした場合
-                if (tabsRouter.activeIndex != index) {
+          return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
+            CurvedNavigationBar(
+                color: store.subColor,
+                buttonBackgroundColor: store.subColor,
+                backgroundColor: Colors.white,
+                animationCurve: Curves.easeInOutQuart,
+                animationDuration:
+                    const Duration(milliseconds: 400), //アニメーションの時間
+                index: tabsRouter.activeIndex, //現在の位置,
+                items: const <Widget>[
+                  IconWithText(icon: Icons.home, text: 'ホーム'),
+                  IconWithText(icon: Icons.celebration, text: 'イベント'),
+                  IconWithText(icon: Icons.work, text: '求人'),
+                  IconWithText(icon: Icons.person, text: 'マイページ'),
+                ],
+                onTap: (int index) {
+                  //ネストされたルーターのスタック情報を破棄(初期化される)
+                  tabsRouter
+                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
+                      ?.popUntilRoot();
                   //選択したタブへ移動
-                  //context.pushRoute(pushRoutes[index]);
-                  tabsRouter.setActiveIndex(index);
-                }
-              });
+                  // // 選択中じゃないタブをTapした場合
+                  if (tabsRouter.activeIndex != index) {
+                    //選択したタブへ移動
+                    //context.pushRoute(pushRoutes[index]);
+                    tabsRouter.setActiveIndex(index);
+                  }
+                }),
+          ]);
           // return BottomNavigationBar(
           //     currentIndex: tabsRouter.activeIndex, //現在の位置
           //     type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
