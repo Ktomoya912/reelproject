@@ -54,7 +54,7 @@ class EventAdvertisementList extends StatelessWidget {
                       PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  EventDetail()));
+                                  const EventDetail()));
                   //タップ処理
                 },
                 child:

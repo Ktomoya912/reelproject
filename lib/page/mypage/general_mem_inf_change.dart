@@ -7,7 +7,6 @@ import '../../component/form/general_form.dart';
 import '../login/pass_change.dart';
 //push先
 
-
 @RoutePage()
 class GeneralMemInfConfChangeRouterPage extends AutoRouter {
   const GeneralMemInfConfChangeRouterPage({super.key});
@@ -18,7 +17,8 @@ class GeneralMemInfConfChange extends StatefulWidget {
   const GeneralMemInfConfChange({super.key});
 
   @override
-  State<GeneralMemInfConfChange> createState() => _GeneralMemInfConfChangeState();
+  State<GeneralMemInfConfChange> createState() =>
+      _GeneralMemInfConfChangeState();
 }
 
 class _GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
@@ -77,7 +77,7 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PassChange(), //写真編集画面を作成する必要あり
+                  builder: (context) => const PassChange(), //写真編集画面を作成する必要あり
                 ),
               );
             },
@@ -89,7 +89,7 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
           ),
 
           //アイコンと名前の間に空白
-          
+
           //空白
           const SizedBox(
             height: 30,
@@ -99,12 +99,12 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
 
           const GeneralForm(enable: false),
 
-                    ElevatedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyPage(),
+                  builder: (context) => const MyPage(),
                 ),
               );
             },
@@ -118,7 +118,7 @@ class ScrollGeneralMemInfConfChangeDetail extends StatelessWidget {
             child: const Text('編集内容を決定'),
           ),
 
-          const Padding(padding: const EdgeInsets.all(10)),
+          const Padding(padding: EdgeInsets.all(10)),
         ],
       ),
     ));

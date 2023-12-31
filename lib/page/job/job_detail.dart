@@ -14,7 +14,7 @@ class JobDetail extends StatefulWidget {
 class _JobDetailState extends State<JobDetail> {
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static Map<String, dynamic> JobDetailList = {
+  static Map<String, dynamic> jobDetailList = {
     //必須
     "title": "川上神社夏祭り", //タイトル
     //詳細
@@ -91,9 +91,9 @@ class _JobDetailState extends State<JobDetail> {
 
     //短期or長期の色
     MaterialColor termColor = Colors.green;
-    if (JobDetailList["term"] == "短期") {
+    if (jobDetailList["term"] == "短期") {
       termColor = Colors.lightGreen;
-    } else if (JobDetailList["term"] == "長期") {
+    } else if (jobDetailList["term"] == "長期") {
       termColor = Colors.yellow;
     }
 
@@ -108,9 +108,9 @@ class _JobDetailState extends State<JobDetail> {
     return Scaffold(
       //アップバー
       appBar: DetailAppbar(
-        postJedge: JobDetailList["postJedge"],
+        postJedge: jobDetailList["postJedge"],
         eventJobJedge: "job",
-        postTerm: JobDetailList["postTerm"],
+        postTerm: jobDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
       ),
       //body
@@ -154,7 +154,7 @@ class _JobDetailState extends State<JobDetail> {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            JobDetailList["title"],
+                            jobDetailList["title"],
                             style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -190,7 +190,7 @@ class _JobDetailState extends State<JobDetail> {
                       ],
                     ),
                     //ハッシュタグ
-                    if (JobDetailList["tag"].length != 0)
+                    if (jobDetailList["tag"].length != 0)
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Container(
@@ -203,11 +203,11 @@ class _JobDetailState extends State<JobDetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               for (int i = 0;
-                                  i < JobDetailList["tag"].length;
+                                  i < jobDetailList["tag"].length;
                                   i++)
                                 TextButton(
                                     onPressed: () => {},
-                                    child: Text("#${JobDetailList["tag"][i]}")),
+                                    child: Text("#${jobDetailList["tag"][i]}")),
                             ],
                           ),
                         ),
@@ -221,7 +221,7 @@ class _JobDetailState extends State<JobDetail> {
                     //イベント詳細
                     SizedBox(
                       width: width - 20,
-                      child: Text(JobDetailList["detail"]),
+                      child: Text(jobDetailList["detail"]),
                     ),
 
                     //空白
@@ -255,7 +255,7 @@ class _JobDetailState extends State<JobDetail> {
                                   color: termColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Text("  ${JobDetailList["term"]}  ",
+                                child: Text("  ${jobDetailList["term"]}  ",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold)),
                               ),
@@ -270,7 +270,7 @@ class _JobDetailState extends State<JobDetail> {
                                 CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
                             children: [
                               for (int i = 0;
-                                  i < JobDetailList["day"].length;
+                                  i < jobDetailList["day"].length;
                                   i++)
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment
@@ -278,13 +278,13 @@ class _JobDetailState extends State<JobDetail> {
                                   children: [
                                     //時間
                                     //短期の場合
-                                    if (JobDetailList["term"] == "短期")
-                                      Text(JobDetailList["day"][i] +
+                                    if (jobDetailList["term"] == "短期")
+                                      Text(jobDetailList["day"][i] +
                                           "   " +
-                                          JobDetailList["time"][i])
+                                          jobDetailList["time"][i])
                                     //長期の場合
-                                    else if (JobDetailList["term"] == "長期")
-                                      Text(JobDetailList["time"][i]),
+                                    else if (jobDetailList["term"] == "長期")
+                                      Text(jobDetailList["time"][i]),
                                   ],
                                 ),
                             ],
@@ -317,7 +317,7 @@ class _JobDetailState extends State<JobDetail> {
                                 height: mediaQueryData.size.height / 100,
                               ),
                               Text(
-                                  "〒${JobDetailList["postalNumber"]}  ${JobDetailList["prefecture"]}${JobDetailList["city"]}${JobDetailList["houseNumber"]}")
+                                  "〒${jobDetailList["postalNumber"]}  ${jobDetailList["prefecture"]}${jobDetailList["city"]}${jobDetailList["houseNumber"]}")
                             ])),
 
                     //空白
@@ -343,7 +343,7 @@ class _JobDetailState extends State<JobDetail> {
                               SizedBox(
                                 height: mediaQueryData.size.height / 100,
                               ),
-                              Text("時給 : ${JobDetailList["pay"]}円")
+                              Text("時給 : ${jobDetailList["pay"]}円")
                             ])),
 
                     //空白
@@ -353,7 +353,7 @@ class _JobDetailState extends State<JobDetail> {
 
                     //イベント詳細
                     //任意入力が一つでもある場合のみ表示
-                    if (JobDetailList["addMessage"] != null)
+                    if (jobDetailList["addMessage"] != null)
                       SizedBox(
                         width: width - 20,
                         child: Column(
@@ -373,13 +373,13 @@ class _JobDetailState extends State<JobDetail> {
                               ),
 
                               //追加メッセージ
-                              if (JobDetailList["addMessage"] != null)
+                              if (jobDetailList["addMessage"] != null)
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment
                                       .start, // 子ウィジェットを左詰めに配置
                                   children: [
                                     const Text("追加メッセージ："),
-                                    Text(JobDetailList["addMessage"]),
+                                    Text(jobDetailList["addMessage"]),
                                   ],
                                 ),
                               //空白
@@ -395,7 +395,7 @@ class _JobDetailState extends State<JobDetail> {
 
                     Review(
                       width: width,
-                      eventDetailList: JobDetailList,
+                      eventDetailList: jobDetailList,
                     ),
                   ],
                 ),

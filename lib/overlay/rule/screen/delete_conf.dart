@@ -6,7 +6,7 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
-class DeleteConf{
+class DeleteConf {
   factory DeleteConf() => _shared;
   static final DeleteConf _shared = DeleteConf._sharedInstance();
 
@@ -73,29 +73,28 @@ class DeleteConf{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //ウィジェットを保管
-                        Text(
+                        const Text(
                           "投稿を削除しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
                         ),
                         const SizedBox(height: 20), //余白調整
-                        Text(
+                        const Text(
                           "投稿を削除しても投稿料金は返金されません。\n 本当に削除しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 11.5),
                         ),
                         const SizedBox(height: 20), //余白調整
 //ラジオボタン start
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
                             ToggleRadio(),
-                            const Text('同意する',
+                            Text('同意する',
                                 style: TextStyle(
                                   fontSize: 15,
                                 )),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(15.0),
                             ),
                           ],
@@ -165,23 +164,19 @@ class DeleteConf{
         return true;
       },
     );
-}
+  }
 }
 
 class ToggleRadio extends StatefulWidget {
-
-ToggleRadio({
-    Key? key,
-  }) : super(key: key);
-
-
+  const ToggleRadio({
+    super.key,
+  });
 
   @override
-  _ToggleRadioState createState() => _ToggleRadioState();
+  ToggleRadioState createState() => ToggleRadioState();
 }
 
-class _ToggleRadioState extends State<ToggleRadio> {
-
+class ToggleRadioState extends State<ToggleRadio> {
   bool flag = false;
   @override
   void initState() {
@@ -190,13 +185,13 @@ class _ToggleRadioState extends State<ToggleRadio> {
 
   @override
   Widget build(BuildContext context) {
-    return                       Checkbox(
-                        value: flag,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            flag = value ?? false;
-                          });
-                        },
-                      );
+    return Checkbox(
+      value: flag,
+      onChanged: (bool? value) {
+        setState(() {
+          flag = value ?? false;
+        });
+      },
+    );
   }
 }

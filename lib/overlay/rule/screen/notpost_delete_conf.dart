@@ -72,7 +72,7 @@ class NotpostDeleteConf {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //ウィジェットを保管
-                        Text(
+                        const Text(
                           "本当に削除しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),

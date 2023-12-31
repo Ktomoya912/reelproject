@@ -13,7 +13,7 @@ class PostMemberList extends StatefulWidget {
 class _PostMemberListState extends State<PostMemberList> {
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static List<Map<String, dynamic>> PostMemberListList = [
+  static List<Map<String, dynamic>> postMemberListList = [
     {
       "title": "居酒屋新谷スタッフ募集", //タイトル
       "pay": "900", //時給
@@ -57,7 +57,7 @@ class _PostMemberListState extends State<PostMemberList> {
         body: Column(
           children: [
             JobAdvertisementList(
-              advertisementList: PostMemberListList,
+              advertisementList: postMemberListList,
               mediaQueryData: mediaQueryData,
             ),
           ],

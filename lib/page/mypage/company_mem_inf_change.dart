@@ -7,7 +7,6 @@ import '../../component/form/company_form.dart';
 import '../login/pass_change.dart';
 //push先
 
-
 @RoutePage()
 class CompanyMemInfConfChangeRouterPage extends AutoRouter {
   const CompanyMemInfConfChangeRouterPage({super.key});
@@ -18,7 +17,8 @@ class CompanyMemInfConfChange extends StatefulWidget {
   const CompanyMemInfConfChange({super.key});
 
   @override
-  State<CompanyMemInfConfChange> createState() => _CompanyMemInfConfChangeState();
+  State<CompanyMemInfConfChange> createState() =>
+      _CompanyMemInfConfChangeState();
 }
 
 class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
@@ -77,7 +77,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PassChange(), //写真編集画面を作成する必要あり
+                  builder: (context) => const PassChange(), //写真編集画面を作成する必要あり
                 ),
               );
             },
@@ -89,7 +89,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
           ),
 
           //アイコンと名前の間に空白
-          
+
           //空白
           const SizedBox(
             height: 30,
@@ -99,12 +99,12 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
 
           const CompanyForm(enable: false),
 
-                    ElevatedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyPage(),
+                  builder: (context) => const MyPage(),
                 ),
               );
             },
@@ -118,7 +118,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
             child: const Text('編集内容を決定'),
           ),
 
-          const Padding(padding: const EdgeInsets.all(10)),
+          const Padding(padding: EdgeInsets.all(10)),
         ],
       ),
     ));
