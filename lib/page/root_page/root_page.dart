@@ -39,10 +39,10 @@ class RootPage extends StatelessWidget {
               animationDuration: const Duration(milliseconds: 400), //アニメーションの時間
               index: tabsRouter.activeIndex, //現在の位置,
               items: const <Widget>[
-                Icon(Icons.home, size: 30),
-                Icon(Icons.celebration, size: 30),
-                Icon(Icons.work, size: 30),
-                Icon(Icons.person, size: 30),
+                IconWithText(icon: Icons.home, text: 'ホーム'),
+                IconWithText(icon: Icons.celebration, text: 'イベント'),
+                IconWithText(icon: Icons.work, text: '求人'),
+                IconWithText(icon: Icons.person, text: 'マイページ'),
               ],
               onTap: (int index) {
                 //ネストされたルーターのスタック情報を破棄(初期化される)
@@ -111,5 +111,24 @@ class RootPage extends StatelessWidget {
           //       // // 選択中のタブをTapした場合
           //     });
         });
+  }
+}
+
+class IconWithText extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const IconWithText({Key? key, required this.icon, required this.text})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon),
+        Text(text),
+      ],
+    );
   }
 }
