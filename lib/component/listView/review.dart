@@ -129,7 +129,7 @@ class _ReviewState extends State<Review> {
                       return AlertDialog(
                         title: const Text('評価を選択してください'),
                         content: SizedBox(
-                          width: widget.width * 0.5,
+                          width: widget.width * 0.7,
                           height: 220,
                           child: Column(
                             children: [
@@ -146,7 +146,7 @@ class _ReviewState extends State<Review> {
                                   fillColor: Colors.white, //選択中の色
                                   borderWidth: 0, //枠線の太さ
                                   borderColor: Colors.white, //枠線の色
-                                  selectedBorderColor: Colors.white, //選択中の枠線の色
+                                  selectedBorderColor: Colors.white, //選択中の枠線の色,
 
                                   onPressed: (int index) {
                                     setState(() {
@@ -171,7 +171,7 @@ class _ReviewState extends State<Review> {
                                       color: _isSelected[index]
                                           ? Colors.yellow[800]
                                           : Colors.grey,
-                                      size: 30,
+                                      size: 35,
                                     ),
                                   ),
                                 ),
@@ -179,8 +179,8 @@ class _ReviewState extends State<Review> {
                               //空白
                               SizedBox(height: widget.width / 40),
                               Container(
-                                  width: widget.width * 0.5,
-                                  height: 100,
+                                  width: widget.width,
+                                  height: 105,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color: const Color.fromARGB(
