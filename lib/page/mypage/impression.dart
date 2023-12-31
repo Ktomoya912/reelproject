@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 
-
 @RoutePage()
 class ImpressionsRouterPage extends AutoRouter {
   const ImpressionsRouterPage({super.key});
@@ -51,8 +50,8 @@ class ScrollImpressionsDetail extends StatelessWidget {
       store.mainColor,
       store.subColor,
       const Color(0xff6c5ce7),
-      const Color(0x86B6F6),
-      const Color(0x35A29F),
+      const Color(0x86B6F6FF),
+      const Color(0x35A29FFF),
       store.greyColor
     ];
 
@@ -138,35 +137,32 @@ class ScrollImpressionsDetail extends StatelessWidget {
               color: store.greyColor,
               thickness: 1,
             ),
-            
             Column(
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 1.02,
-                  
+
                   // child:Card(
-                    child: Column(
-                  
+                  child: Column(
                     children: [
                       const Padding(padding: EdgeInsets.all(15)),
-                      Pie_Chart(
+                      MyPieChart(
                         key: ValueKey(store.mainDataMap),
                         dataMap: store.mainDataMap,
                         mainflag: true,
-                        onTap: () => store.toggleDataSelection(store.mainDataMap),
+                        onTap: () =>
+                            store.toggleDataSelection(store.mainDataMap),
                       ),
                       const Padding(padding: EdgeInsets.all(15)),
                       Text(store.mainTitle,
-                          style:const TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           )),
                     ],
-                  // )
+                    // )
                   ),
-                  
                 ),
-                
               ],
             ),
             const Padding(padding: EdgeInsets.all(30)),
@@ -178,7 +174,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 3.5,
                   child: Column(
                     children: [
-                      Pie_Chart(
+                      MyPieChart(
                         key: ValueKey(store.subDataMap1),
                         dataMap: store.subDataMap1,
                         mainflag: false,
@@ -199,7 +195,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 3.5,
                   child: Column(
                     children: [
-                      Pie_Chart(
+                      MyPieChart(
                         key: ValueKey(store.subDataMap2),
                         dataMap: store.subDataMap2,
                         mainflag: false,
@@ -222,7 +218,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Pie_Chart(
+                      MyPieChart(
                         key: ValueKey(store.subDataMap3),
                         dataMap: store.subDataMap3,
                         mainflag: false,
@@ -247,14 +243,14 @@ class ScrollImpressionsDetail extends StatelessWidget {
   }
 }
 
-class Pie_Chart extends StatelessWidget {
-  const Pie_Chart({
-    Key? key,
+class MyPieChart extends StatelessWidget {
+  const MyPieChart({
+    super.key,
     required this.dataMap,
     // required this.gradientList,
     required this.mainflag,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final Map<String, double> dataMap;
   // final List<List<Color>> gradientList;
@@ -269,7 +265,7 @@ class Pie_Chart extends StatelessWidget {
           duration: const Duration(milliseconds: 500),
           child: PieChart(
             dataMap: dataMap,
-            animationDuration: Duration(milliseconds: 800),
+            animationDuration: const Duration(milliseconds: 800),
             chartLegendSpacing: 64,
             chartRadius: mainflag
                 ? MediaQuery.of(context).size.width / 2.9
@@ -295,7 +291,7 @@ class Pie_Chart extends StatelessWidget {
               legendPosition: LegendPosition.right,
               showLegends: mainflag,
               // legendShape: _BoxShape.circle,
-              legendTextStyle: TextStyle(
+              legendTextStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),

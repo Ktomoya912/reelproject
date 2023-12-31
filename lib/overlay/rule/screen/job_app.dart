@@ -72,13 +72,13 @@ class JobApp {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //ウィジェットを保管
-                        Text(
+                        const Text(
                           "求人応募",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
                         ),
                         const SizedBox(height: 10), //余白調整
-                        Text(
+                        const Text(
                           "本当に応募しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14),

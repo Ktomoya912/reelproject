@@ -239,7 +239,7 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                   ),
                 ]),
           ),
-          const Padding(padding: const EdgeInsets.all(30)),
+          const Padding(padding: EdgeInsets.all(30)),
           ElevatedButton(
             onPressed: () {
               Navigator.push(

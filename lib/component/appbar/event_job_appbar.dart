@@ -263,7 +263,7 @@ class FavoriteHistoryList extends StatelessWidget {
                   context,
                   PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          WatchHistory()));
+                          const WatchHistory()));
             }),
         Container(
           width: _mediaQueryData.size.width,
@@ -299,7 +299,7 @@ class FavoriteHistoryList extends StatelessWidget {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        FavoriteList(),
+                        const FavoriteList(),
                   ));
             }),
         // Container(

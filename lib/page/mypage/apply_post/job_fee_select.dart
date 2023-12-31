@@ -163,8 +163,8 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                         items: [
                           for (int i = 1; i <= 12; i++)
                             DropdownMenuItem(
-                              child: Text('$iか月'),
                               value: i,
+                              child: Text('$iか月'),
                             ),
                         ],
                       ),
@@ -177,7 +177,7 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                         child: SizedBox(
                             width: widget.width * 0.7 * 0.35,
                             height: widget.width * 0.7 / 3 * 0.3,
-                            child: Center(child: const Text("確定")))),
+                            child: const Center(child: Text("確定")))),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey[400],
@@ -188,7 +188,7 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                         child: SizedBox(
                             width: widget.width * 0.7 * 0.35,
                             height: widget.width * 0.7 / 3 * 0.3,
-                            child: Center(child: const Text("キャンセル")))),
+                            child: const Center(child: Text("キャンセル")))),
                   ],
                 ),
               ),
