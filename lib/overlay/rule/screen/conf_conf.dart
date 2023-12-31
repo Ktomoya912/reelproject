@@ -72,7 +72,7 @@ class ConfConf {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //ウィジェットを保管
-                        Text(
+                        const Text(
                           "本当に確認しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),

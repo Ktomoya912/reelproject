@@ -72,7 +72,7 @@ class MoveConf {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //ウィジェットを保管
-                        Text(
+                        const Text(
                           "投稿文を記入中です\n本当に移動しますか？",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
