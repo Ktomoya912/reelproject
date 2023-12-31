@@ -47,4 +47,71 @@ class ChangeGeneralCorporation with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  //以下はグラフの切り替えに使用する変数と関数
+  Map<String, double> mainDataMap = {
+    "20歳未満": 30,
+    "20-24歳": 40,
+    "25-29歳": 10,
+    "30-34歳": 5,
+    "35-39歳": 7,
+    "40歳以上": 8,
+  };
+
+  Map<String, double> subDataMap1 = {
+    "20歳未満": 5,
+    "20-24歳": 3,
+    "25-29歳": 2,
+    "30-34歳": 2,
+    "35-39歳": 2,
+    "40歳以上": 2,
+  };
+
+  Map<String, double> subDataMap2 = {
+    "20歳未満": 5,
+    "20-24歳": 3,
+    "25-29歳": 2,
+    "30-34歳": 2,
+    "35-39歳": 2,
+    "40歳以上": 2,
+  };
+
+  Map<String, double> subDataMap3 = {
+    "20歳未満": 5,
+    "20-24歳": 3,
+    "25-29歳": 2,
+    "30-34歳": 2,
+    "35-39歳": 2,
+    "40歳以上": 2,
+  };
+
+  String mainTitle = "閲覧者の年代別グラフ";
+  String subTitle1 = "男性の年代別グラフ";
+  String subTitle2 = "女性の年代別グラフ";
+  String subTitle3 = "その他の年代別グラフ";
+
+  void toggleDataSelection(Map<String, double> dataMap) {
+    Map<String, double> tempMap;//退避領域
+    String tempTitle;//退避領域
+    tempMap = mainDataMap;
+    tempTitle = mainTitle;
+    if (dataMap == mainDataMap) {
+    } else if (dataMap == subDataMap1) {
+      mainDataMap = subDataMap1;
+      subDataMap1 = tempMap;
+      mainTitle = subTitle1;
+      subTitle1 = tempTitle;
+    } else if (dataMap == subDataMap2) {
+      mainDataMap = subDataMap2;
+      subDataMap2 = tempMap;
+      mainTitle = subTitle2;
+      subTitle2 = tempTitle;
+    } else if(dataMap == subDataMap3) {
+      mainDataMap = subDataMap3;
+      subDataMap3 = tempMap;
+      mainTitle = subTitle3;
+      subTitle3 = tempTitle;
+    }
+    notifyListeners();
+  }
 }
