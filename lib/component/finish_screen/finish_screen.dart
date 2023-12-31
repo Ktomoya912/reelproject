@@ -48,66 +48,68 @@ class FinishScreen extends StatelessWidget {
         title: appbarText,
         jedgeBuck: false,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: 20,
-            ),
-            Icon(appIcon,
-                size: 180, color: const Color.fromARGB(255, 137, 137, 137)),
-            Text(
-              finishText,
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              width: 300,
-              height: 270,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: const Color.fromARGB(255, 203, 202, 202),
-                    width: 2.5),
-                borderRadius: BorderRadius.circular(8.0),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
               ),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 300,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          width: 15),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      text,
-                      style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 134, 134, 134)),
-                    ),
-                  ),
-                  ButtonSet(buttonName: buttonText),
-                ],
+              Icon(appIcon,
+                  size: 180, color: const Color.fromARGB(255, 137, 137, 137)),
+              Text(
+                finishText,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 0, 0, 0)),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            questionButtonWidget,
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                width: 300,
+                height: 270,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 203, 202, 202),
+                      width: 2.5),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 300,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            width: 15),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Text(
+                        text,
+                        style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 134, 134, 134)),
+                      ),
+                    ),
+                    ButtonSet(buttonName: buttonText),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              questionButtonWidget,
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: bottomAppBar,

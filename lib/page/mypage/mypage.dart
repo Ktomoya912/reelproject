@@ -13,6 +13,7 @@ import 'no_post_list.dart'; //投稿なしリスト
 import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
 import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
+import 'apply_conf.dart'; //応募者確認
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -124,11 +125,11 @@ class ScrollMyPageDetail extends StatelessWidget {
         "icon": Icons.summarize,
         "push": PostedList(),
       },
-      // {
-      //   "title": "応募者確認",
-      //   "icon": Icons.summarize,
-      //   "push": ApplyConf(),
-      // },
+      {
+        "title": "応募者確認",
+        "icon": Icons.manage_search,
+        "push": ApplyConf(),
+      },
       {
         "title": "未振り込み投稿一覧",
         "icon": Icons.money_off,
@@ -141,7 +142,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       },
       {
         "title": "振込口座確認",
-        "icon": Icons.request_quote,
+        "icon": Icons.payment,
         "push": TransferTo(),
       },
     ],
