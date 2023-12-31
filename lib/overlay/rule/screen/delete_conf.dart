@@ -6,7 +6,7 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
-class DeleteConf {
+class DeleteConf{
   factory DeleteConf() => _shared;
   static final DeleteConf _shared = DeleteConf._sharedInstance();
 
@@ -15,8 +15,7 @@ class DeleteConf {
   OverScreenControl? controller;
   //追加1　start
 
-  late bool enable; //
-  String? selectedGender; //
+  late bool enable; //enabledは入力可能かどうかを判断する変数
   //追加1 end
 
   void show({
@@ -44,6 +43,7 @@ class DeleteConf {
     final text0 = StreamController<String>();
 
     final state = Overlay.of(context);
+    bool isSelected = true;
     // final renderBox = context.findRenderObject() as RenderBox;
     // final size = renderBox.size;
 
@@ -89,10 +89,8 @@ class DeleteConf {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Radio(
-                                value: 'agree',
-                                groupValue: selectedGender,
-                                onChanged: (value) {}),
+
+                            ToggleRadio(),
                             const Text('同意する',
                                 style: TextStyle(
                                   fontSize: 15,
@@ -167,5 +165,38 @@ class DeleteConf {
         return true;
       },
     );
+}
+}
+
+class ToggleRadio extends StatefulWidget {
+
+ToggleRadio({
+    Key? key,
+  }) : super(key: key);
+
+
+
+  @override
+  _ToggleRadioState createState() => _ToggleRadioState();
+}
+
+class _ToggleRadioState extends State<ToggleRadio> {
+
+  bool flag = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return                       Checkbox(
+                        value: flag,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            flag = value ?? false;
+                          });
+                        },
+                      );
   }
 }
