@@ -127,7 +127,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       },
       {
         "title": "応募者確認",
-        "icon": Icons.summarize,
+        "icon": Icons.manage_search,
         "push": ApplyConf(),
       },
       {
@@ -142,7 +142,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       },
       {
         "title": "振込口座確認",
-        "icon": Icons.request_quote,
+        "icon": Icons.payment,
         "push": TransferTo(),
       },
     ],

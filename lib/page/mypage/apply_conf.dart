@@ -184,7 +184,7 @@ class ApplyConfState extends State<ApplyConf> {
                           MaterialPageRoute(
                             builder: (context) => const FinishScreen(
                               appbarText: "応募者確認",
-                              appIcon: Icons.mail_outlined,
+                              appIcon: Icons.playlist_add_check,
                               finishText: "確認完了",
                               text:
                                   "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
