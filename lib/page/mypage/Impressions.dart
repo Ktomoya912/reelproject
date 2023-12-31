@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 
+
 @RoutePage()
 class ImpressionsRouterPage extends AutoRouter {
   const ImpressionsRouterPage({super.key});
