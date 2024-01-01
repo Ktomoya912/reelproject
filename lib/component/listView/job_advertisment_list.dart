@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/page/job/job_detail.dart';
+import 'package:reelproject/page/job/job_post_detail.dart';
 
 //求人広告リストコンポーネント
 class JobAdvertisementList extends StatelessWidget {
@@ -21,6 +21,76 @@ class JobAdvertisementList extends StatelessWidget {
   static String placeString = "場所 : ";
 
   static String enString = "円";
+
+// データベースと連携させていないので現在はここでイベント詳細内容を設定
+  static Map<String, dynamic> jobDetailList = {
+    //必須
+    "title": "川上神社夏祭り", //タイトル
+    //詳細
+    "detail":
+        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n この度、運営スタッフ不足によりスタッフを募集します。\n \n・当日の会場設営\n・祭り終了後のゴミ拾い\n・祭り開催中のスタッフ（内容は当日お知らせします）",
+    //勤務体系
+    "term": "長期",
+
+    "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
+    "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
+
+    //開催場所
+    "postalNumber": "781-5101", //郵便番号
+    "prefecture": "高知県", //都道府県
+    "city": "香美市", //市町村
+    "houseNumber": "土佐山田町", //番地・建物名
+
+    //給料
+    "pay": "1000",
+
+    //その他(任意)
+    "tag": [
+      "イベント",
+      "夏祭り",
+      "花火",
+      "香美市",
+      "イベント",
+    ], //ハッシュタグ
+    "addMessage": "test", //追加メッセージ
+
+    //レビュー
+    "reviewPoint": 4.5, //評価
+    //星の割合(前から1,2,3,4,5)
+    "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
+    //レビュー数
+    "reviewNumber": 100,
+    //レビュー内容
+    "review": [
+      {
+        "reviewerName": "名前aiueo",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "testfffff\n\nfffff", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      },
+      {
+        "reviewerName": "名前kakikukeko",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "test", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      },
+      {
+        "reviewerName": "名前sasisuseso",
+        //"reviewerImage" : "test"   //予定
+        "reviewPoint": 3, //レビュー点数
+        "reviewDetail": "test", //レビュー内容
+        "reviewDate": "2021年8月1日", //レビュー日時
+      }
+    ],
+
+    //この広告を投稿したか
+    "postJedge": true,
+
+    //掲載期間
+    "postTerm": "2023年12月10日"
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +126,7 @@ class JobAdvertisementList extends StatelessWidget {
                       PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  const JobDetail()));
+                                  JobPostDetail(jobList: jobDetailList)));
                   //タップ処理
                 },
                 child:
