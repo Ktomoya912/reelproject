@@ -10,10 +10,12 @@ class SearchPage extends StatefulWidget {
     super.key,
     required this.text,
     required this.eventJobJedge,
+    required this.sort,
   });
 
   final String text;
   final String eventJobJedge;
+  final String sort;
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
@@ -96,7 +98,7 @@ class _SearchPageState extends State<SearchPage> {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     return Scaffold(
         appBar: SearchAppbar(
-          title: "「${widget.text}」の検索結果",
+          title: widget.text,
           mediaQueryData: mediaQueryData,
           eventJobJedge: widget.eventJobJedge,
         ),
