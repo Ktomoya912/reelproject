@@ -135,66 +135,142 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
       onTap: () => {
         //print(jobStore.jobPeriod),
         jobStore.changeJobFee(widget.title), //プロバイダ変更
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            //ダイアログ表示
-            return AlertDialog(
-              content: SizedBox(
-                width: widget.width * 0.5,
-                height: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text(
-                      "掲載する期間を選択してください",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) =>
-                          DropdownButton(
-                        value: jobStore.jobPeriod,
-                        onChanged: (int? value) {
-                          setState(() {
-                            jobStore.changeJobPeriod(value!);
-                          });
-                        },
-                        items: [
-                          for (int i = 1; i <= 12; i++)
-                            DropdownMenuItem(
-                              value: i,
-                              child: Text('$iか月'),
+        //１か月以上、半年以上契約の場合
+        if (widget.title != "1年掲載契約")
+          {
+            //jobPireod変更
+            if (widget.title == "1か月掲載契約")
+              {
+                jobStore.changeJobPeriod(1),
+              }
+            else
+              {
+                jobStore.changeJobPeriod(6),
+              },
+            //ポップアップ
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                //ダイアログ表示
+                return AlertDialog(
+                  content: SizedBox(
+                    width: widget.width * 0.5,
+                    height: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          "掲載する期間を選択してください",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        StatefulBuilder(
+                          builder:
+                              (BuildContext context, StateSetter setState) =>
+                                  DropdownButton(
+                            value: jobStore.jobPeriod,
+                            onChanged: (int? value) {
+                              setState(() {
+                                jobStore.changeJobPeriod(value!);
+                              });
+                            },
+                            items: [
+                              if (widget.title == "1か月掲載契約")
+                                for (int i = 1; i <= 12; i++)
+                                  DropdownMenuItem(
+                                    value: i,
+                                    child: Text('$iか月'),
+                                  )
+                              else
+                                for (int i = 6; i <= 12; i++)
+                                  DropdownMenuItem(
+                                    value: i,
+                                    child: Text('$iか月'),
+                                  )
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[400],
                             ),
-                        ],
-                      ),
+                            onPressed: () {
+                              //Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('プラン確認'),
+                                    content: const Text('本当にこのプランで進めますか？'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('進める'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          //Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text('キャンセル'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: SizedBox(
+                                width: widget.width * 0.7 * 0.35,
+                                height: widget.width * 0.7 / 3 * 0.3,
+                                child: const Center(child: Text("確定")))),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[400],
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: SizedBox(
+                                width: widget.width * 0.7 * 0.35,
+                                height: widget.width * 0.7 / 3 * 0.3,
+                                child: const Center(child: Text("キャンセル")))),
+                      ],
                     ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[400],
-                        ),
-                        onPressed: () {},
-                        child: SizedBox(
-                            width: widget.width * 0.7 * 0.35,
-                            height: widget.width * 0.7 / 3 * 0.3,
-                            child: const Center(child: Text("確定")))),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[400],
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: SizedBox(
-                            width: widget.width * 0.7 * 0.35,
-                            height: widget.width * 0.7 / 3 * 0.3,
-                            child: const Center(child: Text("キャンセル")))),
+                  ),
+                );
+              },
+            ).then((value) => setState(() {})),
+          }
+        else
+          {
+            jobStore.changeJobPeriod(12),
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('プラン確認'),
+                  content: const Text('本当にこのプランで進めますか？'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('進める'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        //Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('キャンセル'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ],
-                ),
-              ),
-            );
-          },
-        ).then((value) => setState(() {})),
+                );
+              },
+            )
+          }
         //ダイアログ表示
       },
       child:

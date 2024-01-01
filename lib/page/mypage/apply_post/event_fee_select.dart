@@ -144,6 +144,30 @@ class SelectFeeButton extends StatelessWidget {
     return InkWell(
       onTap: () => {
         eventStore.changeEventFee(title),
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('プラン確認'),
+              content: const Text('本当にこのプランで進めますか？'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('進める'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('キャンセル'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        )
       },
       child:
           //内部
