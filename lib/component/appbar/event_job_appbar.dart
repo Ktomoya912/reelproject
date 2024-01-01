@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/watch_history.dart'; //閲覧履歴
 import 'package:reelproject/page/mypage/favorite_list.dart'; //お気に入りリスト
+import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 
 //検索アップバー
 //ただしbodyにて使用すること
@@ -67,7 +68,17 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
   //検索ボタンを押したときの処理
   void _submission(text) {
     setState(() {
-      //print(text);
+      if (text != "") {
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  SearchPage(
+                text: text,
+                eventJobJedge: widget.title,
+              ),
+            ));
+      }
     });
   }
 
