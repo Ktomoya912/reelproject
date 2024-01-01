@@ -8,7 +8,7 @@ import 'package:reelproject/page/mypage/posted_list.dart';
 import 'package:reelproject/page/mypage/watch_history.dart';
 import 'package:reelproject/page/mypage/favorite_list.dart';
 import 'package:reelproject/page/job/job_detail.dart';
-import 'package:reelproject/page/event/event_detail.dart';
+// import 'package:reelproject/page/event/event_post_detail.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {

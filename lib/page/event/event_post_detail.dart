@@ -5,84 +5,29 @@ import 'package:reelproject/component/appbar/detail_appbar.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
 
-class EventDetail extends StatefulWidget {
-  const EventDetail({super.key});
+class EventPostDetail extends StatefulWidget {
+  const EventPostDetail({
+    super.key,
+    required this.eventList,
+  });
+
+  final Map<String, dynamic> eventList;
 
   @override
-  State<EventDetail> createState() => _EventDetailState();
+  State<EventPostDetail> createState() => _EventPostDetailState();
 }
 
-class _EventDetailState extends State<EventDetail> {
+class _EventPostDetailState extends State<EventPostDetail> {
+  late Map<String, dynamic> eventDetailList;
+
+  @override
+  void initState() {
+    super.initState();
+    eventDetailList = widget.eventList;
+  }
+
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static Map<String, dynamic> eventDetailList = {
-    //必須
-    "title": "川上神社夏祭り", //タイトル
-    //詳細
-    "detail":
-        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n ステージイベント、宝さがし、鎮守の杜のびらふマルシェなど、子どもから大人まで誰でも楽しめるイベント内容が盛りだくさん！",
-    "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
-    "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
-    //開催場所
-    "postalNumber": ["781-5101", "781-5101", "781-5101"], //郵便番号
-    "prefecture": ["高知県", "高知県", "高知県"], //都道府県
-    "city": ["香美市", "香美市", "香美市"], //市町村
-    "houseNumber": ["川上町", "川上町", "土佐山田町"], //番地・建物名
-
-    //その他(任意)
-    "tag": [
-      "イベント",
-      "夏祭り",
-      "花火",
-      "香美市",
-      "イベント",
-    ], //ハッシュタグ
-    "phone": "0887-00-0000", //電話番号
-    "mail": "conf@gmai.com", //メールアドレス
-    "url": "https://www.city.kami.lg.jp/", //URL
-    "fee": "1000", //参加費
-    "Capacity": "100", //定員
-    "notes": "駐車場はありません。", //注意事項
-    "addMessage": "test", //追加メッセージ
-
-    //レビュー
-    "reviewPoint": 4.5, //評価
-    //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
-    //レビュー数
-    "reviewNumber": 100,
-    //レビュー内容
-    "review": [
-      {
-        "reviewerName": "名前aiueo",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "testfffff\n\n\n\n\n\n\nfffff", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前kakikukeko",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前sasisuseso",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      }
-    ],
-
-    //この広告を投稿したか
-    "postJedge": true,
-
-    //掲載期間
-    "postTerm": "2023年12月10日"
-  };
-
   bool favoriteJedge = false; //お気に入り判定
 
   //二度同じ場所を表示しないように制御する関数
