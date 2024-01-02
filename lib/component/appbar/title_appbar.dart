@@ -37,7 +37,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
         backgroundColor: Colors.white, //背景
-        elevation: 0.0, //影なし
+        //elevation: 0.0, //影なし
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
         centerTitle: true, //中央揃え
         toolbarHeight: 100, //アップバーの高さ

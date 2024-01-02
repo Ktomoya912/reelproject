@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 import 'general_mem_inf_change.dart';
 import '../login/pass_change.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
 //push先
 
 @RoutePage()
@@ -24,10 +25,7 @@ class _GeneralMemInfConfState extends State<GeneralMemInfConf> {
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: GeneralMemInfConfAppBar(
-        title: "会員情報",
-        jedgeBuck: true,
-      ),
+      appBar: TitleAppBar(title: "会員情報", jedgeBuck: true),
 
       //内部
       body: ScrollGeneralMemInfConfDetail(),
@@ -85,88 +83,88 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                   Text(
                     'ユーザ名',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 15,
                       color: store.greyColor,
                     ),
                   ),
                   const Text(
                     '　ユーザ名',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
                   Divider(
                     color: store.greyColor,
-                    thickness: 3,
+                    thickness: 1,
                     endIndent: 20,
                   ),
                   const Padding(padding: EdgeInsets.all(10)),
                   Text(
                     'メールアドレス',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 15,
                       color: store.greyColor,
                     ),
                   ),
                   const Text(
                     '　メールアドレス',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
                   Divider(
                     color: store.greyColor,
-                    thickness: 3,
+                    thickness: 1,
                     endIndent: 20,
                   ),
                   const Padding(padding: EdgeInsets.all(10)),
                   Text(
                     '生年月日',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 15,
                       color: store.greyColor,
                     ),
                   ),
                   const Text(
                     '　生年月日',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
                   Divider(
                     color: store.greyColor,
-                    thickness: 3,
+                    thickness: 1,
                     endIndent: 20,
                   ),
                   const Padding(padding: EdgeInsets.all(10)),
                   Text(
                     '性別',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 15,
                       color: store.greyColor,
                     ),
                   ),
                   const Text(
                     '　男性',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
                   Divider(
                     color: store.greyColor,
-                    thickness: 3,
+                    thickness: 1,
                     endIndent: 20,
                   ),
                 ]),
@@ -196,7 +194,8 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>const PassChange(), //今はログイン前のパスワード再設定画面に遷移
+                  builder: (context) =>
+                      const PassChange(), //今はログイン前のパスワード再設定画面に遷移
                 ),
               );
             },
@@ -214,69 +213,3 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
 }
 
 //一般向けマイページスクロール
-
-//マイページリストを作成するクラス
-
-//appbar
-class GeneralMemInfConfAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  final String title; //ページ名
-  final bool jedgeBuck; //戻るボタンを表示するか否か
-
-  const GeneralMemInfConfAppBar({
-    super.key,
-    required this.title,
-    required this.jedgeBuck,
-  });
-
-  @override
-  Size get preferredSize {
-    return const Size(double.infinity, 80.0);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    return Scaffold(
-
-        //アップバー
-        appBar: AppBar(
-      //アップバータイトル
-      title: Text(
-        "REEL", //文字
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-            color: store.mainColor), //書体
-      ),
-      automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
-      backgroundColor: Colors.white, //背景
-      elevation: 0.0, //影なし
-      iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
-      centerTitle: true, //中央揃え
-      toolbarHeight: 100, //アップバーの高さ
-
-      //画面説明アップバー
-      bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5),
-          child: SizedBox(
-            height: 30,
-            child: AppBar(
-              //アップバー内にアップバー(ページ説明のため)
-              title: Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: store.blackColor,
-                ),
-              ), //ページ説明文字
-              centerTitle: true, //中央揃え
-              automaticallyImplyLeading: false, //戻るボタンの非表示
-              backgroundColor: store.subColor, //背景
-              elevation: 0.0, //影なし
-            ), //高さ
-          )), //高さ
-    ));
-  }
-}

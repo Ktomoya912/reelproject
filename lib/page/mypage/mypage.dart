@@ -136,11 +136,6 @@ class ScrollMyPageDetail extends StatelessWidget {
         "push": NoPostList(),
       },
       {
-        "title": "プラン確認",
-        "icon": Icons.request_quote,
-        "push": JobFeeSelect(),
-      },
-      {
         "title": "振込口座確認",
         "icon": Icons.payment,
         "push": TransferTo(),
@@ -325,7 +320,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 380,
+            height: 400,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -514,7 +509,7 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
               centerTitle: true, //中央揃え
               automaticallyImplyLeading: false, //戻るボタンの非表示
               backgroundColor: store.subColor, //背景
-              elevation: 0.0, //影なし
+              //elevation: 0.0, //影なし
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 20, top: 5),

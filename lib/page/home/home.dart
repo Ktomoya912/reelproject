@@ -469,7 +469,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: 40), //書体
         ),
         backgroundColor: store.subColor,
-        elevation: 0.0, //影なし
+        //elevation: 0.0, //影なし
         toolbarHeight: 100, //アップバーの高さ
         automaticallyImplyLeading: false, //戻るボタンの非表示
         centerTitle: true,
