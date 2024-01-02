@@ -138,6 +138,15 @@ class _HomeState extends State<Home> {
                   decoration: BoxDecoration(
                     color: store.subColor,
                     borderRadius: BorderRadius.circular(10),
+                    //影
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[400]!,
+                        spreadRadius: 0,
+                        blurRadius: 8,
+                        offset: const Offset(3, 3),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
@@ -412,6 +421,15 @@ class CenterButton extends StatelessWidget {
           decoration: ShapeDecoration(
             color: store.subColor,
             shape: const CircleBorder(), //円形
+            //影
+            shadows: [
+              BoxShadow(
+                color: Colors.grey[400]!,
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: const Offset(2, 2),
+              ),
+            ],
           ),
           //円の中のアイコン
           child: SizedBox(
