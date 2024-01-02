@@ -227,7 +227,7 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                       SizedBox(
-                          height: mediaQueryData.size.height / 60), //ボタン間の空間
+                          height: mediaQueryData.size.height / 200), //ボタン間の空間
                       //閲覧履歴リスト
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

@@ -271,7 +271,7 @@ class GeneralMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 250,
+            height: 270,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -320,7 +320,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 380,
+            height: 400,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
