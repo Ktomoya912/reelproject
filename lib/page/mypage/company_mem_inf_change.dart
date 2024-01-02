@@ -5,6 +5,7 @@ import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
 import '../../component/form/company_form.dart';
 import '../login/pass_change.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
 //push先
 
 @RoutePage()
@@ -26,10 +27,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
-      appBar: CompanyMemInfConfChangeAppBar(
-        title: "会員情報",
-        jedgeBuck: true,
-      ),
+      appBar: TitleAppBar(title: "会員情報", jedgeBuck: true),
 
       //内部
       body: ScrollCompanyMemInfConfChangeDetail(),
@@ -99,6 +97,11 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
 
           const CompanyForm(enable: false),
 
+          //空白
+          const SizedBox(
+            height: 50,
+          ),
+
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -129,66 +132,3 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
 
 //マイページリストを作成するクラス
 
-//appbar
-class CompanyMemInfConfChangeAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  final String title; //ページ名
-  final bool jedgeBuck; //戻るボタンを表示するか否か
-
-  const CompanyMemInfConfChangeAppBar({
-    super.key,
-    required this.title,
-    required this.jedgeBuck,
-  });
-
-  @override
-  Size get preferredSize {
-    return const Size(double.infinity, 80.0);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    return Scaffold(
-
-        //アップバー
-        appBar: AppBar(
-      //アップバータイトル
-      title: Text(
-        "REEL", //文字
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-            color: store.mainColor), //書体
-      ),
-      automaticallyImplyLeading: jedgeBuck, //戻るボタンの非表示
-      backgroundColor: Colors.white, //背景
-      elevation: 0.0, //影なし
-      iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
-      centerTitle: true, //中央揃え
-      toolbarHeight: 100, //アップバーの高さ
-
-      //画面説明アップバー
-      bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5),
-          child: SizedBox(
-            height: 30,
-            child: AppBar(
-              //アップバー内にアップバー(ページ説明のため)
-              title: Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: store.blackColor,
-                ),
-              ), //ページ説明文字
-              centerTitle: true, //中央揃え
-              automaticallyImplyLeading: false, //戻るボタンの非表示
-              backgroundColor: store.subColor, //背景
-              elevation: 0.0, //影なし
-            ), //高さ
-          )), //高さ
-    ));
-  }
-}

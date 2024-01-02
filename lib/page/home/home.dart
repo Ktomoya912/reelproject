@@ -138,6 +138,15 @@ class _HomeState extends State<Home> {
                   decoration: BoxDecoration(
                     color: store.subColor,
                     borderRadius: BorderRadius.circular(10),
+                    //影
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[400]!,
+                        spreadRadius: 0,
+                        blurRadius: 8,
+                        offset: const Offset(3, 3),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
@@ -218,7 +227,7 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                       SizedBox(
-                          height: mediaQueryData.size.height / 60), //ボタン間の空間
+                          height: mediaQueryData.size.height / 200), //ボタン間の空間
                       //閲覧履歴リスト
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -337,6 +346,7 @@ class HistoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: width * 0.5,
       child: Row(
         children: [
           InkWell(
@@ -362,6 +372,15 @@ class HistoryButton extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: store.thinColor,
                   borderRadius: BorderRadius.circular(10),
+                  //影
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[400]!,
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
                 ),
               ),
               //タイトル枠
@@ -412,6 +431,15 @@ class CenterButton extends StatelessWidget {
           decoration: ShapeDecoration(
             color: store.subColor,
             shape: const CircleBorder(), //円形
+            //影
+            shadows: [
+              BoxShadow(
+                color: Colors.grey[400]!,
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: const Offset(2, 2),
+              ),
+            ],
           ),
           //円の中のアイコン
           child: SizedBox(
@@ -469,7 +497,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: 40), //書体
         ),
         backgroundColor: store.subColor,
-        elevation: 0.0, //影なし
+        //elevation: 0.0, //影なし
         toolbarHeight: 100, //アップバーの高さ
         automaticallyImplyLeading: false, //戻るボタンの非表示
         centerTitle: true,

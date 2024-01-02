@@ -180,7 +180,7 @@ class _ReviewState extends State<Review> {
                               SizedBox(height: widget.width / 40),
                               Container(
                                   width: widget.width,
-                                  height: 100,
+                                  height: 80,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color: const Color.fromARGB(
@@ -289,7 +289,7 @@ class _ReviewState extends State<Review> {
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.grey[400]!, //枠線の色
-                      width: 2, //枠線の太さ
+                      width: 0.7, //枠線の太さ
                     ),
                   ),
                 ),
@@ -316,7 +316,7 @@ class _ReviewState extends State<Review> {
                               border: Border(
                                 bottom: BorderSide(
                                   color: Colors.grey[400]!, //枠線の色
-                                  width: 2, //枠線の太さ
+                                  width: 0.7, //枠線の太さ
                                 ),
                               ),
                             ),

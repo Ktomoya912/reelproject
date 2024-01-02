@@ -100,111 +100,125 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
     }
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            //高さ調整(一番上の空間)
-            SizedBox(
-              height: widget.mediaQueryData.size.height / 20,
+      body: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 10,
+              offset: Offset(0, 1),
             ),
-            //検索バー
-            SizedBox(
-              height: 40, //検索バーの高さ,
-              width: widget.mediaQueryData.size.width * widthPower, //検索バーの幅
-              child: TextField(
-                cursorColor: store.mainColor, //カーソルの色
-                controller: _controller,
-                //検索バーの装飾
-                decoration: InputDecoration(
-                  //背景色
-                  fillColor: store.thinColor,
-                  filled: true,
-                  hintText: "   キーワードで検索",
-                  hintStyle: TextStyle(color: store.blackColor),
-                  //選択時の動作
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30), //角丸
-                    borderSide: BorderSide(
-                      color: store.thinColor,
-                    ),
-                  ),
-                  //未選択時の動作
-                  focusedBorder: OutlineInputBorder(
+          ],
+          color: Colors.white,
+        ),
+        child: Center(
+          child: Column(
+            children: [
+              //高さ調整(一番上の空間)
+              SizedBox(
+                height: widget.mediaQueryData.size.height / 20,
+              ),
+              //検索バー
+              SizedBox(
+                height: 40, //検索バーの高さ,
+                width: widget.mediaQueryData.size.width * widthPower, //検索バーの幅
+                child: TextField(
+                  cursorColor: store.mainColor, //カーソルの色
+                  controller: _controller,
+                  //検索バーの装飾
+                  decoration: InputDecoration(
+                    //影
+
+                    //背景色
+                    fillColor: store.thinColor,
+                    filled: true,
+                    hintText: "   キーワードで検索",
+                    hintStyle: TextStyle(color: store.blackColor),
+                    //選択時の動作
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30), //角丸
                       borderSide: BorderSide(
                         color: store.thinColor,
-                      )),
-
-                  //検索バーアイコン
-                  prefixIcon: Icon(Icons.search, color: store.blackColor),
-                  //消去アイコン
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _controller.clear(); //検索バーの文字を消去
-                    },
-                    icon: Icon(Icons.clear, color: store.blackColor),
-                  ),
-                  isDense: true,
-                ),
-                //検索ボタンを押したときの処理
-                //上に記述
-                onSubmitted: (text) => _submission(text),
-              ),
-            ),
-            //高さ調整
-            SizedBox(
-              height: widget.mediaQueryData.size.height / 80,
-            ),
-            //タグリスト
-            //横スクロール
-            //マウスでのスクロールができない===============================================================
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  //タグをリストの内容だけ表示
-                  for (String tag in widget.tagList)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(80, 40), //最小サイズ
-                          elevation: 0, //影の濃さ
-                          backgroundColor: store.thinColor,
-                          foregroundColor: store.blackColor,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: () {},
-                        child: Text(tag),
                       ),
                     ),
-                ],
+                    //未選択時の動作
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30), //角丸
+                        borderSide: BorderSide(
+                          color: store.thinColor,
+                        )),
+
+                    //検索バーアイコン
+                    prefixIcon: Icon(Icons.search, color: store.blackColor),
+                    //消去アイコン
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _controller.clear(); //検索バーの文字を消去
+                      },
+                      icon: Icon(Icons.clear, color: store.blackColor),
+                    ),
+                    isDense: true,
+                  ),
+                  //検索ボタンを押したときの処理
+                  //上に記述
+                  onSubmitted: (text) => _submission(text),
+                ),
               ),
-            ),
+              //高さ調整
+              SizedBox(
+                height: widget.mediaQueryData.size.height / 80,
+              ),
+              //タグリスト
+              //横スクロール
+              //マウスでのスクロールができない===============================================================
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    //タグをリストの内容だけ表示
+                    for (String tag in widget.tagList)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 40), //最小サイズ
+                            //elevation: 20, //影の濃さ
+                            backgroundColor: store.thinColor,
+                            foregroundColor: store.blackColor,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {},
+                          child: Text(tag),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
 
-            //高さ調整
-            SizedBox(
-              height: widget.mediaQueryData.size.height / 80,
-            ),
+              //高さ調整
+              SizedBox(
+                height: widget.mediaQueryData.size.height / 80,
+              ),
 
-            //お気に入り、閲覧履歴リスト
-            SizedBox(
+              //お気に入り、閲覧履歴リスト
+              SizedBox(
+                  width: widget.mediaQueryData.size.width,
+                  child: FavoriteHistoryList(
+                    mediaQueryData: widget.mediaQueryData,
+                    store: store,
+                    list: widget.favoriteHistoryList,
+                  )),
+
+              //タイトルバー
+              Expanded(
+                  child: Container(
+                color: store.thinColor,
+                height: titleSize,
                 width: widget.mediaQueryData.size.width,
-                child: FavoriteHistoryList(
-                  mediaQueryData: widget.mediaQueryData,
-                  store: store,
-                  list: widget.favoriteHistoryList,
-                )),
-
-            //タイトルバー
-            Expanded(
-                child: Container(
-              height: titleSize,
-              width: widget.mediaQueryData.size.width,
-              color: store.thinColor,
-              child: Center(child: Text(widget.title)),
-            )),
-          ],
+                child: Center(child: Text(widget.title)),
+              )),
+            ],
+          ),
         ),
       ),
     );
@@ -225,7 +239,7 @@ class FavoriteHistoryList extends StatelessWidget {
   final List<Map<String, dynamic>> list;
 
   static double widthPower = 11 / 12; //横幅の倍率定数
-  static double lineWidth = 1.3; //線の太さ定数
+  static double lineWidth = 0.5; //線の太さ定数
 
   @override
   Widget build(BuildContext context) {

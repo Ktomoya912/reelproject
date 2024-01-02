@@ -91,8 +91,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
   String subTitle3 = "その他の年代別グラフ";
 
   void toggleDataSelection(Map<String, double> dataMap) {
-    Map<String, double> tempMap;//退避領域
-    String tempTitle;//退避領域
+    Map<String, double> tempMap; //退避領域
+    String tempTitle; //退避領域
     tempMap = mainDataMap;
     tempTitle = mainTitle;
     if (dataMap == mainDataMap) {
@@ -106,7 +106,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
       subDataMap2 = tempMap;
       mainTitle = subTitle2;
       subTitle2 = tempTitle;
-    } else if(dataMap == subDataMap3) {
+    } else if (dataMap == subDataMap3) {
       mainDataMap = subDataMap3;
       subDataMap3 = tempMap;
       mainTitle = subTitle3;
