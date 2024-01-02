@@ -346,6 +346,7 @@ class HistoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: width * 0.5,
       child: Row(
         children: [
           InkWell(
@@ -371,6 +372,15 @@ class HistoryButton extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: store.thinColor,
                   borderRadius: BorderRadius.circular(10),
+                  //影
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[400]!,
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
                 ),
               ),
               //タイトル枠
