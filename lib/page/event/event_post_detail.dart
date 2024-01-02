@@ -4,6 +4,7 @@ import 'package:reelproject/component/appbar/detail_appbar.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
+import 'package:reelproject/component/listView/carousel.dart';
 
 class EventPostDetail extends StatefulWidget {
   const EventPostDetail({
@@ -118,11 +119,21 @@ class _EventPostDetailState extends State<EventPostDetail> {
                   children: [
                     //画像
                     Stack(children: [
-                      Container(
-                        alignment: Alignment.topRight,
+                      SizedBox(
                         height: width * 0.6,
-                        //width: width,
-                        color: Colors.blue,
+                        width: width,
+                        child: Carousel(
+                          pages: [
+                            for (int i = 0; i < 5; i++)
+                              Container(
+                                alignment: Alignment.topRight,
+                                height: width * 0.6,
+                                //width: width,
+                                color: Colors.blue,
+                              ),
+                          ],
+                          timeJedge: true,
+                        ),
                       ),
                     ]),
                     //タイトル
@@ -145,9 +156,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
                         Row(
                           children: [
                             ToggleButtons(
-                              color: store.greyColor, //選択していない時の色
+                              borderWidth: 0.01, // 枠線をなくす
+                              color: Colors.grey[500], //選択していない時の色
                               selectedColor: store.mainColor, //選択時の色
-                              fillColor: store.thinColor, //選択時の背景色
+                              fillColor: Colors.white, //選択時の背景色
                               splashColor: store.subColor, //選択時のアクションの色
                               borderRadius: BorderRadius.circular(50.0), //角丸
                               isSelected: [favoriteJedge], //on off
@@ -156,8 +168,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 favoriteJedge = !favoriteJedge;
                               }),
                               //アイコン
-                              children: const <Widget>[
-                                Icon(Icons.favorite, size: 40),
+                              children: <Widget>[
+                                favoriteJedge
+                                    ? const Icon(Icons.favorite, size: 40)
+                                    : const Icon(Icons.favorite_border,
+                                        size: 40),
                               ],
                             ),
                             //空白

@@ -5,8 +5,10 @@ class Carousel extends StatefulWidget {
   const Carousel({
     Key? key,
     required this.pages,
+    required this.timeJedge,
   }) : super(key: key);
   final List<Widget> pages;
+  final bool timeJedge;
 
   @override
   State<Carousel> createState() => _CarouselState();
@@ -20,8 +22,8 @@ class _CarouselState extends State<Carousel> {
     // ④
     super.initState();
 
-    Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      if (_currentPage < 2) {
+    Timer.periodic(const Duration(seconds: 7), (Timer timer) {
+      if (_currentPage < widget.pages.length - 1 && widget.timeJedge) {
         // ⑤
         _pageController.nextPage(
           duration: const Duration(milliseconds: 500),
@@ -52,7 +54,7 @@ class _CarouselState extends State<Carousel> {
           children: widget.pages,
         ),
         Align(
-          alignment: Alignment(0, .95),
+          alignment: const Alignment(0, .95),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(

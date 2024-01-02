@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
+import 'package:reelproject/component/listView/carousel.dart';
 
 class JobPostDetail extends StatefulWidget {
   const JobPostDetail({
@@ -152,11 +153,21 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
                     //画像
                     Stack(children: [
-                      Container(
-                        alignment: Alignment.topRight,
+                      SizedBox(
                         height: width * 0.6,
-                        //width: width,
-                        color: Colors.blue,
+                        width: width,
+                        child: Carousel(
+                          pages: [
+                            for (int i = 0; i < 5; i++)
+                              Container(
+                                alignment: Alignment.topRight,
+                                height: width * 0.6,
+                                //width: width,
+                                color: Colors.blue,
+                              ),
+                          ],
+                          timeJedge: true,
+                        ),
                       ),
                     ]),
                     //タイトル
