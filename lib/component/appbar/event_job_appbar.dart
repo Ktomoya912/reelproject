@@ -127,6 +127,8 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                   controller: _controller,
                   //検索バーの装飾
                   decoration: InputDecoration(
+                    //影
+
                     //背景色
                     fillColor: store.thinColor,
                     filled: true,
@@ -180,7 +182,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(80, 40), //最小サイズ
-                            elevation: 0, //影の濃さ
+                            //elevation: 20, //影の濃さ
                             backgroundColor: store.thinColor,
                             foregroundColor: store.blackColor,
                             shape: const StadiumBorder(),
