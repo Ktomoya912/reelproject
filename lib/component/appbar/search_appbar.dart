@@ -41,9 +41,18 @@ class SearchAppbarState extends State<SearchAppbar> {
                   SearchPage(
                 text: text,
                 eventJobJedge: widget.eventJobJedge,
+                sort: "新着順",
               ),
             ));
       }
+    });
+  }
+
+  //並び順
+  String sort = "新着順";
+  void changeSort(String sortTitle) {
+    setState(() {
+      sort = sortTitle;
     });
   }
 
@@ -113,11 +122,120 @@ class SearchAppbarState extends State<SearchAppbar> {
 
             //タイトルバー
             Expanded(
-                child: Container(
-              width: widget.mediaQueryData.size.width,
-              color: store.thinColor,
-              child: Center(child: Text(widget.title)),
-            )),
+              child: Container(
+                  width: widget.mediaQueryData.size.width,
+                  color: store.thinColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        //右寄せ
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Icon(Icons.menu, color: store.thinColor, size: 30),
+                          Text(
+                            sort,
+                            style: TextStyle(
+                              color: store.thinColor,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          const Text("「"),
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: widget.mediaQueryData.size.width / 5,
+                            ),
+                            child: Text(
+                              widget.title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                          const Text("」検索結果"),
+                        ],
+                      ),
+
+                      //並べ替え
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            child: Row(
+                              //右寄せ
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Icon(Icons.sort,
+                                    color: Colors.grey[700], size: 30),
+                                Text(
+                                  sort,
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onPressed: () {
+                              showModalBottomSheet<int>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SingleChildScrollView(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        ListTile(
+                                            leading: const Icon(Icons.schedule),
+                                            title: const Text('新着順'),
+                                            onTap: () => {
+                                                  Navigator.pop(context, 0),
+                                                  changeSort("新着順"),
+                                                }),
+                                        if (widget.eventJobJedge == "おすすめイベント")
+                                          ListTile(
+                                              leading:
+                                                  const Icon(Icons.schedule),
+                                              title: const Text('開催期間順'),
+                                              onTap: () => {
+                                                    Navigator.pop(context, 1),
+                                                    changeSort("開催期間順"),
+                                                  }),
+                                        if (widget.eventJobJedge == "おすすめ求人")
+                                          ListTile(
+                                              leading: const Icon(
+                                                  Icons.attach_money),
+                                              title: const Text('時給順'),
+                                              onTap: () => {
+                                                    Navigator.pop(context, 1),
+                                                    changeSort("時給順"),
+                                                  }),
+                                        ListTile(
+                                            leading: const Icon(Icons.favorite),
+                                            title: const Text('いいね数順'),
+                                            onTap: () => {
+                                                  Navigator.pop(context, 2),
+                                                  changeSort("いいね数順"),
+                                                }),
+                                        ListTile(
+                                            leading: const Icon(Icons.star),
+                                            title: const Text('レビュー順'),
+                                            onTap: () => {
+                                                  Navigator.pop(context, 2),
+                                                  changeSort("レビュー順"),
+                                                }),
+                                      ],
+                                    ));
+                                  });
+                            }),
+                      ),
+                    ],
+                  )),
+            )
           ],
         ),
       ),

@@ -76,6 +76,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                   SearchPage(
                 text: text,
                 eventJobJedge: widget.title,
+                sort: "新着順",
               ),
             ));
       }
