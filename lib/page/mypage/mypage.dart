@@ -271,7 +271,7 @@ class GeneralMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 280,
+            height: 250,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -320,7 +320,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 400,
+            height: 380,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,
@@ -366,7 +366,7 @@ class MyPageListView extends StatelessWidget {
   final String tagTitle;
 
   static double widthPower = 11 / 12; //横幅の倍率定数
-  static double lineWidth = 1.3; //線の太さ定数
+  static double lineWidth = 0.8; //線の太さ定数
 
   @override
   Widget build(BuildContext context) {
@@ -385,7 +385,9 @@ class MyPageListView extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: store.greyColor, width: lineWidth), //リストを区別する線
+                  color: store.greyColor,
+                  width: lineWidth,
+                ), //リストを区別する線
               ),
             ),
             child: Row(

@@ -239,7 +239,7 @@ class FavoriteHistoryList extends StatelessWidget {
   final List<Map<String, dynamic>> list;
 
   static double widthPower = 11 / 12; //横幅の倍率定数
-  static double lineWidth = 1.3; //線の太さ定数
+  static double lineWidth = 0.5; //線の太さ定数
 
   @override
   Widget build(BuildContext context) {

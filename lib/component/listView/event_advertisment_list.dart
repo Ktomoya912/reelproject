@@ -14,7 +14,7 @@ class EventAdvertisementList extends StatelessWidget {
   final List<Map<String, dynamic>> advertisementList;
   final MediaQueryData mediaQueryData;
 
-  static double lineWidth = 1.3; //線の太さ定数
+  static double lineWidth = 0.7; //線の太さ定数
 
   static String dayString = "開催日     : ";
   static String timeString = "開催時間 : ";
