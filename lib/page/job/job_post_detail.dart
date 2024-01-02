@@ -166,7 +166,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                 color: Colors.blue,
                               ),
                           ],
-                          timeJedge: false,
+                          timeJedge: true,
                         ),
                       ),
                     ]),

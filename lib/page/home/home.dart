@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                       ],
-                      timeJedge: false,
+                      timeJedge: true,
                     ),
                   ),
                   SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
