@@ -129,7 +129,7 @@ class _HomeState extends State<Home> {
             ),
             child: SizedBox(
               width: width,
-              height: mediaQueryData.size.height * 1.3,
+              //height: mediaQueryData.size.height * 1.3,
               child: Column(
                 //mainAxisSize: MainAxisSize.min, //横方向に真ん中
                 crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                       ],
-                      timeJedge: true,
+                      timeJedge: false,
                     ),
                   ),
                   SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
@@ -202,8 +202,9 @@ class _HomeState extends State<Home> {
                   SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
                   //閲覧履歴
                   SizedBox(
+                    //color: Colors.blue,
                     width: width,
-                    height: width * 0.7,
+                    height: width * 0.63,
                     child: Column(
                       children: [
                         const Row(
