@@ -102,7 +102,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
