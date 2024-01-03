@@ -132,7 +132,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 color: Colors.blue,
                               ),
                           ],
-                          timeJedge: true,
+                          timeJedge: false,
                         ),
                       ),
                     ]),
