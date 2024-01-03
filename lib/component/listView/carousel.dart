@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+//import 'dart:async';
 
 class Carousel extends StatefulWidget {
   const Carousel({
@@ -17,23 +17,23 @@ class Carousel extends StatefulWidget {
 class _CarouselState extends State<Carousel> {
   final _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
-  @override
-  void initState() {
-    // ④
-    super.initState();
+  // @override
+  // void initState() {
+  //   // ④
+  //   super.initState();
 
-    Timer.periodic(const Duration(seconds: 7), (Timer timer) {
-      if (_currentPage < widget.pages.length - 1 && widget.timeJedge) {
-        // ⑤
-        _pageController.nextPage(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-        );
-      } else {
-        _pageController.jumpToPage(0); // ⑥
-      }
-    });
-  }
+  //   Timer.periodic(const Duration(seconds: 7), (Timer timer) {
+  //     if (_currentPage < widget.pages.length - 1 && widget.timeJedge) {
+  //       // ⑤
+  //       _pageController.nextPage(
+  //         duration: const Duration(milliseconds: 500),
+  //         curve: Curves.ease,
+  //       );
+  //     } else {
+  //       _pageController.jumpToPage(0); // ⑥
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
