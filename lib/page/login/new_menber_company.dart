@@ -50,6 +50,10 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
             const Padding(
               padding: EdgeInsets.all(20.0),
             ),
+            //空白
+            const SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -104,6 +108,10 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
             ),
             const SizedBox(
               height: 20,
+            ),
+            //空白
+            const SizedBox(
+              height: 30,
             ),
           ],
         ),

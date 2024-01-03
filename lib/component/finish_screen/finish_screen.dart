@@ -108,6 +108,10 @@ class FinishScreen extends StatelessWidget {
                 height: 30,
               ),
               questionButtonWidget,
+              //空白
+              const SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),
