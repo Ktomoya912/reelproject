@@ -27,7 +27,7 @@ class ChangeToggleButton with ChangeNotifier {
 }
 
 //ToggleButtonを作成するクラス
-class ToggleButton extends StatelessWidget {
+class ToggleButton extends StatefulWidget {
   final MediaQueryData mediaQueryData;
   final String leftTitle;
   final String rightTitle;
@@ -42,46 +42,86 @@ class ToggleButton extends StatelessWidget {
   });
 
   @override
+  State<ToggleButton> createState() => _ToggleButtonState();
+}
+
+class _ToggleButtonState extends State<ToggleButton>
+    with TickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final toggleStore = Provider.of<ChangeToggleButton>(context); //プロバイダ
     final colorStore = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    return Container(
-        height: height, //高さ
-        //下線
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: colorStore.greyColor),
-          ),
+    return TabBar.secondary(
+      controller: _tabController,
+      labelColor: colorStore.mainColor, //選択されているときの色
+      unselectedLabelColor: colorStore.greyColor, //選択されていないときの色
+      indicatorColor: colorStore.mainColor, //選択されているときの背景色
+      indicatorWeight: 2, //選択されているときの背景色の太さ
+      labelStyle: const TextStyle(
+          fontWeight: FontWeight.bold, fontSize: 15), //選択されているときの文字の太さ
+
+      tabs: <Widget>[
+        Tab(
+          text: widget.leftTitle,
         ),
-        child: ToggleButtons(
-            //ボタンの文字と枠
-            color: colorStore.greyColor, //選択されていないときの色
-            selectedColor: colorStore.mainColor, //選択されているときの色
-            fillColor: colorStore.thinColor, //選択されているときの背景色
-            borderColor: colorStore.thinColor, //枠線の色
-            //selectedBorderColor: colorStore.thinColor, //選択時の枠線の色
-            //borderWidth: 0, //枠線の太さ
-            renderBorder: false, //枠線なし
-            //ボタン選択関連
-            isSelected: toggleStore._toggleList, //ボタンが反応しているか否か
-            //ボタンが押された時の動作
-            onPressed: (index) {
-              toggleStore.changeToggleList(index);
-            },
-            //ボタンの文字と枠
-            children: <Widget>[
-              SizedBox(
-                  width: mediaQueryData.size.width / 2,
-                  child: Center(
-                      child: Text(leftTitle,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)))),
-              SizedBox(
-                  width: mediaQueryData.size.width / 2,
-                  child: Center(
-                      child: Text(rightTitle,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15))))
-            ]));
+        Tab(text: widget.rightTitle),
+      ],
+      onTap: (value) => {
+        toggleStore.changeToggleList(value),
+        _tabController.animateTo(value),
+      },
+    );
+    // return Container(
+    //     height: widget.height, //高さ
+    //     //下線
+    //     decoration: BoxDecoration(
+    //       border: Border(
+    //         bottom: BorderSide(color: colorStore.greyColor),
+    //       ),
+    //     ),
+    //     child: ToggleButtons(
+    //         //ボタンの文字と枠
+    //         color: colorStore.greyColor, //選択されていないときの色
+    //         selectedColor: colorStore.mainColor, //選択されているときの色
+    //         fillColor: colorStore.thinColor, //選択されているときの背景色
+    //         borderColor: colorStore.thinColor, //枠線の色
+    //         //selectedBorderColor: colorStore.thinColor, //選択時の枠線の色
+    //         //borderWidth: 0, //枠線の太さ
+    //         renderBorder: false, //枠線なし
+    //         //ボタン選択関連
+    //         isSelected: toggleStore._toggleList, //ボタンが反応しているか否か
+    //         //ボタンが押された時の動作
+    //         onPressed: (index) {
+    //           toggleStore.changeToggleList(index);
+    //         },
+    //         //ボタンの文字と枠
+    //         children: <Widget>[
+    //           SizedBox(
+    //               width: widget.mediaQueryData.size.width / 2,
+    //               child: Center(
+    //                   child: Text(widget.leftTitle,
+    //                       style: const TextStyle(
+    //                           fontWeight: FontWeight.bold, fontSize: 15)))),
+    //           SizedBox(
+    //               width: widget.mediaQueryData.size.width / 2,
+    //               child: Center(
+    //                   child: Text(widget.rightTitle,
+    //                       style: const TextStyle(
+    //                           fontWeight: FontWeight.bold, fontSize: 15))))
+    //         ]));
   }
 }
