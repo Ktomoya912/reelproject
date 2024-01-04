@@ -129,6 +129,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         eventJobJedge: "job",
         postTerm: jobDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
+        notPostJedge: jobDetailList["notPost"],
       ),
       //body
       body: ShaderMaskComponent(

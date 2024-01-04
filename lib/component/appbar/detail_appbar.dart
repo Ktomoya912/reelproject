@@ -7,6 +7,7 @@ import '../../page/mypage/impression.dart';
 import '../../page/Job/post_mem_list.dart';
 import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
 import 'package:reelproject/overlay/rule/screen/job_app.dart';
+import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({
@@ -15,12 +16,14 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
     required this.eventJobJedge,
     required this.postTerm,
     required this.mediaQueryData,
+    required this.notPostJedge,
   });
 
   final bool postJedge;
   final String eventJobJedge;
   final String postTerm;
   final MediaQueryData mediaQueryData;
+  final bool notPostJedge;
 
   static Color greyColor = Colors.grey[500]!;
 
@@ -203,7 +206,14 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                       title: const Text('投稿削除'),
                                       onTap: () => {
                                         //Navigator.of(context).pop(3),
-                                        DeleteConf().show(context: context)
+
+                                        //投稿削除
+                                        if (notPostJedge)
+                                          DeleteConf().show(context: context)
+                                        //未投稿削除
+                                        else
+                                          NotpostDeleteConf()
+                                              .show(context: context)
                                       },
                                     ),
                                   ),

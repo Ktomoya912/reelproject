@@ -96,6 +96,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
         eventJobJedge: "event",
         postTerm: eventDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
+        notPostJedge: eventDetailList["notPost"],
       ),
       //body
       body: ShaderMaskComponent(

@@ -6,6 +6,7 @@ import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -82,7 +83,21 @@ class NotpostDeleteConf {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            // ボタンが押されたときの処理をここに追加予定
+                            NotpostDeleteConf().hide();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const FinishScreen(
+                                  appbarText: "未投稿削除完了",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "未投稿削除完了しました",
+                                  text:
+                                      "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
+                                  buttonText:
+                                      "マイページに戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                  jedgeBottomAppBar: false,
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
