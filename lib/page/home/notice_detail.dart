@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 //import '/provider/change_general_corporation.dart';
 import '../../component/appbar/title_appbar.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 //通知詳細クラス
 //このクラスをpopすると任意の通知内容を開くことができる
@@ -54,32 +55,34 @@ class NoticeContent extends StatelessWidget {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //サイズ取得
     return
         //スクロール
-        SingleChildScrollView(
-            //上に空間
-            child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      //真ん中に
-      child: Center(
-        //横に空間を開けるため
-        child: SizedBox(
-            width: mediaQueryData.size.width - 100, //横の空間の合計だけ引く
-            child: Column(
-                //左詰め
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //タイトル
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    //内容
-                    child: Text(content),
-                  )
-                ])),
-      ),
-    ));
+        ShaderMaskComponent(
+      child: SingleChildScrollView(
+          //上に空間
+          child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        //真ん中に
+        child: Center(
+          //横に空間を開けるため
+          child: SizedBox(
+              width: mediaQueryData.size.width - 100, //横の空間の合計だけ引く
+              child: Column(
+                  //左詰め
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //タイトル
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      //内容
+                      child: Text(content),
+                    )
+                  ])),
+        ),
+      )),
+    );
   }
 }

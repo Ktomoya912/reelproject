@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:reelproject/component/listView/event_advertisment_list.dart';
 import 'package:reelproject/component/appbar/search_appbar.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -102,19 +103,21 @@ class _SearchPageState extends State<SearchPage> {
           mediaQueryData: mediaQueryData,
           eventJobJedge: widget.eventJobJedge,
         ),
-        body: Column(
-          children: [
-            if (widget.eventJobJedge == "おすすめイベント")
-              EventAdvertisementList(
-                advertisementList: eventAdvertisementList,
-                mediaQueryData: mediaQueryData,
-              )
-            else if (widget.eventJobJedge == "おすすめ求人")
-              JobAdvertisementList(
-                advertisementList: jobAdvertisementList,
-                mediaQueryData: mediaQueryData,
-              )
-          ],
+        body: ShaderMaskComponent(
+          child: Column(
+            children: [
+              if (widget.eventJobJedge == "おすすめイベント")
+                EventAdvertisementList(
+                  advertisementList: eventAdvertisementList,
+                  mediaQueryData: mediaQueryData,
+                )
+              else if (widget.eventJobJedge == "おすすめ求人")
+                JobAdvertisementList(
+                  advertisementList: jobAdvertisementList,
+                  mediaQueryData: mediaQueryData,
+                )
+            ],
+          ),
         ));
   }
 }

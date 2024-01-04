@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 //push先
 import 'general_mem_inf_conf.dart'; //会員情報確認
 import 'company_mem_inf_conf.dart'; //会員情報確認
@@ -205,43 +206,46 @@ class ScrollMyPageDetail extends StatelessWidget {
           store: store,
           mypageList: companyMypageMap);
     }
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: [
-            //上のアイコン部分
-            //上に空白
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    height: 150, //アイコン高さ
-                    width: 150, //アイコン幅
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, //円形に
-                        color: store.subColor), //アイコン周囲円の色
-                  ),
-                ],
+    return ShaderMaskComponent(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              //上のアイコン部分
+              //上に空白
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: 150, //アイコン高さ
+                      width: 150, //アイコン幅
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, //円形に
+                          color: store.subColor), //アイコン周囲円の色
+                    ),
+                  ],
+                ),
               ),
-            ),
-            //アイコンと名前の間に空白
-            const Padding(
-              padding: EdgeInsets.all(4.0),
-              child: Text("ユーザ名",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-            ), //ユーザー名
-            //空白
-            const SizedBox(
-              height: 30,
-            ),
-            //下の詳細部分
-            //アイコン部分との空白
-            generalCompanyMypageList,
-          ],
+              //アイコンと名前の間に空白
+              const Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Text("ユーザ名",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              ), //ユーザー名
+              //空白
+              const SizedBox(
+                height: 30,
+              ),
+              //下の詳細部分
+              //アイコン部分との空白
+              generalCompanyMypageList,
+            ],
+          ),
         ),
       ),
     );

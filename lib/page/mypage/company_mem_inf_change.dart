@@ -6,6 +6,7 @@ import '/provider/change_general_corporation.dart';
 import '../../component/form/company_form.dart';
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 //push先
 
 @RoutePage()
@@ -47,86 +48,88 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
-    return SingleChildScrollView(
-        child: Center(
-      child: Column(
-        children: [
-          //上のアイコン部分
-          //上に空白
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  height: 150, //アイコン高さ
-                  width: 150, //アイコン幅
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, //円形に
-                      color: store.subColor), //アイコン周囲円の色
-                ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const PassChange(
-                    loginJedge: false,
-                  ), //写真編集画面を作成する必要あり
-                ),
-              );
-            },
-            splashColor: Colors.transparent,
-            child: const Text(
-              '写真を編集する',
-              style: TextStyle(color: Colors.blue),
-            ),
-          ),
-
-          //アイコンと名前の間に空白
-
-          //空白
-          const SizedBox(
-            height: 30,
-          ),
-          //下の詳細部分
-          //アイコン部分との空白
-
-          const CompanyForm(enable: false),
-
-          //空白
-          const SizedBox(
-            height: 50,
-          ),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MyPage(),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: store.mainColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+    return ShaderMaskComponent(
+      child: SingleChildScrollView(
+          child: Center(
+        child: Column(
+          children: [
+            //上のアイコン部分
+            //上に空白
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 150, //アイコン高さ
+                    width: 150, //アイコン幅
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, //円形に
+                        color: store.subColor), //アイコン周囲円の色
+                  ),
+                ],
               ),
-              minimumSize: const Size(300, 50),
             ),
-            child: const Text('編集内容を決定'),
-          ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PassChange(
+                      loginJedge: false,
+                    ), //写真編集画面を作成する必要あり
+                  ),
+                );
+              },
+              splashColor: Colors.transparent,
+              child: const Text(
+                '写真を編集する',
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
 
-          const Padding(padding: EdgeInsets.all(10)),
-        ],
-      ),
-    ));
+            //アイコンと名前の間に空白
+
+            //空白
+            const SizedBox(
+              height: 30,
+            ),
+            //下の詳細部分
+            //アイコン部分との空白
+
+            const CompanyForm(enable: false),
+
+            //空白
+            const SizedBox(
+              height: 50,
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: store.mainColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                minimumSize: const Size(300, 50),
+              ),
+              child: const Text('編集内容を決定'),
+            ),
+
+            const Padding(padding: EdgeInsets.all(10)),
+          ],
+        ),
+      )),
+    );
   }
 }
 

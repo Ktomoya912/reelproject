@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 //求人ページ
 @RoutePage()
@@ -91,13 +92,15 @@ class _JobState extends State<Job> {
           title: "おすすめ求人",
           mediaQueryData: mediaQueryData,
         ),
-        body: Column(
-          children: [
-            JobAdvertisementList(
-              advertisementList: advertisementList,
-              mediaQueryData: mediaQueryData,
-            ),
-          ],
+        body: ShaderMaskComponent(
+          child: Column(
+            children: [
+              JobAdvertisementList(
+                advertisementList: advertisementList,
+                mediaQueryData: mediaQueryData,
+              ),
+            ],
+          ),
         ));
   }
 }

@@ -10,6 +10,7 @@ import 'package:reelproject/page/mypage/favorite_list.dart';
 import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -108,158 +109,164 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      //アップバー
-      appBar: const MainAppBar(nextPage: Notice()),
-      body: SingleChildScrollView(
-        // SingleChildScrollViewで子ウィジェットをラップ
-        child: Center(
-          child: Container(
-            width: width + (widthBlank / 8) + blank,
-            decoration: const BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  color: Color.fromARGB(255, 207, 207, 207),
-                  width: 2,
+        //アップバー
+        appBar: const MainAppBar(nextPage: Notice()),
+        body: ShaderMaskComponent(
+          child: SingleChildScrollView(
+            // SingleChildScrollViewで子ウィジェットをラップ
+            child: Center(
+              child: Container(
+                width: width + (widthBlank / 8) + blank,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: Color.fromARGB(255, 207, 207, 207),
+                      width: 2,
+                    ),
+                    left: BorderSide(
+                      color: Color.fromARGB(255, 207, 207, 207),
+                      width: 2,
+                    ),
+                  ), // 枠線の幅を設定
                 ),
-                left: BorderSide(
-                  color: Color.fromARGB(255, 207, 207, 207),
-                  width: 2,
-                ),
-              ), // 枠線の幅を設定
-            ),
-            child: SizedBox(
-              width: width,
+                child: SizedBox(
+                  width: width,
 
-              //height: mediaQueryData.size.height * 1.3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
-                children: [
-                  SizedBox(height: mediaQueryData.size.height / 30), //空間
-                  //注目イベント、求人コーナー
-                  SizedBox(
-                    height: width / 10 * 7,
-                    width: width,
-                    child: Carousel(
-                      pages: [
-                        for (int i = 0; i < 5; i++)
-                          Container(
-                            height: width / 10 * 7,
-                            width: width,
-                            decoration: BoxDecoration(
-                              color: store.subColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                      ],
-                      timeJedge: false,
-                    ),
-                  ),
-                  SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
-                  //中央ボタン
-                  //一般ボタン
-                  if (store.jedgeGC)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄せ
-                      children: [
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["general"]?[0],
-                        ),
-                        SizedBox(width: centerButtonSize), //ボタン間の空間
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["general"]?[1],
-                        ),
-                        SizedBox(width: centerButtonSize), //ボタン間の空間
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["general"]?[2],
-                        ),
-                      ],
-                    )
-                  //法人ボタン
-                  else
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄せ
-                      children: [
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["company"]?[0],
-                        ),
-                        SizedBox(width: centerButtonSize), //ボタン間の空間
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["company"]?[1],
-                        ),
-                        SizedBox(width: centerButtonSize), //ボタン間の空間
-                        CenterButton(
-                          centerButtonSize: centerButtonSize,
-                          buttonList: buttonList["company"]?[2],
-                        ),
-                      ],
-                    ),
-                  SizedBox(height: mediaQueryData.size.height / 25), //ボタン間の空間
-                  //閲覧履歴
-                  SizedBox(
-                    //color: Colors.blue,
-                    width: width,
-                    height: width * 0.75,
-                    child: Column(
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("閲覧履歴"),
-                          ],
-                        ),
-                        //全ての閲覧履歴を見るボタン
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                foregroundColor: store.mainColor,
+                  //height: mediaQueryData.size.height * 1.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
+                    children: [
+                      SizedBox(height: mediaQueryData.size.height / 30), //空間
+                      //注目イベント、求人コーナー
+                      SizedBox(
+                        height: width / 10 * 7,
+                        width: width,
+                        child: Carousel(
+                          pages: [
+                            for (int i = 0; i < 5; i++)
+                              Container(
+                                height: width / 10 * 7,
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: store.subColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
-                              child: const Text('全ての閲覧履歴を見る'),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                        pageBuilder: (context, animation,
-                                                secondaryAnimation) =>
-                                            const WatchHistory()));
-                              },
+                          ],
+                          timeJedge: false,
+                        ),
+                      ),
+                      SizedBox(
+                          height: mediaQueryData.size.height / 25), //ボタン間の空間
+                      //中央ボタン
+                      //一般ボタン
+                      if (store.jedgeGC)
+                        Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center, //横方向真ん中寄せ
+                          children: [
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["general"]?[0],
+                            ),
+                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["general"]?[1],
+                            ),
+                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["general"]?[2],
+                            ),
+                          ],
+                        )
+                      //法人ボタン
+                      else
+                        Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center, //横方向真ん中寄せ
+                          children: [
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["company"]?[0],
+                            ),
+                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["company"]?[1],
+                            ),
+                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            CenterButton(
+                              centerButtonSize: centerButtonSize,
+                              buttonList: buttonList["company"]?[2],
                             ),
                           ],
                         ),
-                        SizedBox(
-                            height: mediaQueryData.size.height / 200), //ボタン間の空間
-                        //閲覧履歴リスト
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              //履歴の数だけボタンを作成
-                              for (int i = 0; i < historyList.length; i++)
-                                HistoryButton(
-                                    mediaQueryData: mediaQueryData,
-                                    width: width,
-                                    store: store,
-                                    historyList: historyList,
-                                    i: i),
-                            ],
-                          ),
+                      SizedBox(
+                          height: mediaQueryData.size.height / 25), //ボタン間の空間
+                      //閲覧履歴
+                      SizedBox(
+                        //color: Colors.blue,
+                        width: width,
+                        height: width * 0.75,
+                        child: Column(
+                          children: [
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("閲覧履歴"),
+                              ],
+                            ),
+                            //全ての閲覧履歴を見るボタン
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: store.mainColor,
+                                  ),
+                                  child: const Text('全ての閲覧履歴を見る'),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                            pageBuilder: (context, animation,
+                                                    secondaryAnimation) =>
+                                                const WatchHistory()));
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                                height:
+                                    mediaQueryData.size.height / 200), //ボタン間の空間
+                            //閲覧履歴リスト
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  //履歴の数だけボタンを作成
+                                  for (int i = 0; i < historyList.length; i++)
+                                    HistoryButton(
+                                        mediaQueryData: mediaQueryData,
+                                        width: width,
+                                        store: store,
+                                        historyList: historyList,
+                                        i: i),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -434,37 +441,40 @@ class CenterButton extends StatelessWidget {
         Ink(
           height: centerButtonSize, //高さ
           width: centerButtonSize, //幅
-          //円の装飾
-          decoration: ShapeDecoration(
-            color: store.subColor,
-            shape: const CircleBorder(), //円形
-            //影
-            shadows: [
-              BoxShadow(
-                color: Colors.grey[400]!,
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: const Offset(2, 2),
-              ),
-            ],
-          ),
+
           //円の中のアイコン
-          child: SizedBox(
-            child: IconButton(
-              icon: Icon(
-                buttonList?["icon"],
-                size: centerButtonSize * (2 / 3),
-                color: store.blackColor,
-              ), //アイコン
-              color: Colors.white,
-              //ボタンを押した時の動作
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            buttonList?["push"]));
-              },
+          child: Container(
+            decoration: ShapeDecoration(
+              color: store.subColor,
+              shape: const CircleBorder(), //円形
+              //影
+              shadows: [
+                BoxShadow(
+                  color: Colors.grey[400]!,
+                  spreadRadius: 0,
+                  blurRadius: 8,
+                  offset: const Offset(2, 2),
+                ),
+              ],
+            ),
+            child: SizedBox(
+              child: IconButton(
+                icon: Icon(
+                  buttonList?["icon"],
+                  size: centerButtonSize * (2 / 3),
+                  color: store.blackColor,
+                ), //アイコン
+                color: Colors.white,
+                //ボタンを押した時の動作
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  buttonList?["push"]));
+                },
+              ),
             ),
           ),
         ),
