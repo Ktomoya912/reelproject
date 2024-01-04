@@ -87,9 +87,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": const AskPage(
-          loginJedge: false,
-        ),
+        "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
       },
       {
         "title": "利用規約",
@@ -166,9 +164,7 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": const AskPage(
-          loginJedge: false,
-        ),
+        "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
       },
       {
         "title": "利用規約",

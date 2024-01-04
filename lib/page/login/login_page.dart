@@ -175,6 +175,7 @@ class LoginPageState extends State<LoginPage> {
                         // builder: (context) => const ForgotPasswordPage()),
                         builder: (context) => const AskPage(
                               loginJedge: true,
+                              buttonTex: 'ログイン画面に戻る',
                             )),
                   );
                 },

@@ -8,12 +8,10 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 
 class AskPage extends StatefulWidget {
-  const AskPage({
-    super.key,
-    required this.loginJedge,
-  });
+  const AskPage({super.key, required this.loginJedge, required this.buttonTex});
 
   final bool loginJedge;
+  final String buttonTex;
 
   @override
   AskPageState createState() => AskPageState();
@@ -87,9 +85,7 @@ class AskPageState extends State<AskPage> {
                         finishText: "送信完了",
                         text:
                             "この度はお問い合わせいただきまして、\n誠にありがとうございました。\n弊社から折り返しご連絡を差し上げますので、\n今しばらくお待ちください。\nお問い合わせから１週間以上弊社からの返信がない場合は、メールのトラブルなどが考えられますので、再度お問い合わせいただくようお願いします。",
-                        buttonText: widget.loginJedge == true
-                            ? "ログイン画面に戻る"
-                            : "マイページに戻る",
+                        buttonText: widget.buttonTex,
                         jedgeBottomAppBar: widget.loginJedge,
                       ),
                     ),
