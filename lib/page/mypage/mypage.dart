@@ -11,7 +11,7 @@ import 'watch_history.dart'; //閲覧履歴
 import 'favorite_list.dart'; //お気に入りリスト
 import 'no_post_list.dart'; //投稿なしリスト
 import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
-import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
+//import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
 import 'apply_conf.dart'; //応募者確認
 
@@ -125,11 +125,11 @@ class ScrollMyPageDetail extends StatelessWidget {
         "icon": Icons.summarize,
         "push": PostedList(),
       },
-      {
-        "title": "応募者確認",
-        "icon": Icons.manage_search,
-        "push": ApplyConf(),
-      },
+      // {
+      //   "title": "応募者確認",
+      //   "icon": Icons.manage_search,
+      //   "push": ApplyConf(),
+      // },
       {
         "title": "未振り込み投稿一覧",
         "icon": Icons.money_off,
@@ -320,7 +320,7 @@ class CompanyMypage extends StatelessWidget {
             )),
         SizedBox(
             width: mediaQueryData.size.width,
-            height: 400,
+            height: 320,
             child: MyPageListView(
               mediaQueryData: mediaQueryData,
               store: store,

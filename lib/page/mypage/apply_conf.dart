@@ -21,6 +21,16 @@ class ApplyConfState extends State<ApplyConf> {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
+    MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+
+    //横画面サイズにより幅設定
+    double widthBlank = (mediaQueryData.size.width / 2) - 300;
+    if (widthBlank < 0) {
+      widthBlank = 0;
+    }
+    double blank = mediaQueryData.size.width / 20;
+    double width = mediaQueryData.size.width - (widthBlank * 2) - blank;
+
     return Scaffold(
       appBar: const TitleAppBar(
         title: "応募者プロフィール",
@@ -34,7 +44,7 @@ class ApplyConfState extends State<ApplyConf> {
             children: <Widget>[
               const SizedBox(height: 20),
               Container(
-                width: 400,
+                width: width,
                 height: 240,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -56,6 +66,7 @@ class ApplyConfState extends State<ApplyConf> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     // ----------応募者情報表示部分（アイコンなど）----------
                     children: [
                       const SizedBox(width: 10),
@@ -168,7 +179,7 @@ class ApplyConfState extends State<ApplyConf> {
                 height: 50,
               ),
               SizedBox(
-                width: 400,
+                width: width,
                 child: Text(
                   '求人広告に対して応募を行ったユーザーのプロフィールです。\n 雇用を行いたい、または面接を行いたいなどといった場合には、上記のメールアドレスへ連絡を行ってください。\n　\nまた、実際に雇用が決定されましたら、以下の確認ボタンを押してください。\n残念ながら不採用となってしまった際には以下のキャンセルボタンを押してください。',
                   style: TextStyle(
@@ -181,7 +192,7 @@ class ApplyConfState extends State<ApplyConf> {
                 height: 50,
               ),
               SizedBox(
-                width: 400,
+                width: width,
                 child: Row(
                   children: [
                     ElevatedButton(
@@ -207,7 +218,7 @@ class ApplyConfState extends State<ApplyConf> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        minimumSize: const Size(195, 60),
+                        minimumSize: Size(width / 2 - 5, 60),
                         backgroundColor: store.mainColor,
                       ),
                       child: const Text('送信する',
@@ -227,7 +238,7 @@ class ApplyConfState extends State<ApplyConf> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        minimumSize: const Size(195, 60),
+                        minimumSize: Size(width / 2 - 5, 60),
                         backgroundColor: store.greyColor,
                       ),
                       child: const Text('キャンセル',
