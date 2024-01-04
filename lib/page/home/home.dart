@@ -33,11 +33,11 @@ class _HomeState extends State<Home> {
   Map<String, List<Map<String, dynamic>>> buttonList = {
     //一般ボタンリスト
     "general": [
-      {
-        "title": "閲覧履歴",
-        "icon": Icons.history,
-        "push": const WatchHistory(),
-      },
+      // {
+      //   "title": "閲覧履歴",
+      //   "icon": Icons.history,
+      //   "push": const WatchHistory(),
+      // },
       {
         "title": "お気に入り",
         "icon": Icons.favorite,
@@ -170,16 +170,16 @@ class _HomeState extends State<Home> {
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[0],
                             ),
-                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            SizedBox(width: centerButtonSize * 1.5), //ボタン間の空間
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[1],
                             ),
-                            SizedBox(width: centerButtonSize), //ボタン間の空間
-                            CenterButton(
-                              centerButtonSize: centerButtonSize,
-                              buttonList: buttonList["general"]?[2],
-                            ),
+                            // SizedBox(width: centerButtonSize), //ボタン間の空間
+                            // CenterButton(
+                            //   centerButtonSize: centerButtonSize,
+                            //   buttonList: buttonList["general"]?[2],
+                            // ),
                           ],
                         )
                       //法人ボタン
