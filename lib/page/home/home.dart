@@ -133,7 +133,6 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
                 children: [
                   SizedBox(height: mediaQueryData.size.height / 30), //空間
-
                   //注目イベント、求人コーナー
                   SizedBox(
                     height: width / 10 * 7,
