@@ -5,6 +5,7 @@ import 'package:reelproject/component/appbar/detail_appbar.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/review.dart';
 import 'package:reelproject/component/listView/carousel.dart';
+import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 
 class EventPostDetail extends StatefulWidget {
   const EventPostDetail({
@@ -200,7 +201,21 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                   i < eventDetailList["tag"].length;
                                   i++)
                                 TextButton(
-                                    onPressed: () => {},
+                                    onPressed: () => {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation,
+                                                        secondaryAnimation) =>
+                                                    SearchPage(
+                                                  text: eventDetailList["tag"]
+                                                      [i],
+                                                  eventJobJedge: "おすすめイベント",
+                                                  sort: "新着順",
+                                                ),
+                                              ))
+                                        },
                                     child:
                                         Text("#${eventDetailList["tag"][i]}")),
                             ],

@@ -102,7 +102,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
@@ -188,7 +188,19 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                             foregroundColor: store.blackColor,
                             shape: const StadiumBorder(),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      SearchPage(
+                                    text: tag,
+                                    eventJobJedge: widget.title,
+                                    sort: "新着順",
+                                  ),
+                                ));
+                          },
                           child: Text(tag),
                         ),
                       ),
