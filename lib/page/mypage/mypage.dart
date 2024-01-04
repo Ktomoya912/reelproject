@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
+import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 //push先
 import 'general_mem_inf_conf.dart'; //会員情報確認
 import 'company_mem_inf_conf.dart'; //会員情報確認
@@ -54,13 +55,13 @@ class ScrollMyPageDetail extends StatelessWidget {
   });
 
   //一般向けマイページリスト
-  static const Map<String, List<Map<String, dynamic>>> generalMypageMap = {
+  static Map<String, List<Map<String, dynamic>>> generalMypageMap = {
     //ユーザ設定
     "settingList": [
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
-        "push": GeneralMemInfConf(),
+        "push": const GeneralMemInfConf(),
       },
     ],
     //メニュー
@@ -68,17 +69,17 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "閲覧履歴",
         "icon": Icons.history,
-        "push": WatchHistory(),
+        "push": const WatchHistory(),
       },
       {
         "title": "お気に入りリスト",
         "icon": Icons.favorite,
-        "push": FavoriteList(),
+        "push": const FavoriteList(),
       },
       {
         "title": "応募履歴",
         "icon": Icons.task,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       }
     ],
     //その他
@@ -86,36 +87,37 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": AskPage(
+        "push": const AskPage(
           loginJedge: false,
         ),
       },
       {
         "title": "利用規約",
         "icon": Icons.article,
-        "push": ApplyHist(),
+        "push": "overlay",
+        "overlay": RuleScreen(),
       },
       {
         "title": "ログアウト",
         "icon": Icons.logout,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
     ],
   };
 
   //法人向けマイページリスト
-  static const Map<String, List<Map<String, dynamic>>> companyMypageMap = {
+  static Map<String, List<Map<String, dynamic>>> companyMypageMap = {
     //ユーザ設定
     "settingList": [
       {
         "title": "会員情報確認・編集",
         "icon": Icons.manage_accounts,
-        "push": CompanyMemInfConf(),
+        "push": const CompanyMemInfConf(),
       },
     ],
     //投稿
@@ -123,12 +125,12 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
-        "push": EventFeeSelect(),
+        "push": const EventFeeSelect(),
       },
       {
         "title": "投稿一覧",
         "icon": Icons.summarize,
-        "push": PostedList(),
+        "push": const PostedList(),
       },
       // {
       //   "title": "応募者確認",
@@ -138,12 +140,12 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "未振り込み投稿一覧",
         "icon": Icons.money_off,
-        "push": NoPostList(),
+        "push": const NoPostList(),
       },
       {
         "title": "振込口座確認",
         "icon": Icons.payment,
-        "push": TransferTo(),
+        "push": const TransferTo(),
       },
     ],
     //メニュー
@@ -151,12 +153,12 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "閲覧履歴",
         "icon": Icons.history,
-        "push": WatchHistory(),
+        "push": const WatchHistory(),
       },
       {
         "title": "お気に入りリスト",
         "icon": Icons.favorite,
-        "push": FavoriteList(),
+        "push": const FavoriteList(),
       },
     ],
     //その他
@@ -164,24 +166,25 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": AskPage(
+        "push": const AskPage(
           loginJedge: false,
         ),
       },
       {
         "title": "利用規約",
         "icon": Icons.article,
-        "push": ApplyHist(),
+        "push": "overlay",
+        "overlay": RuleScreen(),
       },
       {
         "title": "ログアウト",
         "icon": Icons.logout,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
-        "push": ApplyHist(),
+        "push": const ApplyHist(),
       },
     ],
   };
@@ -437,12 +440,19 @@ class MyPageListView extends StatelessWidget {
                           horizontal: _mediaQueryData.size.width / 20 +
                               addWidth / 2), //タイル内の余白
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        list[index]["push"]));
+                        if (list[index]["push"] == "overlay") {
+                          list[index]["overlay"].show(
+                            //これでおーばーれい表示
+                            context: context,
+                          );
+                        } else {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      list[index]["push"]));
+                        }
                       }),
                   Container(
                     width: _mediaQueryData.size.width * widthPower - addWidth,
