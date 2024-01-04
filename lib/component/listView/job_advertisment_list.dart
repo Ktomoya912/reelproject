@@ -87,7 +87,7 @@ class JobAdvertisementList extends StatelessWidget {
     ],
 
     //この広告を投稿したか
-    "postJedge": true,
+    "postJedge": false,
 
     //掲載期間
     "postTerm": "2023年12月10日"

@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import '../../page/mypage/impression.dart';
 import '../../page/Job/post_mem_list.dart';
+import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
+import 'package:reelproject/overlay/rule/screen/job_app.dart';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({
@@ -199,7 +201,10 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                       tileColor: Colors.white, //背景
                                       leading: const Icon(Icons.delete),
                                       title: const Text('投稿削除'),
-                                      onTap: () => Navigator.of(context).pop(3),
+                                      onTap: () => {
+                                        //Navigator.of(context).pop(3),
+                                        DeleteConf().show(context: context)
+                                      },
                                     ),
                                   ),
                                   Container(
@@ -225,6 +230,10 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // print('Button pressed!');
+                        JobApp().show(
+                          //これでおーばーれい表示
+                          context: context,
+                        );
                       },
 
                       //色

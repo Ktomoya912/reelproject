@@ -6,6 +6,7 @@ import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -88,7 +89,20 @@ class JobApp {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            // ボタンが押されたときの処理をここに追加予定
+                            JobApp().hide();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const FinishScreen(
+                                  appbarText: "求人応募完了",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "求人応募が完了しました。",
+                                  text: "",
+                                  buttonText:
+                                      "求人画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                  jedgeBottomAppBar: false,
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
