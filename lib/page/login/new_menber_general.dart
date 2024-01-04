@@ -53,6 +53,10 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             const Padding(
               padding: EdgeInsets.all(20.0),
             ),
+            //空白
+            const SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,7 +107,11 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                 ),
                 minimumSize: const Size(300, 50),
               ),
-              child: const Text('同意する',style: TextStyle(color: Colors.white)),
+              child: const Text('同意する', style: TextStyle(color: Colors.white)),
+            ),
+            //空白
+            const SizedBox(
+              height: 30,
             ),
           ],
         ),

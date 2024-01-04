@@ -23,7 +23,7 @@ class ApplyConfState extends State<ApplyConf> {
 
     return Scaffold(
       appBar: const TitleAppBar(
-        title: "応募者確認",
+        title: "応募者プロフィール",
         jedgeBuck: true,
       ),
       body: SingleChildScrollView(
@@ -33,18 +33,25 @@ class ApplyConfState extends State<ApplyConf> {
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 20),
-              const Text(
-                '応募者プロフィール',
-              ),
-              const SizedBox(height: 20),
               Container(
                 width: 400,
                 height: 240,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(
-                    color: store.greyColor,
-                    width: 2,
+                    color: Colors.black,
+                    width: 0.1,
+                    //影
                   ),
+                  //影
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[400]!,
+                      spreadRadius: 0,
+                      blurRadius: 10,
+                      offset: const Offset(4, 4),
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -52,7 +59,7 @@ class ApplyConfState extends State<ApplyConf> {
                     // ----------応募者情報表示部分（アイコンなど）----------
                     children: [
                       const SizedBox(width: 10),
-                      Container(
+                      SizedBox(
                         child: Column(
                           children: [
                             const SizedBox(
@@ -65,14 +72,15 @@ class ApplyConfState extends State<ApplyConf> {
                                   shape: BoxShape.circle, //円形に
                                   color: store.subColor), //アイコン周囲円の色
                             ),
-                            Text('ユーザー名'), // 後にデータベースから取得したユーザー名を表示させるようにする
+                            const Text(
+                                'ユーザー名'), // 後にデータベースから取得したユーザー名を表示させるようにする
                           ],
                         ),
                       ),
                       const SizedBox(
                         width: 30,
                       ),
-                      Container(
+                      SizedBox(
                         // 後にデータベースから情報を取得しその内容を反映させるようにするのでconstにはしない
                         width: 160,
                         child: Column(
@@ -85,7 +93,7 @@ class ApplyConfState extends State<ApplyConf> {
                             Text(
                               'メールアドレス',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: store.greyColor,
                               ),
@@ -93,20 +101,20 @@ class ApplyConfState extends State<ApplyConf> {
                             const Text(
                               '　info@example.com',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: Colors.black,
                               ),
                             ),
                             Divider(
                               color: store.greyColor,
-                              thickness: 3,
+                              thickness: 1,
                               endIndent: 2,
                             ),
                             Text(
                               '生年月日',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: store.greyColor,
                               ),
@@ -114,20 +122,20 @@ class ApplyConfState extends State<ApplyConf> {
                             const Text(
                               '　◯年◯月◯日',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: Colors.black,
                               ),
                             ),
                             Divider(
                               color: store.greyColor,
-                              thickness: 3,
+                              thickness: 1,
                               endIndent: 2,
                             ),
                             Text(
                               '性別',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: store.greyColor,
                               ),
@@ -135,14 +143,14 @@ class ApplyConfState extends State<ApplyConf> {
                             const Text(
                               '　男性',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 15,
                                 color: Colors.black,
                               ),
                             ),
                             Divider(
                               color: store.greyColor,
-                              thickness: 3,
+                              thickness: 1,
                               endIndent: 2,
                             ),
                             const SizedBox(
@@ -157,22 +165,22 @@ class ApplyConfState extends State<ApplyConf> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 50,
               ),
               SizedBox(
-                width: 450,
+                width: 400,
                 child: Text(
-                  '求人広告に対して応募を行ったユーザーのプロフィールです。\n雇用を行いたい、または面接を行いたいなどといった場合には、上記のメールアドレスへ連絡を行ってください。\n　\nまた、実際に雇用が決定されましたら、以下の確認ボタンを押してください。\n残念ながら不採用となってしまった際には以下のキャンセルボタンを押してください。',
+                  '求人広告に対して応募を行ったユーザーのプロフィールです。\n 雇用を行いたい、または面接を行いたいなどといった場合には、上記のメールアドレスへ連絡を行ってください。\n　\nまた、実際に雇用が決定されましたら、以下の確認ボタンを押してください。\n残念ながら不採用となってしまった際には以下のキャンセルボタンを押してください。',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: store.greyColor),
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      color: Colors.grey[600]),
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 50,
               ),
-              Container(
+              SizedBox(
                 width: 400,
                 child: Row(
                   children: [
@@ -200,7 +208,7 @@ class ApplyConfState extends State<ApplyConf> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         minimumSize: const Size(195, 60),
-                        backgroundColor: store.subColor,
+                        backgroundColor: store.mainColor,
                       ),
                       child: const Text('送信する',
                           style: TextStyle(color: Colors.white)),
@@ -228,6 +236,8 @@ class ApplyConfState extends State<ApplyConf> {
                   ],
                 ),
               ),
+              //空白
+              const SizedBox(height: 40),
             ],
           ),
         ),

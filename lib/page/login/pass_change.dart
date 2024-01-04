@@ -137,6 +137,10 @@ class PassChangeState extends State<PassChange> {
                       color: Color.fromARGB(255, 106, 106, 106)),
                 ),
               ),
+              //空白
+              const SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),
