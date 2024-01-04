@@ -262,8 +262,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      const PassChange(), //今はログイン前のパスワード再設定画面に遷移
+                  builder: (context) => const PassChange(
+                    loginJedge: false,
+                  ), //今はログイン前のパスワード再設定画面に遷移
                 ),
               );
             },

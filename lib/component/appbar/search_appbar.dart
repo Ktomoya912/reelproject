@@ -19,7 +19,7 @@ class SearchAppbar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return const Size(double.infinity, 140);
+    return const Size(double.infinity, 120);
   }
 
   @override
@@ -84,10 +84,10 @@ class SearchAppbarState extends State<SearchAppbar> {
                   },
                 ),
                 SizedBox(
-                  //height: 40, //検索バーの高さ,
+                  height: 45, //検索バーの高さ,
                   width: widget.mediaQueryData.size.width *
                       widthPower *
-                      0.98, //検索バーの幅
+                      0.95, //検索バーの幅
                   child: TextField(
                     cursorColor: store.mainColor, //カーソルの色
                     controller: _controller,

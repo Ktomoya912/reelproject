@@ -34,14 +34,12 @@ class FinishScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget bottomAppBar = const SizedBox();
-    if (jedgeBottomAppBar) {
-      bottomAppBar = const NormalBottomAppBar();
-    }
     StatelessWidget questionButtonWidget = Container(); //お問合せボタンのWidget
     //直前のページがお問合せである場合、完了ページではお問合せボタンを表示しない
     if (appbarText != "問い合わせ") {
-      questionButtonWidget = const QuestionButton();
+      questionButtonWidget = QuestionButton(
+        jedgeBottomAppBar: jedgeBottomAppBar,
+      );
     }
     return Scaffold(
       appBar: TitleAppBar(
@@ -116,7 +114,8 @@ class FinishScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: bottomAppBar,
+      bottomNavigationBar:
+          jedgeBottomAppBar == true ? const NormalBottomAppBar() : null,
     );
   }
 }
@@ -125,7 +124,10 @@ class FinishScreen extends StatelessWidget {
 class QuestionButton extends StatelessWidget {
   const QuestionButton({
     super.key,
+    required this.jedgeBottomAppBar,
   });
+
+  final bool jedgeBottomAppBar;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +138,10 @@ class QuestionButton extends StatelessWidget {
         // ボタンが押されたときの処理をここに追加予定
         Navigator.pop(context);
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const AskPage()),
+          MaterialPageRoute(
+              builder: (context) => AskPage(
+                    loginJedge: jedgeBottomAppBar,
+                  )),
         );
       },
 
