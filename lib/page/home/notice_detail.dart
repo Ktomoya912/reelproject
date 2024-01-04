@@ -53,6 +53,13 @@ class NoticeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     //final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     MediaQueryData mediaQueryData = MediaQuery.of(context); //サイズ取得
+    //横画面サイズにより幅設定
+    double widthBlank = (mediaQueryData.size.width / 2) - 300;
+    if (widthBlank < 0) {
+      widthBlank = 0;
+    }
+    double blank = mediaQueryData.size.width / 20;
+    double width = mediaQueryData.size.width - (widthBlank * 2) - blank;
     return
         //スクロール
         ShaderMaskComponent(
@@ -64,7 +71,7 @@ class NoticeContent extends StatelessWidget {
         child: Center(
           //横に空間を開けるため
           child: SizedBox(
-              width: mediaQueryData.size.width - 100, //横の空間の合計だけ引く
+              width: width + (widthBlank / 8) + blank - 100, //横の空間の合計だけ引く
               child: Column(
                   //左詰め
                   crossAxisAlignment: CrossAxisAlignment.start,

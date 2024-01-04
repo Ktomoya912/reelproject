@@ -10,8 +10,10 @@ class ShaderMaskComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     return Container(
       color: Colors.white,
+      height: mediaQueryData.size.height,
       child: ShaderMask(
         shaderCallback: (bounds) {
           return const LinearGradient(
