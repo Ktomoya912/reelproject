@@ -43,7 +43,7 @@ class RootPage extends StatelessWidget {
                 items: const <Widget>[
                   IconWithText(icon: Icons.home, text: 'ホーム'),
                   IconWithText(icon: Icons.celebration, text: 'イベント'),
-                  IconWithText(icon: Icons.work, text: '求人'),
+                  IconWithText(icon: Icons.work, text: '　求人　'),
                   IconWithText(icon: Icons.person, text: 'マイページ'),
                 ],
                 onTap: (int index) {
