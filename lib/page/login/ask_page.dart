@@ -10,7 +10,10 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 class AskPage extends StatefulWidget {
   const AskPage({
     super.key,
+    required this.loginJedge,
   });
+
+  final bool loginJedge;
 
   @override
   AskPageState createState() => AskPageState();
@@ -77,14 +80,15 @@ class AskPageState extends State<AskPage> {
                 Navigator.pop(context, true);
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const FinishScreen(
+                    builder: (context) => FinishScreen(
                       appbarText: "問い合わせ",
                       appIcon: Icons.mail_outlined,
                       finishText: "送信完了",
                       text:
                           "この度はお問い合わせいただきまして、\n誠にありがとうございました。\n弊社から折り返しご連絡を差し上げますので、\n今しばらくお待ちください。\nお問い合わせから１週間以上弊社からの返信がない場合は、メールのトラブルなどが考えられますので、再度お問い合わせいただくようお願いします。",
-                      buttonText: "ログイン画面に戻る",
-                      jedgeBottomAppBar: true,
+                      buttonText:
+                          widget.loginJedge == true ? "ログイン画面に戻る" : "マイページに戻る",
+                      jedgeBottomAppBar: widget.loginJedge,
                     ),
                   ),
                 );
@@ -102,7 +106,8 @@ class AskPageState extends State<AskPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const NormalBottomAppBar(),
+      bottomNavigationBar:
+          widget.loginJedge == true ? const NormalBottomAppBar() : null,
     );
   }
 }

@@ -14,6 +14,7 @@ import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
 //import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
 import 'apply_conf.dart'; //応募者確認
+import 'package:reelproject/page/login/ask_page.dart'; //お問い合わせ
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -83,7 +84,9 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": ApplyHist(),
+        "push": AskPage(
+          loginJedge: false,
+        ),
       },
       {
         "title": "利用規約",
@@ -159,7 +162,9 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "お問い合わせ",
         "icon": Icons.chat_bubble,
-        "push": ApplyHist(),
+        "push": AskPage(
+          loginJedge: false,
+        ),
       },
       {
         "title": "利用規約",

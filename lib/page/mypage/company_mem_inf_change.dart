@@ -75,7 +75,9 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const PassChange(), //写真編集画面を作成する必要あり
+                  builder: (context) => const PassChange(
+                    loginJedge: false,
+                  ), //写真編集画面を作成する必要あり
                 ),
               );
             },

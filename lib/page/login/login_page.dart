@@ -151,7 +151,10 @@ class LoginPageState extends State<LoginPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const PassChange()),
+                    MaterialPageRoute(
+                        builder: (context) => const PassChange(
+                              loginJedge: true,
+                            )),
                   );
                 },
                 splashColor: Colors.transparent,
@@ -169,7 +172,9 @@ class LoginPageState extends State<LoginPage> {
                     context,
                     MaterialPageRoute(
                         // builder: (context) => const ForgotPasswordPage()),
-                        builder: (context) => const AskPage()),
+                        builder: (context) => const AskPage(
+                              loginJedge: true,
+                            )),
                   );
                 },
                 splashColor: Colors.transparent,
