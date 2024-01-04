@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 class ApplyHist extends StatefulWidget {
   const ApplyHist({super.key});
@@ -53,13 +54,15 @@ class _ApplyHistState extends State<ApplyHist> {
           title: "応募履歴",
           jedgeBuck: true,
         ),
-        body: Column(
-          children: [
-            JobAdvertisementList(
-              advertisementList: applyHistList,
-              mediaQueryData: mediaQueryData,
-            ),
-          ],
+        body: ShaderMaskComponent(
+          child: Column(
+            children: [
+              JobAdvertisementList(
+                advertisementList: applyHistList,
+                mediaQueryData: mediaQueryData,
+              ),
+            ],
+          ),
         ));
   }
 }

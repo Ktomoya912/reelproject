@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
 import 'package:reelproject/component/listView/event_advertisment_list.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 @RoutePage()
 class EventRouterPage extends AutoRouter {
@@ -90,13 +91,15 @@ class _EventState extends State<Event> {
           title: "おすすめイベント",
           mediaQueryData: mediaQueryData,
         ),
-        body: Column(
-          children: [
-            EventAdvertisementList(
-              advertisementList: advertisementList,
-              mediaQueryData: mediaQueryData,
-            ),
-          ],
+        body: ShaderMaskComponent(
+          child: Column(
+            children: [
+              EventAdvertisementList(
+                advertisementList: advertisementList,
+                mediaQueryData: mediaQueryData,
+              ),
+            ],
+          ),
         ));
   }
 }

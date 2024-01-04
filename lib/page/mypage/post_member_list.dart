@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 //まだアプリと合体しない。
 class PostMemberList extends StatefulWidget {
@@ -54,13 +55,15 @@ class _PostMemberListState extends State<PostMemberList> {
           title: "応募者一覧",
           jedgeBuck: true,
         ),
-        body: Column(
-          children: [
-            JobAdvertisementList(
-              advertisementList: postMemberListList,
-              mediaQueryData: mediaQueryData,
-            ),
-          ],
+        body: ShaderMaskComponent(
+          child: Column(
+            children: [
+              JobAdvertisementList(
+                advertisementList: postMemberListList,
+                mediaQueryData: mediaQueryData,
+              ),
+            ],
+          ),
         ));
   }
 }

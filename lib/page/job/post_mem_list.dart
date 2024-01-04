@@ -3,6 +3,7 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/apply_conf.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 class PostMemList extends StatefulWidget {
   const PostMemList({super.key});
@@ -77,29 +78,31 @@ class _PostMemListState extends State<PostMemList> {
           title: "応募者一覧",
           jedgeBuck: true,
         ),
-        body: Center(
-            child: SingleChildScrollView(
-          child: Column(
-            //真ん中
-            //mainAxisAlignment: MainAxisAlignment.center,
+        body: ShaderMaskComponent(
+          child: Center(
+              child: SingleChildScrollView(
+            child: Column(
+              //真ん中
+              //mainAxisAlignment: MainAxisAlignment.center,
 
-            children: [
-              SizedBox(
-                width: mediaQueryData.size.width - addWidth * 2,
-                child: Column(
-                  children: [
-                    for (int index = 0; index < postMemList.length; index++)
-                      EventAdvertisementList(
-                        advertisementList: postMemList,
-                        mediaQueryData: mediaQueryData,
-                        index: index,
-                      ),
-                  ],
+              children: [
+                SizedBox(
+                  width: mediaQueryData.size.width - addWidth * 2,
+                  child: Column(
+                    children: [
+                      for (int index = 0; index < postMemList.length; index++)
+                        EventAdvertisementList(
+                          advertisementList: postMemList,
+                          mediaQueryData: mediaQueryData,
+                          index: index,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )));
+              ],
+            ),
+          )),
+        ));
   }
 }
 

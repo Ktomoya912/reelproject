@@ -40,63 +40,64 @@ class ScrollJobFeeDetail extends StatelessWidget {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     // final jobStore = Provider.of<JobApplyPostDetail>(context);
 
-    return SingleChildScrollView(
-        child: Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 20)),
-            const Text(
-              "以下の料金をご確認ください",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            FeeJob(mediaQueryData, store, "求人掲載料金", Colors.blue, "20,000円/月"),
-            const Icon(
-              Icons.clear,
-              size: 50,
-            ),
-            FeeJob(mediaQueryData, store, "求人掲載期間", Colors.green, "1か月"),
-            Transform.rotate(
-              angle: 3.14 / 2,
-              child: const Icon(
-                Icons.play_arrow,
-                size: 50,
-              ),
-            ),
-            FeeJob(mediaQueryData, store, "合計金額", Colors.amber, "20,000円"),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
-              width: mediaQueryData.size.width * 0.7,
-              child:const Text(
-                "※7日以内に指定の銀行への振り込みをお願いします。振り込みが確認でき次第投稿させていただきます",
+    return Container(
+      color: Colors.white,
+      child: SingleChildScrollView(
+          child: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(padding: EdgeInsets.only(top: 20)),
+              const Text(
+                "以下の料金をご確認ください",
                 style: TextStyle(
-                  color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-            onPressed: () {
-              
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: store.mainColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              FeeJob(mediaQueryData, store, "求人掲載料金", Colors.blue, "20,000円/月"),
+              const Icon(
+                Icons.clear,
+                size: 50,
               ),
-              minimumSize: const Size(300, 50),
-            ),
-            child: const Text('振り込み口座を確認する'),
-          ),
-          ]),
-    ));
+              FeeJob(mediaQueryData, store, "求人掲載期間", Colors.green, "1か月"),
+              Transform.rotate(
+                angle: 3.14 / 2,
+                child: const Icon(
+                  Icons.play_arrow,
+                  size: 50,
+                ),
+              ),
+              FeeJob(mediaQueryData, store, "合計金額", Colors.amber, "20,000円"),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              SizedBox(
+                width: mediaQueryData.size.width * 0.7,
+                child: const Text(
+                  "※7日以内に指定の銀行への振り込みをお願いします。振り込みが確認でき次第投稿させていただきます",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: store.mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  minimumSize: const Size(300, 50),
+                ),
+                child: const Text('振り込み口座を確認する'),
+              ),
+            ]),
+      )),
+    );
   }
 
   // ignore: non_constant_identifier_names

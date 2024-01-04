@@ -236,8 +236,6 @@ class ScrollImpressionsDetail extends StatelessWidget {
                 ),
               ],
             ),
-            //空白
-            const Padding(padding: EdgeInsets.all(30)),
           ],
         ),
       ),

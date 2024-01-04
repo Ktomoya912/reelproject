@@ -4,6 +4,7 @@ import 'package:reelproject/component/listView/event_advertisment_list.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/button/toggle_button.dart';
 import 'package:provider/provider.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 //import 'package:reelproject/page/event/event.dart';
 
 class NoPostList extends StatefulWidget {
@@ -105,30 +106,32 @@ class _NoPostListState extends State<NoPostList> {
               jedgeBuck: true,
             ),
 
-            body: Column(
-              children: [
-                //イベント、求人切り替えボタン
-                //四角で囲む(上ボタンの幅選択)
-                ToggleButton(
-                  mediaQueryData: mediaQueryData,
-                  leftTitle: "イベント",
-                  rightTitle: "求人",
-                  height: 50,
-                ),
-
-                if (store.onButtonIndex == 0)
-                  //イベント広告一覧
-                  EventAdvertisementList(
-                    advertisementList: eventList,
+            body: ShaderMaskComponent(
+              child: Column(
+                children: [
+                  //イベント、求人切り替えボタン
+                  //四角で囲む(上ボタンの幅選択)
+                  ToggleButton(
                     mediaQueryData: mediaQueryData,
-                  )
-                else
-                  //求人広告一覧
-                  JobAdvertisementList(
-                    advertisementList: jobList,
-                    mediaQueryData: mediaQueryData,
+                    leftTitle: "イベント",
+                    rightTitle: "求人",
+                    height: 50,
                   ),
-              ],
+
+                  if (store.onButtonIndex == 0)
+                    //イベント広告一覧
+                    EventAdvertisementList(
+                      advertisementList: eventList,
+                      mediaQueryData: mediaQueryData,
+                    )
+                  else
+                    //求人広告一覧
+                    JobAdvertisementList(
+                      advertisementList: jobList,
+                      mediaQueryData: mediaQueryData,
+                    ),
+                ],
+              ),
             ),
           );
         }));

@@ -4,6 +4,7 @@ import '../../component/appbar/title_appbar.dart';
 import '/component/button/toggle_button.dart';
 import '/provider/change_general_corporation.dart';
 import 'notice_detail.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 //通知一覧画面作成クラス
 class Notice extends StatefulWidget {
@@ -59,24 +60,26 @@ class _NoticeState extends State<Notice> {
               jedgeBuck: true,
             ),
 
-            body: Column(
-              children: [
-                //イベント、求人切り替えボタン
-                //四角で囲む(上ボタンの幅選択)
-                ToggleButton(
-                  mediaQueryData: mediaQueryData,
-                  leftTitle: "イベント",
-                  rightTitle: "求人",
-                  height: 50,
-                ),
+            body: ShaderMaskComponent(
+              child: Column(
+                children: [
+                  //イベント、求人切り替えボタン
+                  //四角で囲む(上ボタンの幅選択)
+                  ToggleButton(
+                    mediaQueryData: mediaQueryData,
+                    leftTitle: "イベント",
+                    rightTitle: "求人",
+                    height: 50,
+                  ),
 
-                //リスト
-                NoticeListView(
-                  jedgeEJ: store.onButtonIndex,
-                  noticeList: noticeList,
-                  content: content,
-                ),
-              ],
+                  //リスト
+                  NoticeListView(
+                    jedgeEJ: store.onButtonIndex,
+                    noticeList: noticeList,
+                    content: content,
+                  ),
+                ],
+              ),
             ),
           );
         }));

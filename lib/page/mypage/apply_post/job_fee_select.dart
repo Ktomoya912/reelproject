@@ -3,6 +3,7 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:provider/provider.dart';
 //import '/provider/change_general_corporation.dart';
 //import "package:reelproject/component/button/SelectFeeButton.dart";
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 //イベント広告掲載プロバイダ
 class JobApplyPostDetail with ChangeNotifier {
@@ -54,52 +55,54 @@ class _JobFeeSelectState extends State<JobFeeSelect> {
               title: "求人掲載料金プラン",
               jedgeBuck: true,
             ),
-            body: SingleChildScrollView(
-                child: Center(
-              child: SizedBox(
-                height: height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    //SizedBox(height: width / 20), //空白
-                    SelectFeeButton(
-                      width: width,
-                      title: "1か月掲載契約",
-                      titleColor: Colors.blue,
-                      textWidget: const Text(
-                        '20,000円/月',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
+            body: ShaderMaskComponent(
+              child: SingleChildScrollView(
+                  child: Center(
+                child: SizedBox(
+                  height: height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      //SizedBox(height: width / 20), //空白
+                      SelectFeeButton(
+                        width: width,
+                        title: "1か月掲載契約",
+                        titleColor: Colors.blue,
+                        textWidget: const Text(
+                          '20,000円/月',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    //SizedBox(height: width / 20), //空白
-                    SelectFeeButton(
-                      width: width,
-                      title: "半年以上掲載契約",
-                      titleColor: const Color.fromARGB(255, 129, 199, 193),
-                      textWidget: const Text('19,000円/月',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    //SizedBox(height: width / 20), //空白
-                    SelectFeeButton(
-                      width: width,
-                      title: "1年掲載契約",
-                      titleColor: Colors.green[300]!,
-                      textWidget: const Text('200,000円/年',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ],
+                      //SizedBox(height: width / 20), //空白
+                      SelectFeeButton(
+                        width: width,
+                        title: "半年以上掲載契約",
+                        titleColor: const Color.fromARGB(255, 129, 199, 193),
+                        textWidget: const Text('19,000円/月',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      //SizedBox(height: width / 20), //空白
+                      SelectFeeButton(
+                        width: width,
+                        title: "1年掲載契約",
+                        titleColor: Colors.green[300]!,
+                        textWidget: const Text('200,000円/年',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              )),
+            ),
           );
         }));
   }

@@ -40,57 +40,56 @@ class ScrollEventFeeDetail extends StatelessWidget {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     // final EventStore = Provider.of<EventApplyPostDetail>(context);
 
-    return SingleChildScrollView(
-        child: Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(padding: EdgeInsets.only(top: 20)),
-            const Text(
-              "以下の料金をご確認ください",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-          
-            
-            FeeEvent(mediaQueryData, store, "合計金額", Colors.amber, "20,000円"),
-            Padding(padding: EdgeInsets.only(top: 300)),
-            SizedBox(
-              width: mediaQueryData.size.width * 0.7,
-              child:const Text(
-                "※7日以内に指定の銀行への振り込みをお願いします。振り込みが確認でき次第投稿させていただきます",
+    return Container(
+      color: Colors.white,
+      child: SingleChildScrollView(
+          child: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              const Text(
+                "以下の料金をご確認ください",
                 style: TextStyle(
-                  color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            ElevatedButton(
-            onPressed: () {
-              
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: store.mainColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              FeeEvent(mediaQueryData, store, "合計金額", Colors.amber, "20,000円"),
+              const Padding(padding: EdgeInsets.only(top: 300)),
+              SizedBox(
+                width: mediaQueryData.size.width * 0.7,
+                child: const Text(
+                  "※7日以内に指定の銀行への振り込みをお願いします。振り込みが確認でき次第投稿させていただきます",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
               ),
-              minimumSize: const Size(300, 50),
-            ),
-            child: const Text('振り込み口座を確認する'),
-          ),
-          ]),
-    ));
+              const Padding(padding: EdgeInsets.only(top: 20)),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: store.mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  minimumSize: const Size(300, 50),
+                ),
+                child: const Text('振り込み口座を確認する'),
+              ),
+            ]),
+      )),
+    );
   }
 
   // ignore: non_constant_identifier_names
-  SizedBox FeeEvent(MediaQueryData mediaQueryData, ChangeGeneralCorporation store,
-      String Title, Color color, String text) {
+  SizedBox FeeEvent(MediaQueryData mediaQueryData,
+      ChangeGeneralCorporation store, String Title, Color color, String text) {
     return SizedBox(
       height: mediaQueryData.size.height * 0.1,
       width: mediaQueryData.size.width * 0.9,
@@ -112,7 +111,7 @@ class ScrollEventFeeDetail extends StatelessWidget {
                     ),
                   ),
                 )),
-            Padding(padding: EdgeInsets.only(top: 10)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Text(
               // EventStore.EventPeriod as String,
               text,
