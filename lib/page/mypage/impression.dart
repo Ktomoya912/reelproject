@@ -3,6 +3,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:reelproject/component/listView/shader_mask_component.dart';
 
 @RoutePage()
 class ImpressionsRouterPage extends AutoRouter {
@@ -76,168 +77,169 @@ class ScrollImpressionsDetail extends StatelessWidget {
 
 // Pass gradient to PieChart
 
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Divider(
-              color: store.greyColor,
-              thickness: 1,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  '閲覧者総数',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+    return ShaderMaskComponent(
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Divider(
+                color: store.greyColor,
+                thickness: 1,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '閲覧者総数',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                Text(
-                  '100人',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                  Text(
+                    '100人',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Divider(
-              color: store.greyColor,
-              thickness: 1,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'お気に入り登録者数',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                ],
+              ),
+              Divider(
+                color: store.greyColor,
+                thickness: 1,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'お気に入り登録者数',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                Text(
-                  '50人',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                  Text(
+                    '50人',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Divider(
-              color: store.greyColor,
-              thickness: 1,
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 400,
+                ],
+              ),
+              Divider(
+                color: store.greyColor,
+                thickness: 1,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: 400,
 
-
-                  // child:Card(
-                  child: Column(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(15)),
-                      MyPieChart(
-                        key: ValueKey(store.mainDataMap),
-                        dataMap: store.mainDataMap,
-                        mainflag: true,
-                        onTap: () =>
-                            store.toggleDataSelection(store.mainDataMap),
-                      ),
-                      const Padding(padding: EdgeInsets.all(15)),
-                      Text(store.mainTitle,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          )),
-                    ],
-                    // )
+                    // child:Card(
+                    child: Column(
+                      children: [
+                        const Padding(padding: EdgeInsets.all(15)),
+                        MyPieChart(
+                          key: ValueKey(store.mainDataMap),
+                          dataMap: store.mainDataMap,
+                          mainflag: true,
+                          onTap: () =>
+                              store.toggleDataSelection(store.mainDataMap),
+                        ),
+                        const Padding(padding: EdgeInsets.all(15)),
+                        Text(store.mainTitle,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            )),
+                      ],
+                      // )
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.all(30)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    children: [
-                      MyPieChart(
-                        key: ValueKey(store.subDataMap1),
-                        dataMap: store.subDataMap1,
-                        mainflag: false,
-                        onTap: () =>
-                            store.toggleDataSelection(store.subDataMap1),
-                      ),
-                      const Padding(padding: EdgeInsets.all(10)),
-                      Text(store.subTitle1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )),
-                    ],
+                ],
+              ),
+              const Padding(padding: EdgeInsets.all(30)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 110,
+                    child: Column(
+                      children: [
+                        MyPieChart(
+                          key: ValueKey(store.subDataMap1),
+                          dataMap: store.subDataMap1,
+                          mainflag: false,
+                          onTap: () =>
+                              store.toggleDataSelection(store.subDataMap1),
+                        ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        Text(store.subTitle1,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                const Padding(padding: EdgeInsets.all(10)),
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    children: [
-                      MyPieChart(
-                        key: ValueKey(store.subDataMap2),
-                        dataMap: store.subDataMap2,
-                        mainflag: false,
-                        onTap: () =>
-                            store.toggleDataSelection(store.subDataMap2),
-                      ),
-                      const Padding(padding: EdgeInsets.all(10)),
-                      Text(store.subTitle2,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )),
-                    ],
+                  const Padding(padding: EdgeInsets.all(10)),
+                  SizedBox(
+                    width: 110,
+                    child: Column(
+                      children: [
+                        MyPieChart(
+                          key: ValueKey(store.subDataMap2),
+                          dataMap: store.subDataMap2,
+                          mainflag: false,
+                          onTap: () =>
+                              store.toggleDataSelection(store.subDataMap2),
+                        ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        Text(store.subTitle2,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                const Padding(padding: EdgeInsets.all(10)),
-                SizedBox(
-                  width: 110,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      MyPieChart(
-                        key: ValueKey(store.subDataMap3),
-                        dataMap: store.subDataMap3,
-                        mainflag: false,
-                        onTap: () =>
-                            store.toggleDataSelection(store.subDataMap3),
-                      ),
-                      const Padding(padding: EdgeInsets.all(10)),
-                      Text(store.subTitle3,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )),
-                    ],
+                  const Padding(padding: EdgeInsets.all(10)),
+                  SizedBox(
+                    width: 110,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        MyPieChart(
+                          key: ValueKey(store.subDataMap3),
+                          dataMap: store.subDataMap3,
+                          mainflag: false,
+                          onTap: () =>
+                              store.toggleDataSelection(store.subDataMap3),
+                        ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        Text(store.subTitle3,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -270,7 +272,9 @@ class MyPieChart extends StatelessWidget {
             chartLegendSpacing: 64,
             chartRadius: mainflag
                 ? 150
-                : MediaQuery.of(context).size.width * MediaQuery.of(context).size.height / 5250,
+                : MediaQuery.of(context).size.width *
+                    MediaQuery.of(context).size.height /
+                    5250,
             colorList: const [
               Color(0xff6c5ce7),
               Color(0xff0984e3),
