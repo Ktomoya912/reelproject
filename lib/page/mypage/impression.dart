@@ -140,7 +140,8 @@ class ScrollImpressionsDetail extends StatelessWidget {
             Column(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.02,
+                  width: 400,
+
 
                   // child:Card(
                   child: Column(
@@ -171,7 +172,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 3.5,
+                  width: 110,
                   child: Column(
                     children: [
                       MyPieChart(
@@ -192,7 +193,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                 ),
                 const Padding(padding: EdgeInsets.all(10)),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 3.5,
+                  width: 110,
                   child: Column(
                     children: [
                       MyPieChart(
@@ -213,7 +214,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                 ),
                 const Padding(padding: EdgeInsets.all(10)),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 3.5,
+                  width: 110,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -268,8 +269,8 @@ class MyPieChart extends StatelessWidget {
             animationDuration: const Duration(milliseconds: 800),
             chartLegendSpacing: 64,
             chartRadius: mainflag
-                ? MediaQuery.of(context).size.width / 2.9
-                : MediaQuery.of(context).size.width / 4.9,
+                ? 150
+                : MediaQuery.of(context).size.width * MediaQuery.of(context).size.height / 5250,
             colorList: const [
               Color(0xff6c5ce7),
               Color(0xff0984e3),
