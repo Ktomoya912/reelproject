@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:google_fonts/google_fonts.dart'; //googleフォント
 //push先
 import 'general_mem_inf_conf.dart'; //会員情報確認
 import 'company_mem_inf_conf.dart'; //会員情報確認
@@ -490,8 +491,8 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
       //アップバータイトル
       title: Text(
         "REEL", //文字
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
+        style: GoogleFonts.secularOne(
+            //fontWeight: FontWeight.bold,
             fontSize: 40,
             color: store.mainColor), //書体
       ),

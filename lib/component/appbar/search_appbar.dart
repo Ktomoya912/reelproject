@@ -19,7 +19,7 @@ class SearchAppbar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return const Size(double.infinity, 120);
+    return const Size(double.infinity, 135);
   }
 
   @override

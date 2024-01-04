@@ -7,6 +7,7 @@ import 'package:reelproject/page/login/ask_page.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/page/login/pass_change.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart'; //googleフォント
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -220,10 +221,10 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       //アップバータイトル
-      title: const Text(
+      title: Text(
         "REEL", //文字
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
+        style: GoogleFonts.secularOne(
+            //fontWeight: FontWeight.bold,
             fontSize: 44,
             color: Colors.white), //書体
       ),

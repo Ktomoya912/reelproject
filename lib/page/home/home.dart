@@ -11,6 +11,7 @@ import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:google_fonts/google_fonts.dart'; //googleフォント
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -508,9 +509,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         //アップバータイトル
         title: Text(
           "REEL", //文字
-          style: TextStyle(
+          style: GoogleFonts.secularOne(
               color: store.mainColor,
-              fontWeight: FontWeight.bold,
+              //fontWeight: FontWeight.bold,
               fontSize: 40), //書体
         ),
         backgroundColor: store.subColor,
