@@ -120,6 +120,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
                   width: width,
                   child: Column(
                     children: [
+                      //空白
+                      SizedBox(
+                        height: mediaQueryData.size.height / 50,
+                      ),
                       //画像
                       Stack(children: [
                         SizedBox(

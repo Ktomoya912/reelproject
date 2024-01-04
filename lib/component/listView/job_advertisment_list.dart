@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/job/job_post_detail.dart';
@@ -231,12 +232,13 @@ class JobAdvertisementList extends StatelessWidget {
                                         color: Colors.lightGreen,
                                         borderRadius: BorderRadius.circular(30),
                                       ),
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           "長期",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                          style: GoogleFonts.mochiyPopOne(
+                                            fontSize: 20,
+                                            //fontWeight: FontWeight.bold
+                                          ),
                                         ),
                                       ),
                                     )
@@ -246,15 +248,16 @@ class JobAdvertisementList extends StatelessWidget {
                                       height: 40,
                                       width: 70,
                                       decoration: BoxDecoration(
-                                        color: Colors.yellow,
+                                        color: Colors.yellow[500],
                                         borderRadius: BorderRadius.circular(30),
                                       ),
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           "短期",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                          style: GoogleFonts.mochiyPopOne(
+                                            fontSize: 20,
+                                            //fontWeight: FontWeight.bold
+                                          ),
                                         ),
                                       ),
                                     )
