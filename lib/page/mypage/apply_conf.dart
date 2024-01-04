@@ -59,7 +59,7 @@ class ApplyConfState extends State<ApplyConf> {
                     // ----------応募者情報表示部分（アイコンなど）----------
                     children: [
                       const SizedBox(width: 10),
-                      Container(
+                      SizedBox(
                         child: Column(
                           children: [
                             const SizedBox(
@@ -72,7 +72,8 @@ class ApplyConfState extends State<ApplyConf> {
                                   shape: BoxShape.circle, //円形に
                                   color: store.subColor), //アイコン周囲円の色
                             ),
-                            Text('ユーザー名'), // 後にデータベースから取得したユーザー名を表示させるようにする
+                            const Text(
+                                'ユーザー名'), // 後にデータベースから取得したユーザー名を表示させるようにする
                           ],
                         ),
                       ),
