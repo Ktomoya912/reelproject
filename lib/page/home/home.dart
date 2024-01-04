@@ -129,6 +129,7 @@ class _HomeState extends State<Home> {
             ),
             child: SizedBox(
               width: width,
+              //height: mediaQueryData.size.height * 1.3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center, //縦方向に真ん中
                 children: [
