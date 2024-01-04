@@ -63,7 +63,7 @@ class ConfConf {
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -83,6 +83,9 @@ class ConfConf {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                             ConfConf().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -101,9 +104,9 @@ class ConfConf {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60), //ボタンの大きさ
+                            minimumSize: const Size(220, 60), //ボタンの大きさ
                             backgroundColor: store.mainColor,
                           ),
                           child: const Text(
@@ -124,9 +127,9 @@ class ConfConf {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60),
+                            minimumSize: const Size(220, 60),
                             backgroundColor: Colors.grey,
                           ),
                           child: const Text("キャンセル", //Elevateの子供

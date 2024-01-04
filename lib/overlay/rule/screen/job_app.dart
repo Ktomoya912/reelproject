@@ -63,7 +63,7 @@ class JobApp {
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -82,13 +82,15 @@ class JobApp {
                         const Text(
                           "本当に応募しますか？",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
+                              //fontWeight: FontWeight.bold,
+                              fontSize: 14),
                         ),
                         const SizedBox(height: 20), //余白調整
                         ElevatedButton(
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
+                            Navigator.pop(context);
                             JobApp().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -106,16 +108,16 @@ class JobApp {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60), //ボタンの大きさ
+                            minimumSize: const Size(220, 60), //ボタンの大きさ
                             backgroundColor: store.mainColor,
                           ),
                           child: const Text(
                             "応募する", //Elevateの子供
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 18),
                           ),
                         ),
@@ -129,15 +131,15 @@ class JobApp {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60),
+                            minimumSize: const Size(220, 60),
                             backgroundColor: Colors.grey,
                           ),
                           child: const Text("キャンセル", //Elevateの子供
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  //fontWeight: FontWeight.bold,
                                   fontSize: 18)),
                         ),
                       ],

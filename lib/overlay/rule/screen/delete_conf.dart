@@ -62,7 +62,7 @@ class DeleteConf {
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -116,12 +116,16 @@ class ToggleRadioState extends State<ToggleRadio> {
         //ウィジェットを保管
         const Text(
           "投稿を削除しますか？",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          style: TextStyle(
+              //fontWeight: FontWeight.bold,
+              fontSize: 24),
         ),
         const SizedBox(height: 20), //余白調整
         const Text(
           "投稿を削除しても投稿料金は返金されません。\n 本当に削除しますか？",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11.5),
+          style: TextStyle(
+              //fontWeight: FontWeight.bold
+              fontSize: 11.5),
         ),
         const SizedBox(height: 20), //余白調整
 //ラジオボタン start
@@ -152,6 +156,8 @@ class ToggleRadioState extends State<ToggleRadio> {
           //ボタン設置
           onPressed: () {
             if (flag) {
+              Navigator.pop(context);
+              Navigator.pop(context);
               DeleteConf().hide();
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -174,7 +180,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(15),
             ),
             minimumSize: const Size(240, 60), //ボタンの大きさ
             backgroundColor: flag == true ? store.mainColor : store.greyColor,
@@ -182,7 +188,9 @@ class ToggleRadioState extends State<ToggleRadio> {
           child: const Text(
             "削除する", //Elevateの子供
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                color: Colors.white,
+                //fontWeight: FontWeight.bold,
+                fontSize: 18),
           ),
         ),
         const SizedBox(height: 20), //余白調整
@@ -195,7 +203,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(15),
             ),
             minimumSize: const Size(240, 60),
             backgroundColor: Colors.grey,
@@ -203,7 +211,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           child: const Text("キャンセル", //Elevateの子供
               style: TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  //fontWeight: FontWeight.bold,
                   fontSize: 18)),
         ),
       ], //

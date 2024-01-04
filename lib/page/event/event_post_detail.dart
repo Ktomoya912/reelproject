@@ -37,12 +37,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
   Widget generateWidgets(int i, double height) {
     if (i == 0) {
       return Text(
-          eventDetailList["postalNumber"][i] +
-              "〒" +
-              "   " +
-              eventDetailList["prefecture"][i] +
-              eventDetailList["city"][i] +
-              eventDetailList["houseNumber"][i],
+          "〒${eventDetailList["postalNumber"]}  ${eventDetailList["prefecture"]}${eventDetailList["city"]}${eventDetailList["houseNumber"]}",
+          // "〒" +
+          //     eventDetailList["postalNumber"][i] +
+          //     "   " +
+          //     eventDetailList["prefecture"][i] +
+          //     eventDetailList["city"][i] +
+          //     eventDetailList["houseNumber"][i],
           style: const TextStyle(fontWeight: FontWeight.bold)); //太文字);
     }
 
