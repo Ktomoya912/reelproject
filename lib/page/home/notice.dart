@@ -53,6 +53,13 @@ class _NoticeState extends State<Notice> {
         create: (context) => ChangeToggleButton(),
         child: Builder(builder: (BuildContext context) {
           final store = Provider.of<ChangeToggleButton>(context); //プロバイダ
+          //横画面サイズにより幅設定
+          double widthBlank = (mediaQueryData.size.width / 2) - 300;
+          if (widthBlank < 0) {
+            widthBlank = 0;
+          }
+          double blank = mediaQueryData.size.width / 20;
+          double width = mediaQueryData.size.width - (widthBlank * 2) - blank;
           return Scaffold(
             //アップバー
             appBar: TitleAppBar(
@@ -73,10 +80,14 @@ class _NoticeState extends State<Notice> {
                   ),
 
                   //リスト
-                  NoticeListView(
-                    jedgeEJ: store.onButtonIndex,
-                    noticeList: noticeList,
-                    content: content,
+                  SizedBox(
+                    width: width + (widthBlank / 8) + blank - 10,
+                    height: mediaQueryData.size.height - 210,
+                    child: NoticeListView(
+                      jedgeEJ: store.onButtonIndex,
+                      noticeList: noticeList,
+                      content: content,
+                    ),
                   ),
                 ],
               ),
@@ -114,9 +125,9 @@ class NoticeListView extends StatelessWidget {
               //四角作成(これの大きさがリストの高さをになっている)
               Container(
                   height: 90, //リストの高さ
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: store.greyColor), //リストを区別する線
+                      bottom: BorderSide(color: Colors.grey), //リストを区別する線
                     ),
                   ),
                   //リストの内容
