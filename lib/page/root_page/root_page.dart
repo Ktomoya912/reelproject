@@ -27,6 +27,7 @@ class RootPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     return AutoTabsScaffold(
         //移動可能なRoutes
         routes: const [
@@ -72,6 +73,13 @@ class RootPage extends StatelessWidget {
                     tabsRouter.setActiveIndex(index);
                   }
                 }),
+            //オーバーレイ表示時にボトムアップバーを触れなくする
+            if (store.jedgeOverlay)
+              Container(
+                color: Colors.black.withAlpha(150),
+                width: mediaQueryData.size.width,
+                height: 105,
+              ),
           ]);
           // return BottomNavigationBar(
           //     currentIndex: tabsRouter.activeIndex, //現在の位置

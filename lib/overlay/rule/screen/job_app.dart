@@ -90,6 +90,7 @@ class JobApp {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
+                            store.changeOverlay(false);
                             Navigator.pop(context);
                             JobApp().hide();
                             Navigator.of(context).push(
@@ -126,6 +127,7 @@ class JobApp {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
+                            store.changeOverlay(false);
                             // ボタンが押されたときの処理をここに追加予定
                             JobApp().hide();
                           },

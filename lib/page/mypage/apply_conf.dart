@@ -217,6 +217,7 @@ class ApplyConfState extends State<ApplyConf> {
                           //     ),
                           //   ),
                           // );
+                          store.changeOverlay(true);
                           ConfConf().show(context: context);
                         },
                         style: ElevatedButton.styleFrom(
@@ -238,6 +239,7 @@ class ApplyConfState extends State<ApplyConf> {
                           //   MaterialPageRoute(
                           //       builder: (context) => const MyPage()),
                           // );
+                          store.changeOverlay(true);
                           ConfDelete().show(context: context);
                         },
                         style: ElevatedButton.styleFrom(

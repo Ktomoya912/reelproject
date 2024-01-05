@@ -209,11 +209,17 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
 
                                         //投稿削除
                                         if (notPostJedge)
-                                          DeleteConf().show(context: context)
+                                          {
+                                            store.changeOverlay(true),
+                                            DeleteConf().show(context: context)
+                                          }
                                         //未投稿削除
                                         else
-                                          NotpostDeleteConf()
-                                              .show(context: context)
+                                          {
+                                            store.changeOverlay(true),
+                                            NotpostDeleteConf()
+                                                .show(context: context)
+                                          }
                                       },
                                     ),
                                   ),
@@ -240,6 +246,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // print('Button pressed!');
+                        store.changeOverlay(true);
                         JobApp().show(
                           //これでおーばーれい表示
                           context: context,

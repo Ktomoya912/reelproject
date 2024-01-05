@@ -83,6 +83,7 @@ class ConfDelete {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
+                            store.changeOverlay(false);
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
@@ -123,6 +124,7 @@ class ConfDelete {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
+                            store.changeOverlay(false);
                             ConfDelete().hide();
                           },
                           style: ElevatedButton.styleFrom(
