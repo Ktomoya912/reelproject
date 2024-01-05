@@ -225,10 +225,13 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
               //タイトルバー
               Expanded(
                   child: Container(
-                color: store.thinColor,
+                color: store.mainColor,
                 height: titleSize,
                 width: widget.mediaQueryData.size.width,
-                child: Center(child: Text(widget.title)),
+                child: Center(
+                    child: Text(widget.title,
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w500))),
               )),
             ],
           ),

@@ -247,7 +247,7 @@ class ApplyConfState extends State<ApplyConf> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           minimumSize: Size(width / 2 - 5, 60),
-                          backgroundColor: store.greyColor,
+                          backgroundColor: Colors.grey[400]!,
                         ),
                         child: const Text('不採用',
                             style: TextStyle(color: Colors.white)),

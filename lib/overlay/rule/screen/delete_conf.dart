@@ -184,7 +184,7 @@ class ToggleRadioState extends State<ToggleRadio> {
               borderRadius: BorderRadius.circular(15),
             ),
             minimumSize: const Size(240, 60), //ボタンの大きさ
-            backgroundColor: flag == true ? store.mainColor : store.greyColor,
+            backgroundColor: flag == true ? store.mainColor : Colors.grey[400],
           ),
           child: const Text(
             "削除する", //Elevateの子供
@@ -208,7 +208,7 @@ class ToggleRadioState extends State<ToggleRadio> {
               borderRadius: BorderRadius.circular(15),
             ),
             minimumSize: const Size(240, 60),
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.grey[400],
           ),
           child: const Text("キャンセル", //Elevateの子供
               style: TextStyle(

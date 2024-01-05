@@ -62,7 +62,7 @@ class PassChangeState extends State<PassChange> {
                   decoration: BoxDecoration(
                     border: Border.all(
                         color: const Color.fromARGB(255, 203, 202, 202),
-                        width: 2.5),
+                        width: 1.5),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Column(

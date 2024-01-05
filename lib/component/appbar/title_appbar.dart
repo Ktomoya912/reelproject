@@ -28,13 +28,14 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Scaffold(
       //アップバー
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-          //replace with our own icon data.
-        ),
+        leading: jedgeBuck
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios),
+              )
+            : null,
         //アップバータイトル
         title: Text(
           "REEL", //文字
@@ -59,15 +60,15 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 //アップバー内にアップバー(ページ説明のため)
                 title: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     //fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: store.blackColor,
+                    color: Colors.white,
                   ),
                 ), //ページ説明文字
                 centerTitle: true, //中央揃え
                 automaticallyImplyLeading: false, //戻るボタンの非表示
-                backgroundColor: store.subColor, //背景
+                backgroundColor: store.mainColor, //背景
                 elevation: 0.0, //影なし
               ), //高さ
             )), //高さ

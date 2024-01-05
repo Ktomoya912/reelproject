@@ -104,14 +104,14 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 ),
                 minimumSize: const Size(300, 50),
               ),
-              child: const Text('同意する'),
+              child: const Text('同意する', style: TextStyle(fontSize: 17)),
             ),
             const SizedBox(
               height: 20,
             ),
             //空白
             const SizedBox(
-              height: 30,
+              height: 50,
             ),
           ],
         ),

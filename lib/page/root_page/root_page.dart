@@ -41,8 +41,8 @@ class RootPage extends StatelessWidget {
         bottomNavigationBuilder: (_, tabsRouter) {
           return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
             CurvedNavigationBar(
-                color: store.subColor,
-                buttonBackgroundColor: store.subColor,
+                color: store.mainColor,
+                buttonBackgroundColor: store.mainColor,
                 backgroundColor: Colors.white,
                 animationCurve: Curves.easeInOutQuart,
                 animationDuration:
@@ -149,8 +149,8 @@ class IconWithText extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(icon),
-        Text(text),
+        Icon(icon, color: Colors.white),
+        Text(text, style: const TextStyle(color: Colors.white)),
       ],
     );
   }

@@ -132,7 +132,7 @@ class NotpostDeleteConf {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             minimumSize: const Size(220, 60),
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.grey[400],
                           ),
                           child: const Text("キャンセル", //Elevateの子供
                               style: TextStyle(

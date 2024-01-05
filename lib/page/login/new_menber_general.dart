@@ -111,7 +111,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             ),
             //空白
             const SizedBox(
-              height: 30,
+              height: 50,
             ),
           ],
         ),
