@@ -437,6 +437,7 @@ class MyPageListView extends StatelessWidget {
                               addWidth / 2), //タイル内の余白
                       onTap: () {
                         if (list[index]["push"] == "overlay") {
+                          store.changeOverlay(true);
                           list[index]["overlay"].show(
                             //これでおーばーれい表示
                             context: context,

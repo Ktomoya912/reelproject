@@ -111,6 +111,7 @@ class RuleScreen {
                         ElevatedButton(
                           //ボタン設置
                           onPressed: () {
+                            store.changeOverlay(false);
                             // ボタンが押されたときの処理をここに追加予定
                             RuleScreen().hide();
                           },

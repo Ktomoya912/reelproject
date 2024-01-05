@@ -84,6 +84,7 @@ class NotpostDeleteConf {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
+                            store.changeOverlay(false);
                             Navigator.pop(context);
                             Navigator.pop(context);
                             NotpostDeleteConf().hide();
@@ -123,6 +124,7 @@ class NotpostDeleteConf {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
+                            store.changeOverlay(false);
                             NotpostDeleteConf().hide();
                           },
                           style: ElevatedButton.styleFrom(

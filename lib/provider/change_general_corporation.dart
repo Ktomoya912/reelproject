@@ -114,4 +114,12 @@ class ChangeGeneralCorporation with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  //オーバーレイ表示判断
+  bool jedgeOverlay = false;
+
+  void changeOverlay(bool o) {
+    jedgeOverlay = o;
+    notifyListeners();
+  }
 }

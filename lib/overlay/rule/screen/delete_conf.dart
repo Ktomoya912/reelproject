@@ -156,6 +156,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           //ボタン設置
           onPressed: () {
             if (flag) {
+              store.changeOverlay(false);
               Navigator.pop(context);
               Navigator.pop(context);
               DeleteConf().hide();
@@ -200,6 +201,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           onPressed: () {
             // ボタンが押されたときの処理をここに追加予定
             DeleteConf().hide();
+            store.changeOverlay(false);
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
