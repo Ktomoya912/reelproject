@@ -163,7 +163,8 @@ class SearchAppbarState extends State<SearchAppbar> {
                           const Text("「",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w500)),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17)),
                           Container(
                             constraints: BoxConstraints(
                               maxWidth: widget.mediaQueryData.size.width / 5,
@@ -173,13 +174,15 @@ class SearchAppbarState extends State<SearchAppbar> {
                                 maxLines: 1,
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17)),
                           ),
                           const Text(
                             "」検索結果",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17),
                           ),
                         ],
                       ),

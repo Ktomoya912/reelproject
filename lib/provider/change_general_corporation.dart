@@ -9,7 +9,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //[jedgeGCに依存する色一覧]
 
   //一般の色(定数)
-  static const Color generalMainColor = Color(0xFFDE9D4E);
+  static const Color generalMainColor = Color.fromARGB(255, 233, 146, 7);
   static const Color generalSubColor = Color.fromARGB(255, 239, 178, 102);
   static const Color generalThinColor = Color.fromARGB(255, 255, 226, 182);
   static const Color generalBlackColor = Color.fromARGB(255, 49, 30, 0);

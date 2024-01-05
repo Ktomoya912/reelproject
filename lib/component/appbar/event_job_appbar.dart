@@ -231,7 +231,9 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                 child: Center(
                     child: Text(widget.title,
                         style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w500))),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15))),
               )),
             ],
           ),
