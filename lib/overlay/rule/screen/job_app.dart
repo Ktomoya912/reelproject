@@ -50,6 +50,16 @@ class JobApp {
     final overlay = OverlayEntry(
       builder: (context) {
         final store = Provider.of<ChangeGeneralCorporation>(context);
+        String buttonText = "ホーム画面に戻る";
+        if (store.rootIndex == 0) {
+          buttonText = "ホーム画面に戻る";
+        } else if (store.rootIndex == 1) {
+          buttonText = "イベント画面に戻る";
+        } else if (store.rootIndex == 2) {
+          buttonText = "求人画面に戻る";
+        } else if (store.rootIndex == 3) {
+          buttonText = "マイページ画面に戻る";
+        }
         return Material(
           color: Colors.black.withAlpha(150),
           child: Center(
@@ -95,13 +105,13 @@ class JobApp {
                             JobApp().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const FinishScreen(
+                                builder: (context) => FinishScreen(
                                   appbarText: "求人応募完了",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "求人応募が完了しました。",
                                   text: "",
                                   buttonText:
-                                      "求人画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                      buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
                                 ),
                               ),

@@ -122,4 +122,11 @@ class ChangeGeneralCorporation with ChangeNotifier {
     jedgeOverlay = o;
     notifyListeners();
   }
+
+  //現在のルート番号保存
+  int rootIndex = 0;
+  void changeRootIndex(int i) {
+    rootIndex = i;
+    notifyListeners();
+  }
 }

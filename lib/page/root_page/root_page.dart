@@ -55,13 +55,10 @@ class RootPage extends StatelessWidget {
                   IconWithText(icon: Icons.person, text: 'マイページ'),
                 ],
                 onTap: (int index) {
+                  //現在のindexをstoreに保存
+                  store.changeRootIndex(index);
                   //ネストされたルーターのスタック情報を破棄(初期化される)
-                  //オーバーレイ
-                  // ConfDelete().hide();
-                  // ConfConf().hide();
-                  // DeleteConf().hide();
-                  // NotpostDeleteConf().hide();
-                  // RuleScreen().hide();
+
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();

@@ -109,6 +109,16 @@ class ToggleRadioState extends State<ToggleRadio> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+    String buttonText = "ホーム画面に戻る";
+    if (store.rootIndex == 0) {
+      buttonText = "ホーム画面に戻る";
+    } else if (store.rootIndex == 1) {
+      buttonText = "イベント画面に戻る";
+    } else if (store.rootIndex == 2) {
+      buttonText = "求人画面に戻る";
+    } else if (store.rootIndex == 3) {
+      buttonText = "マイページ画面に戻る";
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,14 +172,14 @@ class ToggleRadioState extends State<ToggleRadio> {
               DeleteConf().hide();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const FinishScreen(
+                  builder: (context) => FinishScreen(
                     appbarText: "投稿削除確認",
                     appIcon: Icons.playlist_add_check,
                     finishText: "投稿削除完了",
                     text:
                         "広告投稿の削除を完了いたしましたので、振込料金の支払いは不要となります。また、投稿削除に関するお問い合わせがありましたら下記のお問い合わせフォームからお問い合わせをして頂きますと幸いです。またの広告投稿をお待ちしております。",
                     buttonText:
-                        "マイページに戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                        buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                     jedgeBottomAppBar: false,
                   ),
                 ),
