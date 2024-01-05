@@ -28,6 +28,13 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Scaffold(
       //アップバー
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+          //replace with our own icon data.
+        ),
         //アップバータイトル
         title: Text(
           "REEL", //文字
