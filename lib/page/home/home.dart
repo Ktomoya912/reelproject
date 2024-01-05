@@ -11,6 +11,7 @@ import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:google_fonts/google_fonts.dart'; //googleフォント
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -32,11 +33,11 @@ class _HomeState extends State<Home> {
   Map<String, List<Map<String, dynamic>>> buttonList = {
     //一般ボタンリスト
     "general": [
-      {
-        "title": "閲覧履歴",
-        "icon": Icons.history,
-        "push": const WatchHistory(),
-      },
+      // {
+      //   "title": "閲覧履歴",
+      //   "icon": Icons.history,
+      //   "push": const WatchHistory(),
+      // },
       {
         "title": "お気に入り",
         "icon": Icons.favorite,
@@ -169,16 +170,16 @@ class _HomeState extends State<Home> {
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[0],
                             ),
-                            SizedBox(width: centerButtonSize), //ボタン間の空間
+                            SizedBox(width: centerButtonSize * 1.5), //ボタン間の空間
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[1],
                             ),
-                            SizedBox(width: centerButtonSize), //ボタン間の空間
-                            CenterButton(
-                              centerButtonSize: centerButtonSize,
-                              buttonList: buttonList["general"]?[2],
-                            ),
+                            // SizedBox(width: centerButtonSize), //ボタン間の空間
+                            // CenterButton(
+                            //   centerButtonSize: centerButtonSize,
+                            //   buttonList: buttonList["general"]?[2],
+                            // ),
                           ],
                         )
                       //法人ボタン
@@ -508,9 +509,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         //アップバータイトル
         title: Text(
           "REEL", //文字
-          style: TextStyle(
+          style: GoogleFonts.secularOne(
               color: store.mainColor,
-              fontWeight: FontWeight.bold,
+              //fontWeight: FontWeight.bold,
               fontSize: 40), //書体
         ),
         backgroundColor: store.subColor,

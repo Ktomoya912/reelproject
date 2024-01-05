@@ -7,6 +7,13 @@ import '/provider/change_general_corporation.dart';
 import 'package:reelproject/app_router/app_router.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
+// //オーバーレイ
+// import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/conf/conf_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/conf/conf_delete.dart';
+// import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/rule_screen.dart';
+
 //ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
 
@@ -48,6 +55,12 @@ class RootPage extends StatelessWidget {
                 ],
                 onTap: (int index) {
                   //ネストされたルーターのスタック情報を破棄(初期化される)
+                  //オーバーレイ
+                  // ConfDelete().hide();
+                  // ConfConf().hide();
+                  // DeleteConf().hide();
+                  // NotpostDeleteConf().hide();
+                  // RuleScreen().hide();
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();

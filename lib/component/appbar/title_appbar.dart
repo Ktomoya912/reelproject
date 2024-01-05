@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
+import 'package:google_fonts/google_fonts.dart'; //googleフォント
 
 //使い方
 //ファイルの上部でimport '.titleAppBar.dart';と置く
@@ -30,8 +31,8 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         //アップバータイトル
         title: Text(
           "REEL", //文字
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
+          style: GoogleFonts.secularOne(
+              //fontWeight: FontWeight.bold,
               fontSize: 40,
               color: store.mainColor), //書体
         ),

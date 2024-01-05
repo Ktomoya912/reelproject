@@ -6,6 +6,7 @@ import 'package:reelproject/component/appbar/detail_appbar.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class JobPostDetail extends StatefulWidget {
   const JobPostDetail({
@@ -106,11 +107,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
 
     //短期or長期の色
-    MaterialColor termColor = Colors.green;
+    Color termColor = Colors.green;
     if (jobDetailList["term"] == "短期") {
       termColor = Colors.lightGreen;
     } else if (jobDetailList["term"] == "長期") {
-      termColor = Colors.yellow;
+      termColor = Colors.yellow[500]!;
     }
 
     //横画面サイズにより幅設定
@@ -128,6 +129,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         eventJobJedge: "job",
         postTerm: jobDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
+        notPostJedge: jobDetailList["notPost"],
       ),
       //body
       body: ShaderMaskComponent(
@@ -153,6 +155,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
                   child: Column(
                     children: [
                       //上の空間
+
+                      //空白
+                      SizedBox(
+                        height: mediaQueryData.size.height / 50,
+                      ),
 
                       //画像
                       Stack(children: [
@@ -299,11 +306,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                     color: termColor,
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text("  ${jobDetailList["term"]}  ",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                      style: GoogleFonts.mochiyPopOne(
+                                          //fontWeight: FontWeight.bold
+                                          )),
                                 ),
                               ],
                             ),

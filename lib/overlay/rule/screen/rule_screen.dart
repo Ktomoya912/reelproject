@@ -18,6 +18,11 @@ class RuleScreen {
 
   OverScreenControl? controller;
 
+  //一般向け利用規約
+  final String ruleGeneral = "aaa";
+//企業向け利用規約
+  final String ruleCompany = "bbb";
+
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
@@ -59,7 +64,7 @@ class RuleScreen {
                 //   minWidth: size.width * 0.2,
                 // ),
                 height: 600,
-                width: 300,
+                width: 350,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0),
@@ -83,17 +88,20 @@ class RuleScreen {
                         //-------利用規約（現在はtextのみ）を表示している部分------------
                         Container(
                           height: 400,
-                          width: 200,
+                          width: 250,
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 203, 202, 202),
-                                width: 2.5),
+                                width: 1),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: const SingleChildScrollView(
+                          child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                Text("aaaaa"),
+                                if (store.jedgeGC)
+                                  Text(ruleGeneral)
+                                else
+                                  Text(ruleCompany)
                               ],
                             ),
                           ),

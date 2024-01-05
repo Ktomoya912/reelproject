@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
-import 'package:reelproject/component/finish_screen/finish_screen.dart';
-import 'mypage.dart';
+//import 'package:reelproject/component/finish_screen/finish_screen.dart';
+//import 'mypage.dart';
+import 'package:reelproject/overlay/rule/screen/conf/conf_conf.dart'; //オーバレイで表示される画面のファイル
+import 'package:reelproject/overlay/rule/screen/conf/conf_delete.dart'; //オーバレイで表示される画面のファイル
 
 class ApplyConf extends StatefulWidget {
   const ApplyConf({
@@ -183,7 +185,7 @@ class ApplyConfState extends State<ApplyConf> {
                 SizedBox(
                   width: width,
                   child: Text(
-                    '求人広告に対して応募を行ったユーザーのプロフィールです。\n 雇用を行いたい、または面接を行いたいなどといった場合には、上記のメールアドレスへ連絡を行ってください。\n　\nまた、実際に雇用が決定されましたら、以下の確認ボタンを押してください。\n残念ながら不採用となってしまった際には以下のキャンセルボタンを押してください。',
+                    '求人広告に対して応募を行ったユーザーのプロフィールです。\n 雇用を行いたい、または面接を行いたいなどといった場合には、上記のメールアドレスへ連絡を行ってください。\n　\nまた、実際に雇用が決定されましたら、以下の確認ボタンを押してください。\n残念ながら不採用となってしまった際には以下の不採用ボタンを押してください。',
                     style: TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 13,
@@ -200,21 +202,22 @@ class ApplyConfState extends State<ApplyConf> {
                       ElevatedButton(
                         onPressed: () {
                           // // ログインボタンが押されたときの処理をここに追加予定
-                          Navigator.pop(context, true);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const FinishScreen(
-                                appbarText: "応募者確認",
-                                appIcon: Icons.playlist_add_check,
-                                finishText: "確認完了",
-                                text:
-                                    "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
-                                buttonText:
-                                    "ログイン画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
-                                jedgeBottomAppBar: true,
-                              ),
-                            ),
-                          );
+                          // Navigator.pop(context, true);
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const FinishScreen(
+                          //       appbarText: "応募者確認",
+                          //       appIcon: Icons.playlist_add_check,
+                          //       finishText: "確認完了",
+                          //       text:
+                          //           "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
+                          //       buttonText:
+                          //           "ログイン画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                          //       jedgeBottomAppBar: true,
+                          //     ),
+                          //   ),
+                          // );
+                          ConfConf().show(context: context);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -223,18 +226,19 @@ class ApplyConfState extends State<ApplyConf> {
                           minimumSize: Size(width / 2 - 5, 60),
                           backgroundColor: store.mainColor,
                         ),
-                        child: const Text('送信する',
+                        child: const Text('確認',
                             style: TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // ボタンが押されたときの処理をここに追加
-                          Navigator.pop(context, true);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const MyPage()),
-                          );
+                          //ボタンが押されたときの処理をここに追加
+                          // Navigator.pop(context, true);
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const MyPage()),
+                          // );
+                          ConfDelete().show(context: context);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -243,7 +247,7 @@ class ApplyConfState extends State<ApplyConf> {
                           minimumSize: Size(width / 2 - 5, 60),
                           backgroundColor: store.greyColor,
                         ),
-                        child: const Text('キャンセル',
+                        child: const Text('不採用',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ],

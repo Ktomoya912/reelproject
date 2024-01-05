@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../over_screen_controller.dart';
+import '../../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
@@ -11,11 +11,11 @@ import 'package:reelproject/component/finish_screen/finish_screen.dart';
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
 
-class NotpostDeleteConf {
-  factory NotpostDeleteConf() => _shared;
-  static final NotpostDeleteConf _shared = NotpostDeleteConf._sharedInstance();
+class ConfConf {
+  factory ConfConf() => _shared;
+  static final ConfConf _shared = ConfConf._sharedInstance();
 
-  NotpostDeleteConf._sharedInstance();
+  ConfConf._sharedInstance();
 
   OverScreenControl? controller;
 
@@ -74,29 +74,29 @@ class NotpostDeleteConf {
                       children: [
                         //ウィジェットを保管
                         const Text(
-                          "本当に削除しますか？",
-                          style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              fontSize: 24),
+                          "本当に確認しますか？",
+                          style: TextStyle(fontSize: 24),
                         ),
                         const SizedBox(height: 20), //余白調整
                         ElevatedButton(
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
+                            // ボタンが押されたときの処理をここに追加予定
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            NotpostDeleteConf().hide();
+                            Navigator.pop(context);
+                            ConfConf().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const FinishScreen(
-                                  appbarText: "未投稿削除完了",
+                                  appbarText: "応募者確認",
                                   appIcon: Icons.playlist_add_check,
-                                  finishText: "未投稿削除完了しました",
+                                  finishText: "確認完了",
                                   text:
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
                                   buttonText:
-                                      "マイページに戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                      "求人画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
                                 ),
                               ),
@@ -110,7 +110,7 @@ class NotpostDeleteConf {
                             backgroundColor: store.mainColor,
                           ),
                           child: const Text(
-                            "削除する", //Elevateの子供
+                            "確認", //Elevateの子供
                             style: TextStyle(
                                 color: Colors.white,
                                 //fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class NotpostDeleteConf {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
-                            NotpostDeleteConf().hide();
+                            ConfConf().hide();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

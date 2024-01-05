@@ -70,9 +70,10 @@ class _ToggleButtonState extends State<ToggleButton>
       labelColor: colorStore.mainColor, //選択されているときの色
       unselectedLabelColor: colorStore.greyColor, //選択されていないときの色
       indicatorColor: colorStore.mainColor, //選択されているときの背景色
-      indicatorWeight: 2, //選択されているときの背景色の太さ
+      indicatorWeight: 4, //選択されているときの背景色の太さ
       labelStyle: const TextStyle(
           fontWeight: FontWeight.bold, fontSize: 15), //選択されているときの文字の太さ
+      //下線を丸く
 
       tabs: <Widget>[
         Tab(

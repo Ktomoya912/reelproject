@@ -6,6 +6,7 @@ import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -62,7 +63,7 @@ class JobApp {
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -81,27 +82,42 @@ class JobApp {
                         const Text(
                           "本当に応募しますか？",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
+                              //fontWeight: FontWeight.bold,
+                              fontSize: 14),
                         ),
                         const SizedBox(height: 20), //余白調整
                         ElevatedButton(
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            // ボタンが押されたときの処理をここに追加予定
+                            Navigator.pop(context);
+                            JobApp().hide();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const FinishScreen(
+                                  appbarText: "求人応募完了",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "求人応募が完了しました。",
+                                  text: "",
+                                  buttonText:
+                                      "求人画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                  jedgeBottomAppBar: false,
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60), //ボタンの大きさ
+                            minimumSize: const Size(220, 60), //ボタンの大きさ
                             backgroundColor: store.mainColor,
                           ),
                           child: const Text(
                             "応募する", //Elevateの子供
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 fontSize: 18),
                           ),
                         ),
@@ -115,15 +131,15 @@ class JobApp {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            minimumSize: const Size(240, 60),
+                            minimumSize: const Size(220, 60),
                             backgroundColor: Colors.grey,
                           ),
                           child: const Text("キャンセル", //Elevateの子供
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  //fontWeight: FontWeight.bold,
                                   fontSize: 18)),
                         ),
                       ],

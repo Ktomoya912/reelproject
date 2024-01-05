@@ -39,6 +39,7 @@ class FinishScreen extends StatelessWidget {
     if (appbarText != "問い合わせ") {
       questionButtonWidget = QuestionButton(
         jedgeBottomAppBar: jedgeBottomAppBar,
+        buttonText: buttonText,
       );
     }
     return Scaffold(
@@ -125,9 +126,11 @@ class QuestionButton extends StatelessWidget {
   const QuestionButton({
     super.key,
     required this.jedgeBottomAppBar,
+    required this.buttonText,
   });
 
   final bool jedgeBottomAppBar;
+  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +144,7 @@ class QuestionButton extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => AskPage(
                     loginJedge: jedgeBottomAppBar,
+                    buttonTex: buttonText,
                   )),
         );
       },

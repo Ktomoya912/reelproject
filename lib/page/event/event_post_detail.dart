@@ -37,12 +37,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
   Widget generateWidgets(int i, double height) {
     if (i == 0) {
       return Text(
-          eventDetailList["postalNumber"][i] +
-              "〒" +
-              "   " +
-              eventDetailList["prefecture"][i] +
-              eventDetailList["city"][i] +
-              eventDetailList["houseNumber"][i],
+          "〒${eventDetailList["postalNumber"]}  ${eventDetailList["prefecture"]}${eventDetailList["city"]}${eventDetailList["houseNumber"]}",
+          // "〒" +
+          //     eventDetailList["postalNumber"][i] +
+          //     "   " +
+          //     eventDetailList["prefecture"][i] +
+          //     eventDetailList["city"][i] +
+          //     eventDetailList["houseNumber"][i],
           style: const TextStyle(fontWeight: FontWeight.bold)); //太文字);
     }
 
@@ -96,6 +97,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
         eventJobJedge: "event",
         postTerm: eventDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
+        notPostJedge: eventDetailList["notPost"],
       ),
       //body
       body: ShaderMaskComponent(
@@ -120,6 +122,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
                   width: width,
                   child: Column(
                     children: [
+                      //空白
+                      SizedBox(
+                        height: mediaQueryData.size.height / 50,
+                      ),
                       //画像
                       Stack(children: [
                         SizedBox(
