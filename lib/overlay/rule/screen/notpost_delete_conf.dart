@@ -50,6 +50,16 @@ class NotpostDeleteConf {
     final overlay = OverlayEntry(
       builder: (context) {
         final store = Provider.of<ChangeGeneralCorporation>(context);
+        String buttonText = "ホーム画面に戻る";
+        if (store.rootIndex == 0) {
+          buttonText = "ホーム画面に戻る";
+        } else if (store.rootIndex == 1) {
+          buttonText = "イベント画面に戻る";
+        } else if (store.rootIndex == 2) {
+          buttonText = "求人画面に戻る";
+        } else if (store.rootIndex == 3) {
+          buttonText = "マイページ画面に戻る";
+        }
         return Material(
           color: Colors.black.withAlpha(150),
           child: Center(
@@ -90,14 +100,14 @@ class NotpostDeleteConf {
                             NotpostDeleteConf().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const FinishScreen(
+                                builder: (context) => FinishScreen(
                                   appbarText: "未投稿削除完了",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "未投稿削除完了しました",
                                   text:
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
                                   buttonText:
-                                      "マイページに戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                      buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
                                 ),
                               ),
