@@ -149,7 +149,7 @@ class _HomeState extends State<Home> {
                                 height: width / 10 * 7,
                                 width: width,
                                 decoration: BoxDecoration(
-                                  color: store.subColor,
+                                  color: store.mainColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       SizedBox(
-                          height: mediaQueryData.size.height / 25), //ボタン間の空間
+                          height: mediaQueryData.size.height / 15), //ボタン間の空間
                       //中央ボタン
                       //一般ボタン
                       if (store.jedgeGC)
@@ -354,6 +354,9 @@ class HistoryButton extends StatelessWidget {
     //この広告を投稿したか
     "postJedge": true,
 
+    //未投稿か否か(true:未投稿,false:投稿済み)
+    "notPost": false,
+
     //掲載期間
     "postTerm": "2023年12月10日"
   };
@@ -403,7 +406,7 @@ class HistoryButton extends StatelessWidget {
                 width: width * 0.4,
                 height: width * 0.1,
                 decoration: BoxDecoration(
-                  color: store.subColor,
+                  color: store.mainColor,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
@@ -510,11 +513,11 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Text(
           "REEL", //文字
           style: GoogleFonts.secularOne(
-              color: store.mainColor,
+              color: Colors.white,
               //fontWeight: FontWeight.bold,
               fontSize: 40), //書体
         ),
-        backgroundColor: store.subColor,
+        backgroundColor: store.mainColor,
         //elevation: 0.0, //影なし
         toolbarHeight: 100, //アップバーの高さ
         automaticallyImplyLeading: false, //戻るボタンの非表示
@@ -524,7 +527,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           //通知ボタン
           IconButton(
             icon: const Icon(Icons.add_alert),
-            color: store.mainColor,
+            color: Colors.white,
             //通知ページへ移動(push)
             onPressed: () {
               Navigator.push(

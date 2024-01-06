@@ -139,7 +139,7 @@ class SearchAppbarState extends State<SearchAppbar> {
             Expanded(
               child: Container(
                   width: widget.mediaQueryData.size.width,
-                  color: store.thinColor,
+                  color: store.mainColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -147,11 +147,11 @@ class SearchAppbarState extends State<SearchAppbar> {
                         //右寄せ
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Icon(Icons.menu, color: store.thinColor, size: 30),
+                          Icon(Icons.menu, color: store.mainColor, size: 30),
                           Text(
                             sort,
                             style: TextStyle(
-                              color: store.thinColor,
+                              color: store.mainColor,
                               fontSize: 15,
                             ),
                           ),
@@ -160,18 +160,30 @@ class SearchAppbarState extends State<SearchAppbar> {
 
                       Row(
                         children: [
-                          const Text("「"),
+                          const Text("「",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17)),
                           Container(
                             constraints: BoxConstraints(
                               maxWidth: widget.mediaQueryData.size.width / 5,
                             ),
-                            child: Text(
-                              widget.title,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
+                            child: Text(widget.title,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17)),
                           ),
-                          const Text("」検索結果"),
+                          const Text(
+                            "」検索結果",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17),
+                          ),
                         ],
                       ),
 
@@ -183,12 +195,12 @@ class SearchAppbarState extends State<SearchAppbar> {
                               //右寄せ
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Icon(Icons.sort,
-                                    color: Colors.grey[700], size: 30),
+                                const Icon(Icons.sort,
+                                    color: Colors.white, size: 30),
                                 Text(
                                   sort,
-                                  style: TextStyle(
-                                    color: Colors.grey[700],
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                     fontSize: 15,
                                   ),
                                 ),

@@ -14,7 +14,7 @@ class NormalBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return BottomAppBar(
-      color: store.subColor,
+      color: store.mainColor,
       height: 40,
     );
   }

@@ -42,6 +42,13 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
         centerTitle: true, //中央揃え
         toolbarHeight: 50, //アップバーの高さ
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+          //replace with our own icon data.
+        ),
         actions: [
           if (postJedge)
             SizedBox(

@@ -225,7 +225,7 @@ class ScrollMyPageDetail extends StatelessWidget {
                       width: 150, //アイコン幅
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, //円形に
-                          color: store.subColor), //アイコン周囲円の色
+                          color: store.mainColor), //アイコン周囲円の色
                     ),
                   ],
                 ),
@@ -519,15 +519,15 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
               //アップバー内にアップバー(ページ説明のため)
               title: Text(
                 title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: const TextStyle(
+                  //fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: store.blackColor,
+                  color: Colors.white,
                 ),
               ), //ページ説明文字
               centerTitle: true, //中央揃え
               automaticallyImplyLeading: false, //戻るボタンの非表示
-              backgroundColor: store.subColor, //背景
+              backgroundColor: store.mainColor, //背景
               //elevation: 0.0, //影なし
               actions: [
                 Padding(
@@ -543,9 +543,9 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
-                              decorationColor: Colors.black,
+                              decorationColor: Colors.white,
                               decorationThickness: 2,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           )
                         : const Text(
@@ -553,9 +553,9 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
-                              decorationColor: Colors.black,
+                              decorationColor: Colors.white,
                               decorationThickness: 2,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                   ),

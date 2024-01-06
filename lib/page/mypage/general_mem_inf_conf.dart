@@ -208,7 +208,7 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                 style: TextStyle(color: Colors.blue),
               ),
             ),
-            const Padding(padding: EdgeInsets.all(10)),
+            const Padding(padding: EdgeInsets.all(20)),
           ],
         ),
       )),

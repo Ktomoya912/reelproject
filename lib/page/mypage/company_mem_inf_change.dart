@@ -108,12 +108,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MyPage(),
-                  ),
-                );
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: store.mainColor,
@@ -125,7 +120,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
               child: const Text('編集内容を決定'),
             ),
 
-            const Padding(padding: EdgeInsets.all(10)),
+            const Padding(padding: EdgeInsets.all(20)),
           ],
         ),
       )),
