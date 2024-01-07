@@ -10,7 +10,11 @@ class ChangeRootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-        routes: const [LoginRoute(), RootRoute()], //このレイヤーから移動可能なRoute
+        routes: const [
+          LoginRoute(),
+          RootRoute(),
+          SecessionFinishRoute()
+        ], //このレイヤーから移動可能なRoute
         builder: (context, child) {
           // タブが切り替わると発火します
           //final tabsRouter = context.tabsRouter;

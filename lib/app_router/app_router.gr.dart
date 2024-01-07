@@ -46,6 +46,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: LoginPage(),
       );
     },
+    SecessionFinishRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SecessionFinish(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -152,6 +158,18 @@ class LoginRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'LoginRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+class SecessionFinishRoute extends PageRouteInfo<void> {
+  const SecessionFinishRoute({List<PageRouteInfo>? children})
+      : super(
+          SecessionFinishRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SecessionFinishRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
