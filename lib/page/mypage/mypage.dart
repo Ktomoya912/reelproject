@@ -19,6 +19,7 @@ import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
 import 'apply_conf.dart'; //応募者確認
 import 'package:reelproject/page/login/ask_page.dart'; //お問い合わせ
+import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -125,7 +126,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
-        "push": const EventFeeSelect(),
+        "push": "overlay",
+        "overlay": SelectPost(),
       },
       {
         "title": "投稿一覧",
