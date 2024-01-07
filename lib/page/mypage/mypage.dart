@@ -5,6 +5,7 @@ import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
+import 'package:reelproject/overlay/rule/screen/logout.dart'; //オーバレイで表示される画面のファイル
 //push先
 import 'general_mem_inf_conf.dart'; //会員情報確認
 import 'company_mem_inf_conf.dart'; //会員情報確認
@@ -98,7 +99,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "ログアウト",
         "icon": Icons.logout,
-        "push": const ApplyHist(),
+        "push": "overlay",
+        "overlay": Logout(),
       },
       {
         "title": "退会申請",
@@ -175,7 +177,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "ログアウト",
         "icon": Icons.logout,
-        "push": const ApplyHist(),
+        "push": "overlay",
+        "overlay": Logout(),
       },
       {
         "title": "退会申請",
