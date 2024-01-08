@@ -51,13 +51,15 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewMemberGeneral()),
+                          builder: (context) => NewMemberGeneral(
+                              onVisibilityToggle: (isVisible) {})),
                     );
                   } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewMemberCompany()),
+                          builder: (context) => NewMemberCompany(
+                              onVisibilityToggle: (isVisible) {})),
                     );
                   }
                 },

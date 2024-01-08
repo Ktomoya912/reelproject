@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
-import '../../component/form/company_form.dart';
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
-import 'package:reelproject/component/listView/shader_mask_component.dart';
 //push先
 
-@RoutePage()
-class CompanyMemInfConfChangeRouterPage extends AutoRouter {
-  const CompanyMemInfConfChangeRouterPage({super.key});
-}
-
-@RoutePage()
 class CompanyMemInfConfChange extends StatefulWidget {
-  const CompanyMemInfConfChange({super.key});
+  const CompanyMemInfConfChange({
+    super.key,
+  });
 
   @override
   State<CompanyMemInfConfChange> createState() =>
@@ -24,32 +17,33 @@ class CompanyMemInfConfChange extends StatefulWidget {
 }
 
 class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
+  String? selectedGender;
+
+  String username = '';
+
+  String phoneNumber = '';
+  String address = '';
+  String prefecture = '';
+  String city = '';
+  String block = '';
+  String year = '';
+  String month = '';
+  String day = '';
+
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      //アップバー
-      appBar: TitleAppBar(title: "会員情報", jedgeBuck: true),
-
-      //内部
-      body: ScrollCompanyMemInfConfChangeDetail(),
-    );
+  void initState() {
+    super.initState();
   }
-}
-
-//スクロール可能なマイページの一覧画面
-class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
-  const ScrollCompanyMemInfConfChangeDetail({
-    super.key,
-  });
-
-  //一般向けマイページリスト
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return Scaffold(
+      //アップバー
+      appBar: TitleAppBar(title: "会員情報", jedgeBuck: true),
 
-    return ShaderMaskComponent(
-      child: SingleChildScrollView(
+      //内部
+      body: SingleChildScrollView(
           child: Center(
         child: Column(
           children: [
@@ -99,16 +93,480 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
             //下の詳細部分
             //アイコン部分との空白
 
-            const CompanyForm(enable: false),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 50,
+                    ),
 
-            //空白
-            const SizedBox(
-              height: 50,
+                    const Padding(
+                      padding: EdgeInsets.all(5.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          enabled: false,
+                          maxLength: 20,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '法人名は変更できません',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：ChaO！株式会社',
+                            counterText: '20文字以内',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckUserName(value as String)) {
+                              username = '';
+                              return '適切な入力ではありません';
+                            }
+                            username = value;
+                            // print(username);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 20,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: 'ユーザー名',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '英数字と_のみ使用可能',
+                            counterText: '20文字以内',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          enabled: false,
+                          maxLength: 50,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: 'メールアドレスは編集できません',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：info@example.com',
+                            counterText: '50文字以内',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckPhoneNumber(value as String)) {
+                              phoneNumber = '';
+                              return '電話番号が正しくありません';
+                            }
+                            phoneNumber = value;
+                            // print(phoneNumber);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 11,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '電話番号',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：09012345678',
+                            counterText: '11文字以内',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.all(20.0),
+                    ),
+
+                    // ここから住所入力
+
+                    const SizedBox(
+                      width: 300,
+                      child: Text(
+                        '住所',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(5.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckAddress(value as String)) {
+                              address = '';
+                              return '郵便番号が正しくありません';
+                            }
+                            address = value;
+                            // print(address);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 8,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '郵便番号',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：123-4567',
+                            counterText: '',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckPrefecture(value as String)) {
+                              prefecture = '';
+                              return '都道府県が正しくありません';
+                            }
+                            prefecture = value;
+                            //print(prefecture);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 4,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '都道府県',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：高知県',
+                            counterText: '',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckCity(value as String)) {
+                              city = '';
+                              return '市区町村が正しくありません';
+                            }
+                            city = value;
+                            // print(city);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 7,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '市区町村',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：高知市',
+                            counterText: '',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (!_CheckBlock(value as String)) {
+                              block = '';
+                              return '番地が正しくありません';
+                            }
+                            block = value;
+                            // print(block);
+                            return null;
+                          },
+                          enabled: true,
+                          maxLength: 7,
+                          textAlign: TextAlign.start,
+                          decoration: const InputDecoration(
+                            labelText: '番地',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            hintText: '例：1-1-1',
+                            counterText: '',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(20.0),
+                    ),
+                    const SizedBox(
+                      width: 300,
+                      child: Text(
+                        '生年月日',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(5.0),
+                    ),
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: SizedBox(
+                        width: 300,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 100,
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    if (_CheckYear(value)) {
+                                      setState(() {
+                                        year = value;
+                                      });
+                                      //print(value);
+                                    } else {
+                                      setState(() {
+                                        year = '';
+                                      });
+                                      //print('年が正しくありません');
+                                    }
+                                  },
+                                  enabled: true,
+                                  maxLength: 4,
+                                  textAlign: TextAlign.start,
+                                  decoration: const InputDecoration(
+                                    labelText: '西暦',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 10),
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              const Text('年', style: TextStyle(fontSize: 15)),
+                              const Padding(
+                                padding: EdgeInsets.all(5.0),
+                              ),
+                              SizedBox(
+                                width: 50,
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    if (_CheckMonth(value)) {
+                                      setState(() {
+                                        month = value;
+                                      });
+                                      //print(value);
+                                    } else {
+                                      setState(() {
+                                        month = '';
+                                      });
+                                      //print('月が正しくありません');
+                                    }
+                                  },
+                                  enabled: true,
+                                  maxLength: 2,
+                                  textAlign: TextAlign.start,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 10),
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              const Text('月', style: TextStyle(fontSize: 15)),
+                              const Padding(
+                                padding: EdgeInsets.all(5.0),
+                              ),
+                              SizedBox(
+                                width: 50,
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    if (_CheckDay(value)) {
+                                      setState(() {
+                                        day = value;
+                                      });
+                                      //print(value);
+                                    } else {
+                                      setState(() {
+                                        day = '';
+                                      });
+                                      //print('日が正しくありません');
+                                    }
+                                  },
+                                  enabled: true,
+                                  maxLength: 2,
+                                  textAlign: TextAlign.start,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 10),
+                                    counterText: '',
+                                  ),
+                                ),
+                              ),
+                              const Text('日', style: TextStyle(fontSize: 15)),
+                            ]),
+                      ),
+                    ),
+                    Text(
+                      // エラーメッセージを表示する変数などを使用する
+                      _CheckBrithday(year, month, day),
+                      style: const TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(5.0),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Radio(
+                          value: 'male',
+                          groupValue: selectedGender,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedGender = value;
+                            });
+                          },
+                        ),
+                        const Text('男性',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                        const Padding(
+                          padding: EdgeInsets.all(15.0),
+                        ),
+                        Radio(
+                          value: 'female',
+                          groupValue: selectedGender,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedGender = value;
+                            });
+                          },
+                        ),
+                        const Text('女性',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                        const Padding(
+                          padding: EdgeInsets.all(15.0),
+                        ),
+                        Radio(
+                          value: 'other',
+                          groupValue: selectedGender,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedGender = value;
+                            });
+                          },
+                        ),
+                        const Text('その他',
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                      ],
+                    ),
+
+                    Text(
+                      _CheckSelectedGender(selectedGender),
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ), //法人名とメールアドレスはへ変更できるならtrue
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                ),
+              ],
             ),
 
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                if (_CheckUserName(username) &&
+                    _CheckPhoneNumber(phoneNumber) &&
+                    _CheckAddress(address) &&
+                    _CheckYear(year) &&
+                    _CheckMonth(month) &&
+                    _CheckDay(day) &&
+                    _CheckSelectedGender(selectedGender) != '') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyPage(),
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: store.mainColor,
@@ -120,7 +578,7 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
               child: const Text('編集内容を決定'),
             ),
 
-            const Padding(padding: EdgeInsets.all(20)),
+            const Padding(padding: EdgeInsets.all(10)),
           ],
         ),
       )),
@@ -132,3 +590,99 @@ class ScrollCompanyMemInfConfChangeDetail extends StatelessWidget {
 
 //マイページリストを作成するクラス
 
+bool _CheckUserName(String username) {
+  //ユーザー名の正規表現
+  final regName = RegExp(
+    caseSensitive: false,
+    r"^[a-zA-Z0-9_]+$",
+  );
+  return regName.hasMatch(username);
+}
+
+bool _CheckPhoneNumber(String phoneNumber) {
+  //電話番号の正規表現
+  final regPhoneNumber = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{10,11}$",
+  );
+  return regPhoneNumber.hasMatch(phoneNumber);
+}
+
+bool _CheckAddress(String address) {
+  //住所の正規表現
+  final regAddress = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{3}-[0-9]{4}$",
+  );
+  return regAddress.hasMatch(address);
+}
+
+bool _CheckPrefecture(String value) {
+  //都道府県の正規表現
+  return value != null && value.isNotEmpty;
+}
+
+bool _CheckCity(String city) {
+  //市区町村の正規表現
+  return city != null && city.isNotEmpty;
+}
+
+bool _CheckBlock(String block) {
+  //番地の正規表現
+  return block != null && block.isNotEmpty;
+}
+
+bool _CheckYear(String year) {
+  //年の正規表現
+  final regYear = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{4}$",
+  );
+  return regYear.hasMatch(year);
+}
+
+bool _CheckMonth(String month) {
+  //月の正規表現
+  final regMonth = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,2}$",
+  );
+  return regMonth.hasMatch(month) && int.parse(month) <= 12 && month != '';
+}
+
+bool _CheckDay(String day) {
+  //日の正規表現
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,2}$",
+  );
+  return regDay.hasMatch(day);
+}
+
+String _CheckSelectedGender(String? selectedGender) {
+  //性別の正規表現
+  if (selectedGender == null) {
+    return '性別を選択してください';
+  } else {
+    return '';
+  }
+}
+
+String _CheckBrithday(String? year, String? month, String? day) {
+  // 誕生日の検証
+  if (year == '' || month == '' || day == '') {
+    return '誕生日を入力してください';
+  }
+  return '';
+}
+
+bool _CheckPassword(String password) {
+  //パスワードの正規表現
+  final regPassword = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)');
+  return regPassword.hasMatch(password) && password.length >= 8;
+}
+
+bool _CheckPasswordMatch(String password, String passwordCheck) {
+  //パスワードの正規表現
+  return password == passwordCheck;
+}
