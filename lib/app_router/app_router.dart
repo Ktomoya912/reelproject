@@ -7,6 +7,7 @@ import 'package:reelproject/page/job/job.dart';
 import 'package:reelproject/page/mypage/mypage.dart';
 import 'package:reelproject/page/root_page/change_root_page.dart';
 import 'package:reelproject/page/login/login_page.dart';
+import 'package:reelproject/page/login/secession_finish.dart';
 
 part 'app_router.gr.dart';
 
@@ -16,6 +17,7 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(path: '/', page: ChangeRootRoute.page, children: [
           AutoRoute(path: 'login', page: LoginRoute.page),
+          AutoRoute(path: 'secession', page: SecessionFinishRoute.page),
           AutoRoute(
             path: 'app',
             page: RootRoute.page,

@@ -19,6 +19,8 @@ import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
 import 'apply_conf.dart'; //応募者確認
 import 'package:reelproject/page/login/ask_page.dart'; //お問い合わせ
+import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
+import 'package:reelproject/overlay/rule/screen/secession.dart'; //利用規約画面
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -105,7 +107,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
-        "push": const ApplyHist(),
+        "push": "overlay",
+        "overlay": Secession(),
       },
     ],
   };
@@ -125,7 +128,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "広告投稿",
         "icon": Icons.post_add,
-        "push": const EventFeeSelect(),
+        "push": "overlay",
+        "overlay": SelectPost(),
       },
       {
         "title": "投稿一覧",
@@ -183,7 +187,8 @@ class ScrollMyPageDetail extends StatelessWidget {
       {
         "title": "退会申請",
         "icon": Icons.waving_hand,
-        "push": const ApplyHist(),
+        "push": "overlay",
+        "overlay": Secession(),
       },
     ],
   };
