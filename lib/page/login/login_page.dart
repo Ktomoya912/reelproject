@@ -135,9 +135,13 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () => context.navigateTo(const RootRoute()),
+                    onPressed: () => {
+                      //context.navigateTo(const RootRoute()),
+                      context.popRoute(),
+                      context.pushRoute(const RootRoute()),
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: store.subColor,
+                      backgroundColor: store.mainColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -167,7 +171,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 90,
               ),
               InkWell(
                 onTap: () {
