@@ -133,7 +133,11 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () => context.navigateTo(const RootRoute()),
+                    onPressed: () => {
+                      //context.navigateTo(const RootRoute()),
+                      context.popRoute(),
+                      context.pushRoute(const RootRoute()),
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: store.mainColor,
                       shape: RoundedRectangleBorder(
