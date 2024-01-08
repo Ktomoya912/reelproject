@@ -51,13 +51,15 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewMemberGeneral()),
+                          builder: (context) => NewMemberGeneral(
+                              onVisibilityToggle: (isVisible) {})),
                     );
                   } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewMemberCompany()),
+                          builder: (context) => NewMemberCompany(
+                              onVisibilityToggle: (isVisible) {})),
                     );
                   }
                 },
@@ -133,13 +135,9 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () => {
-                      //context.navigateTo(const RootRoute()),
-                      context.popRoute(),
-                      context.pushRoute(const RootRoute()),
-                    },
+                    onPressed: () => context.navigateTo(const RootRoute()),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: store.mainColor,
+                      backgroundColor: store.subColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -169,7 +167,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 90,
+                height: 100,
               ),
               InkWell(
                 onTap: () {
