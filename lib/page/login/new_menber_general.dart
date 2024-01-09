@@ -5,6 +5,8 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class NewMemberGeneral extends StatefulWidget {
   final bool isObscure;
@@ -45,6 +47,37 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+
+    Future createUser(
+      String username,
+      String password,
+      String email,
+      String year,
+      String months,
+      String days,
+      String sex,
+    ) async {
+      Uri url = Uri.parse(ChangeGeneralCorporation.apiUrl + "/users/");
+      final response = await post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+          },
+          body: jsonEncode({
+            'username': username,
+            'password': password,
+            'email': email,
+            'sex': sex,
+            'birthday': '$year-$months-$days',
+            'user_type': 'g'
+          }));
+      // final Map<String, dynamic> data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(response.body);
+      }
+    }
 
     return Scaffold(
       appBar: const TitleAppBar(
@@ -432,7 +465,8 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     _CheckPasswordMatch(password, passwordCheck) &&
                     ruleCheck == true) {
                   //print('未入力の項目があります');
-
+                  createUser("username", "password", "email@sample.com", "2024",
+                      "01", "09", "o");
                   Navigator.pop(context); //pop
                   Navigator.push(
                     context,
