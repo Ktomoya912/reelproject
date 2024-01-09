@@ -8,6 +8,8 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/page/login/pass_change.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
+import 'package:http/http.dart';
+import 'dart:convert';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -27,6 +29,22 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+
+    Future getAccessToken(
+        String username, String password, String apiUrl) async {
+      Uri url = Uri.parse(apiUrl + "/auth/token");
+      final response = await post(url,
+          headers: {'content-type': 'application/x-www-form-urlencoded'},
+          body: {'username': username, 'password': password});
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        store.accessToken = data["access_token"];
+        // return response.body;
+      } else {
+        throw Exception("Failed");
+      }
+    }
+
     return Scaffold(
       appBar: LoginAppBar(store: store),
       body: SingleChildScrollView(
@@ -137,6 +155,8 @@ class LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () => {
                       //context.navigateTo(const RootRoute()),
+                      getAccessToken(
+                          'admin', 'password', ChangeGeneralCorporation.apiUrl),
                       context.popRoute(),
                       context.pushRoute(const RootRoute()),
                     },

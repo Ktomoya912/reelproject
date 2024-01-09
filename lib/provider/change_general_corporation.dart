@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
+  // APIのリンク
+  static const String apiUrl = "http://localhost:8000/api/v1";
+  String accessToken = "";
+
   //一般と法人を判断する変数
   //一般:true,  法人:flase
   bool jedgeGC = true;
