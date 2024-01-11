@@ -11,7 +11,7 @@ class EventAdvertisementList extends StatelessWidget {
     required this.mediaQueryData,
   });
 
-  final List<Map<String, dynamic>> advertisementList;
+  final List<dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
 
   static double lineWidth = 0.7; //線の太さ定数
@@ -148,7 +148,7 @@ class EventAdvertisementList extends StatelessWidget {
                           children: [
                             //タイトル
                             Text(
-                              advertisementList.elementAt(index)["title"],
+                              advertisementList.elementAt(index)["name"],
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 23),
                             ),
@@ -156,24 +156,25 @@ class EventAdvertisementList extends StatelessWidget {
                               crossAxisAlignment:
                                   CrossAxisAlignment.start, //左寄せ
                               children: [
-                                //開催日
-                                Text(
-                                    dayString +
-                                        advertisementList
-                                            .elementAt(index)["day"],
-                                    style: const TextStyle(fontSize: 18)),
-                                //開催時
-                                Text(
-                                    timeString +
-                                        advertisementList
-                                            .elementAt(index)["time"],
-                                    style: const TextStyle(fontSize: 18)),
-                                //開催場所
-                                Text(
-                                    placeString +
-                                        advertisementList
-                                            .elementAt(index)["place"],
-                                    style: const TextStyle(fontSize: 18)),
+                                //後で修正
+                                // //開催日
+                                // Text(
+                                //     dayString +
+                                //         advertisementList
+                                //             .elementAt(index)["day"],
+                                //     style: const TextStyle(fontSize: 18)),
+                                // //開催時
+                                // Text(
+                                //     timeString +
+                                //         advertisementList
+                                //             .elementAt(index)["time"],
+                                //     style: const TextStyle(fontSize: 18)),
+                                // //開催場所
+                                // Text(
+                                //     placeString +
+                                //         advertisementList
+                                //             .elementAt(index)["place"],
+                                //     style: const TextStyle(fontSize: 18)),
                               ],
                             ),
                           ],
