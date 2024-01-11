@@ -7,6 +7,9 @@ import 'package:reelproject/component/listView/review.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class EventPostDetail extends StatefulWidget {
   const EventPostDetail({
@@ -22,16 +25,39 @@ class EventPostDetail extends StatefulWidget {
 
 class _EventPostDetailState extends State<EventPostDetail> {
   late Map<String, dynamic> eventDetailList;
+  late bool favoriteJedge = false; //お気に入り判定
 
   @override
   void initState() {
     super.initState();
     eventDetailList = widget.eventList;
+    favoriteJedge = widget.eventList["favoriteJedge"];
+  }
+
+  //お気に入り登録
+  Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id/bookmark');
+    final response = await post(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization':
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzYxODE0NX0.wtF4bgEe6F9Oa2IpE5nWWQ_O2pzTOrhkPrCAmMwA1Xg'
+    });
+  }
+
+  //お気に入り削除
+  Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id/bookmark');
+    final response = await delete(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization':
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzYxODE0NX0.wtF4bgEe6F9Oa2IpE5nWWQ_O2pzTOrhkPrCAmMwA1Xg'
+    });
   }
 
   //求人広告のリスト
   //titleに文字数制限を設ける
-  bool favoriteJedge = false; //お気に入り判定
 
   //二度同じ場所を表示しないように制御する関数
   Widget generateWidgets(int i, double height) {
@@ -175,6 +201,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 //ボタンを押した時の処理
                                 onPressed: (int index) => setState(() {
                                   favoriteJedge = !favoriteJedge;
+                                  if (favoriteJedge) {
+                                    boobkmarkOn(eventDetailList["id"], store);
+                                  } else {
+                                    boobkmarkOff(eventDetailList["id"], store);
+                                  }
                                 }),
                                 //アイコン
                                 children: <Widget>[
@@ -218,14 +249,14 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                           secondaryAnimation) =>
                                                       SearchPage(
                                                     text: eventDetailList["tag"]
-                                                        [i],
+                                                        [i]["name"],
                                                     eventJobJedge: "おすすめイベント",
                                                     sort: "新着順",
                                                   ),
                                                 ))
                                           },
                                       child: Text(
-                                          "#${eventDetailList["tag"][i]}")),
+                                          "#${eventDetailList["tag"][i]["name"]}")),
                               ],
                             ),
                           ),
@@ -269,6 +300,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
                               crossAxisAlignment:
                                   CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
                               children: [
+                                generateWidgets(
+                                    0, mediaQueryData.size.height / 100),
                                 for (int i = 0;
                                     i < eventDetailList["day"].length;
                                     i++)
@@ -277,8 +310,6 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                         .start, // 子ウィジェットを左詰めに配置
                                     children: [
                                       //場所
-                                      generateWidgets(
-                                          i, mediaQueryData.size.height / 100),
 
                                       //時間
                                       Text(eventDetailList["day"][i] +
@@ -299,13 +330,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
                       //イベント詳細
                       //任意入力が一つでもある場合のみ表示
-                      if (eventDetailList["phone"] != null ||
-                          eventDetailList["mail"] != null ||
-                          eventDetailList["url"] != null ||
-                          eventDetailList["fee"] != null ||
-                          eventDetailList["Capacity"] != null ||
-                          eventDetailList["notes"] != null ||
-                          eventDetailList["addMessage"] != null)
+                      if (eventDetailList["phone"] != "" ||
+                          eventDetailList["mail"] != "" ||
+                          eventDetailList["url"] != "" ||
+                          eventDetailList["fee"] != "" ||
+                          eventDetailList["Capacity"] != "" ||
+                          eventDetailList["notes"] != "" ||
+                          eventDetailList["addMessage"] != "")
                         SizedBox(
                           width: width - 20,
                           child: Column(
@@ -324,10 +355,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                   height: mediaQueryData.size.height / 100,
                                 ),
                                 //イベント参加費
-                                if (eventDetailList["fee"] != null)
+                                if (eventDetailList["fee"] != "")
                                   Text("参加費：${eventDetailList["fee"]}円"),
                                 //定員
-                                if (eventDetailList["Capacity"] != null)
+                                if (eventDetailList["Capacity"] != "")
                                   Text("定員：${eventDetailList["Capacity"]}人"),
 
                                 //空白
@@ -336,13 +367,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 ),
 
                                 //電話番号
-                                if (eventDetailList["phone"] != null)
+                                if (eventDetailList["phone"] != "")
                                   Text("電話番号：${eventDetailList["phone"]}"),
                                 //メールアドレス
-                                if (eventDetailList["mail"] != null)
+                                if (eventDetailList["mail"] != "")
                                   Text("メールアドレス：${eventDetailList["mail"]}"),
                                 //URL
-                                if (eventDetailList["url"] != null)
+                                if (eventDetailList["url"] != "")
                                   Text("URL：${eventDetailList["url"]}"),
 
                                 //空白
@@ -351,7 +382,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 ),
 
                                 //注意事項
-                                if (eventDetailList["notes"] != null)
+                                if (eventDetailList["notes"] != "")
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment
                                         .start, // 子ウィジェットを左詰めに配置
@@ -367,7 +398,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 ),
 
                                 //追加メッセージ
-                                if (eventDetailList["addMessage"] != null)
+                                if (eventDetailList["addMessage"] != "")
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment
                                         .start, // 子ウィジェットを左詰めに配置

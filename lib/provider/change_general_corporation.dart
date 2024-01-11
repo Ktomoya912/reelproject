@@ -5,6 +5,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
   String accessToken = "";
+  int myID = 1; //自分のID
 
   //一般と法人を判断する変数
   //一般:true,  法人:flase
