@@ -811,6 +811,10 @@ class _ReviewState extends State<Review> {
                                                       store.myID)
                                                     SimpleDialogOption(
                                                       onPressed: () => {
+                                                        reviewDelite(
+                                                            widget.eventDetailList[
+                                                                "id"],
+                                                            store),
                                                         Navigator.pop(context),
                                                         showDialog(
                                                           context: context,
@@ -831,10 +835,6 @@ class _ReviewState extends State<Review> {
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
-                                                                    reviewDelite(
-                                                                        widget.eventDetailList[
-                                                                            "id"],
-                                                                        store);
                                                                   },
                                                                 ),
                                                               ],
