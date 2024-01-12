@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/component/listView/review.dart';
+import 'package:reelproject/component/listView/reviewJob.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class JobPostDetail extends StatefulWidget {
   const JobPostDetail({
@@ -22,11 +25,33 @@ class JobPostDetail extends StatefulWidget {
 
 class _JobPostDetailState extends State<JobPostDetail> {
   late Map<String, dynamic> jobDetailList;
+  late bool favoriteJedge = false; //お気に入り判定
 
   @override
   void initState() {
     super.initState();
     jobDetailList = widget.jobList;
+    favoriteJedge = widget.jobList["favoriteJedge"];
+  }
+
+  //お気に入り登録
+  Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id/bookmark');
+    final response = await post(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+  }
+
+  //お気に入り削除
+  Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id/bookmark');
+    final response = await delete(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
   }
 
   //求人広告のリスト
@@ -100,7 +125,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //   "postTerm": "2023年12月10日"
   // };
 
-  bool favoriteJedge = false; //お気に入り判定
+  //bool favoriteJedge = false; //お気に入り判定
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +235,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                 //ボタンを押した時の処理
                                 onPressed: (int index) => setState(() {
                                   favoriteJedge = !favoriteJedge;
+                                  if (favoriteJedge) {
+                                    boobkmarkOn(jobDetailList["id"], store);
+                                  } else {
+                                    boobkmarkOff(jobDetailList["id"], store);
+                                  }
                                 }),
                                 //アイコン
                                 children: <Widget>[
@@ -253,14 +283,14 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                           secondaryAnimation) =>
                                                       SearchPage(
                                                     text: jobDetailList["tag"]
-                                                        [i],
+                                                        [i]["name"],
                                                     eventJobJedge: "おすすめ求人",
                                                     sort: "新着順",
                                                   ),
                                                 ))
                                           },
-                                      child:
-                                          Text("#${jobDetailList["tag"][i]}")),
+                                      child: Text(
+                                          "#${jobDetailList["tag"][i]["name"]}")),
                               ],
                             ),
                           ),
@@ -324,7 +354,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                   CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
                               children: [
                                 for (int i = 0;
-                                    i < jobDetailList["day"].length;
+                                    i < jobDetailList["jobTimes"].length;
                                     i++)
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment
@@ -333,12 +363,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                       //時間
                                       //短期の場合
                                       if (jobDetailList["term"] == "短期")
-                                        Text(jobDetailList["day"][i] +
-                                            "   " +
-                                            jobDetailList["time"][i])
+                                        Text(
+                                            "${jobDetailList["jobTimes"][i]["start_time"].substring(0, 4)}年${jobDetailList["jobTimes"][i]["start_time"].substring(5, 7)}月${jobDetailList["jobTimes"][i]["start_time"].substring(8, 10)}日 ${jobDetailList["jobTimes"][i]["start_time"].substring(11, 16)}~${jobDetailList["jobTimes"][i]["end_time"].substring(11, 16)}")
                                       //長期の場合
                                       else if (jobDetailList["term"] == "長期")
-                                        Text(jobDetailList["time"][i]),
+                                        Text(
+                                            "${jobDetailList["jobTimes"][i]["start_time"].substring(11, 16)}~${jobDetailList["jobTimes"][i]["end_time"].substring(11, 16)}"),
                                     ],
                                   ),
                               ],
@@ -449,7 +479,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
                       Review(
                         width: width,
-                        eventDetailList: jobDetailList,
+                        jobDetailList: jobDetailList,
                       ),
                     ],
                   ),

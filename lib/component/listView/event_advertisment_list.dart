@@ -38,8 +38,12 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     //詳細
     "detail":
         "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n ステージイベント、宝さがし、鎮守の杜のびらふマルシェなど、子どもから大人まで誰でも楽しめるイベント内容が盛りだくさん！",
-    "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
-    "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
+    "eventTimes": [
+      {
+        "startTime": "2021-08-01T10:00:00+09:00",
+        "endTime": "2021-08-01T20:00:00+09:00"
+      }
+    ], //開催日時
     //開催場所
     "postalNumber": "781-5101", //郵便番号
     "prefecture": "高知県", //都道府県
@@ -116,6 +120,9 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
       //タグ
       eventDetailList["tag"] = data["tags"];
 
+      //開催日時
+      eventDetailList["eventTimes"] = data["event_times"];
+
       //住所
       eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
       eventDetailList["prefecture"] = data["prefecture"]; //都道府県
@@ -127,22 +134,23 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
       eventDetailList["url"] = data["homepage"]; //URL
       eventDetailList["fee"] = data["participation_fee"]; //参加費
       eventDetailList["Capacity"] = data["capacity"]; //定員
-      eventDetailList["addMessage"] = data["description"]; //追加メッセージ
+      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
       eventDetailList["notes"] = data["caution"]; //注意事項
 
       //レビュー
       eventDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      eventDetailList["reviewPoint"] = 0; //平均点
+      eventDetailList["ratioStarReviews"] = [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]; //星の割合(前から1,2,3,4,5)
+      eventDetailList["reviewNumber"] = 0; //レビュー数
+      eventDetailList["reviewId"] = 0; //投稿ID
       if (eventDetailList["review"].length != 0) {
-        //初期化
-        eventDetailList["reviewPoint"] = 0; //平均点
-        eventDetailList["ratioStarReviews"] = [
-          0,
-          0,
-          0,
-          0,
-          0
-        ]; //星の割合(前から1,2,3,4,5)
-        eventDetailList["reviewNumber"] = 0; //レビュー数
         //平均点
         for (int i = 0; i < data["reviews"].length; i++) {
           eventDetailList["reviewPoint"] +=
@@ -178,8 +186,7 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzYxODE0NX0.wtF4bgEe6F9Oa2IpE5nWWQ_O2pzTOrhkPrCAmMwA1Xg'
+      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {

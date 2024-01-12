@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/component/listView/review.dart';
+import 'package:reelproject/component/listView/reviewEvent.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
@@ -40,8 +40,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
     final response = await post(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzYxODE0NX0.wtF4bgEe6F9Oa2IpE5nWWQ_O2pzTOrhkPrCAmMwA1Xg'
+      'authorization': 'Bearer ${store.accessToken}'
     });
   }
 
@@ -51,8 +50,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
     final response = await delete(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzYxODE0NX0.wtF4bgEe6F9Oa2IpE5nWWQ_O2pzTOrhkPrCAmMwA1Xg'
+      'authorization': 'Bearer ${store.accessToken}'
     });
   }
 
@@ -303,20 +301,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 generateWidgets(
                                     0, mediaQueryData.size.height / 100),
                                 for (int i = 0;
-                                    i < eventDetailList["day"].length;
+                                    i < eventDetailList["eventTimes"].length;
                                     i++)
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // 子ウィジェットを左詰めに配置
-                                    children: [
-                                      //場所
-
-                                      //時間
-                                      Text(eventDetailList["day"][i] +
-                                          "   " +
-                                          eventDetailList["time"][i]),
-                                    ],
-                                  ),
+                                  Text(
+                                      "${eventDetailList["eventTimes"][i]["start_time"].substring(0, 4)}年${eventDetailList["eventTimes"][i]["start_time"].substring(5, 7)}月${eventDetailList["eventTimes"][i]["start_time"].substring(8, 10)}日 ${eventDetailList["eventTimes"][i]["start_time"].substring(11, 16)}~${eventDetailList["eventTimes"][i]["end_time"].substring(11, 16)}"),
                               ],
                             )
                           ],

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class ChangeGeneralCorporation with ChangeNotifier {
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
-  String accessToken = "";
+  String accessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzY2NTI3Mn0.e3EhsKqWjv5XX_iAKs1M3hRcy3MORXFef7m64E4XsJ8";
   int myID = 1; //自分のID
 
   //一般と法人を判断する変数
