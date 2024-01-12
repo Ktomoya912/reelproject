@@ -133,9 +133,9 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
     //短期or長期の色
     Color termColor = Colors.green;
-    if (jobDetailList["term"] == "短期") {
+    if (jobDetailList["term"] == "長期") {
       termColor = Colors.lightGreen;
-    } else if (jobDetailList["term"] == "長期") {
+    } else if (jobDetailList["term"] == "短期") {
       termColor = Colors.yellow[500]!;
     }
 
