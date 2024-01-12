@@ -3,6 +3,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/component/appbar/event_job_appbar.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 //求人ページ
 @RoutePage()
@@ -49,7 +54,7 @@ class _JobState extends State<Job> {
 
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static List<Map<String, dynamic>> advertisementList = [
+  static List<dynamic> advertisementList = [
     {
       "title": "居酒屋新谷スタッフ募集", //タイトル
       "pay": "900", //時給
@@ -81,10 +86,29 @@ class _JobState extends State<Job> {
       "place": "香美市川上町",
     }
   ];
+  void changeAdvertisementList(List<dynamic> e) {
+    setState(() {
+      advertisementList = e;
+    });
+  }
+
+  Future getJobList() async {
+    Uri url = Uri.parse(
+        'http://localhost:8000/api/v1/jobs/?only_active=false&sort=id&order=asc&offset=0&limit=20');
+    final response =
+        await http.get(url, headers: {'accept': 'application/json'});
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeAdvertisementList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    getJobList();
     return Scaffold(
         appBar: EventJobSearchBar(
           tagList: tagList,

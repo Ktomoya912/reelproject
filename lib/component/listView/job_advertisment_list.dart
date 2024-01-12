@@ -3,16 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/job/job_post_detail.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 //求人広告リストコンポーネント
-class JobAdvertisementList extends StatelessWidget {
+class JobAdvertisementList extends StatefulWidget {
   const JobAdvertisementList({
     super.key,
     required this.advertisementList,
     required this.mediaQueryData,
   });
 
-  final List<Map<String, dynamic>> advertisementList;
+  final List<dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
 
   static double lineWidth = 0.7; //線の太さ定数
@@ -23,8 +26,14 @@ class JobAdvertisementList extends StatelessWidget {
 
   static String enString = "円";
 
-// データベースと連携させていないので現在はここでイベント詳細内容を設定
+  @override
+  State<JobAdvertisementList> createState() => _JobAdvertisementListState();
+}
+
+class _JobAdvertisementListState extends State<JobAdvertisementList> {
+  // データベースと連携させていないので現在はここでイベント詳細内容を設定
   static Map<String, dynamic> jobDetailList = {
+    "id": 0,
     //必須
     "title": "川上神社夏祭り", //タイトル
     //詳細
@@ -33,8 +42,13 @@ class JobAdvertisementList extends StatelessWidget {
     //勤務体系
     "term": "長期",
 
-    "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
-    "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
+    //開催期間
+    "jobTimes": [
+      {
+        "start_time": "2021-08-01T10:00:00+09:00",
+        "end_time": "2021-08-01T20:00:00+09:00"
+      }
+    ],
 
     //開催場所
     "postalNumber": "781-5101", //郵便番号
@@ -56,11 +70,13 @@ class JobAdvertisementList extends StatelessWidget {
     "addMessage": "test", //追加メッセージ
 
     //レビュー
-    "reviewPoint": 4.5, //評価
+    "reviewPoint": 0, //評価
     //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
+    "ratioStarReviews": [0, 0, 0, 0, 0],
     //レビュー数
-    "reviewNumber": 100,
+    "reviewNumber": 0,
+    //自分のレビューか否か
+    "reviewId": 0,
     //レビュー内容
     "review": [
       {
@@ -92,14 +108,104 @@ class JobAdvertisementList extends StatelessWidget {
     //未投稿か否か(true:未投稿,false:投稿済み)
     "notPost": true,
 
+    //お気に入りか否か]
+    "favoriteJedge": false,
+
     //掲載期間
     "postTerm": "2023年12月10日"
   };
 
+  changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
+    setState(() {
+      jobDetailList["id"] = id; //id
+      jobDetailList["title"] = data["name"]; //タイトル
+      jobDetailList["detail"] = data["description"]; //詳細
+
+      //タグ
+      jobDetailList["tag"] = data["tags"];
+
+      //開催期間
+      jobDetailList["jobTimes"] = data["job_times"];
+
+      //勤務体系
+      if (data["is_one_day"]) {
+        jobDetailList["term"] = "短期";
+      } else {
+        jobDetailList["term"] = "長期";
+      }
+
+      //住所
+      jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+      jobDetailList["prefecture"] = data["prefecture"]; //都道府県
+      jobDetailList["city"] = data["city"]; //市町村
+      jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //任意
+      //jobDetailList["phone"] = data["phone_number"]; //電話番号
+      //jobDetailList["mail"] = data["email"]; //メールアドレス
+      //jobDetailList["url"] = data["homepage"]; //URL
+      //jobDetailList["fee"] = data["participation_fee"]; //参加費
+      //jobDetailList["Capacity"] = data["capacity"]; //定員
+      jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+      //jobDetailList["notes"] = data["caution"]; //注意事項
+
+      //レビュー
+      jobDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      jobDetailList["reviewPoint"] = 0; //平均点
+      jobDetailList["ratioStarReviews"] = [0, 0, 0, 0, 0]; //星の割合(前から1,2,3,4,5)
+      jobDetailList["reviewNumber"] = 0; //レビュー数
+      jobDetailList["reviewId"] = 0; //自分のレビューか否か
+      if (jobDetailList["review"].length != 0) {
+        //平均点
+        for (int i = 0; i < data["reviews"].length; i++) {
+          jobDetailList["reviewPoint"] +=
+              data["reviews"][i]["review_point"]; //平均点
+          jobDetailList["ratioStarReviews"]
+              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+          //自分のレビューか否か
+          if (store.myID == data["reviews"][i]["user"]["id"]) {
+            jobDetailList["reviewId"] = data["reviews"][i]["id"];
+          }
+        }
+        //平均を出す
+        jobDetailList["reviewPoint"] =
+            jobDetailList["reviewPoint"] / data["reviews"].length;
+
+        //レビュー数
+        jobDetailList["reviewNumber"] = data["reviews"].length;
+
+        //割合計算
+        for (int i = 0; i < 5; i++) {
+          jobDetailList["ratioStarReviews"][i] =
+              jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
+        }
+      }
+
+      jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+    });
+  }
+
+  Future getJobList(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeJobList(data, id, store);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
-    double buttonWidthPower = mediaQueryData.size.width / 4; //ボタンの縦横幅
+    double buttonWidthPower = widget.mediaQueryData.size.width / 4; //ボタンの縦横幅
     //画像の縦横幅の最大、最小値
     if (buttonWidthPower > 230) {
       buttonWidthPower = 230;
@@ -107,24 +213,29 @@ class JobAdvertisementList extends StatelessWidget {
       buttonWidthPower = 170;
     }
     double imageWidthPower =
-        buttonWidthPower - mediaQueryData.size.width / 40; //画像の縦横幅
+        buttonWidthPower - widget.mediaQueryData.size.width / 40; //画像の縦横幅
     //横幅が想定より大きくなった場合、横の幅を広げる
     //その時足し加える値
     double addWidth = 0;
     //横のほうが広くなった場合
-    if (mediaQueryData.size.width > mediaQueryData.size.height) {
-      addWidth = (mediaQueryData.size.width - mediaQueryData.size.height) / 3;
+    if (widget.mediaQueryData.size.width > widget.mediaQueryData.size.height) {
+      addWidth = (widget.mediaQueryData.size.width -
+              widget.mediaQueryData.size.height) /
+          3;
     }
 
     return Expanded(
       child: ListView.builder(
-        itemCount: advertisementList.length, //要素数
+        itemCount: widget.advertisementList.length, //要素数
+
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
               //ボタン
               InkWell(
-                onTap: () {
+                onTap: () async {
+                  await getJobList(
+                      widget.advertisementList.elementAt(index)["id"], store);
                   Navigator.push(
                       context,
                       PageRouteBuilder(
@@ -140,18 +251,19 @@ class JobAdvertisementList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
                     children: [
                       SizedBox(
-                          width: (mediaQueryData.size.width / 100) + addWidth),
+                          width: (widget.mediaQueryData.size.width / 100) +
+                              addWidth),
                       //左の文
                       SizedBox(
-                        width:
-                            (mediaQueryData.size.width / 12 * 6) - (addWidth),
+                        width: (widget.mediaQueryData.size.width / 12 * 6) -
+                            (addWidth),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start, //左寄せ
                           mainAxisSize: MainAxisSize.min, //縦方向真ん中寄せ
                           children: [
                             //タイトル
                             Text(
-                              advertisementList.elementAt(index)["title"],
+                              widget.advertisementList.elementAt(index)["name"],
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 23),
                             ),
@@ -161,26 +273,24 @@ class JobAdvertisementList extends StatelessWidget {
                               children: [
                                 //時給
                                 Text(
-                                    dayString +
-                                        advertisementList
-                                            .elementAt(index)["pay"] +
-                                        enString,
+                                    "時給 : ${widget.advertisementList.elementAt(index)["salary"].substring(2)}",
                                     style: const TextStyle(fontSize: 18)),
                                 //時間
-                                if (advertisementList
-                                        .elementAt(index)["time"] !=
-                                    null)
+                                if (widget.advertisementList
+                                    .elementAt(index)["is_one_day"])
                                   Text(
-                                    timeString +
-                                        advertisementList
-                                            .elementAt(index)["time"],
+                                    "時間 : ${widget.advertisementList.elementAt(index)["job_times"][0]["start_time"].substring(11, 16)}~${widget.advertisementList.elementAt(index)["job_times"][0]["end_time"].substring(11, 16)}",
                                     style: const TextStyle(fontSize: 18),
                                   ),
                                 //場所
                                 Text(
-                                    placeString +
-                                        advertisementList
-                                            .elementAt(index)["place"],
+                                    JobAdvertisementList.placeString +
+                                        widget.advertisementList
+                                            .elementAt(index)["prefecture"] +
+                                        widget.advertisementList
+                                            .elementAt(index)["city"] +
+                                        widget.advertisementList
+                                            .elementAt(index)["address"],
                                     style: const TextStyle(fontSize: 18)),
                               ],
                             ),
@@ -190,7 +300,7 @@ class JobAdvertisementList extends StatelessWidget {
                       //画像
                       SizedBox(
                         height: buttonWidthPower + 10, //ボタン全体の高さ,
-                        width: (mediaQueryData.size.width / 12 * 5) -
+                        width: (widget.mediaQueryData.size.width / 12 * 5) -
                             (addWidth) +
                             10,
                         child: Row(
@@ -225,9 +335,9 @@ class JobAdvertisementList extends StatelessWidget {
                                   //長期、短期タグ
                                   //長期短期の判定は時間がnullかどうかで判定
                                   //長期
-                                  if (advertisementList
-                                          .elementAt(index)["time"] ==
-                                      null)
+                                  if (widget.advertisementList
+                                          .elementAt(index)["is_one_day"] ==
+                                      false)
                                     Container(
                                       height: 40,
                                       width: 70,
@@ -269,20 +379,22 @@ class JobAdvertisementList extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                          width: (mediaQueryData.size.width / 100) + addWidth),
+                          width: (widget.mediaQueryData.size.width / 100) +
+                              addWidth),
                     ],
                   ),
                 ),
               ),
               //下線
               Container(
-                width: mediaQueryData.size.width -
-                    (mediaQueryData.size.width / 20) -
+                width: widget.mediaQueryData.size.width -
+                    (widget.mediaQueryData.size.width / 20) -
                     addWidth * 2,
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom:
-                        BorderSide(color: store.greyColor, width: lineWidth),
+                    bottom: BorderSide(
+                        color: store.greyColor,
+                        width: JobAdvertisementList.lineWidth),
                   ),
                 ),
               ),
