@@ -242,7 +242,7 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         //color: Colors.blue,
                         width: width,
-                        height: width * 0.75,
+                        // height: width * 0.75,
                         child: Column(
                           children: [
                             const Row(
