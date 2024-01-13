@@ -8,19 +8,27 @@ import 'package:reelproject/page/mypage/posted_list.dart';
 import 'package:reelproject/page/mypage/watch_history.dart';
 import 'package:reelproject/page/mypage/favorite_list.dart';
 import 'package:reelproject/page/job/job_post_detail.dart';
+import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
-  const HomeRouterPage({super.key});
+  const HomeRouterPage({
+    super.key,
+  });
 }
 
 @RoutePage()
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({
+    super.key,
+  });
 
   @override
   State<Home> createState() => _HomeState();
@@ -29,69 +37,93 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final int index = 0; //BottomAppBarのIcon番号
 
-  //ボタンリスト
-  Map<String, List<Map<String, dynamic>>> buttonList = {
-    //一般ボタンリスト
-    "general": [
-      // {
-      //   "title": "閲覧履歴",
-      //   "icon": Icons.history,
-      //   "push": const WatchHistory(),
-      // },
-      {
-        "title": "お気に入り",
-        "icon": Icons.favorite,
-        "push": const FavoriteList(),
-      },
-      {
-        "title": "応募履歴",
-        "icon": Icons.task,
-        "push": const ApplyHist(),
-      },
-    ],
-    //法人ボタンリスト
-    "company": [
-      {
-        "title": "お気に入り",
-        "icon": Icons.favorite,
-        "push": const FavoriteList(),
-      },
-      {
-        "title": "広告投稿",
-        "icon": Icons.post_add,
-        "push": const ApplyHist(),
-      },
-      {
-        "title": "投稿一覧",
-        "icon": Icons.summarize,
-        "push": const PostedList(),
-      }
-    ]
-  };
-
   //閲覧履歴リスト
-  List<Map<String, dynamic>> historyList = [
-    {
-      "title": "イベントタイトル",
-    },
-    {
-      "title": "イベントタイトル",
-    },
-    {
-      "title": "イベントタイトル",
-    },
-    {
-      "title": "イベントタイトル",
-    },
-    {
-      "title": "イベントタイトル",
+  List<dynamic> historyList = [];
+
+  void changeHistoryList(List<dynamic> e) {
+    setState(() {
+      historyList = e;
+    });
+  }
+
+  Future getHistoryList(ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/users/event-watched');
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeHistoryList(json.decode(data));
+    } else {
+      throw Exception("Failed");
     }
-  ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      getHistoryList(store);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //ボタンリスト
+    Map<String, List<Map<String, dynamic>>> buttonList = {
+      //一般ボタンリスト
+      "general": [
+        // {
+        //   "title": "閲覧履歴",
+        //   "icon": Icons.history,
+        //   "push": const WatchHistory(),
+        // },
+        {
+          "title": "お気に入り",
+          "icon": Icons.favorite,
+          "push": FavoriteList(
+            store: store,
+          ),
+        },
+        {
+          "title": "応募履歴",
+          "icon": Icons.task,
+          "push": ApplyHist(
+            store: store,
+          ),
+        },
+      ],
+      //法人ボタンリスト
+      "company": [
+        {
+          "title": "お気に入り",
+          "icon": Icons.favorite,
+          "push": FavoriteList(
+            store: store,
+          ),
+        },
+        {
+          "title": "広告投稿",
+          "icon": Icons.post_add,
+          "push": ApplyHist(
+            store: store,
+          ),
+        },
+        {
+          "title": "投稿一覧",
+          "icon": Icons.summarize,
+          "push": PostedList(
+            store: store,
+          ),
+        }
+      ]
+    };
 
     //横画面サイズにより幅設定
     double widthBlank = (mediaQueryData.size.width / 2) - 300;
@@ -234,7 +266,9 @@ class _HomeState extends State<Home> {
                                         PageRouteBuilder(
                                             pageBuilder: (context, animation,
                                                     secondaryAnimation) =>
-                                                const WatchHistory()));
+                                                WatchHistory(
+                                                  store: store,
+                                                )));
                                   },
                                 ),
                               ],
@@ -284,7 +318,7 @@ class HistoryButton extends StatelessWidget {
 
   final MediaQueryData mediaQueryData;
   final ChangeGeneralCorporation store;
-  final List<Map<String, dynamic>> historyList;
+  final List<dynamic> historyList;
   final int i;
   final double width;
 
@@ -369,11 +403,14 @@ class HistoryButton extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     PageRouteBuilder(
-              //         pageBuilder: (context, animation, secondaryAnimation) =>
-              //             JobPostDetail(jobList: jobDetailList)));
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          EventPostDetail(
+                            id: historyList[i]["id"],
+                            tStore: store,
+                          )));
               // Navigator.push(
               //         context,
               //         PageRouteBuilder(
@@ -413,7 +450,7 @@ class HistoryButton extends StatelessWidget {
                   ),
                 ),
                 //タイトル
-                child: Center(child: Text(historyList[i]["title"])),
+                child: Center(child: Text(historyList[i]["name"])),
               ),
             ]),
           ),

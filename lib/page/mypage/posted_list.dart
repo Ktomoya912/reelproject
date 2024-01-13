@@ -5,83 +5,131 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/button/toggle_button.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PostedList extends StatefulWidget {
-  const PostedList({super.key});
+  const PostedList({
+    super.key,
+    required this.store,
+  });
+
+  final ChangeGeneralCorporation store;
 
   @override
   State<PostedList> createState() => _PostedListState();
 }
 
 class _PostedListState extends State<PostedList> {
-  //求人広告のリスト
-  //titleに文字数制限を設ける
-  static List<Map<String, dynamic>> jobList = [
+  static List<dynamic> jobList = [
     {
-      "title": "居酒屋新谷スタッフ募集", //タイトル
-      "pay": "900", //時給
-      "time": null, //時間
-      "place": "香美市土佐山田町000", //場所
+      "name": "strinqewrg",
+      "image_url": "https://example.com",
+      "salary": "時給1000円",
+      "postal_code": "782-8502",
+      "prefecture": "高知県",
+      "city": "香美市",
+      "address": "土佐山田町宮ノ口185",
+      "description": "説明",
+      "is_one_day": false,
+      "additional_message": "追加メッセージ",
+      "tags": [
+        {"name": "タグ名", "id": 1}
+      ],
+      "job_times": [
+        {
+          "start_time": "2024-01-23T14:51:29",
+          "end_time": "2024-01-23T15:51:29",
+          "id": 1
+        }
+      ],
+      "id": 2,
+      "status": null
     },
-    {
-      "title": "川上神社夏祭り2",
-      "pay": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り3",
-      "pay": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り4",
-      "pay": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り5",
-      "pay": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    }
   ];
   //イベント広告のリスト
   //titleに文字数制限を設ける
-  static List<Map<String, dynamic>> eventList = [
+  static List<dynamic> eventList = [
     {
-      "title": "３年ぶりに開催をする川上神社夏祭り", //タイトル
-      "day": "2021/8/1", //日付
-      "time": "10:00~20:00", //時間
-      "place": "香美市川上町", //場所
+      "name": "イベント名dddddd",
+      "image_url": "https://example.com",
+      "postal_code": "782-8502",
+      "prefecture": "高知県",
+      "city": "香美市",
+      "address": "土佐山田町宮ノ口185",
+      "phone_number": "0887-53-1111",
+      "email": "sample@ugs.ac.jp",
+      "homepage": "https://kochi-tech.ac.jp/",
+      "participation_fee": "無料",
+      "capacity": 100,
+      "additional_message": "",
+      "description": "",
+      "caution": "",
+      "tags": [
+        {"name": "タグ名", "id": 1}
+      ],
+      "event_times": [
+        {
+          "start_time": "2024-01-25T02:47:13",
+          "end_time": "2024-01-25T03:47:13",
+          "id": 5
+        }
+      ],
+      "id": 7,
+      "status": null
     },
-    {
-      "title": "川上神社夏祭り2",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り3",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り4",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り5",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    }
   ];
+
+  void changeEventList(List<dynamic> e) {
+    setState(() {
+      eventList = e;
+    });
+  }
+
+  Future getEventList(ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/users/event-postings');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeEventList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  void changeJobList(List<dynamic> e) {
+    setState(() {
+      jobList = e;
+    });
+  }
+
+  Future getJobList(ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('http://localhost:8000/api/v1/users/job-postings');
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeJobList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  //初期化
+  @override
+  void initState() {
+    getEventList(widget.store);
+    getJobList(widget.store);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
