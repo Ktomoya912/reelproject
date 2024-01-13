@@ -369,11 +369,11 @@ class HistoryButton extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          JobPostDetail(jobList: jobDetailList)));
+              // Navigator.push(
+              //     context,
+              //     PageRouteBuilder(
+              //         pageBuilder: (context, animation, secondaryAnimation) =>
+              //             JobPostDetail(jobList: jobDetailList)));
               // Navigator.push(
               //         context,
               //         PageRouteBuilder(

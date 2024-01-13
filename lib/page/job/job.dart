@@ -56,35 +56,29 @@ class _JobState extends State<Job> {
   //titleに文字数制限を設ける
   static List<dynamic> advertisementList = [
     {
-      "title": "居酒屋新谷スタッフ募集", //タイトル
-      "pay": "900", //時給
-      "time": null, //時間
-      "place": "香美市土佐山田町000", //場所
+      "name": "strinqesswrg",
+      "image_url": "https://example.com",
+      "salary": "時給1000円",
+      "postal_code": "782-8502",
+      "prefecture": "高知県",
+      "city": "香美市",
+      "address": "土佐山田町宮ノ口185",
+      "description": "説明",
+      "is_one_day": true,
+      "additional_message": "追加メッセージ",
+      "tags": [
+        {"name": "タグ名", "id": 1}
+      ],
+      "job_times": [
+        {
+          "start_time": "2024-01-24T14:51:29",
+          "end_time": "2024-01-24T15:51:29",
+          "id": 2
+        }
+      ],
+      "id": 3,
+      "status": null
     },
-    {
-      "title": "川上神社夏祭り2",
-      "pay": "900",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り3",
-      "pay": "900",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り4",
-      "pay": "900",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り5",
-      "pay": "900",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    }
   ];
   void changeAdvertisementList(List<dynamic> e) {
     setState(() {
@@ -106,9 +100,14 @@ class _JobState extends State<Job> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getJobList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
-    getJobList();
     return Scaffold(
         appBar: EventJobSearchBar(
           tagList: tagList,
