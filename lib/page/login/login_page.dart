@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -29,10 +30,11 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
-    String name = "";
-    String password = "";
-    bool jedgeGC = false;
+    String name = ""; //ユーザー名
+    String password = ""; //パスワード
+    bool jedgeGC = false; //法人か個人かの判定
 
+    //トークン取得
     Future getAccessToken(
         String username, String password, String apiUrl) async {
       Uri url = Uri.parse("$apiUrl/auth/token");
@@ -166,13 +168,17 @@ class LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () async {
                       //context.navigateTo(const RootRoute()),
-                      await getAccessToken(
-                          name, password, ChangeGeneralCorporation.apiUrl);
+                      showLoadingDialog(context: context); //ここでローディング画面を表示
+                      await getAccessToken(name, password,
+                          ChangeGeneralCorporation.apiUrl); //ここでログイン処理
+                      await Future.delayed(const Duration(seconds: 2)); //2秒待つ
+                      Navigator.of(context).pop(); //ローディング画面を閉じる
                       if (jedgeGC) {
                         context.popRoute();
                         context.pushRoute(const RootRoute());
                       } else {
                         showDialog(
+                          //ログインエラーを表示
                           context: context,
                           builder: (context) {
                             return AlertDialog(
