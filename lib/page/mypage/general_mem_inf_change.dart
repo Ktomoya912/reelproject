@@ -40,7 +40,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
       //アップバー
-      appBar: TitleAppBar(title: "会員情報", jedgeBuck: true),
+      appBar: const TitleAppBar(title: "会員情報", jedgeBuck: true),
 
       //内部
       body: SingleChildScrollView(
@@ -50,10 +50,10 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
             //上のアイコン部分
             //上に空白
             Padding(
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Container(
@@ -111,7 +111,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                         width: 300,
                         child: TextFormField(
                           validator: (value) {
-                            if (!_CheckUserName(value as String)) {
+                            if (!checkUserName(value as String)) {
                               username = '';
                               return '適切な入力ではありません';
                             }
@@ -181,7 +181,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                                 width: 100,
                                 child: TextFormField(
                                   onChanged: (value) {
-                                    if (_CheckYear(value)) {
+                                    if (checkYear(value)) {
                                       setState(() {
                                         year = value;
                                       });
@@ -213,7 +213,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                                 width: 50,
                                 child: TextFormField(
                                   onChanged: (value) {
-                                    if (_CheckMonth(value)) {
+                                    if (checkMonth(value)) {
                                       setState(() {
                                         month = value;
                                       });
@@ -244,7 +244,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                                 width: 50,
                                 child: TextFormField(
                                   onChanged: (value) {
-                                    if (_CheckDay(value)) {
+                                    if (checkDay(value)) {
                                       setState(() {
                                         day = value;
                                       });
@@ -276,7 +276,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                     ),
                     Text(
                       // エラーメッセージを表示する変数などを使用する
-                      _CheckBrithday(year, month, day),
+                      checkBrithday(year, month, day),
                       style: const TextStyle(
                         color: Colors.red,
                       ),
@@ -334,7 +334,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                   ],
                 ),
                 Text(
-                  _CheckSelectedGender(selectedGender),
+                  checkSelectedGender(selectedGender),
                   style: const TextStyle(color: Colors.red),
                 ),
 
@@ -349,10 +349,10 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
 
             ElevatedButton(
               onPressed: () {
-                if (_CheckUserName(username) &&
-                    _CheckYear(year) &&
-                    _CheckMonth(month) &&
-                    _CheckDay(day) &&
+                if (checkUserName(username) &&
+                    checkYear(year) &&
+                    checkMonth(month) &&
+                    checkDay(day) &&
                     selectedGender != null) {
                   Navigator.push(
                     context,
@@ -384,7 +384,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
 
 //マイページリストを作成するクラス
 
-bool _CheckUserName(String username) {
+bool checkUserName(String username) {
   //ユーザー名の正規表現
   final regName = RegExp(
     caseSensitive: false,
@@ -393,7 +393,7 @@ bool _CheckUserName(String username) {
   return regName.hasMatch(username);
 }
 
-bool _CheckYear(String year) {
+bool checkYear(String year) {
   //年の正規表現
   final regYear = RegExp(
     caseSensitive: false,
@@ -402,7 +402,7 @@ bool _CheckYear(String year) {
   return regYear.hasMatch(year);
 }
 
-bool _CheckMonth(String month) {
+bool checkMonth(String month) {
   //月の正規表現
   final regMonth = RegExp(
     caseSensitive: false,
@@ -411,7 +411,7 @@ bool _CheckMonth(String month) {
   return regMonth.hasMatch(month) && int.parse(month) <= 12 && month != '';
 }
 
-bool _CheckDay(String day) {
+bool checkDay(String day) {
   //日の正規表現
   final regDay = RegExp(
     caseSensitive: false,
@@ -420,7 +420,7 @@ bool _CheckDay(String day) {
   return regDay.hasMatch(day);
 }
 
-String _CheckSelectedGender(String? selectedGender) {
+String checkSelectedGender(String? selectedGender) {
   //性別の正規表現
   if (selectedGender == null) {
     return '性別を選択してください';
@@ -429,7 +429,7 @@ String _CheckSelectedGender(String? selectedGender) {
   }
 }
 
-String _CheckBrithday(String? year, String? month, String? day) {
+String checkBrithday(String? year, String? month, String? day) {
   // 誕生日の検証
   if (year == '' || month == '' || day == '') {
     return '誕生日を入力してください';
@@ -437,13 +437,13 @@ String _CheckBrithday(String? year, String? month, String? day) {
   return '';
 }
 
-bool _CheckPassword(String password) {
+bool checkPassword(String password) {
   //パスワードの正規表現
   final regPassword = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)');
   return regPassword.hasMatch(password) && password.length >= 8;
 }
 
-bool _CheckPasswordMatch(String password, String passwordCheck) {
+bool checkPasswordMatch(String password, String passwordCheck) {
   //パスワードの正規表現
   return password == passwordCheck;
 }

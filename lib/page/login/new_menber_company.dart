@@ -31,10 +31,10 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
   String username = '';
   String mail = '';
   String phoneNumber = '';
-  String address = '';
+  String postalCode = '';
   String prefecture = '';
   String city = '';
-  String block = '';
+  String address = '';
   String year = '';
   String month = '';
   String day = '';
@@ -84,7 +84,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckName(value as String)) {
+                        if (!checkName(value as String)) {
                           name = '';
                           return '法人名が正しくありません';
                         }
@@ -116,7 +116,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckUserName(value as String)) {
+                        if (!checkUserName(value as String)) {
                           username = '';
                           return '適切な入力ではありません';
                         }
@@ -148,7 +148,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckMail(value as String)) {
+                        if (!checkMail(value as String)) {
                           mail = '';
                           return '適切な入力ではありません';
                         }
@@ -180,7 +180,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckPhoneNumber(value as String)) {
+                        if (!checkPhoneNumber(value as String)) {
                           phoneNumber = '';
                           return '電話番号が正しくありません';
                         }
@@ -229,12 +229,12 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckAddress(value as String)) {
-                          address = '';
+                        if (!checkPostalCode(value as String)) {
+                          postalCode = '';
                           return '郵便番号が正しくありません';
                         }
-                        address = value;
-                        // print(address);
+                        postalCode = value;
+                        // print(postal_code);
                         return null;
                       },
                       enabled: true,
@@ -262,7 +262,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckPrefecture(value as String)) {
+                        if (!checkPrefecture(value as String)) {
                           prefecture = '';
                           return '都道府県が正しくありません';
                         }
@@ -295,7 +295,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckCity(value as String)) {
+                        if (!checkCity(value as String)) {
                           city = '';
                           return '市区町村が正しくありません';
                         }
@@ -327,19 +327,19 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
-                        if (!_CheckBlock(value as String)) {
-                          block = '';
+                        if (!checkAddress(value as String)) {
+                          address = '';
                           return '番地が正しくありません';
                         }
-                        block = value;
-                        // print(block);
+                        address = value;
+                        // print(address);
                         return null;
                       },
                       enabled: true,
                       maxLength: 7,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
-                        labelText: '番地',
+                        labelText: '番地・建物名',
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -377,7 +377,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                             width: 100,
                             child: TextFormField(
                               onChanged: (value) {
-                                if (_CheckYear(value)) {
+                                if (checkYear(value)) {
                                   setState(() {
                                     year = value;
                                   });
@@ -409,7 +409,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                             width: 50,
                             child: TextFormField(
                               onChanged: (value) {
-                                if (_CheckMonth(value)) {
+                                if (checkMonth(value)) {
                                   setState(() {
                                     month = value;
                                   });
@@ -440,7 +440,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                             width: 50,
                             child: TextFormField(
                               onChanged: (value) {
-                                if (_CheckDay(value)) {
+                                if (checkDay(value)) {
                                   setState(() {
                                     day = value;
                                   });
@@ -469,7 +469,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 ),
                 Text(
                   // エラーメッセージを表示する変数などを使用する
-                  _CheckBrithday(year, month, day),
+                  checkBrithday(year, month, day),
                   style: const TextStyle(
                     color: Colors.red,
                   ),
@@ -529,7 +529,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 ),
 
                 Text(
-                  _CheckSelectedGender(selectedGender),
+                  checkSelectedGender(selectedGender),
                   style: const TextStyle(color: Colors.red),
                 ),
               ],
@@ -544,7 +544,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 child: TextFormField(
                   obscureText: _isObscure,
                   validator: (value) {
-                    if (!_CheckPassword(value as String)) {
+                    if (!checkPassword(value as String)) {
                       password = '';
                       //print('パスワードが正しくありません');
                       return '適切な入力ではありません';
@@ -582,7 +582,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 width: 300,
                 child: TextFormField(
                   validator: (value) {
-                    if (!_CheckPassword(value as String)) {
+                    if (!checkPassword(value as String)) {
                       passwordCheck = '';
                       //print('パスワードが正しくありません');
                       return '適切な入力ではありません';
@@ -645,18 +645,18 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
             ElevatedButton(
               onPressed: () {
                 // ログインボタンが押されたときの処理をここに追加予定
-                if (_CheckName(name) &&
-                    _CheckUserName(username) &&
-                    _CheckMail(mail) &&
-                    _CheckPhoneNumber(phoneNumber) &&
-                    _CheckAddress(address) &&
-                    _CheckYear(year) &&
-                    _CheckMonth(month) &&
-                    _CheckDay(day) &&
-                    _CheckSelectedGender(selectedGender) != '' &&
-                    _CheckPassword(password) &&
-                    _CheckPassword(passwordCheck) &&
-                    _CheckPasswordMatch(password, passwordCheck) &&
+                if (checkName(name) &&
+                    checkUserName(username) &&
+                    checkMail(mail) &&
+                    checkPhoneNumber(phoneNumber) &&
+                    checkPostalCode(postalCode) &&
+                    checkYear(year) &&
+                    checkMonth(month) &&
+                    checkDay(day) &&
+                    checkSelectedGender(selectedGender) != '' &&
+                    checkPassword(password) &&
+                    checkPassword(passwordCheck) &&
+                    checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck) {
                   Navigator.pop(context); //pop
                   Navigator.push(
@@ -674,8 +674,23 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                             )),
                   );
                 } else {
-                  print(prefecture);
-                  print('入力内容に誤りがあります');
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('入力内容に誤りがあります。'),
+                        content: const Text('入力内容をご確認ください。'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -702,11 +717,11 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
   }
 }
 
-bool _CheckName(String name) {
-  return name != null && name.isNotEmpty;
+bool checkName(String name) {
+  return name.isNotEmpty;
 }
 
-bool _CheckUserName(String username) {
+bool checkUserName(String username) {
   //ユーザー名の正規表現
   final regName = RegExp(
     caseSensitive: false,
@@ -715,7 +730,7 @@ bool _CheckUserName(String username) {
   return regName.hasMatch(username);
 }
 
-bool _CheckMail(String mail) {
+bool checkMail(String mail) {
   //メールアドレスの正規表現
   final regEmail = RegExp(
     caseSensitive: false,
@@ -724,7 +739,7 @@ bool _CheckMail(String mail) {
   return regEmail.hasMatch(mail);
 }
 
-bool _CheckPhoneNumber(String phoneNumber) {
+bool checkPhoneNumber(String phoneNumber) {
   //電話番号の正規表現
   final regPhoneNumber = RegExp(
     caseSensitive: false,
@@ -733,31 +748,31 @@ bool _CheckPhoneNumber(String phoneNumber) {
   return regPhoneNumber.hasMatch(phoneNumber);
 }
 
-bool _CheckAddress(String address) {
+bool checkPostalCode(String postalCode) {
   //住所の正規表現
-  final regAddress = RegExp(
+  final regPostalCode = RegExp(
     caseSensitive: false,
     r"^[0-9]{3}-[0-9]{4}$",
   );
-  return regAddress.hasMatch(address);
+  return regPostalCode.hasMatch(postalCode);
 }
 
-bool _CheckPrefecture(String value) {
+bool checkPrefecture(String value) {
   //都道府県の正規表現
-  return value != null && value.isNotEmpty;
+  return value.isNotEmpty;
 }
 
-bool _CheckCity(String city) {
+bool checkCity(String city) {
   //市区町村の正規表現
-  return city != null && city.isNotEmpty;
+  return city.isNotEmpty;
 }
 
-bool _CheckBlock(String block) {
+bool checkAddress(String address) {
   //番地の正規表現
-  return block != null && block.isNotEmpty;
+  return address.isNotEmpty;
 }
 
-bool _CheckYear(String year) {
+bool checkYear(String year) {
   //年の正規表現
   final regYear = RegExp(
     caseSensitive: false,
@@ -766,7 +781,7 @@ bool _CheckYear(String year) {
   return regYear.hasMatch(year);
 }
 
-bool _CheckMonth(String month) {
+bool checkMonth(String month) {
   //月の正規表現
   final regMonth = RegExp(
     caseSensitive: false,
@@ -775,7 +790,7 @@ bool _CheckMonth(String month) {
   return regMonth.hasMatch(month) && int.parse(month) <= 12 && month != '';
 }
 
-bool _CheckDay(String day) {
+bool checkDay(String day) {
   //日の正規表現
   final regDay = RegExp(
     caseSensitive: false,
@@ -784,7 +799,7 @@ bool _CheckDay(String day) {
   return regDay.hasMatch(day);
 }
 
-String _CheckSelectedGender(String? selectedGender) {
+String checkSelectedGender(String? selectedGender) {
   //性別の正規表現
   if (selectedGender == null) {
     return '性別を選択してください';
@@ -793,7 +808,7 @@ String _CheckSelectedGender(String? selectedGender) {
   }
 }
 
-String _CheckBrithday(String? year, String? month, String? day) {
+String checkBrithday(String? year, String? month, String? day) {
   // 誕生日の検証
   if (year == '' || month == '' || day == '') {
     return '誕生日を入力してください';
@@ -801,13 +816,13 @@ String _CheckBrithday(String? year, String? month, String? day) {
   return '';
 }
 
-bool _CheckPassword(String password) {
+bool checkPassword(String password) {
   //パスワードの正規表現
   final regPassword = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)');
   return regPassword.hasMatch(password) && password.length >= 8;
 }
 
-bool _CheckPasswordMatch(String password, String passwordCheck) {
+bool checkPasswordMatch(String password, String passwordCheck) {
   //パスワードの正規表現
   return password == passwordCheck;
 }

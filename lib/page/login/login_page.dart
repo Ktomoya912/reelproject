@@ -29,19 +29,22 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+    String name = "";
+    String password = "";
+    bool jedgeGC = false;
 
     Future getAccessToken(
         String username, String password, String apiUrl) async {
-      Uri url = Uri.parse(apiUrl + "/auth/token");
+      Uri url = Uri.parse("$apiUrl/auth/token");
       final response = await post(url,
           headers: {'content-type': 'application/x-www-form-urlencoded'},
           body: {'username': username, 'password': password});
       final Map<String, dynamic> data = json.decode(response.body);
       if (response.statusCode == 200) {
         store.accessToken = data["access_token"];
-        // return response.body;
+        jedgeGC = true;
       } else {
-        throw Exception("Failed");
+        jedgeGC = false;
       }
     }
 
@@ -94,20 +97,24 @@ class LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const Text(
-                    'メールアドレス',
+                    'ユーザー名',
                     style: TextStyle(
                       fontSize: 15,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 300,
                     child: TextField(
                       textAlign: TextAlign.start,
-                      decoration: InputDecoration(
+                      onChanged: (text) {
+                        //入力されたテキストを受け取る
+                        name = text;
+                      },
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        hintText: '例：info@example.com',
+                        hintText: '英数字と_のみ使用可能',
                       ),
                     ),
                   ),
@@ -120,11 +127,15 @@ class LoginPageState extends State<LoginPage> {
                       fontSize: 15,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 300,
                     child: TextField(
                       textAlign: TextAlign.start,
-                      decoration: InputDecoration(
+                      onChanged: (text) {
+                        //入力されたテキストを受け取る
+                        password = text;
+                      },
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -153,12 +164,32 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () => {
+                    onPressed: () async {
                       //context.navigateTo(const RootRoute()),
-                      getAccessToken(
-                          'admin', 'password', ChangeGeneralCorporation.apiUrl),
-                      context.popRoute(),
-                      context.pushRoute(const RootRoute()),
+                      await getAccessToken(
+                          name, password, ChangeGeneralCorporation.apiUrl);
+                      if (jedgeGC) {
+                        context.popRoute();
+                        context.pushRoute(const RootRoute());
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('ログインエラー'),
+                              content: const Text('ユーザー名またはパスワードが間違っています。'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: store.mainColor,

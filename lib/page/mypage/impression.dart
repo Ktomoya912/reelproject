@@ -47,14 +47,14 @@ class ScrollImpressionsDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
-    final List<Color> colorList = [
-      store.mainColor,
-      store.subColor,
-      const Color(0xff6c5ce7),
-      const Color(0x86B6F6FF),
-      const Color(0x35A29FFF),
-      store.greyColor
-    ];
+    // final List<Color> colorList = [
+    //   store.mainColor,
+    //   store.subColor,
+    //   const Color(0xff6c5ce7),
+    //   const Color(0x86B6F6FF),
+    //   const Color(0x35A29FFF),
+    //   store.greyColor
+    // ];
 
     // final gradientList = <List<Color>>[
     //   [
