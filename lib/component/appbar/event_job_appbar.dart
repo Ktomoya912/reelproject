@@ -65,30 +65,33 @@ class EventJobSearchBar extends StatefulWidget implements PreferredSizeWidget {
 class EventJobSearchBarState extends State<EventJobSearchBar> {
   final _controller = TextEditingController(); //検索バーのコントローラー
 
-  //検索ボタンを押したときの処理
-  void _submission(text) {
-    setState(() {
-      if (text != "") {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  SearchPage(
-                text: text,
-                eventJobJedge: widget.title,
-                sort: "新着順",
-              ),
-            ));
-      }
-    });
-  }
-
   static double widthPower = 11 / 12; //検索バーの幅の割合
   static double lineWidth = 1.3; //線の太さ定数
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //検索ボタンを押したときの処理
+    void _submission(text) {
+      setState(() {
+        if (text != "") {
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    SearchPage(
+                  text: text,
+                  eventJobJedge: widget.title,
+                  sort: "新着順",
+                  sortType: "id",
+                  store: store,
+                ),
+              ));
+        }
+      });
+    }
+
     //タイトルバーの最大、最小サイズ
     double titleSize = widget.mediaQueryData.size.height / 25;
     //最大
@@ -195,9 +198,11 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                                   pageBuilder: (context, animation,
                                           secondaryAnimation) =>
                                       SearchPage(
-                                    text: tag,
+                                    text: "#${tag}",
                                     eventJobJedge: widget.title,
                                     sort: "新着順",
+                                    sortType: "id",
+                                    store: store,
                                   ),
                                 ));
                           },

@@ -63,7 +63,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
     //レビュー
     "reviewPoint": 0, //評価
     //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0, 0, 0, 0, 0],
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
     //レビュー数
     "reviewNumber": 0,
     //自分のレビューか否か
@@ -141,7 +141,13 @@ class _JobPostDetailState extends State<JobPostDetail> {
       jobDetailList["review"] = data["reviews"]; //評価
       //初期化
       jobDetailList["reviewPoint"] = 0; //平均点
-      jobDetailList["ratioStarReviews"] = [0, 0, 0, 0, 0]; //星の割合(前から1,2,3,4,5)
+      jobDetailList["ratioStarReviews"] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]; //星の割合(前から1,2,3,4,5)
       jobDetailList["reviewNumber"] = 0; //レビュー数
       jobDetailList["reviewId"] = 0; //自分のレビューか否か
       if (jobDetailList["review"].length != 0) {
@@ -526,10 +532,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                           animation,
                                                           secondaryAnimation) =>
                                                       SearchPage(
-                                                    text: jobDetailList["tag"]
-                                                        [i]["name"],
+                                                    text:
+                                                        "#${jobDetailList["tag"][i]["name"]}",
                                                     eventJobJedge: "おすすめ求人",
                                                     sort: "新着順",
+                                                    sortType: "id",
+                                                    store: store,
                                                   ),
                                                 ))
                                           },
