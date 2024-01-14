@@ -30,173 +30,6 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
   //static String timeString = "開催時間 : ";
   static String placeString = "開催場所 : ";
 
-  Map<String, dynamic> eventDetailList = {
-    //id
-    "id": 1,
-    //必須
-    "title": "川上神社夏祭り", //タイトル
-    //詳細
-    "detail":
-        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n ステージイベント、宝さがし、鎮守の杜のびらふマルシェなど、子どもから大人まで誰でも楽しめるイベント内容が盛りだくさん！",
-    "eventTimes": [
-      {
-        "startTime": "2021-08-01T10:00:00+09:00",
-        "endTime": "2021-08-01T20:00:00+09:00"
-      }
-    ], //開催日時
-    //開催場所
-    "postalNumber": "781-5101", //郵便番号
-    "prefecture": "高知県", //都道府県
-    "city": "香美市", //市町村
-    "houseNumber": "川上町", //番地・建物名
-
-    //その他(任意)
-    "tag": [
-      {
-        "name": "夏祭り",
-        "id": 1,
-      },
-    ], //ハッシュタグ
-    "phone": "0887-00-0000", //電話番号
-    "mail": "conf@gmai.com", //メールアドレス
-    "url": "https://www.city.kami.lg.jp/", //URL
-    "fee": "1000", //参加費
-    "Capacity": "100", //定員
-    "notes": "", //注意事項
-    "addMessage": "test", //追加メッセージ
-
-    //レビュー
-    "reviewPoint": 0, //評価
-    //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0, 0, 0, 0, 0],
-    //レビュー数
-    "reviewNumber": 0,
-    //投稿ID
-    "reviewId": 0,
-    //レビュー内容
-    "review": [
-      {
-        "reviewerName": "名前aiueo",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "testfffff\n\n\n\n\n\n\nfffff", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前kakikukeko",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前sasisuseso",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      }
-    ],
-
-    //この広告を投稿したか
-    "postJedge": true,
-
-    //未投稿か否か(true:未投稿,false:投稿済み)
-    "notPost": false,
-
-    //掲載期間
-    "postTerm": "2023年12月10日",
-
-    //お気に入りか否か
-    "favoriteJedge": false,
-  };
-
-  changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
-    setState(() {
-      eventDetailList["id"] = id; //id
-      eventDetailList["title"] = data["name"]; //タイトル
-      eventDetailList["detail"] = data["description"]; //詳細
-
-      //タグ
-      eventDetailList["tag"] = data["tags"];
-
-      //開催日時
-      eventDetailList["eventTimes"] = data["event_times"];
-
-      //住所
-      eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
-      eventDetailList["prefecture"] = data["prefecture"]; //都道府県
-      eventDetailList["city"] = data["city"]; //市町村
-      eventDetailList["houseNumber"] = data["address"]; //番地・建物名
-      //任意
-      eventDetailList["phone"] = data["phone_number"]; //電話番号
-      eventDetailList["mail"] = data["email"]; //メールアドレス
-      eventDetailList["url"] = data["homepage"]; //URL
-      eventDetailList["fee"] = data["participation_fee"]; //参加費
-      eventDetailList["Capacity"] = data["capacity"]; //定員
-      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
-      eventDetailList["notes"] = data["caution"]; //注意事項
-
-      //レビュー
-      eventDetailList["review"] = data["reviews"]; //評価
-      //初期化
-      eventDetailList["reviewPoint"] = 0; //平均点
-      eventDetailList["ratioStarReviews"] = [
-        0,
-        0,
-        0,
-        0,
-        0
-      ]; //星の割合(前から1,2,3,4,5)
-      eventDetailList["reviewNumber"] = 0; //レビュー数
-      eventDetailList["reviewId"] = 0; //投稿ID
-      if (eventDetailList["review"].length != 0) {
-        //平均点
-        for (int i = 0; i < data["reviews"].length; i++) {
-          eventDetailList["reviewPoint"] +=
-              data["reviews"][i]["review_point"]; //平均点
-          eventDetailList["ratioStarReviews"]
-              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
-          //自分のレビューか否か
-          if (store.myID == data["reviews"][i]["user"]["id"]) {
-            eventDetailList["reviewId"] = data["reviews"][i]["id"];
-          }
-        }
-        //平均を出す
-        eventDetailList["reviewPoint"] =
-            eventDetailList["reviewPoint"] / data["reviews"].length;
-
-        //レビュー数
-        eventDetailList["reviewNumber"] = data["reviews"].length;
-
-        //割合計算
-        for (int i = 0; i < 5; i++) {
-          eventDetailList["ratioStarReviews"][i] =
-              eventDetailList["ratioStarReviews"][i] / data["reviews"].length;
-        }
-      }
-
-      eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
-    });
-  }
-
-  Future getEventList(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id');
-
-    final response = await http.get(url, headers: {
-      'accept': 'application/json',
-      //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization': 'Bearer ${store.accessToken}'
-    });
-    final data = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      changeEventList(data, id, store);
-    } else {
-      print("error");
-      throw Exception("Failed");
-    }
-  }
-
 // データベースと連携させていないので現在はここでイベント詳細内容を設定
   @override
   Widget build(BuildContext context) {
@@ -229,15 +62,16 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
               //ボタン
               InkWell(
                 onTap: () async {
-                  await getEventList(
-                      widget.advertisementList[index]["id"], store);
                   //print(eventDetailList["title"]);
                   Navigator.push(
                       context,
                       PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  EventPostDetail(eventList: eventDetailList)));
+                                  EventPostDetail(
+                                      id: widget.advertisementList
+                                          .elementAt(index)["id"],
+                                      tStore: store)));
                   //タップ処理
                 },
                 child:

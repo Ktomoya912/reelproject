@@ -55,35 +55,33 @@ class _EventState extends State<Event> {
   //titleに文字数制限を設ける
   static List<dynamic> advertisementList = [
     {
-      "title": "３年ぶりに開催をする川上神社夏祭り", //タイトル
-      "day": "2021/8/1", //日付
-      "time": "10:00~20:00", //時間
-      "place": "香美市川上町", //場所
+      "name": "イベントaaaaa名",
+      "image_url": "https://example.com",
+      "postal_code": "782-8502",
+      "prefecture": "高知県",
+      "city": "香美市",
+      "address": "土佐山田町宮ノ口185",
+      "phone_number": "0887-53-1111",
+      "email": "sample@ugs.ac.jp",
+      "homepage": "https://kochi-tech.ac.jp/",
+      "participation_fee": "無料",
+      "capacity": 100,
+      "additional_message": "",
+      "description": "",
+      "caution": "",
+      "tags": [
+        {"name": "タグ名", "id": 1}
+      ],
+      "event_times": [
+        {
+          "start_time": "2024-01-23T14:51:29",
+          "end_time": "2024-01-23T15:51:29",
+          "id": 4
+        }
+      ],
+      "id": 6,
+      "status": null
     },
-    {
-      "title": "川上神社夏祭り2",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り3",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り4",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    },
-    {
-      "title": "川上神社夏祭り5",
-      "day": "2021/8/1",
-      "time": "10:00~20:00",
-      "place": "香美市川上町",
-    }
   ];
   void changeAdvertisementList(List<dynamic> e) {
     setState(() {
@@ -106,11 +104,15 @@ class _EventState extends State<Event> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getEventList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     //final store = Provider.of<ChangeGeneralCorporation>(context);
-
-    getEventList();
 
     return Scaffold(
         appBar: EventJobSearchBar(

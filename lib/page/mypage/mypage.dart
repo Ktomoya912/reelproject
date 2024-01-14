@@ -57,146 +57,156 @@ class ScrollMyPageDetail extends StatelessWidget {
     super.key,
   });
 
-  //一般向けマイページリスト
-  static Map<String, List<Map<String, dynamic>>> generalMypageMap = {
-    //ユーザ設定
-    "settingList": [
-      {
-        "title": "会員情報確認・編集",
-        "icon": Icons.manage_accounts,
-        "push": const GeneralMemInfConf(),
-      },
-    ],
-    //メニュー
-    "menuList": [
-      {
-        "title": "閲覧履歴",
-        "icon": Icons.history,
-        "push": const WatchHistory(),
-      },
-      {
-        "title": "お気に入りリスト",
-        "icon": Icons.favorite,
-        "push": const FavoriteList(),
-      },
-      {
-        "title": "応募履歴",
-        "icon": Icons.task,
-        "push": const ApplyHist(),
-      }
-    ],
-    //その他
-    "elseList": [
-      {
-        "title": "お問い合わせ",
-        "icon": Icons.chat_bubble,
-        "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
-      },
-      {
-        "title": "利用規約",
-        "icon": Icons.article,
-        "push": "overlay",
-        "overlay": RuleScreen(),
-      },
-      {
-        "title": "ログアウト",
-        "icon": Icons.logout,
-        "push": "overlay",
-        "overlay": Logout(),
-      },
-      {
-        "title": "退会申請",
-        "icon": Icons.waving_hand,
-        "push": "overlay",
-        "overlay": Secession(),
-      },
-    ],
-  };
-
-  //法人向けマイページリスト
-  static Map<String, List<Map<String, dynamic>>> companyMypageMap = {
-    //ユーザ設定
-    "settingList": [
-      {
-        "title": "会員情報確認・編集",
-        "icon": Icons.manage_accounts,
-        "push": const CompanyMemInfConf(),
-      },
-    ],
-    //投稿
-    "postList": [
-      {
-        "title": "広告投稿",
-        "icon": Icons.post_add,
-        "push": "overlay",
-        "overlay": SelectPost(),
-      },
-      {
-        "title": "投稿一覧",
-        "icon": Icons.summarize,
-        "push": const PostedList(),
-      },
-      // {
-      //   "title": "応募者確認",
-      //   "icon": Icons.manage_search,
-      //   "push": ApplyConf(),
-      // },
-      {
-        "title": "未振り込み投稿一覧",
-        "icon": Icons.money_off,
-        "push": const NoPostList(),
-      },
-      {
-        "title": "振込口座確認",
-        "icon": Icons.payment,
-        "push": const TransferTo(),
-      },
-    ],
-    //メニュー
-    "menuList": [
-      {
-        "title": "閲覧履歴",
-        "icon": Icons.history,
-        "push": const WatchHistory(),
-      },
-      {
-        "title": "お気に入りリスト",
-        "icon": Icons.favorite,
-        "push": const FavoriteList(),
-      },
-    ],
-    //その他
-    "elseList": [
-      {
-        "title": "お問い合わせ",
-        "icon": Icons.chat_bubble,
-        "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
-      },
-      {
-        "title": "利用規約",
-        "icon": Icons.article,
-        "push": "overlay",
-        "overlay": RuleScreen(),
-      },
-      {
-        "title": "ログアウト",
-        "icon": Icons.logout,
-        "push": "overlay",
-        "overlay": Logout(),
-      },
-      {
-        "title": "退会申請",
-        "icon": Icons.waving_hand,
-        "push": "overlay",
-        "overlay": Secession(),
-      },
-    ],
-  };
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //一般向けマイページリスト
+    Map<String, List<Map<String, dynamic>>> generalMypageMap = {
+      //ユーザ設定
+      "settingList": [
+        {
+          "title": "会員情報確認・編集",
+          "icon": Icons.manage_accounts,
+          "push": const GeneralMemInfConf(),
+        },
+      ],
+      //メニュー
+      "menuList": [
+        {
+          "title": "閲覧履歴",
+          "icon": Icons.history,
+          "push": WatchHistory(store: store),
+        },
+        {
+          "title": "お気に入りリスト",
+          "icon": Icons.favorite,
+          "push": FavoriteList(
+            store: store,
+          ),
+        },
+        {
+          "title": "応募履歴",
+          "icon": Icons.task,
+          "push": ApplyHist(
+            store: store,
+          ),
+        }
+      ],
+      //その他
+      "elseList": [
+        {
+          "title": "お問い合わせ",
+          "icon": Icons.chat_bubble,
+          "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
+        },
+        {
+          "title": "利用規約",
+          "icon": Icons.article,
+          "push": "overlay",
+          "overlay": RuleScreen(),
+        },
+        {
+          "title": "ログアウト",
+          "icon": Icons.logout,
+          "push": "overlay",
+          "overlay": Logout(),
+        },
+        {
+          "title": "退会申請",
+          "icon": Icons.waving_hand,
+          "push": "overlay",
+          "overlay": Secession(),
+        },
+      ],
+    };
+
+    //法人向けマイページリスト
+    Map<String, List<Map<String, dynamic>>> companyMypageMap = {
+      //ユーザ設定
+      "settingList": [
+        {
+          "title": "会員情報確認・編集",
+          "icon": Icons.manage_accounts,
+          "push": const CompanyMemInfConf(),
+        },
+      ],
+      //投稿
+      "postList": [
+        {
+          "title": "広告投稿",
+          "icon": Icons.post_add,
+          "push": "overlay",
+          "overlay": SelectPost(),
+        },
+        {
+          "title": "投稿一覧",
+          "icon": Icons.summarize,
+          "push": PostedList(
+            store: store,
+          ),
+        },
+        // {
+        //   "title": "応募者確認",
+        //   "icon": Icons.manage_search,
+        //   "push": ApplyConf(),
+        // },
+        {
+          "title": "未振り込み投稿一覧",
+          "icon": Icons.money_off,
+          "push": const NoPostList(),
+        },
+        {
+          "title": "振込口座確認",
+          "icon": Icons.payment,
+          "push": const TransferTo(),
+        },
+      ],
+      //メニュー
+      "menuList": [
+        {
+          "title": "閲覧履歴",
+          "icon": Icons.history,
+          "push": WatchHistory(
+            store: store,
+          ),
+        },
+        {
+          "title": "お気に入りリスト",
+          "icon": Icons.favorite,
+          "push": FavoriteList(
+            store: store,
+          ),
+        },
+      ],
+      //その他
+      "elseList": [
+        {
+          "title": "お問い合わせ",
+          "icon": Icons.chat_bubble,
+          "push": const AskPage(loginJedge: false, buttonTex: "マイページに戻る"),
+        },
+        {
+          "title": "利用規約",
+          "icon": Icons.article,
+          "push": "overlay",
+          "overlay": RuleScreen(),
+        },
+        {
+          "title": "ログアウト",
+          "icon": Icons.logout,
+          "push": "overlay",
+          "overlay": Logout(),
+        },
+        {
+          "title": "退会申請",
+          "icon": Icons.waving_hand,
+          "push": "overlay",
+          "overlay": Secession(),
+        },
+      ],
+    };
 
     //マイページのリストで使用するWidget
     Widget generalCompanyMypageList;
