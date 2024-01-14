@@ -64,7 +64,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
     //レビュー
     "reviewPoint": 0, //評価
     //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0, 0, 0, 0, 0],
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
     //レビュー数
     "reviewNumber": 0,
     //投稿ID
@@ -135,17 +135,19 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
       //レビュー
       eventDetailList["review"] = data["reviews"]; //評価
+
       //初期化
       eventDetailList["reviewPoint"] = 0; //平均点
       eventDetailList["ratioStarReviews"] = [
-        0,
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]; //星の割合(前から1,2,3,4,5)
       eventDetailList["reviewNumber"] = 0; //レビュー数
       eventDetailList["reviewId"] = 0; //投稿ID
+
       if (eventDetailList["review"].length != 0) {
         //平均点
         for (int i = 0; i < data["reviews"].length; i++) {
@@ -168,7 +170,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
         //割合計算
         for (int i = 0; i < 5; i++) {
           eventDetailList["ratioStarReviews"][i] =
-              eventDetailList["ratioStarReviews"][i] / data["reviews"].length;
+              eventDetailList["ratioStarReviews"][i] /
+                  eventDetailList["reviewNumber"];
         }
       }
 
@@ -492,10 +495,12 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                           animation,
                                                           secondaryAnimation) =>
                                                       SearchPage(
-                                                    text: eventDetailList["tag"]
-                                                        [i]["name"],
+                                                    text:
+                                                        "#${eventDetailList["tag"][i]["name"]}",
                                                     eventJobJedge: "おすすめイベント",
                                                     sort: "新着順",
+                                                    sortType: "id",
+                                                    store: store,
                                                   ),
                                                 ))
                                           },

@@ -8,12 +8,12 @@ import 'package:reelproject/page/event/search_page.dart';
 class SearchAppbar extends StatefulWidget implements PreferredSizeWidget {
   const SearchAppbar({
     super.key,
-    required this.title,
+    required this.txt,
     required this.mediaQueryData,
     required this.eventJobJedge,
   });
 
-  final String title; //タイトル
+  final String txt; //タイトル
   final MediaQueryData mediaQueryData;
   final String eventJobJedge;
 
@@ -30,24 +30,6 @@ class SearchAppbar extends StatefulWidget implements PreferredSizeWidget {
 class SearchAppbarState extends State<SearchAppbar> {
   final _controller = TextEditingController(); //検索バーのコントローラー
 
-  //検索ボタンを押したときの処理
-  void _submission(text) {
-    setState(() {
-      if (text != "") {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  SearchPage(
-                text: text,
-                eventJobJedge: widget.eventJobJedge,
-                sort: "新着順",
-              ),
-            ));
-      }
-    });
-  }
-
   //並び順
   String sort = "新着順";
   void changeSort(String sortTitle) {
@@ -62,6 +44,25 @@ class SearchAppbarState extends State<SearchAppbar> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //検索ボタンを押したときの処理
+    void _submission(text) {
+      setState(() {
+        if (text != "") {
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    SearchPage(
+                        text: text,
+                        eventJobJedge: widget.eventJobJedge,
+                        sort: "新着順",
+                        sortType: "id",
+                        store: store),
+              ));
+        }
+      });
+    }
 
     return Scaffold(
       body: Center(
@@ -169,7 +170,7 @@ class SearchAppbarState extends State<SearchAppbar> {
                             constraints: BoxConstraints(
                               maxWidth: widget.mediaQueryData.size.width / 5,
                             ),
-                            child: Text(widget.title,
+                            child: Text(widget.txt,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: const TextStyle(
