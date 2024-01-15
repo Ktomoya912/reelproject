@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 class ChangeGeneralCorporation with ChangeNotifier {
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
+
+  //タイプ一覧(デバック中はすべてallとする)
+  static const String typeAll = "type=all";
+  static const String typeActive = "type=all";
+  static const String typeInactive = "type=inactive";
+  static const String typeDraft = "type=all";
+
   String accessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzY2NTI3Mn0.e3EhsKqWjv5XX_iAKs1M3hRcy3MORXFef7m64E4XsJ8";
   int myID = 1; //自分のID

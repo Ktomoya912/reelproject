@@ -134,13 +134,17 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                           mainAxisAlignment: MainAxisAlignment.end, //右寄せ
                           children: [
                             Container(
-                              height: imageWidthPower,
-                              width: imageWidthPower,
-                              decoration: BoxDecoration(
-                                color: store.mainColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
+                                height: imageWidthPower,
+                                width: imageWidthPower,
+                                decoration: BoxDecoration(
+                                  color: store.mainColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Image.network(
+                                    widget.advertisementList
+                                        .elementAt(index)["image_url"]
+                                        .toString(),
+                                    fit: BoxFit.cover)),
                           ],
                         ),
                       ),

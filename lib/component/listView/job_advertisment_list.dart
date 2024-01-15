@@ -149,17 +149,21 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                           MainAxisAlignment.center, //中央寄せ
                                       children: [
                                         SizedBox(
-                                          //画像
-                                          child: Container(
                                             height: imageWidthPower,
                                             width: imageWidthPower,
-                                            decoration: BoxDecoration(
-                                              color: store.mainColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
+                                            //画像
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: store.mainColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Image.network(
+                                                    widget.advertisementList
+                                                        .elementAt(
+                                                            index)["image_url"]
+                                                        .toString(),
+                                                    fit: BoxFit.cover))),
                                       ],
                                     ),
                                   ),

@@ -25,64 +25,10 @@ class FavoriteList extends StatefulWidget {
 class _FavoriteListState extends State<FavoriteList> {
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static List<dynamic> jobList = [
-    {
-      "name": "strinqesswrg",
-      "image_url": "https://example.com",
-      "salary": "時給1000円",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "description": "説明",
-      "is_one_day": true,
-      "additional_message": "追加メッセージ",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "job_times": [
-        {
-          "start_time": "2024-01-24T14:51:29",
-          "end_time": "2024-01-24T15:51:29",
-          "id": 2
-        }
-      ],
-      "id": 3,
-      "status": null
-    },
-  ];
+  static List<dynamic> jobList = [];
   //イベント広告のリスト
   //titleに文字数制限を設ける
-  static List<dynamic> eventList = [
-    {
-      "name": "イベントaaaaa名",
-      "image_url": "https://example.com",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "phone_number": "0887-53-1111",
-      "email": "sample@ugs.ac.jp",
-      "homepage": "https://kochi-tech.ac.jp/",
-      "participation_fee": "無料",
-      "capacity": 100,
-      "additional_message": "",
-      "description": "",
-      "caution": "",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "event_times": [
-        {
-          "start_time": "2024-01-23T14:51:29",
-          "end_time": "2024-01-23T15:51:29",
-          "id": 4
-        }
-      ],
-      "id": 6,
-      "status": null
-    },
-  ];
+  static List<dynamic> eventList = [];
 
   void changeEventList(List<dynamic> e) {
     setState(() {
@@ -91,7 +37,8 @@ class _FavoriteListState extends State<FavoriteList> {
   }
 
   Future getEventList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/event-bookmarks');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-bookmarks');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -112,7 +59,8 @@ class _FavoriteListState extends State<FavoriteList> {
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/job-bookmarks');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-bookmarks');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'

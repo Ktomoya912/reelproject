@@ -11,6 +11,7 @@ import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
@@ -46,8 +47,50 @@ class _HomeState extends State<Home> {
     });
   }
 
+  static List<dynamic> eventAdvertisementList = [];
+  void changeEventAdvertisementList(List<dynamic> e) {
+    setState(() {
+      eventAdvertisementList = e;
+    });
+  }
+
+  static List<dynamic> jobAdvertisementList = [];
+  void changeJobAdvertisementList(List<dynamic> e) {
+    setState(() {
+      jobAdvertisementList = e;
+    });
+  }
+
+  Future getEventList() async {
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&sort=pv&order=asc&offset=0&limit=5');
+
+    final response =
+        await http.get(url, headers: {'accept': 'application/json'});
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeEventAdvertisementList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  Future getJobList() async {
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&sort=pv&order=asc&offset=0&limit=5');
+    final response =
+        await http.get(url, headers: {'accept': 'application/json'});
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeJobAdvertisementList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
   Future getHistoryList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/event-watched');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-watched');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'
@@ -67,6 +110,8 @@ class _HomeState extends State<Home> {
       final store =
           Provider.of<ChangeGeneralCorporation>(context, listen: false);
       getHistoryList(store);
+      getEventList();
+      getJobList();
     });
   }
 
@@ -176,15 +221,132 @@ class _HomeState extends State<Home> {
                         width: width,
                         child: Carousel(
                           pages: [
-                            for (int i = 0; i < 5; i++)
-                              Container(
-                                height: width / 10 * 7,
-                                width: width,
-                                decoration: BoxDecoration(
-                                  color: store.mainColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
+                            for (int i = 0;
+                                i <
+                                    eventAdvertisementList.length +
+                                        jobAdvertisementList.length;
+                                i++)
+                              //イベント広告
+                              if (i < eventAdvertisementList.length)
+                                Stack(
+                                    alignment:
+                                        AlignmentDirectional.bottomCenter, //下寄せ
+                                    children: [
+                                      Container(
+                                          height: width / 10 * 7,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                            color: store.mainColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Image.network(
+                                              eventAdvertisementList
+                                                  .elementAt(i)["image_url"]
+                                                  .toString(),
+                                              fit: BoxFit.cover)),
+                                      //全体を薄暗くする(ボタンの要素もある)
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                  pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) =>
+                                                      EventPostDetail(
+                                                          id: eventAdvertisementList
+                                                              .elementAt(
+                                                                  i)["id"],
+                                                          tStore: store)));
+                                        },
+                                        child: Container(
+                                          height: width / 10 * 7,
+                                          width: width,
+                                          color: Color.fromARGB(98, 0, 0, 0),
+                                        ),
+                                      ),
+
+                                      //タイトル枠
+                                      SizedBox(
+                                        height: width / 10 * 7 / 3.5,
+                                        width: width,
+                                        child: Center(
+                                          child: Text(
+                                              eventAdvertisementList
+                                                  .elementAt(i)["name"],
+                                              //枠を超えたら省略
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ),
+                                    ])
+                              //求人広告
+                              else
+                                Stack(
+                                    alignment:
+                                        AlignmentDirectional.bottomCenter, //下寄せ
+                                    children: [
+                                      Container(
+                                          height: width / 10 * 7,
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                            color: store.mainColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Image.network(
+                                              jobAdvertisementList
+                                                  .elementAt(i -
+                                                      eventAdvertisementList
+                                                          .length)["image_url"]
+                                                  .toString(),
+                                              fit: BoxFit.cover)),
+                                      //全体を薄暗くする(ボタンの要素もある)
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                  pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) =>
+                                                      JobPostDetail(
+                                                          id: jobAdvertisementList
+                                                              .elementAt(i -
+                                                                  eventAdvertisementList
+                                                                      .length)["id"],
+                                                          tStore: store)));
+                                        },
+                                        child: Container(
+                                          height: width / 10 * 7,
+                                          width: width,
+                                          color: Color.fromARGB(98, 0, 0, 0),
+                                        ),
+                                      ),
+                                      //タイトル枠
+                                      SizedBox(
+                                        height: width / 10 * 7 / 3.5,
+                                        width: width,
+                                        child: Center(
+                                          child: Text(
+                                              jobAdvertisementList.elementAt(i -
+                                                  eventAdvertisementList
+                                                      .length)["name"],
+                                              //枠を超えたら省略
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ),
+                                    ])
                           ],
                           timeJedge: false,
                         ),

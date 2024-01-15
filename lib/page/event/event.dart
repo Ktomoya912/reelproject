@@ -53,36 +53,7 @@ class _EventState extends State<Event> {
 
   //イベント広告のリスト
   //titleに文字数制限を設ける
-  static List<dynamic> advertisementList = [
-    {
-      "name": "イベントaaaaa名",
-      "image_url": "https://example.com",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "phone_number": "0887-53-1111",
-      "email": "sample@ugs.ac.jp",
-      "homepage": "https://kochi-tech.ac.jp/",
-      "participation_fee": "無料",
-      "capacity": 100,
-      "additional_message": "",
-      "description": "",
-      "caution": "",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "event_times": [
-        {
-          "start_time": "2024-01-23T14:51:29",
-          "end_time": "2024-01-23T15:51:29",
-          "id": 4
-        }
-      ],
-      "id": 6,
-      "status": null
-    },
-  ];
+  static List<dynamic> advertisementList = [];
   void changeAdvertisementList(List<dynamic> e) {
     setState(() {
       advertisementList = e;
@@ -91,7 +62,7 @@ class _EventState extends State<Event> {
 
   Future getEventList() async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/events/?only_active=false&sort=recent&order=asc&offset=0&limit=20');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&sort=recent&order=asc&offset=0&limit=20');
 
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
@@ -106,7 +77,11 @@ class _EventState extends State<Event> {
   @override
   void initState() {
     super.initState();
-    getEventList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      getEventList();
+    });
   }
 
   @override

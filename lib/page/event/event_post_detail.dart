@@ -29,37 +29,28 @@ class _EventPostDetailState extends State<EventPostDetail> {
     //id
     "id": 1,
     //必須
-    "title": "川上神社夏祭り", //タイトル
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
     //詳細
-    "detail":
-        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n ステージイベント、宝さがし、鎮守の杜のびらふマルシェなど、子どもから大人まで誰でも楽しめるイベント内容が盛りだくさん！",
-    "eventTimes": [
-      {
-        "start_time": "2024-01-12T19:53:41",
-        "end_time": "2024-01-12T20:53:41",
-        "id": 1
-      }
-    ], //開催日時
+    "detail": "",
+    "eventTimes": [], //開催日時
     //開催場所
-    "postalNumber": "781-5101", //郵便番号
-    "prefecture": "高知県", //都道府県
-    "city": "香美市", //市町村
-    "houseNumber": "川上町", //番地・建物名
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
 
     //その他(任意)
-    "tag": [
-      {
-        "name": "夏祭り",
-        "id": 1,
-      },
-    ], //ハッシュタグ
-    "phone": "0887-00-0000", //電話番号
-    "mail": "conf@gmai.com", //メールアドレス
-    "url": "https://www.city.kami.lg.jp/", //URL
-    "fee": "1000", //参加費
-    "Capacity": "100", //定員
+    "tag": [], //ハッシュタグ
+    "phone": "", //電話番号
+    "mail": "", //メールアドレス
+    "url": "", //URL
+    "fee": "", //参加費
+    "Capacity": "", //定員
     "notes": "", //注意事項
-    "addMessage": "test", //追加メッセージ
+    "addMessage": "", //追加メッセージ
 
     //レビュー
     "reviewPoint": 0, //評価
@@ -105,11 +96,12 @@ class _EventPostDetailState extends State<EventPostDetail> {
     "favoriteJedge": false,
   };
 
-  late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
+  //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
 
   changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
     setState(() {
       eventDetailList["id"] = id; //id
+      eventDetailList["image_url"] = data["image_url"]; //画像
       eventDetailList["title"] = data["name"]; //タイトル
       eventDetailList["detail"] = data["description"]; //詳細
 
@@ -135,7 +127,6 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
       //レビュー
       eventDetailList["review"] = data["reviews"]; //評価
-
       //初期化
       eventDetailList["reviewPoint"] = 0; //平均点
       eventDetailList["ratioStarReviews"] = [
@@ -147,7 +138,6 @@ class _EventPostDetailState extends State<EventPostDetail> {
       ]; //星の割合(前から1,2,3,4,5)
       eventDetailList["reviewNumber"] = 0; //レビュー数
       eventDetailList["reviewId"] = 0; //投稿ID
-
       if (eventDetailList["review"].length != 0) {
         //平均点
         for (int i = 0; i < data["reviews"].length; i++) {
@@ -180,7 +170,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   }
 
   Future getEventList(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -196,9 +186,16 @@ class _EventPostDetailState extends State<EventPostDetail> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    getEventList(widget.id, widget.tStore);
+  }
+
   //お気に入り登録
   Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id/bookmark');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/bookmark');
     final response = await post(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
@@ -209,7 +206,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
   //お気に入り削除
   Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/events/$id/bookmark');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/bookmark');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
@@ -290,7 +288,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/events/${id}/review');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/${id}/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -310,7 +309,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -321,7 +320,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',
@@ -345,12 +344,6 @@ class _EventPostDetailState extends State<EventPostDetail> {
   ]; //星の色を変えるための変数
 
   @override
-  void initState() {
-    super.initState();
-    getEventList(widget.id, widget.tStore);
-  }
-
-  @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
 
@@ -362,6 +355,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
     //double blank = mediaQueryData.size.width / 20;
     double width = mediaQueryData.size.width - (widthBlank * 2);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
     return Scaffold(
       //アップバー
       appBar: DetailAppbar(
@@ -399,24 +393,12 @@ class _EventPostDetailState extends State<EventPostDetail> {
                         height: mediaQueryData.size.height / 50,
                       ),
                       //画像
-                      Stack(children: [
-                        SizedBox(
+                      SizedBox(
                           height: width * 0.6,
                           width: width,
-                          child: Carousel(
-                            pages: [
-                              for (int i = 0; i < 5; i++)
-                                Container(
-                                  alignment: Alignment.topRight,
-                                  height: width * 0.6,
-                                  //width: width,
-                                  color: Colors.blue,
-                                ),
-                            ],
-                            timeJedge: false,
-                          ),
-                        ),
-                      ]),
+                          child: Image.network(
+                              eventDetailList["image_url"].toString(),
+                              fit: BoxFit.cover)),
                       //タイトル
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
