@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'dart:convert';
-// import 'package:reelproject/component/loading/show_loading_dialog.dart';
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -168,10 +168,10 @@ class LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () async {
                       //context.navigateTo(const RootRoute()),
-                      // showLoadingDialog(context: context); //ここでローディング画面を表示
+                      showLoadingDialog(context: context); //ここでローディング画面を表示
                       await getAccessToken(name, password,
                           ChangeGeneralCorporation.apiUrl); //ここでログイン処理
-                      await Future.delayed(const Duration(seconds: 2)); //2秒待つ
+                      await Future.delayed(const Duration(seconds: 1)); //1秒待つ
                       Navigator.of(context).pop(); //ローディング画面を閉じる
                       if (jedgeGC) {
                         context.popRoute();
