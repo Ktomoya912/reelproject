@@ -35,8 +35,8 @@ class _PostedListState extends State<PostedList> {
   }
 
   Future getEventList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-postings');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/users/event-postings?type=posted');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -57,8 +57,8 @@ class _PostedListState extends State<PostedList> {
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-postings');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/users/job-postings?type=posted');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'
@@ -111,12 +111,14 @@ class _PostedListState extends State<PostedList> {
                     EventAdvertisementList(
                       advertisementList: eventList,
                       mediaQueryData: mediaQueryData,
+                      notPostJedge: false,
                     )
                   else
                     //求人広告一覧
                     JobAdvertisementList(
                       advertisementList: jobList,
                       mediaQueryData: mediaQueryData,
+                      notPostJedge: false,
                     ),
                 ],
               ),

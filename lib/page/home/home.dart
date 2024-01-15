@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -112,6 +113,12 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
     });
   }
 
@@ -227,24 +234,31 @@ class _HomeState extends State<Home> {
                                         jobAdvertisementList.length;
                                 i++)
                               //イベント広告
+
                               if (i < eventAdvertisementList.length)
                                 Stack(
                                     alignment:
                                         AlignmentDirectional.bottomCenter, //下寄せ
                                     children: [
                                       Container(
-                                          height: width / 10 * 7,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: store.mainColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
+                                        height: width / 10 * 7,
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          color: store.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                          // これを追加
+                                          borderRadius: BorderRadius.circular(
+                                              10), // これを追加
                                           child: Image.network(
                                               eventAdvertisementList
                                                   .elementAt(i)["image_url"]
                                                   .toString(),
-                                              fit: BoxFit.cover)),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
                                         onTap: () {
@@ -258,12 +272,19 @@ class _HomeState extends State<Home> {
                                                           id: eventAdvertisementList
                                                               .elementAt(
                                                                   i)["id"],
-                                                          tStore: store)));
+                                                          tStore: store,
+                                                          notPostJedge:
+                                                              false)));
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: Color.fromARGB(98, 0, 0, 0),
+                                          decoration: BoxDecoration(
+                                            color: ChangeGeneralCorporation
+                                                .transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // ここで枠を丸く設定します
+                                          ),
                                         ),
                                       ),
 
@@ -292,20 +313,26 @@ class _HomeState extends State<Home> {
                                         AlignmentDirectional.bottomCenter, //下寄せ
                                     children: [
                                       Container(
-                                          height: width / 10 * 7,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: store.mainColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
+                                        height: width / 10 * 7,
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          color: store.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                          // これを追加
+                                          borderRadius: BorderRadius.circular(
+                                              10), // これを追加
                                           child: Image.network(
                                               jobAdvertisementList
                                                   .elementAt(i -
                                                       eventAdvertisementList
                                                           .length)["image_url"]
                                                   .toString(),
-                                              fit: BoxFit.cover)),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
                                         onTap: () {
@@ -316,16 +343,23 @@ class _HomeState extends State<Home> {
                                                           animation,
                                                           secondaryAnimation) =>
                                                       JobPostDetail(
-                                                          id: jobAdvertisementList
-                                                              .elementAt(i -
-                                                                  eventAdvertisementList
-                                                                      .length)["id"],
-                                                          tStore: store)));
+                                                        id: jobAdvertisementList
+                                                            .elementAt(i -
+                                                                eventAdvertisementList
+                                                                    .length)["id"],
+                                                        tStore: store,
+                                                        notPostJedge: false,
+                                                      )));
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: Color.fromARGB(98, 0, 0, 0),
+                                          decoration: BoxDecoration(
+                                            color: ChangeGeneralCorporation
+                                                .transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // ここで枠を丸く設定します
+                                          ),
                                         ),
                                       ),
                                       //タイトル枠
@@ -572,6 +606,7 @@ class HistoryButton extends StatelessWidget {
                           EventPostDetail(
                             id: historyList[i]["id"],
                             tStore: store,
+                            notPostJedge: false,
                           )));
               // Navigator.push(
               //         context,

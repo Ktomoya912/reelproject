@@ -10,10 +10,15 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 // お問い合わせ画面
 
 class AskPage extends StatefulWidget {
-  const AskPage({super.key, required this.loginJedge, required this.buttonTex});
+  const AskPage(
+      {super.key,
+      required this.loginJedge,
+      required this.buttonTex,
+      required this.popTimes});
 
   final bool loginJedge;
   final String buttonTex;
+  final int popTimes;
 
   @override
   AskPageState createState() => AskPageState();
@@ -192,6 +197,7 @@ class AskPageState extends State<AskPage> {
                             "この度はお問い合わせいただきまして、\n誠にありがとうございました。\n弊社から折り返しご連絡を差し上げますので、\n今しばらくお待ちください。\nお問い合わせから１週間以上弊社からの返信がない場合は、メールのトラブルなどが考えられますので、再度お問い合わせいただくようお願いします。",
                         buttonText: widget.buttonTex,
                         jedgeBottomAppBar: widget.loginJedge,
+                        popTimes: widget.popTimes,
                       ),
                     ),
                   );

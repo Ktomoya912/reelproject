@@ -15,17 +15,19 @@ class EventPostDetail extends StatefulWidget {
     super.key,
     required this.id,
     required this.tStore,
+    required this.notPostJedge,
   });
 
   final int id;
   final tStore;
+  final bool notPostJedge;
 
   @override
   State<EventPostDetail> createState() => _EventPostDetailState();
 }
 
 class _EventPostDetailState extends State<EventPostDetail> {
-  Map<String, dynamic> eventDetailList = {
+  static Map<String, dynamic> eventDetailList = {
     //id
     "id": 1,
     //必須
@@ -35,7 +37,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
     "title": "",
     //詳細
     "detail": "",
-    "eventTimes": [], //開催日時
+    "eventTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ], //開催日時
     //開催場所
     "postalNumber": "", //郵便番号
     "prefecture": "", //都道府県
@@ -61,30 +69,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
     //投稿ID
     "reviewId": 0,
     //レビュー内容
-    "review": [
-      {
-        "title": "ｗｗｗえええ",
-        "review": "ｗｗｗえええ",
-        "review_point": 4,
-        "id": 9,
-        "user": {
-          "username": "admin",
-          "image_url": null,
-          "email": "mitsuara0517@gmail.com",
-          "sex": "o",
-          "birthday": "2000-01-01",
-          "user_type": "a",
-          "id": 1,
-          "company": null,
-          "is_active": true
-        },
-        "created_at": "2024-01-12T17:39:35",
-        "updated_at": "2024-01-12T17:39:47"
-      }
-    ],
+    "review": [],
 
     //この広告を投稿したか
-    "postJedge": true,
+    "postJedge": false,
 
     //未投稿か否か(true:未投稿,false:投稿済み)
     "notPost": false,
@@ -166,6 +154,16 @@ class _EventPostDetailState extends State<EventPostDetail> {
       }
 
       eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        eventDetailList["postJedge"] = true;
+      } else {
+        eventDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か(true:未投稿,false:投稿済み)
+      eventDetailList["notPost"] = widget.notPostJedge;
     });
   }
 
@@ -364,6 +362,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
         postTerm: eventDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
         notPostJedge: eventDetailList["notPost"],
+        id: eventDetailList["id"],
       ),
       //body
       body: ShaderMaskComponent(
@@ -396,9 +395,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
                       SizedBox(
                           height: width * 0.6,
                           width: width,
-                          child: Image.network(
-                              eventDetailList["image_url"].toString(),
-                              fit: BoxFit.cover)),
+                          child: ClipRRect(
+                            // これを追加
+                            borderRadius: BorderRadius.circular(10), // これを追加
+                            child: Image.network(
+                                eventDetailList["image_url"].toString(),
+                                fit: BoxFit.cover),
+                          )),
                       //タイトル
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

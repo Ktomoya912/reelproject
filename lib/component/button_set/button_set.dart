@@ -10,10 +10,12 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 //その後、body内で"const ButtonSet();"のように宣言
 class ButtonSet extends StatelessWidget {
   final String buttonName;
+  final int popTimes; //何回popするか(0の場合はルートまで戻る)
 
   const ButtonSet({
     super.key,
     required this.buttonName,
+    required this.popTimes,
   });
 
   @override
@@ -22,7 +24,13 @@ class ButtonSet extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         //最初の画面まで戻る
-        Navigator.popUntil(context, (route) => route.isFirst);
+        if (popTimes == 0) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        } else {
+          for (int i = 0; i < popTimes; i++) {
+            Navigator.pop(context);
+          }
+        }
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(

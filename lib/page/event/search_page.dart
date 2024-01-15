@@ -380,11 +380,13 @@ class _SearchPageState extends State<SearchPage> {
                 EventAdvertisementList(
                   advertisementList: eventList,
                   mediaQueryData: mediaQueryData,
+                  notPostJedge: false,
                 )
               else if (widget.eventJobJedge == "おすすめ求人")
                 JobAdvertisementList(
                   advertisementList: jobList,
                   mediaQueryData: mediaQueryData,
+                  notPostJedge: false,
                 )
             ],
           ),
