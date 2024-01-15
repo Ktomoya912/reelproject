@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 //求人ページ
 @RoutePage()
@@ -78,6 +79,8 @@ class _JobState extends State<Job> {
   void initState() {
     super.initState();
     getJobList();
+    //一定間隔毎に更新
+    Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
   }
 
   @override
@@ -96,6 +99,7 @@ class _JobState extends State<Job> {
               JobAdvertisementList(
                 advertisementList: advertisementList,
                 mediaQueryData: mediaQueryData,
+                notPostJedge: false,
               ),
             ],
           ),

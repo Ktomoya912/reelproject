@@ -115,6 +115,7 @@ class PassChangeState extends State<PassChange> {
                                           ? "ログイン画面に戻る"
                                           : "マイページに戻る",
                                       jedgeBottomAppBar: widget.loginJedge,
+                                      popTimes: 0,
                                     )),
                           );
                         },

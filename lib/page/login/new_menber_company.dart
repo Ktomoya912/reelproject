@@ -671,6 +671,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                                   "法人会員登録ありがとうございます。\nこちらで法人確認を行ったあと、法人会員登録完了メールをご登録メールアドレスへと送信いたしますので、メールが届くまで今しばらくお待ちください。\n万が一法人会員登録完了メールが１か月以上届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
                               buttonText: "ログイン画面に戻る",
                               jedgeBottomAppBar: true,
+                              popTimes: 0,
                             )),
                   );
                 } else {

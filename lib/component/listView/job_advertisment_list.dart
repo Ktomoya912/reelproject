@@ -13,10 +13,12 @@ class JobAdvertisementList extends StatefulWidget {
     super.key,
     required this.advertisementList,
     required this.mediaQueryData,
+    required this.notPostJedge,
   });
 
   final List<dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
+  final bool notPostJedge;
 
   static double lineWidth = 0.7; //線の太さ定数
 
@@ -72,6 +74,7 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                     id: widget.advertisementList
                                         .elementAt(index)["id"],
                                     tStore: store,
+                                    notPostJedge: widget.notPostJedge,
                                   )));
                   //タップ処理
                 },

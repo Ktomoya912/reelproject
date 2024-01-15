@@ -20,6 +20,7 @@ class FinishScreen extends StatelessWidget {
   final String buttonText;
   // final Widget appBar;
   final bool jedgeBottomAppBar;
+  final int popTimes; //何回popするか(0の場合はルートまで戻る)
 
   const FinishScreen({
     super.key,
@@ -30,6 +31,7 @@ class FinishScreen extends StatelessWidget {
     required this.buttonText,
     // required this.appBar,
     required this.jedgeBottomAppBar,
+    required this.popTimes,
   });
 
   @override
@@ -41,6 +43,7 @@ class FinishScreen extends StatelessWidget {
       questionButtonWidget = QuestionButton(
         jedgeBottomAppBar: jedgeBottomAppBar,
         buttonText: buttonText,
+        popTimes: popTimes,
       );
     }
     return Scaffold(
@@ -105,7 +108,7 @@ class FinishScreen extends StatelessWidget {
                               color: Color.fromARGB(255, 134, 134, 134)),
                         ),
                       ),
-                      ButtonSet(buttonName: buttonText),
+                      ButtonSet(buttonName: buttonText, popTimes: popTimes),
                     ],
                   ),
                 ),
@@ -134,10 +137,12 @@ class QuestionButton extends StatelessWidget {
     super.key,
     required this.jedgeBottomAppBar,
     required this.buttonText,
+    required this.popTimes,
   });
 
   final bool jedgeBottomAppBar;
   final String buttonText;
+  final int popTimes;
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +157,7 @@ class QuestionButton extends StatelessWidget {
               builder: (context) => AskPage(
                     loginJedge: jedgeBottomAppBar,
                     buttonTex: buttonText,
+                    popTimes: popTimes,
                   )),
         );
       },

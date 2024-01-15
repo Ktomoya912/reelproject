@@ -4,6 +4,9 @@ import '../over_screen_controller.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -19,15 +22,31 @@ class DeleteConf {
   late bool enable; //enabledは入力可能かどうかを判断する変数
   //追加1 end
 
+  //投稿削除
+  Future deletePost(
+      int id, ChangeGeneralCorporation store, String eventJobJedge) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/${eventJobJedge}s/$id');
+    final response = await delete(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+  }
+
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
+    required int id,
+    required String eventJobJedge,
   }) {
     if (controller?.update() ?? false) {
       return;
     } else {
       controller = showOverlay(
         context: context,
+        id: id,
+        eventJobJedge: eventJobJedge,
       );
     }
   }
@@ -40,6 +59,8 @@ class DeleteConf {
 
   OverScreenControl showOverlay({
     required BuildContext context,
+    required int id,
+    required String eventJobJedge,
   }) {
     final text0 = StreamController<String>();
 
@@ -64,10 +85,10 @@ class DeleteConf {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: SingleChildScrollView(
-                    child: ToggleRadio(),
+                    child: ToggleRadio(id: id, eventJobJedge: eventJobJedge),
                   ),
                 )),
           ),
@@ -93,7 +114,12 @@ class DeleteConf {
 class ToggleRadio extends StatefulWidget {
   const ToggleRadio({
     super.key,
+    required this.id,
+    required this.eventJobJedge,
   });
+
+  final int id;
+  final String eventJobJedge;
 
   @override
   ToggleRadioState createState() => ToggleRadioState();
@@ -166,6 +192,7 @@ class ToggleRadioState extends State<ToggleRadio> {
           //ボタン設置
           onPressed: () {
             if (flag) {
+              DeleteConf().deletePost(widget.id, store, widget.eventJobJedge);
               store.changeOverlay(false);
               Navigator.pop(context);
               Navigator.pop(context);
@@ -181,6 +208,7 @@ class ToggleRadioState extends State<ToggleRadio> {
                     buttonText:
                         buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                     jedgeBottomAppBar: false,
+                    popTimes: 1,
                   ),
                 ),
               );

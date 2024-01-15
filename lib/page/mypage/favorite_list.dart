@@ -118,12 +118,14 @@ class _FavoriteListState extends State<FavoriteList> {
                     EventAdvertisementList(
                       advertisementList: eventList,
                       mediaQueryData: mediaQueryData,
+                      notPostJedge: false,
                     )
                   else
                     //求人広告一覧
                     JobAdvertisementList(
                       advertisementList: jobList,
                       mediaQueryData: mediaQueryData,
+                      notPostJedge: false,
                     ),
                 ],
               ),

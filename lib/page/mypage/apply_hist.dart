@@ -66,6 +66,7 @@ class _ApplyHistState extends State<ApplyHist> {
               JobAdvertisementList(
                 advertisementList: jobList,
                 mediaQueryData: mediaQueryData,
+                notPostJedge: false,
               ),
             ],
           ),

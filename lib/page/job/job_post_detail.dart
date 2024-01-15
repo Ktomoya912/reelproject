@@ -15,10 +15,12 @@ class JobPostDetail extends StatefulWidget {
     super.key,
     required this.id,
     required this.tStore,
+    required this.notPostJedge,
   });
 
   final int id;
   final tStore;
+  final bool notPostJedge;
 
   @override
   State<JobPostDetail> createState() => _JobPostDetailState();
@@ -39,7 +41,13 @@ class _JobPostDetailState extends State<JobPostDetail> {
     "term": "長期",
 
     //開催期間
-    "jobTimes": [],
+    "jobTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ],
 
     //開催場所
     "postalNumber": "", //郵便番号
@@ -63,30 +71,10 @@ class _JobPostDetailState extends State<JobPostDetail> {
     //自分のレビューか否か
     "reviewId": 0,
     //レビュー内容
-    "review": [
-      {
-        "title": "ｗｗｗえええ",
-        "review": "ｗｗｗえええ",
-        "review_point": 4,
-        "id": 9,
-        "user": {
-          "username": "admin",
-          "image_url": null,
-          "email": "mitsuara0517@gmail.com",
-          "sex": "o",
-          "birthday": "2000-01-01",
-          "user_type": "a",
-          "id": 1,
-          "company": null,
-          "is_active": true
-        },
-        "created_at": "2024-01-12T17:39:35",
-        "updated_at": "2024-01-12T17:39:47"
-      }
-    ],
+    "review": [],
 
     //この広告を投稿したか
-    "postJedge": true,
+    "postJedge": false,
 
     //未投稿か否か(true:未投稿,false:投稿済み)
     "notPost": true,
@@ -174,6 +162,16 @@ class _JobPostDetailState extends State<JobPostDetail> {
       }
 
       jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        jobDetailList["postJedge"] = true;
+      } else {
+        jobDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か
+      jobDetailList["notPost"] = widget.notPostJedge;
     });
   }
 
@@ -329,6 +327,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         postTerm: jobDetailList["postTerm"],
         mediaQueryData: mediaQueryData,
         notPostJedge: jobDetailList["notPost"],
+        id: jobDetailList["id"],
       ),
       //body
       body: ShaderMaskComponent(

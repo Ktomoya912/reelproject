@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -112,6 +113,12 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
     });
   }
 
@@ -258,12 +265,15 @@ class _HomeState extends State<Home> {
                                                           id: eventAdvertisementList
                                                               .elementAt(
                                                                   i)["id"],
-                                                          tStore: store)));
+                                                          tStore: store,
+                                                          notPostJedge:
+                                                              false)));
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: Color.fromARGB(98, 0, 0, 0),
+                                          color: ChangeGeneralCorporation
+                                              .transparent,
                                         ),
                                       ),
 
@@ -316,16 +326,19 @@ class _HomeState extends State<Home> {
                                                           animation,
                                                           secondaryAnimation) =>
                                                       JobPostDetail(
-                                                          id: jobAdvertisementList
-                                                              .elementAt(i -
-                                                                  eventAdvertisementList
-                                                                      .length)["id"],
-                                                          tStore: store)));
+                                                        id: jobAdvertisementList
+                                                            .elementAt(i -
+                                                                eventAdvertisementList
+                                                                    .length)["id"],
+                                                        tStore: store,
+                                                        notPostJedge: false,
+                                                      )));
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: Color.fromARGB(98, 0, 0, 0),
+                                          color: ChangeGeneralCorporation
+                                              .transparent,
                                         ),
                                       ),
                                       //タイトル枠
@@ -572,6 +585,7 @@ class HistoryButton extends StatelessWidget {
                           EventPostDetail(
                             id: historyList[i]["id"],
                             tStore: store,
+                            notPostJedge: false,
                           )));
               // Navigator.push(
               //         context,

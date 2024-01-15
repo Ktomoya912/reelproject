@@ -13,7 +13,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   String accessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzY2NTI3Mn0.e3EhsKqWjv5XX_iAKs1M3hRcy3MORXFef7m64E4XsJ8";
-  int myID = 1; //自分のID
+  int myID = 1; //自分のID(一般ID)
 
   //一般と法人を判断する変数
   //一般:true,  法人:flase
@@ -32,6 +32,9 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const Color corporationSubColor = Color.fromARGB(255, 114, 192, 255);
   static const Color corporationThinColor = Color.fromARGB(255, 187, 224, 255);
   static const Color corporationBlackColor = Color.fromARGB(255, 0, 34, 61);
+
+  //半透明
+  static const Color transparent = Color.fromARGB(60, 0, 0, 0);
 
   //実際に使用する変数
   Color mainColor = generalMainColor;

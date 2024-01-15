@@ -8,6 +8,9 @@ import '../../page/Job/post_mem_list.dart';
 import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
 import 'package:reelproject/overlay/rule/screen/job_app.dart';
 import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   const DetailAppbar({
@@ -17,6 +20,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
     required this.postTerm,
     required this.mediaQueryData,
     required this.notPostJedge,
+    required this.id,
   });
 
   final bool postJedge;
@@ -24,6 +28,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String postTerm;
   final MediaQueryData mediaQueryData;
   final bool notPostJedge;
+  final int id;
 
   static Color greyColor = Colors.grey[500]!;
 
@@ -50,7 +55,8 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
           //replace with our own icon data.
         ),
         actions: [
-          if (postJedge)
+          //法人の際に表示
+          if (postJedge && !store.jedgeGC)
             SizedBox(
               child: Row(
                 children: [
@@ -150,7 +156,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const PostMemList(),
+                                                  PostMemList(id: id),
                                             ),
                                           ),
                                         },
@@ -215,17 +221,22 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                         //Navigator.of(context).pop(3),
 
                                         //投稿削除
-                                        if (notPostJedge)
+                                        if (!notPostJedge)
                                           {
                                             store.changeOverlay(true),
-                                            DeleteConf().show(context: context)
+                                            DeleteConf().show(
+                                                context: context,
+                                                id: id,
+                                                eventJobJedge: eventJobJedge)
                                           }
                                         //未投稿削除
                                         else
                                           {
                                             store.changeOverlay(true),
-                                            NotpostDeleteConf()
-                                                .show(context: context)
+                                            NotpostDeleteConf().show(
+                                                context: context,
+                                                id: id,
+                                                eventJobJedge: eventJobJedge)
                                           }
                                       },
                                     ),
@@ -245,7 +256,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           //応募ボタン
-          else
+          else if (!postJedge && store.jedgeGC && eventJobJedge == "job")
             Row(
               children: [
                 SizedBox(
@@ -255,9 +266,9 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                         // print('Button pressed!');
                         store.changeOverlay(true);
                         JobApp().show(
-                          //これでおーばーれい表示
-                          context: context,
-                        );
+                            //これでおーばーれい表示
+                            context: context,
+                            id: id);
                       },
 
                       //色

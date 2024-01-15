@@ -109,6 +109,7 @@ class ConfConf {
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
                                   buttonText: buttonText,
                                   jedgeBottomAppBar: false,
+                                  popTimes: 0,
                                 ),
                               ),
                             );

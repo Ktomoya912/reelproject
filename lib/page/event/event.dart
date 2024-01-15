@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 @RoutePage()
 class EventRouterPage extends AutoRouter {
@@ -80,7 +81,10 @@ class _EventState extends State<Event> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final store =
           Provider.of<ChangeGeneralCorporation>(context, listen: false);
+
       getEventList();
+      //一定間隔毎に更新
+      Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
     });
   }
 
@@ -102,6 +106,7 @@ class _EventState extends State<Event> {
               EventAdvertisementList(
                 advertisementList: advertisementList,
                 mediaQueryData: mediaQueryData,
+                notPostJedge: false,
               ),
             ],
           ),

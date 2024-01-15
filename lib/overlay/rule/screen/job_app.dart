@@ -7,6 +7,9 @@ import '../over_screen_controller.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -19,16 +22,67 @@ class JobApp {
 
   OverScreenControl? controller;
 
+  //応募
+  Future apply(int id, ChangeGeneralCorporation store, context,
+      String buttonText) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/apply');
+    final response = await post(
+      url,
+      headers: {
+        'accept': 'application/json',
+        'authorization': 'Bearer ${store.accessToken}',
+      },
+    );
+    if (response.statusCode == 200) {
+      store.changeOverlay(false);
+      //Navigator.pop(context);
+      JobApp().hide();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FinishScreen(
+            appbarText: "求人応募完了",
+            appIcon: Icons.playlist_add_check,
+            finishText: "求人応募が完了しました。",
+            text:
+                "求人応募が完了いたしました。\n応募結果は広告主から直接連絡がいくようになっていますので、しばらくお待ちください。もし応募をキャンセルしたい場合は、直接広告主に対して連絡をとっていただけると幸いです",
+            buttonText:
+                "求人広告に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+            jedgeBottomAppBar: false,
+            popTimes: 1,
+          ),
+        ),
+      );
+    } else if (response.statusCode == 400) {
+      store.changeOverlay(false);
+      //Navigator.pop(context);
+      JobApp().hide();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FinishScreen(
+            appbarText: "応募失敗",
+            appIcon: Icons.playlist_add_check,
+            finishText: "すでに応募済みです",
+            text:
+                "応募を失敗しました。\nすでに応募済みの可能性があります。応募履歴より確認の上、応募をしていないにも関わらず応募が失敗してしまった場合はお問合せをしていただくと幸いです。",
+            buttonText:
+                "求人広告に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+            jedgeBottomAppBar: false,
+            popTimes: 1,
+          ),
+        ),
+      );
+    }
+  }
+
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
+    required int id,
   }) {
     if (controller?.update() ?? false) {
       return;
     } else {
-      controller = showOverlay(
-        context: context,
-      );
+      controller = showOverlay(context: context, id: id);
     }
   }
 
@@ -40,6 +94,7 @@ class JobApp {
 
   OverScreenControl showOverlay({
     required BuildContext context,
+    required int id,
   }) {
     final text0 = StreamController<String>();
 
@@ -100,22 +155,7 @@ class JobApp {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            store.changeOverlay(false);
-                            Navigator.pop(context);
-                            JobApp().hide();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => FinishScreen(
-                                  appbarText: "求人応募完了",
-                                  appIcon: Icons.playlist_add_check,
-                                  finishText: "求人応募が完了しました。",
-                                  text: "",
-                                  buttonText:
-                                      buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
-                                  jedgeBottomAppBar: false,
-                                ),
-                              ),
-                            );
+                            apply(id, store, context, buttonText);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

@@ -4,9 +4,17 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/apply_conf.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PostMemList extends StatefulWidget {
-  const PostMemList({super.key});
+  const PostMemList({
+    super.key,
+    required this.id,
+  });
+
+  final int id;
 
   @override
   State<PostMemList> createState() => _PostMemListState();
@@ -15,44 +23,42 @@ class PostMemList extends StatefulWidget {
 class _PostMemListState extends State<PostMemList> {
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static List<Map<String, dynamic>> postMemList = [
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-    {
-      "userName": "山田太郎",
-      "usereMail": "info@gmail.com",
-    },
-  ];
+  static Map<String, dynamic> postMemList = {};
+
+  void changeAdvertisementList(Map<String, dynamic> e) {
+    setState(() {
+      postMemList = e;
+    });
+  }
+
+  //応募者一覧取得
+  Future getApplyList(int id, ChangeGeneralCorporation store) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeAdvertisementList(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  //初期化
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      getApplyList(widget.id, store);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +96,9 @@ class _PostMemListState extends State<PostMemList> {
                   width: mediaQueryData.size.width - addWidth * 2,
                   child: Column(
                     children: [
-                      for (int index = 0; index < postMemList.length; index++)
+                      for (int index = 0;
+                          index < postMemList["users"].length;
+                          index++)
                         EventAdvertisementList(
                           advertisementList: postMemList,
                           mediaQueryData: mediaQueryData,
@@ -115,7 +123,7 @@ class EventAdvertisementList extends StatelessWidget {
     required this.index,
   });
 
-  final List<Map<String, dynamic>> advertisementList;
+  final Map<String, dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
   final int index; //何番目の要素か
 
@@ -173,9 +181,9 @@ class EventAdvertisementList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "ユーザー名         :   ${advertisementList[index]["userName"]}"),
+                        "ユーザー名         :   ${advertisementList["users"][index]["username"]}"),
                     Text(
-                        "メールアドレス :   ${advertisementList[index]["usereMail"]}"),
+                        "メールアドレス  :   ${advertisementList["users"][index]["email"]}"),
                   ],
                 ),
               ],

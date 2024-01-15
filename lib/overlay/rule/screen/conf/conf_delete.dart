@@ -109,6 +109,7 @@ class ConfDelete {
                                   buttonText:
                                       buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
+                                  popTimes: 0,
                                 ),
                               ),
                             );
