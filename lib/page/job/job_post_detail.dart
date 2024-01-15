@@ -363,9 +363,13 @@ class _JobPostDetailState extends State<JobPostDetail> {
                       SizedBox(
                           height: width * 0.6,
                           width: width,
-                          child: Image.network(
-                              jobDetailList["image_url"].toString(),
-                              fit: BoxFit.cover)),
+                          child: ClipRRect(
+                            // これを追加
+                            borderRadius: BorderRadius.circular(10), // これを追加
+                            child: Image.network(
+                                jobDetailList["image_url"].toString(),
+                                fit: BoxFit.cover),
+                          )),
                       //タイトル
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

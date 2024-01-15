@@ -234,24 +234,31 @@ class _HomeState extends State<Home> {
                                         jobAdvertisementList.length;
                                 i++)
                               //イベント広告
+
                               if (i < eventAdvertisementList.length)
                                 Stack(
                                     alignment:
                                         AlignmentDirectional.bottomCenter, //下寄せ
                                     children: [
                                       Container(
-                                          height: width / 10 * 7,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: store.mainColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
+                                        height: width / 10 * 7,
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          color: store.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                          // これを追加
+                                          borderRadius: BorderRadius.circular(
+                                              10), // これを追加
                                           child: Image.network(
                                               eventAdvertisementList
                                                   .elementAt(i)["image_url"]
                                                   .toString(),
-                                              fit: BoxFit.cover)),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
                                         onTap: () {
@@ -272,8 +279,12 @@ class _HomeState extends State<Home> {
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: ChangeGeneralCorporation
-                                              .transparent,
+                                          decoration: BoxDecoration(
+                                            color: ChangeGeneralCorporation
+                                                .transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // ここで枠を丸く設定します
+                                          ),
                                         ),
                                       ),
 
@@ -302,20 +313,26 @@ class _HomeState extends State<Home> {
                                         AlignmentDirectional.bottomCenter, //下寄せ
                                     children: [
                                       Container(
-                                          height: width / 10 * 7,
-                                          width: width,
-                                          decoration: BoxDecoration(
-                                            color: store.mainColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
+                                        height: width / 10 * 7,
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          color: store.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                          // これを追加
+                                          borderRadius: BorderRadius.circular(
+                                              10), // これを追加
                                           child: Image.network(
                                               jobAdvertisementList
                                                   .elementAt(i -
                                                       eventAdvertisementList
                                                           .length)["image_url"]
                                                   .toString(),
-                                              fit: BoxFit.cover)),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
                                         onTap: () {
@@ -337,8 +354,12 @@ class _HomeState extends State<Home> {
                                         child: Container(
                                           height: width / 10 * 7,
                                           width: width,
-                                          color: ChangeGeneralCorporation
-                                              .transparent,
+                                          decoration: BoxDecoration(
+                                            color: ChangeGeneralCorporation
+                                                .transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // ここで枠を丸く設定します
+                                          ),
                                         ),
                                       ),
                                       //タイトル枠

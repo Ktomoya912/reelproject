@@ -85,31 +85,28 @@ class _PostMemListState extends State<PostMemList> {
           jedgeBuck: true,
         ),
         body: ShaderMaskComponent(
-          child: Center(
-              child: SingleChildScrollView(
-            child: Column(
-              //真ん中
-              //mainAxisAlignment: MainAxisAlignment.center,
+          child: SizedBox(
+            width: mediaQueryData.size.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start, // ここを追加
 
-              children: [
-                SizedBox(
-                  width: mediaQueryData.size.width - addWidth * 2,
-                  child: Column(
-                    children: [
-                      for (int index = 0;
-                          index < postMemList["users"].length;
-                          index++)
-                        EventAdvertisementList(
-                          advertisementList: postMemList,
-                          mediaQueryData: mediaQueryData,
-                          index: index,
-                        ),
-                    ],
-                  ),
-                ),
-              ],
+                children: [
+                  for (int index = 0;
+                      index < postMemList["users"].length;
+                      index++)
+                    SizedBox(
+                      width: mediaQueryData.size.width - addWidth * 2,
+                      child: EventAdvertisementList(
+                        advertisementList: postMemList,
+                        mediaQueryData: mediaQueryData,
+                        index: index,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          )),
+          ),
         ));
   }
 }
@@ -143,7 +140,10 @@ class EventAdvertisementList extends StatelessWidget {
             context,
             PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const ApplyConf()));
+                    ApplyConf(
+                      advertisementList: advertisementList["users"][index],
+                      jobID: advertisementList["job_id"],
+                    )));
         //タップ処理
       },
       child: Container(
@@ -164,13 +164,20 @@ class EventAdvertisementList extends StatelessWidget {
                   width: 10,
                 ),
                 Container(
-                  width: 80,
-                  height: 80,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+                    width: 80,
+                    height: 80,
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                    ),
+                    child: ClipRRect(
+                      // これを追加
+                      borderRadius: BorderRadius.circular(50), // これを追加
+                      child: Image.network(
+                          advertisementList["users"][index]["image_url"]
+                              .toString(),
+                          fit: BoxFit.cover),
+                    )),
                 const SizedBox(
                   width: 10,
                 ),

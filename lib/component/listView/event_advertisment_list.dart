@@ -143,11 +143,16 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                   color: store.mainColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Image.network(
-                                    widget.advertisementList
-                                        .elementAt(index)["image_url"]
-                                        .toString(),
-                                    fit: BoxFit.cover)),
+                                child: ClipRRect(
+                                  // これを追加
+                                  borderRadius:
+                                      BorderRadius.circular(10), // これを追加
+                                  child: Image.network(
+                                      widget.advertisementList
+                                          .elementAt(index)["image_url"]
+                                          .toString(),
+                                      fit: BoxFit.cover),
+                                )),
                           ],
                         ),
                       ),

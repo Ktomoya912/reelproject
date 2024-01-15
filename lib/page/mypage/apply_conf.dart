@@ -10,7 +10,12 @@ import 'package:reelproject/overlay/rule/screen/conf/conf_delete.dart'; //オー
 class ApplyConf extends StatefulWidget {
   const ApplyConf({
     super.key,
+    required this.advertisementList,
+    required this.jobID,
   });
+
+  final Map<String, dynamic> advertisementList;
+  final int jobID;
 
   @override
   ApplyConfState createState() => ApplyConfState();
@@ -87,8 +92,11 @@ class ApplyConfState extends State<ApplyConf> {
                                     shape: BoxShape.circle, //円形に
                                     color: store.subColor), //アイコン周囲円の色
                               ),
-                              const Text(
-                                  'ユーザー名'), // 後にデータベースから取得したユーザー名を表示させるようにする
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                  '${widget.advertisementList["username"]}'), // 後にデータベースから取得したユーザー名を表示させるようにする
                             ],
                           ),
                         ),
@@ -97,7 +105,7 @@ class ApplyConfState extends State<ApplyConf> {
                         ),
                         SizedBox(
                           // 後にデータベースから情報を取得しその内容を反映させるようにするのでconstにはしない
-                          width: 160,
+                          width: 200,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,8 +121,8 @@ class ApplyConfState extends State<ApplyConf> {
                                   color: store.greyColor,
                                 ),
                               ),
-                              const Text(
-                                '　info@example.com',
+                              Text(
+                                '　${widget.advertisementList["email"]}',
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -134,8 +142,8 @@ class ApplyConfState extends State<ApplyConf> {
                                   color: store.greyColor,
                                 ),
                               ),
-                              const Text(
-                                '　◯年◯月◯日',
+                              Text(
+                                '　${widget.advertisementList["birthday"].substring(0, 4)}年${widget.advertisementList["birthday"].substring(5, 7)}月${widget.advertisementList["birthday"].substring(8, 10)}日',
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -155,8 +163,12 @@ class ApplyConfState extends State<ApplyConf> {
                                   color: store.greyColor,
                                 ),
                               ),
-                              const Text(
-                                '　男性',
+                              Text(
+                                widget.advertisementList["sex"] == "m"
+                                    ? '　男性'
+                                    : widget.advertisementList["sex"] == "f"
+                                        ? "　女性"
+                                        : "　その他",
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -218,7 +230,10 @@ class ApplyConfState extends State<ApplyConf> {
                           //   ),
                           // );
                           store.changeOverlay(true);
-                          ConfConf().show(context: context);
+                          ConfConf().show(
+                              context: context,
+                              userID: widget.advertisementList["id"],
+                              jobID: widget.jobID);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -240,7 +255,10 @@ class ApplyConfState extends State<ApplyConf> {
                           //       builder: (context) => const MyPage()),
                           // );
                           store.changeOverlay(true);
-                          ConfDelete().show(context: context);
+                          ConfDelete().show(
+                              context: context,
+                              userID: widget.advertisementList["id"],
+                              jobID: widget.jobID);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

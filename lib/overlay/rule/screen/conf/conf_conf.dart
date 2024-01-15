@@ -7,6 +7,9 @@ import '../../over_screen_controller.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -19,15 +22,32 @@ class ConfConf {
 
   OverScreenControl? controller;
 
+  //応募者確認
+  Future confConf(int jobID, ChangeGeneralCorporation store, int userID) async {
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/jobs/${jobID}/application/approve?user_id=${userID}');
+    final response = await put(
+      url,
+      headers: {
+        'accept': 'application/json',
+        'authorization': 'Bearer ${store.accessToken}',
+      },
+    );
+  }
+
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
+    required int userID,
+    required int jobID,
   }) {
     if (controller?.update() ?? false) {
       return;
     } else {
       controller = showOverlay(
         context: context,
+        userID: userID,
+        jobID: jobID,
       );
     }
   }
@@ -40,6 +60,8 @@ class ConfConf {
 
   OverScreenControl showOverlay({
     required BuildContext context,
+    required int userID,
+    required int jobID,
   }) {
     final text0 = StreamController<String>();
 
@@ -94,9 +116,10 @@ class ConfConf {
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
+                            ConfConf().confConf(jobID, store, userID);
                             store.changeOverlay(false);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                            //Navigator.pop(context);
+                            //Navigator.pop(context);
                             Navigator.pop(context);
                             ConfConf().hide();
                             Navigator.of(context).push(
@@ -107,9 +130,9 @@ class ConfConf {
                                   finishText: "確認完了",
                                   text:
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
-                                  buttonText: buttonText,
+                                  buttonText: "応募者一覧に戻る",
                                   jedgeBottomAppBar: false,
-                                  popTimes: 0,
+                                  popTimes: 1,
                                 ),
                               ),
                             );
