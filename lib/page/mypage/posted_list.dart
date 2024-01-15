@@ -23,64 +23,10 @@ class PostedList extends StatefulWidget {
 }
 
 class _PostedListState extends State<PostedList> {
-  static List<dynamic> jobList = [
-    {
-      "name": "strinqewrg",
-      "image_url": "https://example.com",
-      "salary": "時給1000円",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "description": "説明",
-      "is_one_day": false,
-      "additional_message": "追加メッセージ",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "job_times": [
-        {
-          "start_time": "2024-01-23T14:51:29",
-          "end_time": "2024-01-23T15:51:29",
-          "id": 1
-        }
-      ],
-      "id": 2,
-      "status": null
-    },
-  ];
+  static List<dynamic> jobList = [];
   //イベント広告のリスト
   //titleに文字数制限を設ける
-  static List<dynamic> eventList = [
-    {
-      "name": "イベント名dddddd",
-      "image_url": "https://example.com",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "phone_number": "0887-53-1111",
-      "email": "sample@ugs.ac.jp",
-      "homepage": "https://kochi-tech.ac.jp/",
-      "participation_fee": "無料",
-      "capacity": 100,
-      "additional_message": "",
-      "description": "",
-      "caution": "",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "event_times": [
-        {
-          "start_time": "2024-01-25T02:47:13",
-          "end_time": "2024-01-25T03:47:13",
-          "id": 5
-        }
-      ],
-      "id": 7,
-      "status": null
-    },
-  ];
+  static List<dynamic> eventList = [];
 
   void changeEventList(List<dynamic> e) {
     setState(() {
@@ -89,7 +35,8 @@ class _PostedListState extends State<PostedList> {
   }
 
   Future getEventList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/event-postings');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-postings');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -110,7 +57,8 @@ class _PostedListState extends State<PostedList> {
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/job-postings');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-postings');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'

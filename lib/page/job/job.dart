@@ -54,32 +54,7 @@ class _JobState extends State<Job> {
 
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static List<dynamic> advertisementList = [
-    {
-      "name": "strinqesswrg",
-      "image_url": "https://example.com",
-      "salary": "時給1000円",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "description": "説明",
-      "is_one_day": true,
-      "additional_message": "追加メッセージ",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "job_times": [
-        {
-          "start_time": "2024-01-24T14:51:29",
-          "end_time": "2024-01-24T15:51:29",
-          "id": 2
-        }
-      ],
-      "id": 3,
-      "status": null
-    },
-  ];
+  static List<dynamic> advertisementList = [];
   void changeAdvertisementList(List<dynamic> e) {
     setState(() {
       advertisementList = e;
@@ -88,7 +63,7 @@ class _JobState extends State<Job> {
 
   Future getJobList() async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/jobs/?only_active=false&sort=id&order=asc&offset=0&limit=20');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&sort=recent&order=asc&offset=0&limit=20');
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
     final data = utf8.decode(response.bodyBytes);

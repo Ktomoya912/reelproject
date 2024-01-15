@@ -29,36 +29,30 @@ class _JobPostDetailState extends State<JobPostDetail> {
   static Map<String, dynamic> jobDetailList = {
     "id": 0,
     //必須
-    "title": "川上神社夏祭り", //タイトル
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
     //詳細
-    "detail":
-        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n この度、運営スタッフ不足によりスタッフを募集します。\n \n・当日の会場設営\n・祭り終了後のゴミ拾い\n・祭り開催中のスタッフ（内容は当日お知らせします）",
+    "detail": "",
     //勤務体系
     "term": "長期",
 
     //開催期間
-    "jobTimes": [
-      {
-        "start_time": "2024-01-12T19:53:41",
-        "end_time": "2024-01-12T20:53:41",
-        "id": 1
-      }
-    ],
+    "jobTimes": [],
 
     //開催場所
-    "postalNumber": "781-5101", //郵便番号
-    "prefecture": "高知県", //都道府県
-    "city": "香美市", //市町村
-    "houseNumber": "土佐山田町", //番地・建物名
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
 
     //給料
-    "pay": "1000",
+    "pay": "時給1000円",
 
     //その他(任意)
-    "tag": [
-      {"name": "タグ名", "id": 1}
-    ], //ハッシュタグ
-    "addMessage": "test", //追加メッセージ
+    "tag": [], //ハッシュタグ
+    "addMessage": "", //追加メッセージ
 
     //レビュー
     "reviewPoint": 0, //評価
@@ -107,6 +101,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
     setState(() {
       jobDetailList["id"] = id; //id
+      jobDetailList["image_url"] = data["image_url"]; //画像
       jobDetailList["title"] = data["name"]; //タイトル
       jobDetailList["detail"] = data["description"]; //詳細
 
@@ -128,6 +123,8 @@ class _JobPostDetailState extends State<JobPostDetail> {
       jobDetailList["prefecture"] = data["prefecture"]; //都道府県
       jobDetailList["city"] = data["city"]; //市町村
       jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //時給
+      jobDetailList["pay"] = data["salary"]; //給料
       //任意
       //jobDetailList["phone"] = data["phone_number"]; //電話番号
       //jobDetailList["mail"] = data["email"]; //メールアドレス
@@ -181,7 +178,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   }
 
   Future getJobList(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -205,7 +202,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //お気に入り登録
   Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id/bookmark');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/bookmark');
     final response = await post(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
@@ -216,7 +213,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //お気に入り削除
   Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/$id/bookmark');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/bookmark');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
@@ -225,79 +222,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
     getJobList(widget.id, widget.tStore);
   }
 
-  //求人広告のリスト
-  //titleに文字数制限を設ける
-  // static Map<String, dynamic> jobDetailList = {
-  //   //必須
-  //   "title": "川上神社夏祭り", //タイトル
-  //   //詳細
-  //   "detail":
-  //       "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n この度、運営スタッフ不足によりスタッフを募集します。\n \n・当日の会場設営\n・祭り終了後のゴミ拾い\n・祭り開催中のスタッフ（内容は当日お知らせします）",
-  //   //勤務体系
-  //   "term": "長期",
-
-  //   "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
-  //   "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
-
-  //   //開催場所
-  //   "postalNumber": "781-5101", //郵便番号
-  //   "prefecture": "高知県", //都道府県
-  //   "city": "香美市", //市町村
-  //   "houseNumber": "土佐山田町", //番地・建物名
-
-  //   //給料
-  //   "pay": "1000",
-
-  //   //その他(任意)
-  //   "tag": [
-  //     "イベント",
-  //     "夏祭り",
-  //     "花火",
-  //     "香美市",
-  //     "イベント",
-  //   ], //ハッシュタグ
-  //   "addMessage": "test", //追加メッセージ
-
-  //   //レビュー
-  //   "reviewPoint": 4.5, //評価
-  //   //星の割合(前から1,2,3,4,5)
-  //   "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
-  //   //レビュー数
-  //   "reviewNumber": 100,
-  //   //レビュー内容
-  //   "review": [
-  //     {
-  //       "reviewerName": "名前aiueo",
-  //       //"reviewerImage" : "test"   //予定
-  //       "reviewPoint": 3, //レビュー点数
-  //       "reviewDetail": "testfffff\n\nfffff", //レビュー内容
-  //       "reviewDate": "2021年8月1日", //レビュー日時
-  //     },
-  //     {
-  //       "reviewerName": "名前kakikukeko",
-  //       //"reviewerImage" : "test"   //予定
-  //       "reviewPoint": 3, //レビュー点数
-  //       "reviewDetail": "test", //レビュー内容
-  //       "reviewDate": "2021年8月1日", //レビュー日時
-  //     },
-  //     {
-  //       "reviewerName": "名前sasisuseso",
-  //       //"reviewerImage" : "test"   //予定
-  //       "reviewPoint": 3, //レビュー点数
-  //       "reviewDetail": "test", //レビュー内容
-  //       "reviewDate": "2021年8月1日", //レビュー日時
-  //     }
-  //   ],
-
-  //   //この広告を投稿したか
-  //   "postJedge": true,
-
-  //   //掲載期間
-  //   "postTerm": "2023年12月10日"
-  // };
-
-  //bool favoriteJedge = false; //お気に入り判定
-
+  //レビュー
   int review_point = 1;
   String title = "";
   String detail = "";
@@ -322,7 +247,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/jobs/${id}/review');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -342,7 +267,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -353,7 +278,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        'http://localhost:8000/api/v1/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',
@@ -436,24 +361,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
                       ),
 
                       //画像
-                      Stack(children: [
-                        SizedBox(
+                      SizedBox(
                           height: width * 0.6,
                           width: width,
-                          child: Carousel(
-                            pages: [
-                              for (int i = 0; i < 5; i++)
-                                Container(
-                                  alignment: Alignment.topRight,
-                                  height: width * 0.6,
-                                  //width: width,
-                                  color: Colors.blue,
-                                ),
-                            ],
-                            timeJedge: false,
-                          ),
-                        ),
-                      ]),
+                          child: Image.network(
+                              jobDetailList["image_url"].toString(),
+                              fit: BoxFit.cover)),
                       //タイトル
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -679,7 +592,8 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                 SizedBox(
                                   height: mediaQueryData.size.height / 100,
                                 ),
-                                Text("時給 : ${jobDetailList["pay"]}円")
+                                Text(
+                                    "${jobDetailList["pay"].substring(0, 2)} : ${jobDetailList["pay"].substring(2)}")
                               ])),
 
                       //空白

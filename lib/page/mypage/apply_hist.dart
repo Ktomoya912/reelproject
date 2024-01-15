@@ -21,32 +21,7 @@ class ApplyHist extends StatefulWidget {
 }
 
 class _ApplyHistState extends State<ApplyHist> {
-  static List<dynamic> jobList = [
-    {
-      "name": "strinqewrg",
-      "image_url": "https://example.com",
-      "salary": "時給1000円",
-      "postal_code": "782-8502",
-      "prefecture": "高知県",
-      "city": "香美市",
-      "address": "土佐山田町宮ノ口185",
-      "description": "説明",
-      "is_one_day": false,
-      "additional_message": "追加メッセージ",
-      "tags": [
-        {"name": "タグ名", "id": 1}
-      ],
-      "job_times": [
-        {
-          "start_time": "2024-01-23T14:51:29",
-          "end_time": "2024-01-23T15:51:29",
-          "id": 1
-        }
-      ],
-      "id": 2,
-      "status": null
-    },
-  ];
+  static List<dynamic> jobList = [];
 
   void changeJobList(List<dynamic> e) {
     setState(() {
@@ -55,7 +30,8 @@ class _ApplyHistState extends State<ApplyHist> {
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('http://localhost:8000/api/v1/users/job-applications');
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-applications');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'
