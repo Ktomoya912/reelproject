@@ -15,11 +15,13 @@ class EventAdvertisementList extends StatefulWidget {
     required this.advertisementList,
     required this.mediaQueryData,
     required this.notPostJedge,
+    required this.functionCall,
   });
 
   final List<dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
   final bool notPostJedge;
+  final Function functionCall;
 
   static double lineWidth = 0.7; //線の太さ定数
 
@@ -31,6 +33,163 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
   //static String dayString = "開催日     : ";
   //static String timeString = "開催時間 : ";
   static String placeString = "開催場所 : ";
+
+  late Map<String, dynamic> eventDetailList = {
+    //id
+    "id": 1,
+    //必須
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
+    //詳細
+    "detail": "",
+    "eventTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ], //開催日時
+    //開催場所
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
+
+    //その他(任意)
+    "tag": [], //ハッシュタグ
+    "phone": "", //電話番号
+    "mail": "", //メールアドレス
+    "url": "", //URL
+    "fee": "", //参加費
+    "Capacity": "", //定員
+    "notes": "", //注意事項
+    "addMessage": "", //追加メッセージ
+
+    //レビュー
+    "reviewPoint": 0, //評価
+    //星の割合(前から1,2,3,4,5)
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+    //レビュー数
+    "reviewNumber": 0,
+    //投稿ID
+    "reviewId": 0,
+    //レビュー内容
+    "review": [],
+
+    //この広告を投稿したか
+    "postJedge": false,
+
+    //未投稿か否か(true:未投稿,false:投稿済み)
+    "notPost": false,
+
+    //掲載期間
+    "postTerm": "2023年12月10日",
+
+    //お気に入りか否か
+    "favoriteJedge": false,
+  };
+
+  //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
+
+  changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
+    setState(() {
+      eventDetailList["id"] = id; //id
+      eventDetailList["image_url"] = data["image_url"]; //画像
+      eventDetailList["title"] = data["name"]; //タイトル
+      eventDetailList["detail"] = data["description"]; //詳細
+
+      //タグ
+      eventDetailList["tag"] = data["tags"];
+
+      //開催日時
+      eventDetailList["eventTimes"] = data["event_times"];
+
+      //住所
+      eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+      eventDetailList["prefecture"] = data["prefecture"]; //都道府県
+      eventDetailList["city"] = data["city"]; //市町村
+      eventDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //任意
+      eventDetailList["phone"] = data["phone_number"]; //電話番号
+      eventDetailList["mail"] = data["email"]; //メールアドレス
+      eventDetailList["url"] = data["homepage"]; //URL
+      eventDetailList["fee"] = data["participation_fee"]; //参加費
+      eventDetailList["Capacity"] = data["capacity"]; //定員
+      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+      eventDetailList["notes"] = data["caution"]; //注意事項
+
+      //レビュー
+      eventDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      eventDetailList["reviewPoint"] = 0; //平均点
+      eventDetailList["ratioStarReviews"] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]; //星の割合(前から1,2,3,4,5)
+      eventDetailList["reviewNumber"] = 0; //レビュー数
+      eventDetailList["reviewId"] = 0; //投稿ID
+      if (eventDetailList["review"].length != 0) {
+        //平均点
+        for (int i = 0; i < data["reviews"].length; i++) {
+          eventDetailList["reviewPoint"] +=
+              data["reviews"][i]["review_point"]; //平均点
+          eventDetailList["ratioStarReviews"]
+              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+          //自分のレビューか否か
+          if (store.myID == data["reviews"][i]["user"]["id"]) {
+            eventDetailList["reviewId"] = data["reviews"][i]["id"];
+          }
+        }
+        //平均を出す
+        eventDetailList["reviewPoint"] =
+            eventDetailList["reviewPoint"] / data["reviews"].length;
+
+        //レビュー数
+        eventDetailList["reviewNumber"] = data["reviews"].length;
+
+        //割合計算
+        for (int i = 0; i < 5; i++) {
+          eventDetailList["ratioStarReviews"][i] =
+              eventDetailList["ratioStarReviews"][i] /
+                  eventDetailList["reviewNumber"];
+        }
+      }
+
+      eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        eventDetailList["postJedge"] = true;
+      } else {
+        eventDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か(true:未投稿,false:投稿済み)
+      eventDetailList["notPost"] = widget.notPostJedge;
+    });
+  }
+
+  Future getEventList(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeEventList(data, id, store);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
 
 // データベースと連携させていないので現在はここでイベント詳細内容を設定
   @override
@@ -65,16 +224,21 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
               InkWell(
                 onTap: () async {
                   //print(eventDetailList["title"]);
-                  Navigator.push(
+                  await getEventList(
+                      widget.advertisementList.elementAt(index)["id"], store);
+                  await Navigator.push(
                       context,
                       PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   EventPostDetail(
-                                      id: widget.advertisementList
-                                          .elementAt(index)["id"],
-                                      tStore: store,
-                                      notPostJedge: widget.notPostJedge)));
+                                    id: widget.advertisementList
+                                        .elementAt(index)["id"],
+                                    tStore: store,
+                                    notPostJedge: widget.notPostJedge,
+                                    eventDetailList: eventDetailList,
+                                  )));
+                  widget.functionCall();
                   //タップ処理
                 },
                 child:

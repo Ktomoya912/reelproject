@@ -16,11 +16,13 @@ class JobPostDetail extends StatefulWidget {
     required this.id,
     required this.tStore,
     required this.notPostJedge,
+    required this.jobDetailList,
   });
 
   final int id;
   final tStore;
   final bool notPostJedge;
+  final Map<String, dynamic> jobDetailList;
 
   @override
   State<JobPostDetail> createState() => _JobPostDetailState();
@@ -28,63 +30,64 @@ class JobPostDetail extends StatefulWidget {
 
 class _JobPostDetailState extends State<JobPostDetail> {
   // データベースと連携させていないので現在はここでイベント詳細内容を設定
-  static Map<String, dynamic> jobDetailList = {
-    "id": 0,
-    //必須
-    //画像
-    "image_url": "",
-    //タイトル
-    "title": "",
-    //詳細
-    "detail": "",
-    //勤務体系
-    "term": "長期",
+  late Map<String, dynamic> jobDetailList = widget.jobDetailList;
+  // {
+  //   "id": 0,
+  //   //必須
+  //   //画像
+  //   "image_url": "",
+  //   //タイトル
+  //   "title": "",
+  //   //詳細
+  //   "detail": "",
+  //   //勤務体系
+  //   "term": "長期",
 
-    //開催期間
-    "jobTimes": [
-      {
-        "start_time": "2024-01-18T15:21:23",
-        "end_time": "2024-01-18T16:21:23",
-        "id": 10
-      }
-    ],
+  //   //開催期間
+  //   "jobTimes": [
+  //     {
+  //       "start_time": "2024-01-18T15:21:23",
+  //       "end_time": "2024-01-18T16:21:23",
+  //       "id": 10
+  //     }
+  //   ],
 
-    //開催場所
-    "postalNumber": "", //郵便番号
-    "prefecture": "", //都道府県
-    "city": "", //市町村
-    "houseNumber": "", //番地・建物名
+  //   //開催場所
+  //   "postalNumber": "", //郵便番号
+  //   "prefecture": "", //都道府県
+  //   "city": "", //市町村
+  //   "houseNumber": "", //番地・建物名
 
-    //給料
-    "pay": "時給1000円",
+  //   //給料
+  //   "pay": "時給1000円",
 
-    //その他(任意)
-    "tag": [], //ハッシュタグ
-    "addMessage": "", //追加メッセージ
+  //   //その他(任意)
+  //   "tag": [], //ハッシュタグ
+  //   "addMessage": "", //追加メッセージ
 
-    //レビュー
-    "reviewPoint": 0, //評価
-    //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
-    //レビュー数
-    "reviewNumber": 0,
-    //自分のレビューか否か
-    "reviewId": 0,
-    //レビュー内容
-    "review": [],
+  //   //レビュー
+  //   "reviewPoint": 0, //評価
+  //   //星の割合(前から1,2,3,4,5)
+  //   "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+  //   //レビュー数
+  //   "reviewNumber": 0,
+  //   //自分のレビューか否か
+  //   "reviewId": 0,
+  //   //レビュー内容
+  //   "review": [],
 
-    //この広告を投稿したか
-    "postJedge": false,
+  //   //この広告を投稿したか
+  //   "postJedge": false,
 
-    //未投稿か否か(true:未投稿,false:投稿済み)
-    "notPost": true,
+  //   //未投稿か否か(true:未投稿,false:投稿済み)
+  //   "notPost": true,
 
-    //お気に入りか否か]
-    "favoriteJedge": false,
+  //   //お気に入りか否か]
+  //   "favoriteJedge": false,
 
-    //掲載期間
-    "postTerm": "2023年12月10日"
-  };
+  //   //掲載期間
+  //   "postTerm": "2023年12月10日"
+  // };
 
   changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
     setState(() {
@@ -199,20 +202,9 @@ class _JobPostDetailState extends State<JobPostDetail> {
   }
 
   //お気に入り登録
-  Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
+  Future boobkmark(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/bookmark');
-    final response = await post(url, headers: {
-      'accept': 'application/json',
-      //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization': 'Bearer ${store.accessToken}'
-    });
-    getJobList(widget.id, widget.tStore);
-  }
-
-  //お気に入り削除
-  Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/bookmark');
-    final response = await delete(url, headers: {
+    final response = await put(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
       'authorization': 'Bearer ${store.accessToken}'
@@ -400,13 +392,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                   jobDetailList["favoriteJedge"]
                                 ], //on off
                                 //ボタンを押した時の処理
-                                onPressed: (int index) => setState(() {
-                                  if (!jobDetailList["favoriteJedge"]) {
-                                    boobkmarkOn(jobDetailList["id"], store);
-                                  } else {
-                                    boobkmarkOff(jobDetailList["id"], store);
-                                  }
-                                }),
+                                onPressed: (int index) => {
+                                  setState(() {
+                                    boobkmark(jobDetailList["id"], store);
+                                  })
+                                },
+
                                 //アイコン
                                 children: <Widget>[
                                   jobDetailList["favoriteJedge"]
@@ -440,25 +431,27 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                     i < jobDetailList["tag"].length;
                                     i++)
                                   TextButton(
-                                      onPressed: () => {
-                                            Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  pageBuilder: (context,
-                                                          animation,
-                                                          secondaryAnimation) =>
-                                                      SearchPage(
-                                                    text:
-                                                        "#${jobDetailList["tag"][i]["name"]}",
-                                                    eventJobJedge: "おすすめ求人",
-                                                    sort: "新着順",
-                                                    sortType: "id",
-                                                    store: store,
-                                                  ),
-                                                ))
-                                          },
-                                      child: Text(
-                                          "#${jobDetailList["tag"][i]["name"]}")),
+                                    onPressed: () async {
+                                      await Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              SearchPage(
+                                            text:
+                                                "#${jobDetailList["tag"][i]["name"]}",
+                                            eventJobJedge: "おすすめ求人",
+                                            sort: "新着順",
+                                            sortType: "id",
+                                            store: store,
+                                          ),
+                                        ),
+                                      );
+                                      getJobList(widget.id, store);
+                                    },
+                                    child: Text(
+                                        "#${jobDetailList["tag"][i]["name"]}"),
+                                  ),
                               ],
                             ),
                           ),

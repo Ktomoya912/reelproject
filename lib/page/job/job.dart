@@ -80,7 +80,7 @@ class _JobState extends State<Job> {
     super.initState();
     getJobList();
     //一定間隔毎に更新
-    Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
+    //Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
   }
 
   @override
@@ -92,6 +92,7 @@ class _JobState extends State<Job> {
           favoriteHistoryList: favoriteHistoryList,
           title: "おすすめ求人",
           mediaQueryData: mediaQueryData,
+          functionCall: () => getJobList(),
         ),
         body: ShaderMaskComponent(
           child: Column(
@@ -100,6 +101,7 @@ class _JobState extends State<Job> {
                 advertisementList: advertisementList,
                 mediaQueryData: mediaQueryData,
                 notPostJedge: false,
+                functionCall: () => getJobList(),
               ),
             ],
           ),

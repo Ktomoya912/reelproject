@@ -84,7 +84,7 @@ class _EventState extends State<Event> {
 
       getEventList();
       //一定間隔毎に更新
-      Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
+      //Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
     });
   }
 
@@ -99,6 +99,7 @@ class _EventState extends State<Event> {
           favoriteHistoryList: favoriteHistoryList,
           title: "おすすめイベント",
           mediaQueryData: mediaQueryData,
+          functionCall: () => getEventList(),
         ),
         body: ShaderMaskComponent(
           child: Column(
@@ -107,6 +108,7 @@ class _EventState extends State<Event> {
                 advertisementList: advertisementList,
                 mediaQueryData: mediaQueryData,
                 notPostJedge: false,
+                functionCall: () => getEventList(),
               ),
             ],
           ),

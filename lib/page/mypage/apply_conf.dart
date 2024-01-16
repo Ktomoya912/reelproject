@@ -6,6 +6,7 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 //import 'mypage.dart';
 import 'package:reelproject/overlay/rule/screen/conf/conf_conf.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/overlay/rule/screen/conf/conf_delete.dart'; //オーバレイで表示される画面のファイル
+import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 class ApplyConf extends StatefulWidget {
   const ApplyConf({
@@ -96,7 +97,7 @@ class ApplyConfState extends State<ApplyConf> {
                                 height: 10,
                               ),
                               Text(
-                                  '${widget.advertisementList["username"]}'), // 後にデータベースから取得したユーザー名を表示させるようにする
+                                  '${widget.advertisementList["user"]["username"]}'), // 後にデータベースから取得したユーザー名を表示させるようにする
                             ],
                           ),
                         ),
@@ -122,7 +123,7 @@ class ApplyConfState extends State<ApplyConf> {
                                 ),
                               ),
                               Text(
-                                '　${widget.advertisementList["email"]}',
+                                '　${widget.advertisementList["user"]["email"]}',
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -143,7 +144,7 @@ class ApplyConfState extends State<ApplyConf> {
                                 ),
                               ),
                               Text(
-                                '　${widget.advertisementList["birthday"].substring(0, 4)}年${widget.advertisementList["birthday"].substring(5, 7)}月${widget.advertisementList["birthday"].substring(8, 10)}日',
+                                '　${widget.advertisementList["user"]["birthday"].substring(0, 4)}年${widget.advertisementList["user"]["birthday"].substring(5, 7)}月${widget.advertisementList["user"]["birthday"].substring(8, 10)}日',
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -164,9 +165,10 @@ class ApplyConfState extends State<ApplyConf> {
                                 ),
                               ),
                               Text(
-                                widget.advertisementList["sex"] == "m"
+                                widget.advertisementList["user"]["sex"] == "m"
                                     ? '　男性'
-                                    : widget.advertisementList["sex"] == "f"
+                                    : widget.advertisementList["user"]["sex"] ==
+                                            "f"
                                         ? "　女性"
                                         : "　その他",
                                 style: TextStyle(
@@ -211,29 +213,53 @@ class ApplyConfState extends State<ApplyConf> {
                   width: width,
                   child: Row(
                     children: [
+                      // 確認ボタン
                       ElevatedButton(
                         onPressed: () {
-                          // // ログインボタンが押されたときの処理をここに追加予定
-                          // Navigator.pop(context, true);
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const FinishScreen(
-                          //       appbarText: "応募者確認",
-                          //       appIcon: Icons.playlist_add_check,
-                          //       finishText: "確認完了",
-                          //       text:
-                          //           "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
-                          //       buttonText:
-                          //           "ログイン画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
-                          //       jedgeBottomAppBar: true,
-                          //     ),
-                          //   ),
-                          // );
-                          store.changeOverlay(true);
-                          ConfConf().show(
-                              context: context,
-                              userID: widget.advertisementList["id"],
-                              jobID: widget.jobID);
+                          //なにもされていない場合
+                          if (widget.advertisementList["status"] == "p") {
+                            store.changeOverlay(true);
+                            ConfConf().show(
+                                context: context,
+                                userID: widget.advertisementList["user"]["id"],
+                                jobID: widget.jobID);
+                          }
+                          //受理されている場合
+                          else if (widget.advertisementList["status"] == "a") {
+                            //Navigator.pop(context);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FinishScreen(
+                                  appbarText: "応募者確認済み",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "すでにこのユーザーは確認済みです。",
+                                  text:
+                                      "このユーザーは、過去すでに確認済みです。\n確認を取り消したい場合はお問合せをしていただけると幸いです。",
+                                  buttonText: "応募者一覧に戻る",
+                                  jedgeBottomAppBar: false,
+                                  popTimes: 2,
+                                ),
+                              ),
+                            );
+                          }
+                          //不採用されている場合
+                          else {
+                            //Navigator.pop(context);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FinishScreen(
+                                  appbarText: "応募者不採用済み",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "すでにこのユーザーは不採用済みです。",
+                                  text:
+                                      "このユーザーは、過去すでに不採用済みです。\n確認を取り消したい場合はお問合せをしていただけると幸いです。",
+                                  buttonText: "応募者一覧に戻る",
+                                  jedgeBottomAppBar: false,
+                                  popTimes: 2,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -246,19 +272,52 @@ class ApplyConfState extends State<ApplyConf> {
                             style: TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(width: 10),
+                      // 不採用ボタン
                       ElevatedButton(
                         onPressed: () {
-                          //ボタンが押されたときの処理をここに追加
-                          // Navigator.pop(context, true);
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const MyPage()),
-                          // );
-                          store.changeOverlay(true);
-                          ConfDelete().show(
-                              context: context,
-                              userID: widget.advertisementList["id"],
-                              jobID: widget.jobID);
+                          if (widget.advertisementList["status"] == "p") {
+                            store.changeOverlay(true);
+                            ConfDelete().show(
+                                context: context,
+                                userID: widget.advertisementList["user"]["id"],
+                                jobID: widget.jobID);
+                          }
+                          //受理されている場合
+                          else if (widget.advertisementList["status"] == "a") {
+                            Navigator.pop(context);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FinishScreen(
+                                  appbarText: "応募者確認済み",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "すでにこのユーザーは確認済みです。",
+                                  text:
+                                      "このユーザーは、過去すでに確認済みです。\n確認を取り消したい場合はお問合せをしていただけると幸いです。",
+                                  buttonText: "応募者一覧に戻る",
+                                  jedgeBottomAppBar: false,
+                                  popTimes: 1,
+                                ),
+                              ),
+                            );
+                          }
+                          //不採用されている場合
+                          else {
+                            Navigator.pop(context);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FinishScreen(
+                                  appbarText: "応募者不採用済み",
+                                  appIcon: Icons.playlist_add_check,
+                                  finishText: "すでにこのユーザーは不採用済みです。",
+                                  text:
+                                      "このユーザーは、過去すでに不採用済みです。\n確認を取り消したい場合はお問合せをしていただけると幸いです。",
+                                  buttonText: "応募者一覧に戻る",
+                                  jedgeBottomAppBar: false,
+                                  popTimes: 1,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

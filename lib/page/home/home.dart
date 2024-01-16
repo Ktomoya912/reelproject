@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import '/page/home/notice.dart';
@@ -72,7 +74,7 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeEventAdvertisementList(json.decode(data));
     } else {
-      throw Exception("Failed");
+      //throw Exception("Failed");
     }
   }
 
@@ -85,7 +87,7 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeJobAdvertisementList(json.decode(data));
     } else {
-      throw Exception("Failed");
+      //throw Exception("Failed");
     }
   }
 
@@ -100,6 +102,327 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeHistoryList(json.decode(data));
     } else {
+      //throw Exception("Failed");
+    }
+  }
+
+  Map<String, dynamic> jobDetailList = {
+    "id": 0,
+    //必須
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
+    //詳細
+    "detail": "",
+    //勤務体系
+    "term": "長期",
+
+    //開催期間
+    "jobTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ],
+
+    //開催場所
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
+
+    //給料
+    "pay": "時給1000円",
+
+    //その他(任意)
+    "tag": [], //ハッシュタグ
+    "addMessage": "", //追加メッセージ
+
+    //レビュー
+    "reviewPoint": 0, //評価
+    //星の割合(前から1,2,3,4,5)
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+    //レビュー数
+    "reviewNumber": 0,
+    //自分のレビューか否か
+    "reviewId": 0,
+    //レビュー内容
+    "review": [],
+
+    //この広告を投稿したか
+    "postJedge": false,
+
+    //未投稿か否か(true:未投稿,false:投稿済み)
+    "notPost": true,
+
+    //お気に入りか否か]
+    "favoriteJedge": false,
+
+    //掲載期間
+    "postTerm": "2023年12月10日"
+  };
+
+  changeJobDetailList(dynamic data, int id, ChangeGeneralCorporation store) {
+    setState(() {
+      jobDetailList["id"] = id; //id
+      jobDetailList["image_url"] = data["image_url"]; //画像
+      jobDetailList["title"] = data["name"]; //タイトル
+      jobDetailList["detail"] = data["description"]; //詳細
+
+      //タグ
+      jobDetailList["tag"] = data["tags"];
+
+      //開催期間
+      jobDetailList["jobTimes"] = data["job_times"];
+
+      //勤務体系
+      if (data["is_one_day"]) {
+        jobDetailList["term"] = "短期";
+      } else {
+        jobDetailList["term"] = "長期";
+      }
+
+      //住所
+      jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+      jobDetailList["prefecture"] = data["prefecture"]; //都道府県
+      jobDetailList["city"] = data["city"]; //市町村
+      jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //時給
+      jobDetailList["pay"] = data["salary"]; //給料
+      //任意
+      //jobDetailList["phone"] = data["phone_number"]; //電話番号
+      //jobDetailList["mail"] = data["email"]; //メールアドレス
+      //jobDetailList["url"] = data["homepage"]; //URL
+      //jobDetailList["fee"] = data["participation_fee"]; //参加費
+      //jobDetailList["Capacity"] = data["capacity"]; //定員
+      jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+      //jobDetailList["notes"] = data["caution"]; //注意事項
+
+      //レビュー
+      jobDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      jobDetailList["reviewPoint"] = 0; //平均点
+      jobDetailList["ratioStarReviews"] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]; //星の割合(前から1,2,3,4,5)
+      jobDetailList["reviewNumber"] = 0; //レビュー数
+      jobDetailList["reviewId"] = 0; //自分のレビューか否か
+      if (jobDetailList["review"].length != 0) {
+        //平均点
+        for (int i = 0; i < data["reviews"].length; i++) {
+          jobDetailList["reviewPoint"] +=
+              data["reviews"][i]["review_point"]; //平均点
+          jobDetailList["ratioStarReviews"]
+              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+          //自分のレビューか否か
+          if (store.myID == data["reviews"][i]["user"]["id"]) {
+            jobDetailList["reviewId"] = data["reviews"][i]["id"];
+          }
+        }
+        //平均を出す
+        jobDetailList["reviewPoint"] =
+            jobDetailList["reviewPoint"] / data["reviews"].length;
+
+        //レビュー数
+        jobDetailList["reviewNumber"] = data["reviews"].length;
+
+        //割合計算
+        for (int i = 0; i < 5; i++) {
+          jobDetailList["ratioStarReviews"][i] =
+              jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
+        }
+      }
+
+      jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        jobDetailList["postJedge"] = true;
+      } else {
+        jobDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か
+      jobDetailList["notPost"] = false;
+    });
+  }
+
+  Future getJobDetailList(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeJobDetailList(data, id, store);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
+
+  late Map<String, dynamic> eventDetailList = {
+    //id
+    "id": 1,
+    //必須
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
+    //詳細
+    "detail": "",
+    "eventTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ], //開催日時
+    //開催場所
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
+
+    //その他(任意)
+    "tag": [], //ハッシュタグ
+    "phone": "", //電話番号
+    "mail": "", //メールアドレス
+    "url": "", //URL
+    "fee": "", //参加費
+    "Capacity": "", //定員
+    "notes": "", //注意事項
+    "addMessage": "", //追加メッセージ
+
+    //レビュー
+    "reviewPoint": 0, //評価
+    //星の割合(前から1,2,3,4,5)
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+    //レビュー数
+    "reviewNumber": 0,
+    //投稿ID
+    "reviewId": 0,
+    //レビュー内容
+    "review": [],
+
+    //この広告を投稿したか
+    "postJedge": false,
+
+    //未投稿か否か(true:未投稿,false:投稿済み)
+    "notPost": false,
+
+    //掲載期間
+    "postTerm": "2023年12月10日",
+
+    //お気に入りか否か
+    "favoriteJedge": false,
+  };
+
+  //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
+
+  changeEventDetailList(dynamic data, int id, ChangeGeneralCorporation store) {
+    setState(() {
+      eventDetailList["id"] = id; //id
+      eventDetailList["image_url"] = data["image_url"]; //画像
+      eventDetailList["title"] = data["name"]; //タイトル
+      eventDetailList["detail"] = data["description"]; //詳細
+
+      //タグ
+      eventDetailList["tag"] = data["tags"];
+
+      //開催日時
+      eventDetailList["eventTimes"] = data["event_times"];
+
+      //住所
+      eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+      eventDetailList["prefecture"] = data["prefecture"]; //都道府県
+      eventDetailList["city"] = data["city"]; //市町村
+      eventDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //任意
+      eventDetailList["phone"] = data["phone_number"]; //電話番号
+      eventDetailList["mail"] = data["email"]; //メールアドレス
+      eventDetailList["url"] = data["homepage"]; //URL
+      eventDetailList["fee"] = data["participation_fee"]; //参加費
+      eventDetailList["Capacity"] = data["capacity"]; //定員
+      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+      eventDetailList["notes"] = data["caution"]; //注意事項
+
+      //レビュー
+      eventDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      eventDetailList["reviewPoint"] = 0; //平均点
+      eventDetailList["ratioStarReviews"] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]; //星の割合(前から1,2,3,4,5)
+      eventDetailList["reviewNumber"] = 0; //レビュー数
+      eventDetailList["reviewId"] = 0; //投稿ID
+      if (eventDetailList["review"].length != 0) {
+        //平均点
+        for (int i = 0; i < data["reviews"].length; i++) {
+          eventDetailList["reviewPoint"] +=
+              data["reviews"][i]["review_point"]; //平均点
+          eventDetailList["ratioStarReviews"]
+              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+          //自分のレビューか否か
+          if (store.myID == data["reviews"][i]["user"]["id"]) {
+            eventDetailList["reviewId"] = data["reviews"][i]["id"];
+          }
+        }
+        //平均を出す
+        eventDetailList["reviewPoint"] =
+            eventDetailList["reviewPoint"] / data["reviews"].length;
+
+        //レビュー数
+        eventDetailList["reviewNumber"] = data["reviews"].length;
+
+        //割合計算
+        for (int i = 0; i < 5; i++) {
+          eventDetailList["ratioStarReviews"][i] =
+              eventDetailList["ratioStarReviews"][i] /
+                  eventDetailList["reviewNumber"];
+        }
+      }
+
+      eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        eventDetailList["postJedge"] = true;
+      } else {
+        eventDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か(true:未投稿,false:投稿済み)
+      eventDetailList["notPost"] = false;
+    });
+  }
+
+  Future getEventDetailList(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeEventDetailList(data, id, store);
+    } else {
+      print("error");
       throw Exception("Failed");
     }
   }
@@ -261,20 +584,28 @@ class _HomeState extends State<Home> {
                                       ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          await getEventDetailList(
+                                              eventAdvertisementList
+                                                  .elementAt(i)["id"],
+                                              store);
+                                          await Navigator.push(
                                               context,
                                               PageRouteBuilder(
                                                   pageBuilder: (context,
                                                           animation,
                                                           secondaryAnimation) =>
                                                       EventPostDetail(
-                                                          id: eventAdvertisementList
-                                                              .elementAt(
-                                                                  i)["id"],
-                                                          tStore: store,
-                                                          notPostJedge:
-                                                              false)));
+                                                        id: eventAdvertisementList
+                                                            .elementAt(i)["id"],
+                                                        tStore: store,
+                                                        notPostJedge: false,
+                                                        eventDetailList:
+                                                            eventDetailList,
+                                                      )));
+                                          getEventList();
+                                          getJobList();
+                                          getHistoryList(store);
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
@@ -335,8 +666,13 @@ class _HomeState extends State<Home> {
                                       ),
                                       //全体を薄暗くする(ボタンの要素もある)
                                       GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          await getJobDetailList(
+                                              jobAdvertisementList.elementAt(i -
+                                                  eventAdvertisementList
+                                                      .length)["id"],
+                                              store);
+                                          await Navigator.push(
                                               context,
                                               PageRouteBuilder(
                                                   pageBuilder: (context,
@@ -349,7 +685,12 @@ class _HomeState extends State<Home> {
                                                                     .length)["id"],
                                                         tStore: store,
                                                         notPostJedge: false,
+                                                        jobDetailList:
+                                                            jobDetailList,
                                                       )));
+                                          getEventList();
+                                          getJobList();
+                                          getHistoryList(store);
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
@@ -397,11 +738,17 @@ class _HomeState extends State<Home> {
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[0],
+                              getEventList: () => getEventList(),
+                              getJobList: () => getJobList(),
+                              getHistoryList: () => getHistoryList(store),
                             ),
                             SizedBox(width: centerButtonSize * 1.5), //ボタン間の空間
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["general"]?[1],
+                              getEventList: () => getEventList(),
+                              getJobList: () => getJobList(),
+                              getHistoryList: () => getHistoryList(store),
                             ),
                             // SizedBox(width: centerButtonSize), //ボタン間の空間
                             // CenterButton(
@@ -419,16 +766,25 @@ class _HomeState extends State<Home> {
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["company"]?[0],
+                              getEventList: () => getEventList(),
+                              getJobList: () => getJobList(),
+                              getHistoryList: () => getHistoryList(store),
                             ),
                             SizedBox(width: centerButtonSize), //ボタン間の空間
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["company"]?[1],
+                              getEventList: () => getEventList(),
+                              getJobList: () => getJobList(),
+                              getHistoryList: () => getHistoryList(store),
                             ),
                             SizedBox(width: centerButtonSize), //ボタン間の空間
                             CenterButton(
                               centerButtonSize: centerButtonSize,
                               buttonList: buttonList["company"]?[2],
+                              getEventList: () => getEventList(),
+                              getJobList: () => getJobList(),
+                              getHistoryList: () => getHistoryList(store),
                             ),
                           ],
                         ),
@@ -456,8 +812,8 @@ class _HomeState extends State<Home> {
                                     foregroundColor: store.mainColor,
                                   ),
                                   child: const Text('全ての閲覧履歴を見る'),
-                                  onPressed: () {
-                                    Navigator.push(
+                                  onPressed: () async {
+                                    await Navigator.push(
                                         context,
                                         PageRouteBuilder(
                                             pageBuilder: (context, animation,
@@ -465,6 +821,9 @@ class _HomeState extends State<Home> {
                                                 WatchHistory(
                                                   store: store,
                                                 )));
+                                    getEventList();
+                                    getJobList();
+                                    getHistoryList(store);
                                   },
                                 ),
                               ],
@@ -480,11 +839,20 @@ class _HomeState extends State<Home> {
                                   //履歴の数だけボタンを作成
                                   for (int i = 0; i < historyList.length; i++)
                                     HistoryButton(
-                                        mediaQueryData: mediaQueryData,
-                                        width: width,
-                                        store: store,
-                                        historyList: historyList,
-                                        i: i),
+                                      mediaQueryData: mediaQueryData,
+                                      width: width,
+                                      store: store,
+                                      historyList: historyList,
+                                      i: i,
+                                      getEventList: () => getJobList(),
+                                      getJobList: () => getJobList(),
+                                      getHistoryList: () =>
+                                          getHistoryList(store),
+                                      getEventDetailList: () =>
+                                          getEventDetailList(
+                                              historyList[i]["id"], store),
+                                      eventDetailList: eventDetailList,
+                                    ),
                                 ],
                               ),
                             ),
@@ -510,6 +878,11 @@ class HistoryButton extends StatelessWidget {
     required this.historyList,
     required this.i,
     required this.width,
+    required this.getEventList,
+    required this.getJobList,
+    required this.getHistoryList,
+    required this.getEventDetailList,
+    required this.eventDetailList,
   });
 
   final MediaQueryData mediaQueryData;
@@ -517,79 +890,11 @@ class HistoryButton extends StatelessWidget {
   final List<dynamic> historyList;
   final int i;
   final double width;
-
-// データベースと連携させていないので現在はここでイベント詳細内容を設定
-  static Map<String, dynamic> jobDetailList = {
-    //必須
-    "title": "川上神社夏祭り", //タイトル
-    //詳細
-    "detail":
-        "川上様夏祭りは香北の夏の風物詩ともいえるお祭で、ビアガーデンや各種団体による模擬店、ステージイベントなどが行われ、毎年市内外から多くの見物客が訪れます。\n \n この度、運営スタッフ不足によりスタッフを募集します。\n \n・当日の会場設営\n・祭り終了後のゴミ拾い\n・祭り開催中のスタッフ（内容は当日お知らせします）",
-    //勤務体系
-    "term": "長期",
-
-    "day": ["2021年8月1日", "2021年8月2日", "2021年8月2日"], //日付
-    "time": ["10時00分~20時00分", "10時00分~20時00分", "10時00分~20時00分"], //時間
-
-    //開催場所
-    "postalNumber": "781-5101", //郵便番号
-    "prefecture": "高知県", //都道府県
-    "city": "香美市", //市町村
-    "houseNumber": "土佐山田町", //番地・建物名
-
-    //給料
-    "pay": "1000",
-
-    //その他(任意)
-    "tag": [
-      "イベント",
-      "夏祭り",
-      "花火",
-      "香美市",
-      "イベント",
-    ], //ハッシュタグ
-    "addMessage": "test", //追加メッセージ
-
-    //レビュー
-    "reviewPoint": 4.5, //評価
-    //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
-    //レビュー数
-    "reviewNumber": 100,
-    //レビュー内容
-    "review": [
-      {
-        "reviewerName": "名前aiueo",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "testfffff\n\nfffff", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前kakikukeko",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      },
-      {
-        "reviewerName": "名前sasisuseso",
-        //"reviewerImage" : "test"   //予定
-        "reviewPoint": 3, //レビュー点数
-        "reviewDetail": "test", //レビュー内容
-        "reviewDate": "2021年8月1日", //レビュー日時
-      }
-    ],
-
-    //この広告を投稿したか
-    "postJedge": true,
-
-    //未投稿か否か(true:未投稿,false:投稿済み)
-    "notPost": false,
-
-    //掲載期間
-    "postTerm": "2023年12月10日"
-  };
+  final Function getEventList;
+  final Function getJobList;
+  final Function getHistoryList;
+  final Function getEventDetailList;
+  final Map<String, dynamic> eventDetailList;
 
   @override
   Widget build(BuildContext context) {
@@ -598,8 +903,9 @@ class HistoryButton extends StatelessWidget {
       child: Row(
         children: [
           InkWell(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await getEventDetailList();
+              await Navigator.push(
                   context,
                   PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
@@ -607,7 +913,11 @@ class HistoryButton extends StatelessWidget {
                             id: historyList[i]["id"],
                             tStore: store,
                             notPostJedge: false,
+                            eventDetailList: eventDetailList,
                           )));
+              getEventList();
+              getJobList();
+              getHistoryList();
               // Navigator.push(
               //         context,
               //         PageRouteBuilder(
@@ -664,10 +974,16 @@ class CenterButton extends StatelessWidget {
     super.key,
     required this.centerButtonSize,
     required this.buttonList,
+    required this.getEventList,
+    required this.getJobList,
+    required this.getHistoryList,
   });
 
   final double centerButtonSize;
   final Map<String, dynamic>? buttonList;
+  final Function getEventList;
+  final Function getJobList;
+  final Function getHistoryList;
 
   @override
   Widget build(BuildContext context) {
@@ -704,13 +1020,16 @@ class CenterButton extends StatelessWidget {
                 ), //アイコン
                 color: Colors.white,
                 //ボタンを押した時の動作
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  await Navigator.push(
                       context,
                       PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   buttonList?["push"]));
+                  getEventList();
+                  getJobList();
+                  getHistoryList();
                 },
               ),
             ),
