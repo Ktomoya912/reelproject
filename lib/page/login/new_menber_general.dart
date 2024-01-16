@@ -52,6 +52,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
       String username,
       String password,
       String email,
+      String image_url,
       String year,
       String months,
       String days,
@@ -66,12 +67,12 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           body: jsonEncode({
             'username': username,
             'password': password,
+            'image_url': image_url,
             'email': email,
             'sex': sex,
             'birthday': '$year-$months-$days',
             'user_type': 'g'
           }));
-      // final Map<String, dynamic> data = json.decode(response.body);
       if (response.statusCode == 200) {
         return;
       } else {
@@ -223,6 +224,9 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                                 if (checkMonth(value)) {
                                   setState(() {
                                     month = value;
+                                    if (month.length == 1) {
+                                      month = '0$month';
+                                    }
                                   });
                                   //print(value);
                                 } else {
@@ -254,6 +258,9 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                                 if (checkDay(value)) {
                                   setState(() {
                                     day = value;
+                                    if (day.length == 1) {
+                                      day = '0$day';
+                                    }
                                   });
                                   //print(value);
                                 } else {
@@ -292,7 +299,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Radio(
-                      value: 'male',
+                      value: 'm',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -308,7 +315,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                       padding: EdgeInsets.all(15.0),
                     ),
                     Radio(
-                      value: 'female',
+                      value: 'f',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -324,7 +331,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                       padding: EdgeInsets.all(15.0),
                     ),
                     Radio(
-                      value: 'other',
+                      value: 'o',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -465,8 +472,8 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck == true) {
                   //print('未入力の項目があります');
-                  createUser("username", "password", "email@sample.com", "2024",
-                      "01", "09", "o");
+                  createUser(username, password, mail, "", year, month, day,
+                      selectedGender as String);
                   Navigator.pop(context); //pop
                   Navigator.push(
                     context,
@@ -512,7 +519,7 @@ bool checkUserName(String username) {
     caseSensitive: false,
     r"^[a-zA-Z0-9_]+$",
   );
-  return regName.hasMatch(username);
+  return regName.hasMatch(username) && username.length >= 8;
 }
 
 bool checkMail(String mail) {

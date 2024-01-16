@@ -11,28 +11,39 @@ import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
+import 'package:reelproject/overlay/rule/screen/return_write.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({
+    super.key,
+    this.isObscure = true,
+    required this.onVisibilityToggle,
+  });
+  final bool isObscure;
+  final ValueChanged<bool> onVisibilityToggle;
   @override
   LoginPageState createState() => LoginPageState();
 }
 
 class LoginPageState extends State<LoginPage> {
   bool _autoLogin = false; // チェックボックスの状態を管理する変数
+  late bool _isObscure;
+  String name = ""; //ユーザー名
+  String password = ''; //パスワード
+  bool jedgeGC = false; //法人か個人かの判定
+  bool isActive = false; //ボタンの活性化
 
+  @override
   @override
   void initState() {
     super.initState();
+    _isObscure = widget.isObscure;
   }
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
-    String name = ""; //ユーザー名
-    String password = ""; //パスワード
-    bool jedgeGC = false; //法人か個人かの判定
 
     //トークン取得
     Future getAccessToken(
@@ -45,10 +56,25 @@ class LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         store.accessToken = data["access_token"];
         jedgeGC = true;
+
+        isActive = data["user"]["is_active"];
       } else {
         jedgeGC = false;
+        print(data["detail"]);
       }
     }
+
+    //ユーザーidを取得
+    // Future<String> getUserId(String apiUrl) async {
+    //   Uri url = Uri.parse("$apiUrl/users/me");
+    //   final response = await get(url, headers: {'accept': 'application/json'});
+    //   final Map<String, dynamic> data = json.decode(response.body);
+    //   if (response.statusCode == 200) {
+    //     return data["id"];
+    //   } else {
+    //     return "";
+    //   }
+    // }
 
     return Scaffold(
       appBar: LoginAppBar(store: store),
@@ -131,17 +157,26 @@ class LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(
                     width: 300,
-                    child: TextField(
-                      textAlign: TextAlign.start,
+                    child: TextFormField(
                       onChanged: (text) {
-                        //入力されたテキストを受け取る
                         password = text;
                       },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        hintText: '例：password',
+                      obscureText: _isObscure,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 10),
+                        suffixIcon: IconButton(
+                          icon: Icon(_isObscure
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                              widget.onVisibilityToggle(_isObscure);
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -172,29 +207,34 @@ class LoginPageState extends State<LoginPage> {
                       await getAccessToken(name, password,
                           ChangeGeneralCorporation.apiUrl); //ここでログイン処理
                       await Future.delayed(const Duration(seconds: 1)); //1秒待つ
-                      Navigator.of(context).pop(); //ローディング画面を閉じる
+
                       if (jedgeGC) {
-                        context.popRoute();
-                        context.pushRoute(const RootRoute());
+                        if (!isActive) {
+                          Navigator.pop(context); //ローディング画面を閉じる
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('確認'),
+                                  content:
+                                      const Text('本登録が完了していません。メールをご確認ください。'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        } else {
+                          context.popRoute();
+                          context.pushRoute(const RootRoute());
+                        }
                       } else {
-                        showDialog(
-                          //ログインエラーを表示
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('ログインエラー'),
-                              content: const Text('ユーザー名またはパスワードが間違っています。'),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        context.popRoute();
+                        ReturnWrite().show(context: context);
                       }
                     },
                     style: ElevatedButton.styleFrom(

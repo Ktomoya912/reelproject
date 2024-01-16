@@ -48,7 +48,7 @@ class ReturnWrite {
           color: Colors.black.withAlpha(150),
           child: Center(
             child: Container(
-                height: 150,
+                height: 180,
                 width: 220,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -62,9 +62,9 @@ class ReturnWrite {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          "必要項目を\n記入してください。",
+                          "ユーザー名または\nパスワードが間違っています。",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
