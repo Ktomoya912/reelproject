@@ -43,7 +43,7 @@ abstract class _$AppRouter extends RootStackRouter {
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LoginPage(),
+        child: LoginPage(onVisibilityToggle: (isVisible) {}),
       );
     },
     SecessionFinishRoute.name: (routeData) {
