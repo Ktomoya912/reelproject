@@ -84,6 +84,8 @@ class _NoPostListState extends State<NoPostList> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
+    final tstore =
+        Provider.of<ChangeGeneralCorporation>(context, listen: false);
     return ChangeNotifierProvider(
         create: (context) => ChangeToggleButton(),
         child: Builder(builder: (BuildContext context) {
@@ -119,6 +121,7 @@ class _NoPostListState extends State<NoPostList> {
                       advertisementList: eventList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: true, //未投稿一覧なのでtrue
+                      functionCall: () => getEventList(tstore),
                     )
                   else
                     //求人広告一覧
@@ -126,6 +129,7 @@ class _NoPostListState extends State<NoPostList> {
                       advertisementList: jobList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: true, //未投稿一覧なのでtrue
+                      functionCall: () => getJobList(tstore),
                     ),
                 ],
               ),

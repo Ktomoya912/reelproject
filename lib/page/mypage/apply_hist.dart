@@ -21,11 +21,14 @@ class ApplyHist extends StatefulWidget {
 }
 
 class _ApplyHistState extends State<ApplyHist> {
-  static List<dynamic> jobList = [];
+  List<dynamic> jobList = [];
 
   void changeJobList(List<dynamic> e) {
     setState(() {
-      jobList = e;
+      jobList = [];
+      for (int i = 0; i < e.length; i++) {
+        jobList.add(e[i]["job"]);
+      }
     });
   }
 
@@ -67,6 +70,7 @@ class _ApplyHistState extends State<ApplyHist> {
                 advertisementList: jobList,
                 mediaQueryData: mediaQueryData,
                 notPostJedge: false,
+                functionCall: () => getJobList(widget.store),
               ),
             ],
           ),

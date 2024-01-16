@@ -112,6 +112,7 @@ class _PostedListState extends State<PostedList> {
                       advertisementList: eventList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: false,
+                      functionCall: () => getEventList(widget.store),
                     )
                   else
                     //求人広告一覧
@@ -119,6 +120,7 @@ class _PostedListState extends State<PostedList> {
                       advertisementList: jobList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: false,
+                      functionCall: () => getJobList(widget.store),
                     ),
                 ],
               ),

@@ -14,11 +14,13 @@ class JobAdvertisementList extends StatefulWidget {
     required this.advertisementList,
     required this.mediaQueryData,
     required this.notPostJedge,
+    required this.functionCall,
   });
 
   final List<dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
   final bool notPostJedge;
+  final Function functionCall;
 
   static double lineWidth = 0.7; //線の太さ定数
 
@@ -33,6 +35,170 @@ class JobAdvertisementList extends StatefulWidget {
 }
 
 class _JobAdvertisementListState extends State<JobAdvertisementList> {
+  Map<String, dynamic> jobDetailList = {
+    "id": 0,
+    //必須
+    //画像
+    "image_url": "",
+    //タイトル
+    "title": "",
+    //詳細
+    "detail": "",
+    //勤務体系
+    "term": "長期",
+
+    //開催期間
+    "jobTimes": [
+      {
+        "start_time": "2024-01-18T15:21:23",
+        "end_time": "2024-01-18T16:21:23",
+        "id": 10
+      }
+    ],
+
+    //開催場所
+    "postalNumber": "", //郵便番号
+    "prefecture": "", //都道府県
+    "city": "", //市町村
+    "houseNumber": "", //番地・建物名
+
+    //給料
+    "pay": "時給1000円",
+
+    //その他(任意)
+    "tag": [], //ハッシュタグ
+    "addMessage": "", //追加メッセージ
+
+    //レビュー
+    "reviewPoint": 0, //評価
+    //星の割合(前から1,2,3,4,5)
+    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+    //レビュー数
+    "reviewNumber": 0,
+    //自分のレビューか否か
+    "reviewId": 0,
+    //レビュー内容
+    "review": [],
+
+    //この広告を投稿したか
+    "postJedge": false,
+
+    //未投稿か否か(true:未投稿,false:投稿済み)
+    "notPost": true,
+
+    //お気に入りか否か]
+    "favoriteJedge": false,
+
+    //掲載期間
+    "postTerm": "2023年12月10日"
+  };
+
+  changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
+    setState(() {
+      jobDetailList["id"] = id; //id
+      jobDetailList["image_url"] = data["image_url"]; //画像
+      jobDetailList["title"] = data["name"]; //タイトル
+      jobDetailList["detail"] = data["description"]; //詳細
+
+      //タグ
+      jobDetailList["tag"] = data["tags"];
+
+      //開催期間
+      jobDetailList["jobTimes"] = data["job_times"];
+
+      //勤務体系
+      if (data["is_one_day"]) {
+        jobDetailList["term"] = "短期";
+      } else {
+        jobDetailList["term"] = "長期";
+      }
+
+      //住所
+      jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+      jobDetailList["prefecture"] = data["prefecture"]; //都道府県
+      jobDetailList["city"] = data["city"]; //市町村
+      jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+      //時給
+      jobDetailList["pay"] = data["salary"]; //給料
+      //任意
+      //jobDetailList["phone"] = data["phone_number"]; //電話番号
+      //jobDetailList["mail"] = data["email"]; //メールアドレス
+      //jobDetailList["url"] = data["homepage"]; //URL
+      //jobDetailList["fee"] = data["participation_fee"]; //参加費
+      //jobDetailList["Capacity"] = data["capacity"]; //定員
+      jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+      //jobDetailList["notes"] = data["caution"]; //注意事項
+
+      //レビュー
+      jobDetailList["review"] = data["reviews"]; //評価
+      //初期化
+      jobDetailList["reviewPoint"] = 0; //平均点
+      jobDetailList["ratioStarReviews"] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]; //星の割合(前から1,2,3,4,5)
+      jobDetailList["reviewNumber"] = 0; //レビュー数
+      jobDetailList["reviewId"] = 0; //自分のレビューか否か
+      if (jobDetailList["review"].length != 0) {
+        //平均点
+        for (int i = 0; i < data["reviews"].length; i++) {
+          jobDetailList["reviewPoint"] +=
+              data["reviews"][i]["review_point"]; //平均点
+          jobDetailList["ratioStarReviews"]
+              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+          //自分のレビューか否か
+          if (store.myID == data["reviews"][i]["user"]["id"]) {
+            jobDetailList["reviewId"] = data["reviews"][i]["id"];
+          }
+        }
+        //平均を出す
+        jobDetailList["reviewPoint"] =
+            jobDetailList["reviewPoint"] / data["reviews"].length;
+
+        //レビュー数
+        jobDetailList["reviewNumber"] = data["reviews"].length;
+
+        //割合計算
+        for (int i = 0; i < 5; i++) {
+          jobDetailList["ratioStarReviews"][i] =
+              jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
+        }
+      }
+
+      jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+
+      //この広告を投稿したか
+      if (data["author"]["id"] == store.myID) {
+        jobDetailList["postJedge"] = true;
+      } else {
+        jobDetailList["postJedge"] = false;
+      }
+
+      //未投稿か否か
+      jobDetailList["notPost"] = widget.notPostJedge;
+    });
+  }
+
+  Future getJobList(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      //'Authorization': 'Bearer ${store.accessToken}'
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeJobList(data, id, store);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
@@ -64,8 +230,10 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
             children: [
               //ボタン
               InkWell(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  await getJobList(
+                      widget.advertisementList.elementAt(index)["id"], store);
+                  await Navigator.push(
                       context,
                       PageRouteBuilder(
                           pageBuilder:
@@ -75,7 +243,9 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                         .elementAt(index)["id"],
                                     tStore: store,
                                     notPostJedge: widget.notPostJedge,
+                                    jobDetailList: jobDetailList,
                                   )));
+                  widget.functionCall();
                   //タップ処理
                 },
                 child:

@@ -14,12 +14,14 @@ class EventJobSearchBar extends StatefulWidget implements PreferredSizeWidget {
     required this.favoriteHistoryList,
     required this.title,
     required this.mediaQueryData,
+    required this.functionCall,
   });
 
   final List tagList; //表示するタグのリスト
   final List<Map<String, dynamic>> favoriteHistoryList; //表示するお気に入り、閲覧履歴リスト
   final String title; //タイトル
   final MediaQueryData mediaQueryData;
+  final Function functionCall;
 
   @override
   Size get preferredSize {
@@ -74,9 +76,9 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
     //検索ボタンを押したときの処理
     void _submission(text) {
-      setState(() {
+      setState(() async {
         if (text != "") {
-          Navigator.push(
+          await Navigator.push(
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
@@ -88,6 +90,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                   store: store,
                 ),
               ));
+          widget.functionCall();
         }
       });
     }
@@ -191,8 +194,8 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                             foregroundColor: store.blackColor,
                             shape: const StadiumBorder(),
                           ),
-                          onPressed: () {
-                            Navigator.push(
+                          onPressed: () async {
+                            await Navigator.push(
                                 context,
                                 PageRouteBuilder(
                                   pageBuilder: (context, animation,
@@ -205,6 +208,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                                     store: store,
                                   ),
                                 ));
+                            widget.functionCall();
                           },
                           child: Text(tag),
                         ),
@@ -225,6 +229,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                     mediaQueryData: widget.mediaQueryData,
                     store: store,
                     list: widget.favoriteHistoryList,
+                    functionCall: widget.functionCall,
                   )),
 
               //タイトルバー
@@ -250,16 +255,18 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
 
 //閲覧履歴、お気に入りリストを作成するクラス
 class FavoriteHistoryList extends StatelessWidget {
-  const FavoriteHistoryList({
-    super.key,
-    required MediaQueryData mediaQueryData,
-    required this.store,
-    required this.list,
-  }) : _mediaQueryData = mediaQueryData;
+  const FavoriteHistoryList(
+      {super.key,
+      required MediaQueryData mediaQueryData,
+      required this.store,
+      required this.list,
+      required this.functionCall})
+      : _mediaQueryData = mediaQueryData;
 
   final MediaQueryData _mediaQueryData;
   final ChangeGeneralCorporation store;
   final List<Map<String, dynamic>> list;
+  final Function functionCall;
 
   static double widthPower = 11 / 12; //横幅の倍率定数
   static double lineWidth = 0.5; //線の太さ定数
@@ -306,14 +313,15 @@ class FavoriteHistoryList extends StatelessWidget {
             ), //タイトル
             contentPadding: EdgeInsets.symmetric(
                 horizontal: _mediaQueryData.size.width / 20), //タイル内の余白
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                   context,
                   PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           WatchHistory(
                             store: store,
                           )));
+              functionCall();
             }),
         Container(
           width: _mediaQueryData.size.width,
@@ -344,8 +352,8 @@ class FavoriteHistoryList extends StatelessWidget {
             ), //タイトル
             contentPadding: EdgeInsets.symmetric(
                 horizontal: _mediaQueryData.size.width / 20), //タイル内の余白
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) =>
@@ -353,6 +361,7 @@ class FavoriteHistoryList extends StatelessWidget {
                       store: store,
                     ),
                   ));
+              functionCall();
             }),
         // Container(
         //   width: _mediaQueryData.size.width,

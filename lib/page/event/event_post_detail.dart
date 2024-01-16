@@ -16,73 +16,76 @@ class EventPostDetail extends StatefulWidget {
     required this.id,
     required this.tStore,
     required this.notPostJedge,
+    required this.eventDetailList,
   });
 
   final int id;
   final tStore;
   final bool notPostJedge;
+  final Map<String, dynamic> eventDetailList;
 
   @override
   State<EventPostDetail> createState() => _EventPostDetailState();
 }
 
 class _EventPostDetailState extends State<EventPostDetail> {
-  static Map<String, dynamic> eventDetailList = {
-    //id
-    "id": 1,
-    //必須
-    //画像
-    "image_url": "",
-    //タイトル
-    "title": "",
-    //詳細
-    "detail": "",
-    "eventTimes": [
-      {
-        "start_time": "2024-01-18T15:21:23",
-        "end_time": "2024-01-18T16:21:23",
-        "id": 10
-      }
-    ], //開催日時
-    //開催場所
-    "postalNumber": "", //郵便番号
-    "prefecture": "", //都道府県
-    "city": "", //市町村
-    "houseNumber": "", //番地・建物名
+  late Map<String, dynamic> eventDetailList = widget.eventDetailList;
+  // {
+  //   //id
+  //   "id": 1,
+  //   //必須
+  //   //画像
+  //   "image_url": "",
+  //   //タイトル
+  //   "title": "",
+  //   //詳細
+  //   "detail": "",
+  //   "eventTimes": [
+  //     {
+  //       "start_time": "2024-01-18T15:21:23",
+  //       "end_time": "2024-01-18T16:21:23",
+  //       "id": 10
+  //     }
+  //   ], //開催日時
+  //   //開催場所
+  //   "postalNumber": "", //郵便番号
+  //   "prefecture": "", //都道府県
+  //   "city": "", //市町村
+  //   "houseNumber": "", //番地・建物名
 
-    //その他(任意)
-    "tag": [], //ハッシュタグ
-    "phone": "", //電話番号
-    "mail": "", //メールアドレス
-    "url": "", //URL
-    "fee": "", //参加費
-    "Capacity": "", //定員
-    "notes": "", //注意事項
-    "addMessage": "", //追加メッセージ
+  //   //その他(任意)
+  //   "tag": [], //ハッシュタグ
+  //   "phone": "", //電話番号
+  //   "mail": "", //メールアドレス
+  //   "url": "", //URL
+  //   "fee": "", //参加費
+  //   "Capacity": "", //定員
+  //   "notes": "", //注意事項
+  //   "addMessage": "", //追加メッセージ
 
-    //レビュー
-    "reviewPoint": 0, //評価
-    //星の割合(前から1,2,3,4,5)
-    "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
-    //レビュー数
-    "reviewNumber": 0,
-    //投稿ID
-    "reviewId": 0,
-    //レビュー内容
-    "review": [],
+  //   //レビュー
+  //   "reviewPoint": 0, //評価
+  //   //星の割合(前から1,2,3,4,5)
+  //   "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
+  //   //レビュー数
+  //   "reviewNumber": 0,
+  //   //投稿ID
+  //   "reviewId": 0,
+  //   //レビュー内容
+  //   "review": [],
 
-    //この広告を投稿したか
-    "postJedge": false,
+  //   //この広告を投稿したか
+  //   "postJedge": false,
 
-    //未投稿か否か(true:未投稿,false:投稿済み)
-    "notPost": false,
+  //   //未投稿か否か(true:未投稿,false:投稿済み)
+  //   "notPost": false,
 
-    //掲載期間
-    "postTerm": "2023年12月10日",
+  //   //掲載期間
+  //   "postTerm": "2023年12月10日",
 
-    //お気に入りか否か
-    "favoriteJedge": false,
-  };
+  //   //お気に入りか否か
+  //   "favoriteJedge": false,
+  // };
 
   //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
 
@@ -191,22 +194,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
   }
 
   //お気に入り登録
-  Future boobkmarkOn(int id, ChangeGeneralCorporation store) async {
+  Future boobkmark(int id, ChangeGeneralCorporation store) async {
     Uri url =
         Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/bookmark');
-    final response = await post(url, headers: {
-      'accept': 'application/json',
-      //'Authorization': 'Bearer ${store.accessToken}'
-      'authorization': 'Bearer ${store.accessToken}'
-    });
-    getEventList(widget.id, widget.tStore);
-  }
-
-  //お気に入り削除
-  Future boobkmarkOff(int id, ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/bookmark');
-    final response = await delete(url, headers: {
+    final response = await put(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
       'authorization': 'Bearer ${store.accessToken}'
@@ -433,11 +424,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 ], //on off
                                 //ボタンを押した時の処理
                                 onPressed: (int index) => setState(() {
-                                  if (!eventDetailList["favoriteJedge"]) {
-                                    boobkmarkOn(eventDetailList["id"], store);
-                                  } else {
-                                    boobkmarkOff(eventDetailList["id"], store);
-                                  }
+                                  boobkmark(eventDetailList["id"], store);
                                 }),
                                 //アイコン
                                 children: <Widget>[
@@ -472,25 +459,27 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                     i < eventDetailList["tag"].length;
                                     i++)
                                   TextButton(
-                                      onPressed: () => {
-                                            Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  pageBuilder: (context,
-                                                          animation,
-                                                          secondaryAnimation) =>
-                                                      SearchPage(
-                                                    text:
-                                                        "#${eventDetailList["tag"][i]["name"]}",
-                                                    eventJobJedge: "おすすめイベント",
-                                                    sort: "新着順",
-                                                    sortType: "id",
-                                                    store: store,
-                                                  ),
-                                                ))
-                                          },
-                                      child: Text(
-                                          "#${eventDetailList["tag"][i]["name"]}")),
+                                    onPressed: () async {
+                                      await Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              SearchPage(
+                                            text:
+                                                "#${eventDetailList["tag"][i]["name"]}",
+                                            eventJobJedge: "おすすめイベント",
+                                            sort: "新着順",
+                                            sortType: "id",
+                                            store: store,
+                                          ),
+                                        ),
+                                      );
+                                      getEventList(widget.id, widget.tStore);
+                                    },
+                                    child: Text(
+                                        "#${eventDetailList["tag"][i]["name"]}"),
+                                  ),
                               ],
                             ),
                           ),

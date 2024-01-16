@@ -119,6 +119,7 @@ class _WatchHistoryState extends State<WatchHistory> {
                       advertisementList: eventList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: false,
+                      functionCall: () => getEventList(widget.store),
                     )
                   else
                     //求人広告一覧
@@ -126,6 +127,7 @@ class _WatchHistoryState extends State<WatchHistory> {
                       advertisementList: jobList,
                       mediaQueryData: mediaQueryData,
                       notPostJedge: false,
+                      functionCall: () => getJobList(widget.store),
                     ),
                 ],
               ),

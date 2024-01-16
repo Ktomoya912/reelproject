@@ -117,7 +117,7 @@ class ConfDelete {
                             // ボタンが押されたときの処理をここに追加予定
                             confConf(jobID, store, userID);
                             store.changeOverlay(false);
-                            Navigator.pop(context);
+                            //Navigator.pop(context);
                             //Navigator.pop(context);
                             //Navigator.pop(context);
                             ConfDelete().hide();
@@ -132,7 +132,7 @@ class ConfDelete {
                                   buttonText:
                                       "応募者一覧画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
-                                  popTimes: 1,
+                                  popTimes: 2,
                                 ),
                               ),
                             );

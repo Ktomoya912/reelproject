@@ -120,7 +120,7 @@ class ConfConf {
                             store.changeOverlay(false);
                             //Navigator.pop(context);
                             //Navigator.pop(context);
-                            Navigator.pop(context);
+                            //Navigator.pop(context);
                             ConfConf().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -132,7 +132,7 @@ class ConfConf {
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
                                   buttonText: "応募者一覧に戻る",
                                   jedgeBottomAppBar: false,
-                                  popTimes: 1,
+                                  popTimes: 2,
                                 ),
                               ),
                             );

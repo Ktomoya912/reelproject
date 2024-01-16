@@ -195,7 +195,7 @@ class ToggleRadioState extends State<ToggleRadio> {
               DeleteConf().deletePost(widget.id, store, widget.eventJobJedge);
               store.changeOverlay(false);
               Navigator.pop(context);
-              Navigator.pop(context);
+              //Navigator.pop(context);
               DeleteConf().hide();
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -208,7 +208,7 @@ class ToggleRadioState extends State<ToggleRadio> {
                     buttonText:
                         buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                     jedgeBottomAppBar: false,
-                    popTimes: 1,
+                    popTimes: 2,
                   ),
                 ),
               );

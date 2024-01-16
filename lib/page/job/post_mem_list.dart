@@ -23,11 +23,12 @@ class PostMemList extends StatefulWidget {
 class _PostMemListState extends State<PostMemList> {
   //求人広告のリスト
   //titleに文字数制限を設ける
-  static Map<String, dynamic> postMemList = {};
+  static Map<String, dynamic> postMemList = {"users": []};
 
   void changeAdvertisementList(Map<String, dynamic> e) {
     setState(() {
       postMemList = e;
+      print(postMemList);
     });
   }
 
@@ -63,6 +64,7 @@ class _PostMemListState extends State<PostMemList> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context, listen: false);
 
     double buttonWidthPower = mediaQueryData.size.width / 4; //ボタンの縦横幅
     //画像の縦横幅の最大、最小値
@@ -98,9 +100,23 @@ class _PostMemListState extends State<PostMemList> {
                     SizedBox(
                       width: mediaQueryData.size.width - addWidth * 2,
                       child: EventAdvertisementList(
+                        id: widget.id,
                         advertisementList: postMemList,
                         mediaQueryData: mediaQueryData,
                         index: index,
+                        onTap: () async {
+                          await Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      ApplyConf(
+                                        advertisementList: postMemList["users"]
+                                            [index],
+                                        jobID: postMemList["job_id"],
+                                      )));
+                          getApplyList(widget.id, store);
+                        },
                       ),
                     ),
                 ],
@@ -115,14 +131,18 @@ class _PostMemListState extends State<PostMemList> {
 class EventAdvertisementList extends StatelessWidget {
   const EventAdvertisementList({
     super.key,
+    required this.id,
     required this.advertisementList,
     required this.mediaQueryData,
     required this.index,
+    required this.onTap,
   });
 
+  final int id;
   final Map<String, dynamic> advertisementList;
   final MediaQueryData mediaQueryData;
   final int index; //何番目の要素か
+  final VoidCallback onTap;
 
   static double lineWidth = 1.3; //線の太さ定数
 
@@ -135,19 +155,13 @@ class EventAdvertisementList extends StatelessWidget {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    ApplyConf(
-                      advertisementList: advertisementList["users"][index],
-                      jobID: advertisementList["job_id"],
-                    )));
-        //タップ処理
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
+          //色
+          color: advertisementList["users"][index]["status"] == "p"
+              ? Colors.white
+              : Color.fromARGB(255, 238, 238, 238),
           border: Border(
             bottom: BorderSide(color: store.greyColor),
           ),
@@ -174,7 +188,7 @@ class EventAdvertisementList extends StatelessWidget {
                       // これを追加
                       borderRadius: BorderRadius.circular(50), // これを追加
                       child: Image.network(
-                          advertisementList["users"][index]["image_url"]
+                          advertisementList["users"][index]["user"]["image_url"]
                               .toString(),
                           fit: BoxFit.cover),
                     )),
@@ -188,9 +202,11 @@ class EventAdvertisementList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "ユーザー名         :   ${advertisementList["users"][index]["username"]}"),
+                        "ユーザー名         :   ${advertisementList["users"][index]["user"]["username"]}"),
                     Text(
-                        "メールアドレス  :   ${advertisementList["users"][index]["email"]}"),
+                        "メールアドレス  :   ${advertisementList["users"][index]["user"]["email"]}"),
+                    Text(
+                        "確認状態            :   ${advertisementList["users"][index]["status"] == "p" ? '未確認' : advertisementList["users"][index]["status"] == "a" ? '確認済み' : '不採用'}"),
                   ],
                 ),
               ],

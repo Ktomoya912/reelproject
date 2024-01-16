@@ -12,7 +12,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const String typeDraft = "type=all";
 
   String accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwNzY2NTI3Mn0.e3EhsKqWjv5XX_iAKs1M3hRcy3MORXFef7m64E4XsJ8";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwODAwMzY5NH0.nBcJcVbG62UVZ4PycD8_bhcAPM9RFMMPnnc10cEQ6qY";
   int myID = 1; //自分のID(一般ID)
 
   //一般と法人を判断する変数
