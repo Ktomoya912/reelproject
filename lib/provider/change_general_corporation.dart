@@ -46,7 +46,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   //自分のユーザ情報マップを変更する関数
   changeUserInfo(Map<String, dynamic> info) {
-    userInfo = info;
+    userInfo = info; //ユーザ情報変更
+    myID = info["id"]; //自分のID変更
     notifyListeners();
   }
 
