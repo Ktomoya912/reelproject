@@ -436,12 +436,12 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
-      //一定間隔毎に更新
-      Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
-      //一定間隔毎に更新
-      Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
-      //一定間隔毎に更新
-      Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
+      // //一定間隔毎に更新
+      // Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
+      // //一定間隔毎に更新
+      // Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
+      // //一定間隔毎に更新
+      // Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
     });
   }
 

@@ -36,7 +36,7 @@ class _PostedListState extends State<PostedList> {
 
   Future getEventList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/users/event-postings?type=posted');
+        '${ChangeGeneralCorporation.apiUrl}/users/event-postings?${ChangeGeneralCorporation.typePosted}');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -58,7 +58,7 @@ class _PostedListState extends State<PostedList> {
 
   Future getJobList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/users/job-postings?type=posted');
+        '${ChangeGeneralCorporation.apiUrl}/users/job-postings?${ChangeGeneralCorporation.typePosted}');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
       'authorization': 'Bearer ${store.accessToken}'

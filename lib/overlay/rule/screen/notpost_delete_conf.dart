@@ -125,13 +125,13 @@ class NotpostDeleteConf {
                                 builder: (context) => FinishScreen(
                                   appbarText: "未投稿削除完了",
                                   appIcon: Icons.playlist_add_check,
-                                  finishText: "未投稿削除完了しました",
+                                  finishText: "未投稿広告の削除を完了しました",
                                   text:
                                       "この度は応募者確認をしていただきありがとうございます。\n今回行っていただいた応募者確認情報はアプリの機能改善に用いさせていただきます。",
                                   buttonText:
                                       buttonText, // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
-                                  popTimes: 1,
+                                  popTimes: 2,
                                 ),
                               ),
                             );

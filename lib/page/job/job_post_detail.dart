@@ -674,6 +674,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                           decoration:
                                               TextDecoration.underline, //下線
                                           decorationThickness: 2, // 下線の太さの設定
+                                          decorationColor: Colors.grey[600],
                                         ),
                                       ),
                                       Text(

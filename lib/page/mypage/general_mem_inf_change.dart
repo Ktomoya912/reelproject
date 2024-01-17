@@ -354,12 +354,8 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                     checkMonth(month) &&
                     checkDay(day) &&
                     selectedGender != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyPage(),
-                    ),
-                  );
+                  //一つ戻る
+                  Navigator.pop(context);
                 }
               },
               style: ElevatedButton.styleFrom(

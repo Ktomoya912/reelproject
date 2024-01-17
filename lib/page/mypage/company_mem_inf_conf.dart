@@ -23,6 +23,16 @@ class CompanyMemInfConf extends StatefulWidget {
 
 class _CompanyMemInfConfState extends State<CompanyMemInfConf> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      store.getMyUserInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
@@ -60,12 +70,15 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 150, //アイコン高さ
-                    width: 150, //アイコン幅
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, //円形に
-                        color: store.subColor), //アイコン周囲円の色
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: ClipRRect(
+                      // これを追加
+                      borderRadius: BorderRadius.circular(50), // これを追加
+                      child: Image.network("${store.userInfo["image_url"]}",
+                          fit: BoxFit.cover),
+                    ),
                   ),
                 ],
               ),
@@ -92,9 +105,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　法人名',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["company"]["name"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -114,9 +127,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　ユーザ名',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["username"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -136,9 +149,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　info@example.com',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["company"]["email"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -158,9 +171,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　0738-666-666',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["company"]["phone_number"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -180,9 +193,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　高知県香美市土佐山田町',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["company"]["prefecture"]}${store.userInfo["company"]["city"]}${store.userInfo["company"]["address"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -202,9 +215,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　生年月日',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["birthday"].substring(0, 4)}年 ${store.userInfo["birthday"].substring(5, 7)}月 ${store.userInfo["birthday"].substring(8, 10)}日',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -224,9 +237,9 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　男性',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["sex"] == "m" ? "男性" : store.userInfo["sex"] == "f" ? "女性" : "その他"}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,

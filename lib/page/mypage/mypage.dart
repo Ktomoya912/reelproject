@@ -37,6 +37,16 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      store.getMyUserInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
@@ -246,22 +256,26 @@ class ScrollMyPageDetail extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    Container(
-                      height: 150, //アイコン高さ
-                      width: 150, //アイコン幅
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, //円形に
-                          color: store.mainColor), //アイコン周囲円の色
+                    SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: ClipRRect(
+                        // これを追加
+                        borderRadius: BorderRadius.circular(50), // これを追加
+                        child: Image.network("${store.userInfo["image_url"]}",
+                            fit: BoxFit.cover),
+                      ),
                     ),
                   ],
                 ),
               ),
               //アイコンと名前の間に空白
-              const Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text("ユーザ名",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                    "${store.jedgeGC ? store.userInfo["username"] : store.userInfo["company"]["name"]}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 15)),
               ), //ユーザー名
               //空白
               const SizedBox(
@@ -386,7 +400,7 @@ class CompanyMypage extends StatelessWidget {
 }
 
 //マイページリストを作成するクラス
-class MyPageListView extends StatelessWidget {
+class MyPageListView extends StatefulWidget {
   const MyPageListView({
     super.key,
     required MediaQueryData mediaQueryData,
@@ -401,36 +415,45 @@ class MyPageListView extends StatelessWidget {
   final String tagTitle;
 
   static double widthPower = 11 / 12; //横幅の倍率定数
-  static double lineWidth = 0.8; //線の太さ定数
+  static double lineWidth = 0.8;
+  @override
+  State<MyPageListView> createState() => _MyPageListViewState();
+}
 
+class _MyPageListViewState extends State<MyPageListView> {
+  //線の太さ定数
   @override
   Widget build(BuildContext context) {
     //横幅が想定より大きくなった場合、横の幅を広げる
     double addWidth = 0;
     //横のほうが広くなった場合
-    if (_mediaQueryData.size.width > _mediaQueryData.size.height) {
-      addWidth = (_mediaQueryData.size.width - _mediaQueryData.size.height);
+    if (widget._mediaQueryData.size.width >
+        widget._mediaQueryData.size.height) {
+      addWidth = (widget._mediaQueryData.size.width -
+          widget._mediaQueryData.size.height);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start, //左詰め
       children: [
         Center(
           child: Container(
-            width: _mediaQueryData.size.width * widthPower - addWidth,
+            width:
+                widget._mediaQueryData.size.width * MyPageListView.widthPower -
+                    addWidth,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: store.greyColor,
-                  width: lineWidth,
+                  color: widget.store.greyColor,
+                  width: MyPageListView.lineWidth,
                 ), //リストを区別する線
               ),
             ),
             child: Row(
               children: [
                 SizedBox(
-                  width: _mediaQueryData.size.width / 50,
+                  width: widget._mediaQueryData.size.width / 50,
                 ),
-                Text(tagTitle,
+                Text(widget.tagTitle,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 15)),
               ],
@@ -448,49 +471,54 @@ class MyPageListView extends StatelessWidget {
                   //リストの一つ一つを作成するListTitle
                   ListTile(
                       //左のアイコン
-                      leading: Icon(list[index]["icon"],
-                          size: 35, color: store.mainColor), //アイコンの色
+                      leading: Icon(widget.list[index]["icon"],
+                          size: 35, color: widget.store.mainColor), //アイコンの色
                       //右側の矢印アイコン
                       trailing: Icon(
                         Icons.arrow_forward_ios,
                         size: 25,
-                        color: store.greyColor,
+                        color: widget.store.greyColor,
                       ),
-                      title: Text(list[index]["title"]), //タイトル
+                      title: Text(widget.list[index]["title"]), //タイトル
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 5,
-                          horizontal: _mediaQueryData.size.width / 20 +
+                          horizontal: widget._mediaQueryData.size.width / 20 +
                               addWidth / 2), //タイル内の余白
                       onTap: () {
-                        if (list[index]["push"] == "overlay") {
-                          store.changeOverlay(true);
-                          list[index]["overlay"].show(
-                            //これでおーばーれい表示
-                            context: context,
-                          );
-                        } else {
-                          Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      list[index]["push"]));
-                        }
+                        setState(() async {
+                          if (widget.list[index]["push"] == "overlay") {
+                            widget.store.changeOverlay(true);
+                            await widget.list[index]["overlay"].show(
+                              //これでおーばーれい表示
+                              context: context,
+                            );
+                          } else {
+                            await Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        widget.list[index]["push"]));
+                          }
+                          widget.store.getMyUserInfo();
+                        });
                       }),
                   Container(
-                    width: _mediaQueryData.size.width * widthPower - addWidth,
+                    width: widget._mediaQueryData.size.width *
+                            MyPageListView.widthPower -
+                        addWidth,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                            color: store.greyColor,
-                            width: lineWidth), //リストを区別する線
+                            color: widget.store.greyColor,
+                            width: MyPageListView.lineWidth), //リストを区別する線
                       ),
                     ),
                   )
                 ],
               ); //ボタンを押した際の挙動
             },
-            itemCount: list.length, //リスト数
+            itemCount: widget.list.length, //リスト数
           ),
         ),
       ],
