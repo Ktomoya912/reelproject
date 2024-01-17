@@ -5,6 +5,8 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class NewMemberCompany extends StatefulWidget {
   final bool isObscure;
@@ -29,7 +31,8 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
 
   String name = '';
   String username = '';
-  String mail = '';
+  String mymail = '';
+  String usermail = '';
   String phoneNumber = '';
   String postalCode = '';
   String prefecture = '';
@@ -40,6 +43,8 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
   String day = '';
   String password = '';
   String passwordCheck = '';
+  String homePage = '';
+  String representative = '';
   bool ruleCheck = false;
   @override
   void initState() {
@@ -51,6 +56,61 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+
+    Future createUser(
+      String username,
+      String password,
+      String image_url,
+      String year,
+      String months,
+      String days,
+      String sex,
+      String name,
+      String postalCode,
+      String prefecture,
+      String city,
+      String address,
+      String phoneNumber,
+      String mymail,
+      String usermail,
+      String homepage,
+      String representative,
+    ) async {
+      Uri url = Uri.parse(
+          "${ChangeGeneralCorporation.apiUrl}/users/company?send_verification_email=true");
+      final response = await post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json'
+        },
+        body: json.encode({
+          'username': username,
+          'password': password,
+          'image_url': image_url,
+          'email': mymail,
+          'sex': sex,
+          'birthday': '$year-$months-$days',
+          'user_type': 'c',
+          'company': {
+            'name': name,
+            'postal_code': postalCode,
+            'prefecture': prefecture,
+            'city': city,
+            'address': address,
+            'phone_number': phoneNumber,
+            'email': usermail,
+            'homepage': '',
+            'representative': '',
+          }
+        }),
+      );
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(json.decode(response.body));
+      }
+    }
 
     return Scaffold(
       appBar: const TitleAppBar(
@@ -116,6 +176,65 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     width: 300,
                     child: TextFormField(
                       validator: (value) {
+                        representative = value as String;
+
+                        return null;
+                      },
+                      enabled: true,
+                      maxLength: 20,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        labelText: '代表者名',
+                        border: OutlineInputBorder(),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        hintText: '法人の代表者名を入力してください',
+                        counterText: '20文字以内',
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                ),
+                Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (!checkMail(value as String)) {
+                          usermail = '';
+                          return '適切な入力ではありません';
+                        }
+                        usermail = value;
+                        // print(mail);
+                        return null;
+                      },
+                      enabled: true,
+                      maxLength: 50,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        labelText: '法人用メールアドレス',
+                        border: OutlineInputBorder(),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        hintText: '例：info@example.com',
+                        counterText: '50文字以内',
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                ),
+
+                Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      validator: (value) {
                         if (!checkUserName(value as String)) {
                           username = '';
                           return '適切な入力ではありません';
@@ -149,10 +268,10 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     child: TextFormField(
                       validator: (value) {
                         if (!checkMail(value as String)) {
-                          mail = '';
+                          mymail = '';
                           return '適切な入力ではありません';
                         }
-                        mail = value;
+                        mymail = value;
                         // print(mail);
                         return null;
                       },
@@ -160,7 +279,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                       maxLength: 50,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
-                        labelText: 'メールアドレス',
+                        labelText: '個人用メールアドレス',
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -198,6 +317,46 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         hintText: '例：09012345678',
                         counterText: '11文字以内',
+                      ),
+                    ),
+                  ),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                ),
+
+                const SizedBox(
+                  width: 300,
+                  child: Text(
+                    '任意入力',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.all(5.0),
+                ),
+                Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      validator: (value) {
+                        postalCode = value as String;
+                        return null;
+                      },
+                      enabled: true,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        labelText: '会社のホームページURL',
+                        border: OutlineInputBorder(),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        hintText: 'https://example.com',
                       ),
                     ),
                   ),
@@ -336,7 +495,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                         return null;
                       },
                       enabled: true,
-                      maxLength: 7,
+                      maxLength: 50,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         labelText: '番地・建物名',
@@ -412,6 +571,9 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                                 if (checkMonth(value)) {
                                   setState(() {
                                     month = value;
+                                    if (month.length == 1) {
+                                      month = '0$month';
+                                    }
                                   });
                                   //print(value);
                                 } else {
@@ -443,6 +605,9 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                                 if (checkDay(value)) {
                                   setState(() {
                                     day = value;
+                                    if (day.length == 1) {
+                                      day = '0$day';
+                                    }
                                   });
                                   //print(value);
                                 } else {
@@ -481,7 +646,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Radio(
-                      value: 'male',
+                      value: 'm',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -497,7 +662,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                       padding: EdgeInsets.all(15.0),
                     ),
                     Radio(
-                      value: 'female',
+                      value: 'f',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -513,7 +678,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                       padding: EdgeInsets.all(15.0),
                     ),
                     Radio(
-                      value: 'other',
+                      value: 'o',
                       groupValue: selectedGender,
                       onChanged: (value) {
                         setState(() {
@@ -647,21 +812,40 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                 // ログインボタンが押されたときの処理をここに追加予定
                 if (checkName(name) &&
                     checkUserName(username) &&
-                    checkMail(mail) &&
+                    checkMail(mymail) &&
                     checkPhoneNumber(phoneNumber) &&
                     checkPostalCode(postalCode) &&
                     checkYear(year) &&
                     checkMonth(month) &&
                     checkDay(day) &&
-                    checkSelectedGender(selectedGender) != '' &&
+                    selectedGender != '' &&
                     checkPassword(password) &&
                     checkPassword(passwordCheck) &&
                     checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck) {
+                  createUser(
+                      username,
+                      password,
+                      '',
+                      year,
+                      month,
+                      day,
+                      selectedGender as String,
+                      name,
+                      postalCode,
+                      prefecture,
+                      city,
+                      address,
+                      phoneNumber,
+                      mymail,
+                      usermail,
+                      homePage,
+                      representative);
                   Navigator.pop(context); //pop
                   Navigator.push(
                     context,
                     // MaterialPageRoute(builder: (context) => Home()),
+
                     MaterialPageRoute(
                         builder: (context) => const FinishScreen(
                               appbarText: "会員登録完了",
@@ -728,7 +912,7 @@ bool checkUserName(String username) {
     caseSensitive: false,
     r"^[a-zA-Z0-9_]+$",
   );
-  return regName.hasMatch(username);
+  return regName.hasMatch(username) && username.length >= 8;
 }
 
 bool checkMail(String mail) {

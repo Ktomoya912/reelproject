@@ -1,4 +1,5 @@
-import 'dart:js_interop';
+// import 'dart:js_interop';
+//使用していないためコメントアウト
 
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
