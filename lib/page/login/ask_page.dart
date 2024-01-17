@@ -3,9 +3,10 @@ import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
-import 'package:reelproject/component/comment_box/comment_box.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:http/http.dart';
+import 'dart:convert';
 
 // お問い合わせ画面
 
@@ -29,6 +30,17 @@ class AskPageState extends State<AskPage> {
   String email = ""; // メールアドレス
   String subject = ""; // 件名
   String body = ""; // メッセージ内容
+
+  Future ask(String email, String subject, String body) async {
+    Uri url = Uri.parse(
+        "${ChangeGeneralCorporation.apiUrl}/users/send-mail-to-admin");
+    final response = await post(url,
+        headers: {'content-type': 'application/x-www-form-urlencoded'},
+        body: {'email': email, 'subject': subject, 'body': body});
+    final Map<String, dynamic> data = json.decode(response.body);
+    if (response.statusCode == 200) {
+    } else {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +95,7 @@ class AskPageState extends State<AskPage> {
                     ),
                     TextFormField(
                       validator: (value) {
-                        if (!_CheckMail(value as String)) {
+                        if (!checkMail(value as String)) {
                           email = '';
                           return '適切な入力ではありません';
                         }
@@ -227,7 +239,7 @@ class AskPageState extends State<AskPage> {
   }
 }
 
-bool _CheckMail(String mail) {
+bool checkMail(String mail) {
   //メールアドレスの正規表現
   final regEmail = RegExp(
     caseSensitive: false,
