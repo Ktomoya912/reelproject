@@ -23,6 +23,16 @@ class GeneralMemInfConf extends StatefulWidget {
 
 class _GeneralMemInfConfState extends State<GeneralMemInfConf> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final store =
+          Provider.of<ChangeGeneralCorporation>(context, listen: false);
+      store.getMyUserInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return const Scaffold(
       //アップバー
@@ -58,12 +68,15 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 150, //アイコン高さ
-                    width: 150, //アイコン幅
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, //円形に
-                        color: store.subColor), //アイコン周囲円の色
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: ClipRRect(
+                      // これを追加
+                      borderRadius: BorderRadius.circular(50), // これを追加
+                      child: Image.network("${store.userInfo["image_url"]}",
+                          fit: BoxFit.cover),
+                    ),
                   ),
                 ],
               ),
@@ -90,9 +103,9 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　ユーザ名',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["username"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -112,9 +125,9 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　メールアドレス',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["email"]}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -134,9 +147,9 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　生年月日',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["birthday"].substring(0, 4)}年 ${store.userInfo["birthday"].substring(5, 7)}月 ${store.userInfo["birthday"].substring(8, 10)}日',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,
@@ -156,9 +169,9 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
                         color: store.greyColor,
                       ),
                     ),
-                    const Text(
-                      '　男性',
-                      style: TextStyle(
+                    Text(
+                      '　${store.userInfo["sex"] == "m" ? "男性" : store.userInfo["sex"] == "f" ? "女性" : "その他"}',
+                      style: const TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.black,

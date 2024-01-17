@@ -674,6 +674,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                           decoration:
                                               TextDecoration.underline, //下線
                                           decorationThickness: 2, // 下線の太さの設定
+                                          decorationColor: Colors.grey[600],
                                         ),
                                       ),
                                       Text(
@@ -1127,18 +1128,21 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                       Row(
                                                         children: [
                                                           Container(
-                                                            height: 40,
-                                                            width: 40,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.blue,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          30),
-                                                            ),
-                                                          ),
+                                                              height: 40,
+                                                              width: 40,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    Colors.blue,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            30),
+                                                              ),
+                                                              child: Image.network(
+                                                                  "${jobDetailList["review"][index]["user"]["image_url"]}",
+                                                                  fit: BoxFit
+                                                                      .cover)),
                                                           SizedBox(
                                                               width: width /
                                                                   50), //空白

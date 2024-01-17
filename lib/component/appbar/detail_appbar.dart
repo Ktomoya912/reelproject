@@ -12,7 +12,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
+class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
   const DetailAppbar({
     super.key,
     required this.postJedge,
@@ -38,6 +38,133 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
+  State<DetailAppbar> createState() => _DetailAppbarState();
+}
+
+class _DetailAppbarState extends State<DetailAppbar> {
+  //インプレッションデータ
+  Map<String, dynamic> impressionData = {
+    "favorite_user_count": 0,
+    "pv": 8,
+    "review_count": 0,
+    "sex": {
+      "all": {
+        "20際未満": 0.0,
+        "20-24歳": 0.0,
+        "25-29歳": 0.0,
+        "30-34際": 0.0,
+        "35-39際": 0.0,
+        "40際以上": 0.0
+      },
+      //総合計
+      "allJedge": 0,
+      "o": {
+        "20際未満": 0.0,
+        "20-24歳": 0.0,
+        "25-29歳": 0.0,
+        "30-34際": 0.0,
+        "35-39際": 0.0,
+        "40際以上": 0.0
+      },
+      "oJedge": 0,
+      "m": {
+        "20際未満": 0.0,
+        "20-24歳": 0.0,
+        "25-29歳": 0.0,
+        "30-34際": 0.0,
+        "35-39際": 0.0,
+        "40際以上": 0.0
+      },
+      "mJedge": 0,
+      "f": {
+        "20際未満": 0.0,
+        "20-24歳": 0.0,
+        "25-29歳": 0.0,
+        "30-34際": 0.0,
+        "35-39際": 0.0,
+        "40際以上": 0.0
+      },
+      "fJedge": 0,
+    }
+  };
+
+  //インプレッションデータ更新
+  void changeImpressionData(Map<String, dynamic> data) {
+    setState(() {
+      impressionData["favorite_user_count"] = data["favorite_user_count"];
+      impressionData["pv"] = data["pv"];
+      impressionData["review_count"] = data["review_count"];
+      //性別
+      List<String> sex = ["o", "m", "f"];
+      List<String> jedge = ["oJedge", "mJedge", "fJedge"];
+      List<String> age = [
+        "20際未満",
+        "20-24歳",
+        "25-29歳",
+        "30-34際",
+        "35-39際",
+        "40際以上"
+      ];
+      List<String> ageApi = [
+        "under_20",
+        "20-24",
+        "25-29",
+        "30-34",
+        "35-39",
+        "over_40"
+      ];
+      //all初期化
+      impressionData["sex"]["all"] = {
+        "20際未満": 0.0,
+        "20-24歳": 0.0,
+        "25-29歳": 0.0,
+        "30-34際": 0.0,
+        "35-39際": 0.0,
+        "40際以上": 0.0
+      };
+      impressionData["sex"]["allJedge"] = 0;
+      //代入 & all計算
+      for (int sexIndex = 0; sexIndex < 3; sexIndex++) {
+        //初期化
+        impressionData["sex"][jedge[sexIndex]] = 0;
+        for (int ageIndex = 0; ageIndex < 6; ageIndex++) {
+          //初期化
+          impressionData["sex"][sex[sexIndex]][age[ageIndex]] = 0.0;
+          //代入
+          impressionData["sex"][sex[sexIndex]][age[ageIndex]] +=
+              data["sex"][sex[sexIndex]][ageApi[ageIndex]];
+          //all計算
+          impressionData["sex"]["all"][age[ageIndex]] +=
+              data["sex"][sex[sexIndex]][ageApi[ageIndex]];
+          //対象の要素がすべて0でないかのジャッジ
+          impressionData["sex"][jedge[sexIndex]] +=
+              data["sex"][sex[sexIndex]][ageApi[ageIndex]];
+        }
+        impressionData["sex"]["allJedge"] +=
+            impressionData["sex"][jedge[sexIndex]];
+      }
+    });
+  }
+
+  //インプレッションデータ取得
+  Future getImpressiont(ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/${widget.eventJobJedge}s/${widget.id}/impressions');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changeImpressionData(data);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Scaffold(
@@ -56,7 +183,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: [
           //法人の際に表示
-          if (postJedge && !store.jedgeGC)
+          if (widget.postJedge && !store.jedgeGC)
             SizedBox(
               child: Row(
                 children: [
@@ -65,7 +192,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            '投稿詳細(投稿者限定) ',
+                            '投稿詳細(投稿者限定)  ',
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 15,
@@ -79,63 +206,33 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                         showModalBottomSheet<int>(
                             context: context,
                             builder: (BuildContext context) {
-                              return SingleChildScrollView(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                      alignment: Alignment.bottomLeft,
-                                      width: mediaQueryData.size.width * 10,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: greyColor,
-                                            width: 0.5,
+                              return SizedBox(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                        alignment: Alignment.bottomLeft,
+                                        width:
+                                            widget.mediaQueryData.size.width *
+                                                10,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: DetailAppbar.greyColor,
+                                              width: 0.5,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      child: const Text("投稿情報")),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: greyColor,
-                                          width: 0.5,
-                                        ),
-                                      ),
-                                    ),
-                                    child: ListTile(
-                                      //右側の矢印アイコン
-                                      trailing: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 20,
-                                        color: greyColor,
-                                      ),
-                                      tileColor: Colors.white, //背景
-                                      leading:
-                                          const Icon(Icons.signal_cellular_alt),
-                                      title: const Text('インプレッション'),
-                                      onTap: () {
-                                        Navigator.of(context).pop(1);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Impressions(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  if (eventJobJedge == "job")
+                                        child: const Text("投稿情報")),
                                     Container(
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: greyColor,
+                                            color: DetailAppbar.greyColor,
                                             width: 0.5,
                                           ),
                                         ),
@@ -145,118 +242,163 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                                         trailing: Icon(
                                           Icons.arrow_forward_ios,
                                           size: 20,
-                                          color: greyColor,
+                                          color: DetailAppbar.greyColor,
                                         ),
                                         tileColor: Colors.white, //背景
-                                        leading: const Icon(Icons.fact_check),
-                                        title: const Text('応募者確認'),
-                                        onTap: () => {
-                                          Navigator.of(context).pop(2),
+                                        leading: const Icon(
+                                            Icons.signal_cellular_alt),
+                                        title: const Text('インプレッション'),
+                                        onTap: () async {
+                                          await getImpressiont(store);
+                                          Navigator.of(context).pop(1);
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PostMemList(id: id),
+                                              builder: (context) => Impressions(
+                                                impressionData: impressionData,
+                                              ),
                                             ),
-                                          ),
+                                          );
                                         },
                                       ),
                                     ),
-                                  Container(
-                                      alignment: Alignment.bottomLeft,
-                                      width: mediaQueryData.size.width * 10,
-                                      height: 40,
+                                    if (widget.eventJobJedge == "job")
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: DetailAppbar.greyColor,
+                                              width: 0.5,
+                                            ),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          //右側の矢印アイコン
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                            color: DetailAppbar.greyColor,
+                                          ),
+                                          tileColor: Colors.white, //背景
+                                          leading: const Icon(Icons.fact_check),
+                                          title: const Text('応募者確認'),
+                                          onTap: () => {
+                                            Navigator.of(context).pop(2),
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PostMemList(id: widget.id),
+                                              ),
+                                            ),
+                                          },
+                                        ),
+                                      ),
+                                    Container(
+                                        alignment: Alignment.bottomLeft,
+                                        width:
+                                            widget.mediaQueryData.size.width *
+                                                10,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: DetailAppbar.greyColor,
+                                              width: 0.5,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Text("投稿内容編集・削除")),
+                                    Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: greyColor,
+                                            color: DetailAppbar.greyColor,
                                             width: 0.5,
                                           ),
                                         ),
                                       ),
-                                      child: const Text("投稿内容編集・削除")),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: greyColor,
-                                          width: 0.5,
+                                      child: ListTile(
+                                        //右側の矢印アイコン
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: DetailAppbar.greyColor,
+                                        ),
+                                        tileColor: Colors.white, //背景
+                                        leading: const Icon(Icons.edit),
+                                        title: const Text('投稿内容編集'),
+                                        onTap: () =>
+                                            Navigator.of(context).pop(3),
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: DetailAppbar.greyColor,
+                                            width: 0.5,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    child: ListTile(
-                                      //右側の矢印アイコン
-                                      trailing: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 20,
-                                        color: greyColor,
-                                      ),
-                                      tileColor: Colors.white, //背景
-                                      leading: const Icon(Icons.edit),
-                                      title: const Text('投稿内容編集'),
-                                      onTap: () => Navigator.of(context).pop(3),
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: greyColor,
-                                          width: 0.5,
+                                      child: ListTile(
+                                        //右側の矢印アイコン
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: DetailAppbar.greyColor,
                                         ),
-                                      ),
-                                    ),
-                                    child: ListTile(
-                                      //右側の矢印アイコン
-                                      trailing: Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 20,
-                                        color: greyColor,
-                                      ),
-                                      tileColor: Colors.white, //背景
-                                      leading: const Icon(Icons.delete),
-                                      title: const Text('投稿削除'),
-                                      onTap: () => {
-                                        //Navigator.of(context).pop(3),
+                                        tileColor: Colors.white, //背景
+                                        leading: const Icon(Icons.delete),
+                                        title: const Text('投稿削除'),
+                                        onTap: () => {
+                                          //Navigator.of(context).pop(3),
 
-                                        //投稿削除
-                                        if (!notPostJedge)
-                                          {
-                                            store.changeOverlay(true),
-                                            DeleteConf().show(
-                                                context: context,
-                                                id: id,
-                                                eventJobJedge: eventJobJedge)
-                                          }
-                                        //未投稿削除
-                                        else
-                                          {
-                                            store.changeOverlay(true),
-                                            NotpostDeleteConf().show(
-                                                context: context,
-                                                id: id,
-                                                eventJobJedge: eventJobJedge)
-                                          }
-                                      },
+                                          //投稿削除
+                                          if (!widget.notPostJedge)
+                                            {
+                                              store.changeOverlay(true),
+                                              DeleteConf().show(
+                                                  context: context,
+                                                  id: widget.id,
+                                                  eventJobJedge:
+                                                      widget.eventJobJedge)
+                                            }
+                                          //未投稿削除
+                                          else
+                                            {
+                                              store.changeOverlay(true),
+                                              NotpostDeleteConf().show(
+                                                  context: context,
+                                                  id: widget.id,
+                                                  eventJobJedge:
+                                                      widget.eventJobJedge)
+                                            }
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topRight,
-                                    color: Colors.white,
-                                    width: mediaQueryData.size.width * 10,
-                                    height: 40,
-                                    child: Text("投稿期間 : $postTerm まで"),
-                                  ),
-                                ],
-                              ));
+                                    Container(
+                                      alignment: Alignment.topRight,
+                                      color: Colors.white,
+                                      width:
+                                          widget.mediaQueryData.size.width * 10,
+                                      height: 40,
+                                      child:
+                                          Text("投稿期間 : ${widget.postTerm} まで"),
+                                    ),
+                                  ],
+                                )),
+                              );
                             });
                       }),
                 ],
               ),
             )
           //応募ボタン
-          else if (!postJedge && store.jedgeGC && eventJobJedge == "job")
+          else if (!widget.postJedge &&
+              store.jedgeGC &&
+              widget.eventJobJedge == "job")
             Row(
               children: [
                 SizedBox(
@@ -268,7 +410,7 @@ class DetailAppbar extends StatelessWidget implements PreferredSizeWidget {
                         JobApp().show(
                             //これでおーばーれい表示
                             context: context,
-                            id: id);
+                            id: widget.id);
                       },
 
                       //色

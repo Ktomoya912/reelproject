@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+//タイトルアップバー
+import 'package:reelproject/component/appbar/title_appbar.dart';
 
 @RoutePage()
 class ImpressionsRouterPage extends AutoRouter {
@@ -12,7 +14,10 @@ class ImpressionsRouterPage extends AutoRouter {
 
 @RoutePage()
 class Impressions extends StatefulWidget {
-  const Impressions({super.key});
+  const Impressions({super.key, required this.impressionData});
+
+  final Map<String, dynamic> impressionData;
+
   @override
   State<Impressions> createState() => _ImpressionsState();
 }
@@ -20,15 +25,17 @@ class Impressions extends StatefulWidget {
 class _ImpressionsState extends State<Impressions> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       //アップバー
-      appBar: ImpressionsAppBar(
-        title: "マイページ",
+      appBar: const TitleAppBar(
+        title: 'インプレッション',
         jedgeBuck: true,
       ),
 
       //内部
-      body: ScrollImpressionsDetail(),
+      body: ScrollImpressionsDetail(
+        impressionData: widget.impressionData,
+      ),
     );
   }
 }
@@ -37,7 +44,10 @@ class _ImpressionsState extends State<Impressions> {
 class ScrollImpressionsDetail extends StatelessWidget {
   const ScrollImpressionsDetail({
     super.key,
+    required this.impressionData,
   });
+
+  final Map<String, dynamic> impressionData;
 
   //一般向けマイページリスト
 
@@ -91,21 +101,21 @@ class ScrollImpressionsDetail extends StatelessWidget {
                 color: store.greyColor,
                 thickness: 1,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '閲覧者総数',
+                  const Text(
+                    '  閲覧者総数',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    '100人',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                    '${impressionData["pv"]}人  ',
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
@@ -115,21 +125,62 @@ class ScrollImpressionsDetail extends StatelessWidget {
                 color: store.greyColor,
                 thickness: 1,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'お気に入り登録者数',
+                  const Text(
+                    '  お気に入り登録者数',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    '50人',
+                    '${impressionData["favorite_user_count"]}人  ',
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                color: store.greyColor,
+                thickness: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    '  性別割合',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 0,
+                  ),
+                  Text(
+                    '男性:${impressionData["sex"]["mJedge"] / impressionData["sex"]["allJedge"] * 100}%',
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    '女性:${impressionData["sex"]["fJedge"] / impressionData["sex"]["allJedge"] * 100}%',
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    'その他:${impressionData["sex"]["oJedge"] / impressionData["sex"]["allJedge"] * 100}%  ',
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
@@ -150,10 +201,11 @@ class ScrollImpressionsDetail extends StatelessWidget {
                         const Padding(padding: EdgeInsets.all(15)),
                         MyPieChart(
                           key: ValueKey(store.mainDataMap),
-                          dataMap: store.mainDataMap,
+                          dataMap: impressionData["sex"]["all"],
                           mainflag: true,
                           onTap: () =>
                               store.toggleDataSelection(store.mainDataMap),
+                          jedgeZero: impressionData["pv"] == 0 ? true : false,
                         ),
                         const Padding(padding: EdgeInsets.all(15)),
                         Text(store.mainTitle,
@@ -178,10 +230,13 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       children: [
                         MyPieChart(
                           key: ValueKey(store.subDataMap1),
-                          dataMap: store.subDataMap1,
+                          dataMap: impressionData["sex"]["m"],
                           mainflag: false,
                           onTap: () =>
                               store.toggleDataSelection(store.subDataMap1),
+                          jedgeZero: impressionData["sex"]["mJedge"] == 0
+                              ? true
+                              : false,
                         ),
                         const Padding(padding: EdgeInsets.all(10)),
                         Text(store.subTitle1,
@@ -199,10 +254,13 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       children: [
                         MyPieChart(
                           key: ValueKey(store.subDataMap2),
-                          dataMap: store.subDataMap2,
+                          dataMap: impressionData["sex"]["f"],
                           mainflag: false,
                           onTap: () =>
                               store.toggleDataSelection(store.subDataMap2),
+                          jedgeZero: impressionData["sex"]["fJedge"] == 0
+                              ? true
+                              : false,
                         ),
                         const Padding(padding: EdgeInsets.all(10)),
                         Text(store.subTitle2,
@@ -222,10 +280,13 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       children: [
                         MyPieChart(
                           key: ValueKey(store.subDataMap3),
-                          dataMap: store.subDataMap3,
+                          dataMap: impressionData["sex"]["o"],
                           mainflag: false,
                           onTap: () =>
                               store.toggleDataSelection(store.subDataMap3),
+                          jedgeZero: impressionData["sex"]["oJedge"] == 0
+                              ? true
+                              : false,
                         ),
                         const Padding(padding: EdgeInsets.all(10)),
                         Text(store.subTitle3,
@@ -238,6 +299,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                   ),
                 ],
               ),
+              const Padding(padding: EdgeInsets.all(30)),
             ],
           ),
         ),
@@ -253,62 +315,89 @@ class MyPieChart extends StatelessWidget {
     // required this.gradientList,
     required this.mainflag,
     required this.onTap,
+    required this.jedgeZero,
   });
 
   final Map<String, double> dataMap;
   // final List<List<Color>> gradientList;
   final bool mainflag;
   final VoidCallback onTap;
+  final bool jedgeZero;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: PieChart(
-            dataMap: dataMap,
-            animationDuration: const Duration(milliseconds: 800),
-            chartLegendSpacing: 64,
-            chartRadius: mainflag
+    //データがない場合
+    return jedgeZero
+        ? SizedBox(
+            width: !mainflag
                 ? 150
                 : MediaQuery.of(context).size.width *
                     MediaQuery.of(context).size.height /
                     5250,
-            colorList: const [
-              Color(0xff6c5ce7),
-              Color(0xff0984e3),
-              Color(0xff00cec9),
-              Color(0xff00b894),
-              Color(0xfffdcb6e),
-              Color(0xffff7675),
-            ],
-            // gradientList: gradientList,
-            // emptyColorGradient: [
-            //   Color(0xff6c5ce7),
-            //   Colors.blue,
-            // ],
-            initialAngleInDegree: 0,
-            chartType: ChartType.ring,
-            ringStrokeWidth: mainflag ? 52 : 35,
-            legendOptions: LegendOptions(
-              showLegendsInRow: false,
-              legendPosition: LegendPosition.right,
-              showLegends: mainflag,
-              // legendShape: _BoxShape.circle,
-              legendTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
+            height: !mainflag
+                ? 107
+                : MediaQuery.of(context).size.width *
+                    MediaQuery.of(context).size.height /
+                    5250,
+            child: const Center(
+              child: Text(
+                'データがありません',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
               ),
             ),
-            chartValuesOptions: ChartValuesOptions(
-              showChartValueBackground: true,
-              showChartValues: mainflag,
-              showChartValuesInPercentage: true,
-              showChartValuesOutside: true,
-              decimalPlaces: 1,
-            ),
-          )),
-    );
+          )
+
+        //データがある場合
+        : GestureDetector(
+            onTap: onTap,
+            child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: PieChart(
+                  dataMap: dataMap,
+                  animationDuration: const Duration(milliseconds: 800),
+                  chartLegendSpacing: 64,
+                  chartRadius: mainflag
+                      ? 150
+                      : MediaQuery.of(context).size.width *
+                          MediaQuery.of(context).size.height /
+                          5250,
+                  colorList: const [
+                    Color(0xff6c5ce7),
+                    Color(0xff0984e3),
+                    Color(0xff00cec9),
+                    Color(0xff00b894),
+                    Color(0xfffdcb6e),
+                    Color(0xffff7675),
+                  ],
+                  // gradientList: gradientList,
+                  // emptyColorGradient: [
+                  //   Color(0xff6c5ce7),
+                  //   Colors.blue,
+                  // ],
+                  initialAngleInDegree: 0,
+                  chartType: ChartType.ring,
+                  ringStrokeWidth: mainflag ? 52 : 35,
+                  legendOptions: LegendOptions(
+                    showLegendsInRow: false,
+                    legendPosition: LegendPosition.right,
+                    showLegends: mainflag,
+                    // legendShape: _BoxShape.circle,
+                    legendTextStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  chartValuesOptions: ChartValuesOptions(
+                    showChartValueBackground: true,
+                    showChartValues: mainflag,
+                    showChartValuesInPercentage: true,
+                    showChartValuesOutside: true,
+                    decimalPlaces: 1,
+                  ),
+                )),
+          );
   }
 }
 

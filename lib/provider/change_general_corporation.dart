@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
@@ -9,11 +12,78 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const String typeAll = "type=all";
   static const String typeActive = "type=all";
   static const String typeInactive = "type=inactive";
-  static const String typeDraft = "type=all";
+  static const String typeDraft = "type=draft";
+  static const String typePosted = "type=posted";
 
+  //ユーザ情報
   String accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwODAwMzY5NH0.nBcJcVbG62UVZ4PycD8_bhcAPM9RFMMPnnc10cEQ6qY";
-  int myID = 1; //自分のID(一般ID)
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwODEwMjY1N30.CNaV-8Fs595LdFzF6ahVqwYl5OX89Tt3mYHd4LE0Hm4";
+  int myID = 2; //自分のID(一般ID)
+
+  //自分のユーザ情報マップ(APIにて取得)
+  Map<String, dynamic> userInfo = {
+    "username": "",
+    "image_url": "",
+    "email": "",
+    "sex": "",
+    "birthday": "",
+    "user_type": "",
+    "id": 2,
+    "company": {
+      "name": "",
+      "postal_code": "string",
+      "prefecture": "string",
+      "city": "string",
+      "address": "string",
+      "phone_number": "string",
+      "email": "user@example.com",
+      "homepage": "",
+      "representative": "string",
+      "id": 1
+    },
+    "is_active": true
+  };
+
+  //自分のユーザ情報マップを変更する関数
+  changeUserInfo(Map<String, dynamic> info) {
+    userInfo = info;
+    notifyListeners();
+  }
+
+  //自分のユーザ情報マップをAPIにて取得
+  Future getMyUserInfo() async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/me');
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${accessToken}'
+    });
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeUserInfo(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  //自分のユーザ情報を更新
+  Future UpdateUserInfo() async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${myID}');
+    final response = await http.put(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${accessToken}',
+      'Content-Type': 'application/json',
+    }, body: {
+      "password"
+    });
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeUserInfo(json.decode(data));
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
+  //=============================================
 
   //一般と法人を判断する変数
   //一般:true,  法人:flase

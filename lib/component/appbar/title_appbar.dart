@@ -69,7 +69,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 centerTitle: true, //中央揃え
                 automaticallyImplyLeading: false, //戻るボタンの非表示
                 backgroundColor: store.mainColor, //背景
-                elevation: 0.0, //影なし
+                elevation: 4.0, //影なし
               ), //高さ
             )), //高さ
       ),

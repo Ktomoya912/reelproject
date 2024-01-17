@@ -27,9 +27,9 @@ class ButtonSet extends StatelessWidget {
         if (popTimes == 0) {
           Navigator.popUntil(context, (route) => route.isFirst);
         } else {
-          for (int i = 0; i < popTimes; i++) {
-            Navigator.pop(context);
-          }
+          //Navigator.of(context).pop(popTimes);
+          int count = 0;
+          Navigator.popUntil(context, (_) => count++ >= popTimes);
         }
       },
       style: ElevatedButton.styleFrom(
