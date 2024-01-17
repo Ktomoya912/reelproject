@@ -1133,6 +1133,17 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                       .circular(
                                                                           30),
                                                             ),
+                                                            child: ClipRRect(
+                                                              // これを追加
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50), // これを追加
+                                                              child: Image.network(
+                                                                  "${eventDetailList["review"][index]["user"]["image_url"]}",
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
                                                           ),
                                                           SizedBox(
                                                               width: width /
