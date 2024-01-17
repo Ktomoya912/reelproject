@@ -411,6 +411,8 @@ class _HomeState extends State<Home> {
     });
   }
 
+  bool notEventJedge = false; //イベントがない場合の判定
+
   Future getEventDetailList(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
 
@@ -423,8 +425,9 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeEventDetailList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      notEventJedge = true;
+      // print("error");
+      // throw Exception("Failed");
     }
   }
 
@@ -628,6 +631,8 @@ class _HomeState extends State<Home> {
                                                         notPostJedge: false,
                                                         eventDetailList:
                                                             eventDetailList,
+                                                        notEventJedge:
+                                                            notEventJedge,
                                                       )));
                                           getEventList();
                                           getJobList();
@@ -879,6 +884,7 @@ class _HomeState extends State<Home> {
                                           getEventDetailList(
                                               historyList[i]["id"], store),
                                       eventDetailList: eventDetailList,
+                                      notEventJedge: notEventJedge,
                                     ),
                                 ],
                               ),
@@ -910,6 +916,7 @@ class HistoryButton extends StatelessWidget {
     required this.getHistoryList,
     required this.getEventDetailList,
     required this.eventDetailList,
+    required this.notEventJedge,
   });
 
   final MediaQueryData mediaQueryData;
@@ -922,6 +929,7 @@ class HistoryButton extends StatelessWidget {
   final Function getHistoryList;
   final Function getEventDetailList;
   final Map<String, dynamic> eventDetailList;
+  final bool notEventJedge;
 
   @override
   Widget build(BuildContext context) {
@@ -941,6 +949,7 @@ class HistoryButton extends StatelessWidget {
                             tStore: store,
                             notPostJedge: false,
                             eventDetailList: eventDetailList,
+                            notEventJedge: notEventJedge,
                           )));
               getEventList();
               getJobList();

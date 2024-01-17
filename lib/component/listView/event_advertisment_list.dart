@@ -91,6 +91,8 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     "favoriteJedge": false,
   };
 
+  bool notEventJedge = false; //イベント広告がないか否か
+
   //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
 
   changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
@@ -186,8 +188,11 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     if (response.statusCode == 200) {
       changeEventList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      setState(() {
+        notEventJedge = true;
+      });
+      // print("error");
+      // throw Exception("Failed");
     }
   }
 
@@ -262,6 +267,7 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                     tStore: store,
                                     notPostJedge: widget.notPostJedge,
                                     eventDetailList: eventDetailList,
+                                    notEventJedge: notEventJedge,
                                   )));
                   widget.functionCall();
                   //タップ処理

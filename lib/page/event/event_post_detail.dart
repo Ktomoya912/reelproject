@@ -9,6 +9,8 @@ import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+//タイトルアップバー
+import 'package:reelproject/component/appbar/title_appbar.dart';
 
 class EventPostDetail extends StatefulWidget {
   const EventPostDetail({
@@ -17,12 +19,14 @@ class EventPostDetail extends StatefulWidget {
     required this.tStore,
     required this.notPostJedge,
     required this.eventDetailList,
+    required this.notEventJedge,
   });
 
   final int id;
   final tStore;
   final bool notPostJedge;
   final Map<String, dynamic> eventDetailList;
+  final bool notEventJedge; //イベントが存在しない場合true
 
   @override
   State<EventPostDetail> createState() => _EventPostDetailState();
@@ -30,64 +34,8 @@ class EventPostDetail extends StatefulWidget {
 
 class _EventPostDetailState extends State<EventPostDetail> {
   late Map<String, dynamic> eventDetailList = widget.eventDetailList;
-  // {
-  //   //id
-  //   "id": 1,
-  //   //必須
-  //   //画像
-  //   "image_url": "",
-  //   //タイトル
-  //   "title": "",
-  //   //詳細
-  //   "detail": "",
-  //   "eventTimes": [
-  //     {
-  //       "start_time": "2024-01-18T15:21:23",
-  //       "end_time": "2024-01-18T16:21:23",
-  //       "id": 10
-  //     }
-  //   ], //開催日時
-  //   //開催場所
-  //   "postalNumber": "", //郵便番号
-  //   "prefecture": "", //都道府県
-  //   "city": "", //市町村
-  //   "houseNumber": "", //番地・建物名
 
-  //   //その他(任意)
-  //   "tag": [], //ハッシュタグ
-  //   "phone": "", //電話番号
-  //   "mail": "", //メールアドレス
-  //   "url": "", //URL
-  //   "fee": "", //参加費
-  //   "Capacity": "", //定員
-  //   "notes": "", //注意事項
-  //   "addMessage": "", //追加メッセージ
-
-  //   //レビュー
-  //   "reviewPoint": 0, //評価
-  //   //星の割合(前から1,2,3,4,5)
-  //   "ratioStarReviews": [0.0, 0.0, 0.0, 0.0, 0.0],
-  //   //レビュー数
-  //   "reviewNumber": 0,
-  //   //投稿ID
-  //   "reviewId": 0,
-  //   //レビュー内容
-  //   "review": [],
-
-  //   //この広告を投稿したか
-  //   "postJedge": false,
-
-  //   //未投稿か否か(true:未投稿,false:投稿済み)
-  //   "notPost": false,
-
-  //   //掲載期間
-  //   "postTerm": "2023年12月10日",
-
-  //   //お気に入りか否か
-  //   "favoriteJedge": false,
-  // };
-
-  //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
+  late bool notEventJedge = widget.notEventJedge;
 
   changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
     setState(() {
@@ -170,6 +118,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
     });
   }
 
+  //イベント詳細取得
   Future getEventList(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
 
@@ -182,15 +131,18 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       changeEventList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      setState(() {
+        notEventJedge = true;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getEventList(widget.id, widget.tStore);
+    if (!widget.notEventJedge) {
+      getEventList(widget.id, widget.tStore);
+    }
   }
 
   //お気に入り登録
@@ -202,7 +154,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
       //'Authorization': 'Bearer ${store.accessToken}'
       'authorization': 'Bearer ${store.accessToken}'
     });
-    getEventList(widget.id, widget.tStore);
+    if (response.statusCode == 200) {
+      getEventList(widget.id, widget.tStore);
+    } else {
+      setState(() {
+        notEventJedge = true;
+      });
+    }
   }
 
   //求人広告のリスト
@@ -292,7 +250,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
           'review': detail,
           'review_point': review_point,
         }));
-    getEventList(widget.id, widget.tStore);
+    if (response.statusCode == 200) {
+      getEventList(widget.id, widget.tStore);
+    } else {
+      setState(() {
+        notEventJedge = true;
+      });
+    }
   }
 
   //レビュー削除
@@ -303,7 +267,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
     });
-    getEventList(widget.id, widget.tStore);
+    if (response.statusCode == 200) {
+      getEventList(widget.id, widget.tStore);
+    } else {
+      setState(() {
+        notEventJedge = true;
+      });
+    }
   }
 
   //レビュー編集
@@ -321,7 +291,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
           'review': detail,
           'review_point': review_point,
         }));
-    getEventList(widget.id, widget.tStore);
+    if (response.statusCode == 200) {
+      getEventList(widget.id, widget.tStore);
+    } else {
+      setState(() {
+        notEventJedge = true;
+      });
+    }
   }
 
   final List<bool> _isSelected = [
@@ -345,1281 +321,1317 @@ class _EventPostDetailState extends State<EventPostDetail> {
     double width = mediaQueryData.size.width - (widthBlank * 2);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
-    return Scaffold(
-      //アップバー
-      appBar: DetailAppbar(
-        postJedge: eventDetailList["postJedge"],
-        eventJobJedge: "event",
-        postTerm: eventDetailList["postTerm"],
-        mediaQueryData: mediaQueryData,
-        notPostJedge: eventDetailList["notPost"],
-        id: eventDetailList["id"],
-      ),
-      //body
-      body: ShaderMaskComponent(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              width: width + widthBlank / 10,
-              decoration: const BoxDecoration(
-                border: Border(
-                  right: BorderSide(
-                    color: Color.fromARGB(255, 207, 207, 207),
-                    width: 2,
-                  ),
-                  left: BorderSide(
-                    color: Color.fromARGB(255, 207, 207, 207),
-                    width: 2,
-                  ),
-                ), // 枠線の幅を設定
-              ),
-              child: Center(
-                child: SizedBox(
-                  width: width,
-                  child: Column(
-                    children: [
-                      //空白
-                      SizedBox(
-                        height: mediaQueryData.size.height / 50,
-                      ),
-                      //画像
-                      SizedBox(
-                          height: width * 0.6,
-                          width: width,
-                          child: ClipRRect(
-                            // これを追加
-                            borderRadius: BorderRadius.circular(10), // これを追加
-                            child: Image.network(
-                                eventDetailList["image_url"].toString(),
-                                fit: BoxFit.cover),
-                          )),
-                      //タイトル
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //タイトル
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              eventDetailList["title"],
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
-                          //お気に入りボタン
-                          Row(
-                            children: [
-                              ToggleButtons(
-                                borderWidth: 0.01, // 枠線をなくす
-                                color: Colors.grey[500], //選択していない時の色
-                                selectedColor: store.mainColor, //選択時の色
-                                fillColor: Colors.white, //選択時の背景色
-                                splashColor: store.subColor, //選択時のアクションの色
-                                borderRadius: BorderRadius.circular(50.0), //角丸
-                                isSelected: [
-                                  eventDetailList["favoriteJedge"]
-                                ], //on off
-                                //ボタンを押した時の処理
-                                onPressed: (int index) => setState(() {
-                                  boobkmark(eventDetailList["id"], store);
-                                }),
-                                //アイコン
-                                children: <Widget>[
-                                  eventDetailList["favoriteJedge"]
-                                      ? const Icon(Icons.favorite, size: 40)
-                                      : const Icon(Icons.favorite_border,
-                                          size: 40),
-                                ],
-                              ),
-                              //空白
-                              SizedBox(
-                                width: width / 30,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      //ハッシュタグ
-                      if (eventDetailList["tag"].length != 0)
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                            constraints: BoxConstraints(
-                              minWidth: width, // 最小幅をwidthに設定
-                            ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.start, // 子ウィジェットを左詰めに配置
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                for (int i = 0;
-                                    i < eventDetailList["tag"].length;
-                                    i++)
-                                  TextButton(
-                                    onPressed: () async {
-                                      await Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          pageBuilder: (context, animation,
-                                                  secondaryAnimation) =>
-                                              SearchPage(
-                                            text:
-                                                "#${eventDetailList["tag"][i]["name"]}",
-                                            eventJobJedge: "おすすめイベント",
-                                            sort: "新着順",
-                                            sortType: "id",
-                                            store: store,
-                                          ),
-                                        ),
-                                      );
-                                      getEventList(widget.id, widget.tStore);
-                                    },
-                                    child: Text(
-                                        "#${eventDetailList["tag"][i]["name"]}"),
-                                  ),
-                              ],
-                            ),
-                          ),
+    return notEventJedge
+        ? Scaffold(
+            //アップバー
+            appBar: TitleAppBar(
+              title: "イベント詳細",
+              jedgeBuck: true,
+            ),
+          )
+        : Scaffold(
+            //アップバー
+            appBar: DetailAppbar(
+              postJedge: eventDetailList["postJedge"],
+              eventJobJedge: "event",
+              postTerm: eventDetailList["postTerm"],
+              mediaQueryData: mediaQueryData,
+              notPostJedge: eventDetailList["notPost"],
+              id: eventDetailList["id"],
+            ),
+            //body
+            body: ShaderMaskComponent(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Container(
+                    width: width + widthBlank / 10,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        right: BorderSide(
+                          color: Color.fromARGB(255, 207, 207, 207),
+                          width: 2,
                         ),
-
-                      //空白
-                      SizedBox(
-                        height: mediaQueryData.size.height / 200,
-                      ),
-
-                      //イベント詳細
-                      SizedBox(
-                        width: width - 20,
-                        child: Text(eventDetailList["detail"]),
-                      ),
-
-                      //空白
-                      SizedBox(
-                        height: mediaQueryData.size.height / 50,
-                      ),
-
-                      //イベント開催場所・日時
-                      SizedBox(
-                        width: width - 20,
+                        left: BorderSide(
+                          color: Color.fromARGB(255, 207, 207, 207),
+                          width: 2,
+                        ),
+                      ), // 枠線の幅を設定
+                    ),
+                    child: Center(
+                      child: SizedBox(
+                        width: width,
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
                           children: [
-                            const Text(
-                              "開催場所・日時",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                             //空白
                             SizedBox(
-                              height: mediaQueryData.size.height / 100,
+                              height: mediaQueryData.size.height / 50,
                             ),
-                            Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
+                            //画像
+                            SizedBox(
+                                height: width * 0.6,
+                                width: width,
+                                child: ClipRRect(
+                                  // これを追加
+                                  borderRadius:
+                                      BorderRadius.circular(10), // これを追加
+                                  child: Image.network(
+                                      eventDetailList["image_url"].toString(),
+                                      fit: BoxFit.cover),
+                                )),
+                            //タイトル
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                generateWidgets(
-                                    0, mediaQueryData.size.height / 100),
-                                for (int i = 0;
-                                    i < eventDetailList["eventTimes"].length;
-                                    i++)
-                                  Text(
-                                      "${eventDetailList["eventTimes"][i]["start_time"].substring(0, 4)}年${eventDetailList["eventTimes"][i]["start_time"].substring(5, 7)}月${eventDetailList["eventTimes"][i]["start_time"].substring(8, 10)}日 ${eventDetailList["eventTimes"][i]["start_time"].substring(11, 16)}~${eventDetailList["eventTimes"][i]["end_time"].substring(11, 16)}"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-
-                      //空白
-                      SizedBox(
-                        height: mediaQueryData.size.height / 50,
-                      ),
-
-                      //イベント詳細
-                      //任意入力が一つでもある場合のみ表示
-                      if (eventDetailList["phone"] != "" ||
-                          eventDetailList["mail"] != "" ||
-                          eventDetailList["url"] != "" ||
-                          eventDetailList["fee"] != "" ||
-                          eventDetailList["Capacity"] != "" ||
-                          eventDetailList["notes"] != "" ||
-                          eventDetailList["addMessage"] != "")
-                        SizedBox(
-                          width: width - 20,
-                          child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
-                              children: [
-                                const Text(
-                                  "イベント詳細",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                //空白
-                                SizedBox(
-                                  height: mediaQueryData.size.height / 100,
-                                ),
-                                //イベント参加費
-                                if (eventDetailList["fee"] != "")
-                                  Text("参加費：${eventDetailList["fee"]}円"),
-                                //定員
-                                if (eventDetailList["Capacity"] != "")
-                                  Text("定員：${eventDetailList["Capacity"]}人"),
-
-                                //空白
-                                SizedBox(
-                                  height: mediaQueryData.size.height / 200,
-                                ),
-
-                                //電話番号
-                                if (eventDetailList["phone"] != "")
-                                  Text("電話番号：${eventDetailList["phone"]}"),
-                                //メールアドレス
-                                if (eventDetailList["mail"] != "")
-                                  Text("メールアドレス：${eventDetailList["mail"]}"),
-                                //URL
-                                if (eventDetailList["url"] != "")
-                                  Text("URL：${eventDetailList["url"]}"),
-
-                                //空白
-                                SizedBox(
-                                  height: mediaQueryData.size.height / 50,
-                                ),
-
-                                //注意事項
-                                if (eventDetailList["notes"] != "")
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // 子ウィジェットを左詰めに配置
-                                    children: [
-                                      const Text("注意事項："),
-                                      Text(eventDetailList["notes"]),
-                                    ],
-                                  ),
-
-                                //空白
-                                SizedBox(
-                                  height: mediaQueryData.size.height / 50,
-                                ),
-
-                                //追加メッセージ
-                                if (eventDetailList["addMessage"] != "")
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // 子ウィジェットを左詰めに配置
-                                    children: [
-                                      const Text("追加メッセージ："),
-                                      Text(eventDetailList["addMessage"]),
-                                    ],
-                                  ),
-                                //空白
-                                SizedBox(
-                                  height: mediaQueryData.size.height / 50,
-                                ),
-                              ]),
-                        ),
-                      //空白
-                      SizedBox(
-                        height: mediaQueryData.size.height / 30,
-                      ),
-
-                      //レビュー
-                      SizedBox(
-                          width: width - 20,
-                          //height: 400,
-                          //color: Colors.blue,
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
-                            children: [
-                              //タイトル
-                              const Text(
-                                "評価とレビュー",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: width / 20), //空白
-
-                              Row(
-                                children: [
-                                  SizedBox(width: width / 15), //空白
-                                  //平均評価
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${eventDetailList["reviewPoint"].toString()} ",
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: width / 8,
-                                          fontWeight: FontWeight.bold,
-                                          decoration:
-                                              TextDecoration.underline, //下線
-                                          decorationThickness: 2, // 下線の太さの設定
-                                          decorationColor: Colors.grey[600],
-                                        ),
-                                      ),
-                                      Text(
-                                        " 5段階評価中",
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: width / 35,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-
-                                  SizedBox(width: width / 9), //空白
-
-                                  //評価分布
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      for (int i = 4; i >= 0; i--)
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "${i + 1} ",
-                                              style: TextStyle(
-                                                fontSize: width / 40,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Stack(children: [
-                                              Container(
-                                                height: width / 40,
-                                                width: width / 2,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[300],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: width / 40,
-                                                width: width /
-                                                    2 *
-                                                    eventDetailList[
-                                                        "ratioStarReviews"][i],
-                                                decoration: BoxDecoration(
-                                                  color: Colors.yellow[800],
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              )
-                                            ])
-                                          ],
-                                        ),
-                                      Text(
-                                          "${eventDetailList["reviewNumber"]}件のレビュー")
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: width / 20), //空白
-
-                              Center(
-                                child: TextButton(
-                                  child: Text('タップして評価    ★★★★★',
-                                      style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: width / 25,
-                                          fontWeight: FontWeight.bold)),
-                                  //評価ポップアップ
-                                  onPressed: () {
-                                    //_isSelected初期化
-                                    _isSelected[0] = true;
-                                    for (int buttonIndex = 1;
-                                        buttonIndex < 5;
-                                        buttonIndex++) {
-                                      _isSelected[buttonIndex] = false;
-                                    }
-                                    //投稿済み
-                                    if (eventDetailList["reviewId"] != 0) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('投稿済みです'),
-                                            content: const Text(
-                                                'このイベント広告にはレビューを投稿済みです。'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('閉じる'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                    //未投稿
-                                    else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('評価を選択してください'),
-                                            content: SizedBox(
-                                              width: width * 0.7,
-                                              height: 400,
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                      "※レビューは一般公開され、あなたのアカウント情報が含まれます",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors
-                                                              .grey[600])),
-                                                  //空白
-                                                  SizedBox(height: width / 40),
-                                                  //動的に星の色を変える
-                                                  StatefulBuilder(
-                                                    builder:
-                                                        (BuildContext context,
-                                                                StateSetter
-                                                                    setState) =>
-                                                            ToggleButtons(
-                                                      fillColor:
-                                                          Colors.white, //選択中の色
-                                                      borderWidth: 0, //枠線の太さ
-                                                      borderColor:
-                                                          Colors.white, //枠線の色
-                                                      selectedBorderColor: Colors
-                                                          .white, //選択中の枠線の色,
-
-                                                      onPressed: (int index) {
-                                                        setState(() {
-                                                          review_point =
-                                                              index + 1;
-                                                          for (int buttonIndex =
-                                                                  0;
-                                                              buttonIndex <=
-                                                                  index;
-                                                              buttonIndex++) {
-                                                            _isSelected[
-                                                                    buttonIndex] =
-                                                                true;
-                                                          }
-                                                          for (int buttonIndex =
-                                                                  index + 1;
-                                                              buttonIndex < 5;
-                                                              buttonIndex++) {
-                                                            _isSelected[
-                                                                    buttonIndex] =
-                                                                false;
-                                                          }
-                                                        });
-                                                      },
-
-                                                      isSelected: _isSelected,
-                                                      children: List.generate(
-                                                        5,
-                                                        (index) => Icon(
-                                                          Icons.star,
-                                                          color: _isSelected[
-                                                                  index]
-                                                              ? Colors
-                                                                  .yellow[800]
-                                                              : Colors.grey,
-                                                          size: 35,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  //タイトル
-                                                  SizedBox(height: width / 40),
-                                                  SizedBox(
-                                                    width: width,
-                                                    child: const Text("タイトル",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ),
-                                                  Container(
-                                                      width: width,
-                                                      height: 100,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: const Color
-                                                                .fromARGB(255,
-                                                                203, 202, 202),
-                                                            width: 1.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  8.0),
-                                                          child: TextField(
-                                                            maxLines: null,
-                                                            maxLength: 50,
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                            decoration:
-                                                                const InputDecoration(
-                                                              //counterText: '',
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              hintText: 'ここに入力',
-                                                            ),
-                                                            onChanged: (text) =>
-                                                                titleWrite(
-                                                                    text),
-                                                          ),
-                                                        ),
-                                                      )),
-                                                  //詳細
-                                                  //空白
-                                                  SizedBox(height: width / 40),
-                                                  SizedBox(
-                                                    width: width,
-                                                    child: const Text("詳細",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ),
-                                                  Container(
-                                                      width: width,
-                                                      height: 100,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: const Color
-                                                                .fromARGB(255,
-                                                                203, 202, 202),
-                                                            width: 1.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  8.0),
-                                                          child: TextField(
-                                                            maxLines: null,
-                                                            maxLength: 500,
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                            decoration:
-                                                                const InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              hintText: 'ここに入力',
-                                                            ),
-                                                            onChanged: (text) =>
-                                                                detailWrite(
-                                                                    text),
-                                                          ),
-                                                        ),
-                                                      )),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('投稿'),
-                                                onPressed: () {
-                                                  //Navigator.of(context).pop();
-                                                  if (title == "" ||
-                                                      detail == "") {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              '未入力の項目があります'),
-                                                          content: const Text(
-                                                              'タイトルと詳細を入力してください'),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              child: const Text(
-                                                                  '閉じる'),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  } else
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              '投稿確認'),
-                                                          content: const Text(
-                                                              'この内容で投稿しますか？'),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              child: const Text(
-                                                                  '投稿'),
-                                                              onPressed: () {
-                                                                reviewWrite(
-                                                                    eventDetailList[
-                                                                        "id"],
-                                                                    store);
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return AlertDialog(
-                                                                      title: const Text(
-                                                                          '投稿完了'),
-                                                                      content:
-                                                                          const Text(
-                                                                              '投稿が完了しました'),
-                                                                      actions: <Widget>[
-                                                                        TextButton(
-                                                                          child:
-                                                                              const Text('閉じる'),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    );
-                                                                  },
-                                                                );
-                                                              },
-                                                            ),
-                                                            TextButton(
-                                                              child: const Text(
-                                                                  'キャンセル'),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('閉じる'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
-
-                              SizedBox(height: width / 20), //空白
-
-                              //レビューがない場合
-                              if (eventDetailList["review"].length == 0)
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(30.0),
-                                    child: Text("レビューはまだありません"),
-                                  ),
-                                ),
-
-                              //仕切り線
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey[400]!, //枠線の色
-                                        width: 0.7, //枠線の太さ
-                                      ),
+                                //タイトル
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    eventDetailList["title"],
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                              ),
 
-                              //レビュー本体
-                              SizedBox(
-                                //height: (160 * eventDetailList["review"].length).toDouble(),
-                                child: Column(
+                                //お気に入りボタン
+                                Row(
                                   children: [
-                                    for (int index = 0;
-                                        index <
-                                            eventDetailList["review"].length;
-                                        index++)
-                                      Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: ConstrainedBox(
-                                            constraints: const BoxConstraints(
-                                              minHeight: 150, //最小の高さ
-                                            ),
-                                            child: Container(
-                                              //height: 150,
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Colors
-                                                        .grey[400]!, //枠線の色
-                                                    width: 0.7, //枠線の太さ
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  //ユーザー情報
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      //ユーザー画像
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            height: 40,
-                                                            width: 40,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.blue,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          30),
-                                                            ),
-                                                            child: ClipRRect(
-                                                              // これを追加
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          50), // これを追加
-                                                              child: Image.network(
-                                                                  "${eventDetailList["review"][index]["user"]["image_url"]}",
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                              width: width /
-                                                                  50), //空白
-                                                          //ユーザー名
-                                                          Text(eventDetailList[
-                                                                      "review"][
-                                                                  index]["user"]
-                                                              ["username"]),
-                                                        ],
-                                                      ),
-
-                                                      //通報ボタン===================================================================
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              for (int buttonIndex =
-                                                                      0;
-                                                                  buttonIndex <=
-                                                                      eventDetailList["review"][index]
-                                                                              [
-                                                                              "review_point"] -
-                                                                          1;
-                                                                  buttonIndex++) {
-                                                                _isSelected[
-                                                                        buttonIndex] =
-                                                                    true;
-                                                              }
-                                                            });
-                                                            final TextEditingController
-                                                                titleController =
-                                                                TextEditingController(
-                                                                    text: eventDetailList["review"]
-                                                                            [
-                                                                            index]
-                                                                        [
-                                                                        "title"]);
-                                                            final TextEditingController
-                                                                detailController =
-                                                                TextEditingController(
-                                                                    text: eventDetailList["review"]
-                                                                            [
-                                                                            index]
-                                                                        [
-                                                                        "review"]);
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return SimpleDialog(
-                                                                  // title: const Text(
-                                                                  //   "通報",
-                                                                  //   style: TextStyle(
-                                                                  //       fontWeight:
-                                                                  //           FontWeight.bold),
-                                                                  // ),
-                                                                  children: [
-                                                                    if (eventDetailList["review"][index]["user"]
-                                                                            [
-                                                                            "id"] ==
-                                                                        store
-                                                                            .myID)
-                                                                      Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              width / 2,
-                                                                          child:
-                                                                              const Text(
-                                                                            "編集・削除",
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    if (eventDetailList["review"][index]["user"]
-                                                                            [
-                                                                            "id"] ==
-                                                                        store
-                                                                            .myID)
-                                                                      SimpleDialogOption(
-                                                                        onPressed:
-                                                                            () =>
-                                                                                {
-                                                                          Navigator.pop(
-                                                                              context),
-                                                                          showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (BuildContext context) {
-                                                                              return AlertDialog(
-                                                                                title: const Text('評価を選択してください'),
-                                                                                content: SizedBox(
-                                                                                  width: width * 0.7,
-                                                                                  height: 400,
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Text("※レビューは一般公開され、あなたのアカウント情報が含まれます", style: TextStyle(fontSize: 15, color: Colors.grey[600])),
-                                                                                      //空白
-                                                                                      SizedBox(height: width / 40),
-                                                                                      //動的に星の色を変える
-                                                                                      StatefulBuilder(
-                                                                                        builder: (BuildContext context, StateSetter setState) => ToggleButtons(
-                                                                                          fillColor: Colors.white, //選択中の色
-                                                                                          borderWidth: 0, //枠線の太さ
-                                                                                          borderColor: Colors.white, //枠線の色
-                                                                                          selectedBorderColor: Colors.white, //選択中の枠線の色,
-
-                                                                                          onPressed: (int index) {
-                                                                                            setState(() {
-                                                                                              review_point = index + 1;
-                                                                                              for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
-                                                                                                _isSelected[buttonIndex] = true;
-                                                                                              }
-                                                                                              for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
-                                                                                                _isSelected[buttonIndex] = false;
-                                                                                              }
-                                                                                            });
-                                                                                          },
-
-                                                                                          isSelected: _isSelected,
-                                                                                          children: List.generate(
-                                                                                            5,
-                                                                                            (index) => Icon(
-                                                                                              Icons.star,
-                                                                                              color: _isSelected[index] ? Colors.yellow[800] : Colors.grey,
-                                                                                              size: 35,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      //タイトル
-                                                                                      SizedBox(height: width / 40),
-                                                                                      SizedBox(
-                                                                                        width: width,
-                                                                                        child: const Text("タイトル", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                                      ),
-                                                                                      Container(
-                                                                                          width: width,
-                                                                                          height: 100,
-                                                                                          decoration: BoxDecoration(
-                                                                                            border: Border.all(color: const Color.fromARGB(255, 203, 202, 202), width: 1.5),
-                                                                                            borderRadius: BorderRadius.circular(8.0),
-                                                                                          ),
-                                                                                          child: SingleChildScrollView(
-                                                                                            child: Padding(
-                                                                                              padding: EdgeInsets.all(8.0),
-                                                                                              child: TextField(
-                                                                                                controller: titleController,
-                                                                                                maxLines: null,
-                                                                                                maxLength: 50,
-                                                                                                style: const TextStyle(fontSize: 13),
-                                                                                                decoration: const InputDecoration(
-                                                                                                  //counterText: '',
-                                                                                                  border: InputBorder.none,
-                                                                                                  hintText: 'ここに入力',
-                                                                                                ),
-                                                                                                onChanged: (text) => titleWrite(text),
-                                                                                              ),
-                                                                                            ),
-                                                                                          )),
-                                                                                      //詳細
-                                                                                      //空白
-                                                                                      SizedBox(height: width / 40),
-                                                                                      SizedBox(
-                                                                                        width: width,
-                                                                                        child: const Text("詳細", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                                      ),
-                                                                                      Container(
-                                                                                          width: width,
-                                                                                          height: 100,
-                                                                                          decoration: BoxDecoration(
-                                                                                            border: Border.all(color: const Color.fromARGB(255, 203, 202, 202), width: 1.5),
-                                                                                            borderRadius: BorderRadius.circular(8.0),
-                                                                                          ),
-                                                                                          child: SingleChildScrollView(
-                                                                                            child: Padding(
-                                                                                              padding: EdgeInsets.all(8.0),
-                                                                                              child: TextField(
-                                                                                                controller: detailController,
-                                                                                                maxLines: null,
-                                                                                                maxLength: 500,
-                                                                                                style: const TextStyle(fontSize: 13),
-                                                                                                decoration: const InputDecoration(
-                                                                                                  border: InputBorder.none,
-                                                                                                  hintText: 'ここに入力',
-                                                                                                ),
-                                                                                                onChanged: (text) => detailWrite(text),
-                                                                                              ),
-                                                                                            ),
-                                                                                          )),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                actions: <Widget>[
-                                                                                  TextButton(
-                                                                                    child: const Text('編集'),
-                                                                                    onPressed: () {
-                                                                                      //Navigator.of(context).pop();
-                                                                                      if (title == "" || detail == "") {
-                                                                                        showDialog(
-                                                                                          context: context,
-                                                                                          builder: (BuildContext context) {
-                                                                                            return AlertDialog(
-                                                                                              title: const Text('未入力の項目があります'),
-                                                                                              content: const Text('タイトルと詳細を入力してください'),
-                                                                                              actions: <Widget>[
-                                                                                                TextButton(
-                                                                                                  child: const Text('閉じる'),
-                                                                                                  onPressed: () {
-                                                                                                    Navigator.of(context).pop();
-                                                                                                  },
-                                                                                                ),
-                                                                                              ],
-                                                                                            );
-                                                                                          },
-                                                                                        );
-                                                                                      } else
-                                                                                        showDialog(
-                                                                                          context: context,
-                                                                                          builder: (BuildContext context) {
-                                                                                            return AlertDialog(
-                                                                                              title: const Text('編集確認'),
-                                                                                              content: const Text('この内容で編集しますか？'),
-                                                                                              actions: <Widget>[
-                                                                                                TextButton(
-                                                                                                  child: const Text('編集'),
-                                                                                                  onPressed: () {
-                                                                                                    reviewEdit(eventDetailList["id"], store);
-                                                                                                    Navigator.of(context).pop();
-                                                                                                    Navigator.of(context).pop();
-                                                                                                    showDialog(
-                                                                                                      context: context,
-                                                                                                      builder: (BuildContext context) {
-                                                                                                        return AlertDialog(
-                                                                                                          title: const Text('編集完了'),
-                                                                                                          content: const Text('編集が完了しました'),
-                                                                                                          actions: <Widget>[
-                                                                                                            TextButton(
-                                                                                                              child: const Text('閉じる'),
-                                                                                                              onPressed: () {
-                                                                                                                Navigator.of(context).pop();
-                                                                                                              },
-                                                                                                            ),
-                                                                                                          ],
-                                                                                                        );
-                                                                                                      },
-                                                                                                    );
-                                                                                                  },
-                                                                                                ),
-                                                                                                TextButton(
-                                                                                                  child: const Text('キャンセル'),
-                                                                                                  onPressed: () {
-                                                                                                    Navigator.of(context).pop();
-                                                                                                  },
-                                                                                                ),
-                                                                                              ],
-                                                                                            );
-                                                                                          },
-                                                                                        );
-                                                                                    },
-                                                                                  ),
-                                                                                  TextButton(
-                                                                                    child: const Text('閉じる'),
-                                                                                    onPressed: () {
-                                                                                      Navigator.of(context).pop();
-                                                                                    },
-                                                                                  ),
-                                                                                ],
-                                                                              );
-                                                                            },
-                                                                          )
-                                                                        },
-                                                                        child: const Text(
-                                                                            "レビューを編集"),
-                                                                      ),
-                                                                    if (eventDetailList["review"][index]["user"]
-                                                                            [
-                                                                            "id"] ==
-                                                                        store
-                                                                            .myID)
-                                                                      SimpleDialogOption(
-                                                                        onPressed:
-                                                                            () =>
-                                                                                {
-                                                                          reviewDelite(
-                                                                              eventDetailList["id"],
-                                                                              store),
-                                                                          Navigator.pop(
-                                                                              context),
-                                                                          showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (BuildContext context) {
-                                                                              return AlertDialog(
-                                                                                title: const Text('レビュー削除'),
-                                                                                content: const Text('レビューの削除をしました。'),
-                                                                                actions: <Widget>[
-                                                                                  TextButton(
-                                                                                    child: const Text('閉じる'),
-                                                                                    onPressed: () {
-                                                                                      Navigator.of(context).pop();
-                                                                                    },
-                                                                                  ),
-                                                                                ],
-                                                                              );
-                                                                            },
-                                                                          )
-                                                                        },
-                                                                        child: const Text(
-                                                                            "レビューを削除"),
-                                                                      ),
-                                                                    Center(
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            width /
-                                                                                2,
-                                                                        child:
-                                                                            const Text(
-                                                                          "通報",
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 20),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SimpleDialogOption(
-                                                                      onPressed:
-                                                                          () =>
-                                                                              {
-                                                                        Navigator.pop(
-                                                                            context),
-                                                                        showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (BuildContext context) {
-                                                                            return AlertDialog(
-                                                                              title: const Text('通報完了'),
-                                                                              content: const Text('不適切なレビューとして報告が完了しました'),
-                                                                              actions: <Widget>[
-                                                                                TextButton(
-                                                                                  child: const Text('閉じる'),
-                                                                                  onPressed: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                ),
-                                                                              ],
-                                                                            );
-                                                                          },
-                                                                        )
-                                                                      },
-                                                                      child: const Text(
-                                                                          "不適切なレビューとして報告"),
-                                                                    ),
-                                                                    SimpleDialogOption(
-                                                                      onPressed:
-                                                                          () =>
-                                                                              {
-                                                                        Navigator.pop(
-                                                                            context),
-                                                                        showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (BuildContext context) {
-                                                                            return AlertDialog(
-                                                                              title: const Text('通報完了'),
-                                                                              content: const Text('スパムとして報告が完了しました'),
-                                                                              actions: <Widget>[
-                                                                                TextButton(
-                                                                                  child: const Text('閉じる'),
-                                                                                  onPressed: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                ),
-                                                                              ],
-                                                                            );
-                                                                          },
-                                                                        )
-                                                                      },
-                                                                      child: const Text(
-                                                                          "スパムとして報告"),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
-                                                            );
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.more_vert,
-                                                            color: Colors
-                                                                .grey[500],
-                                                          )),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                      height: width / 60), //空白
-                                                  Text(
-                                                      eventDetailList["review"]
-                                                          [index]["title"],
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                  SizedBox(
-                                                      height: width / 60), //空白
-                                                  //評価
-                                                  Row(
-                                                    children: [
-                                                      //星(色あり)
-                                                      for (int i = 0;
-                                                          i <
-                                                              eventDetailList[
-                                                                          "review"]
-                                                                      [index][
-                                                                  "review_point"];
-                                                          i++)
-                                                        Icon(
-                                                          Icons.star,
-                                                          color: Colors
-                                                              .yellow[800],
-                                                          size: 15,
-                                                        ),
-                                                      //星(色なし)
-                                                      for (int i = 0;
-                                                          i <
-                                                              5 -
-                                                                  eventDetailList[
-                                                                              "review"]
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      "review_point"];
-                                                          i++)
-                                                        Icon(
-                                                            Icons.star,
-                                                            color: Colors
-                                                                .grey[400],
-                                                            size: 15),
-                                                      SizedBox(
-                                                          width:
-                                                              width / 60), //空白
-                                                      //評価日時放置
-                                                      Text(
-                                                          "${eventDetailList["review"][index]["updated_at"].substring(0, 4)}年${eventDetailList["review"][index]["updated_at"].substring(5, 7)}月${eventDetailList["review"][index]["updated_at"].substring(8, 10)}日",
-                                                          style: TextStyle(
-                                                              fontSize: 13,
-                                                              color: Colors
-                                                                  .grey[500])),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                      height: width / 60), //空白
-                                                  //レビュー内容
-                                                  Text(eventDetailList["review"]
-                                                      [index]["review"]),
-                                                ],
-                                              ),
-                                            ),
-                                          )),
+                                    ToggleButtons(
+                                      borderWidth: 0.01, // 枠線をなくす
+                                      color: Colors.grey[500], //選択していない時の色
+                                      selectedColor: store.mainColor, //選択時の色
+                                      fillColor: Colors.white, //選択時の背景色
+                                      splashColor: store.subColor, //選択時のアクションの色
+                                      borderRadius:
+                                          BorderRadius.circular(50.0), //角丸
+                                      isSelected: [
+                                        eventDetailList["favoriteJedge"]
+                                      ], //on off
+                                      //ボタンを押した時の処理
+                                      onPressed: (int index) => setState(() {
+                                        boobkmark(eventDetailList["id"], store);
+                                      }),
+                                      //アイコン
+                                      children: <Widget>[
+                                        eventDetailList["favoriteJedge"]
+                                            ? const Icon(Icons.favorite,
+                                                size: 40)
+                                            : const Icon(Icons.favorite_border,
+                                                size: 40),
+                                      ],
+                                    ),
+                                    //空白
+                                    SizedBox(
+                                      width: width / 30,
+                                    ),
                                   ],
                                 ),
+                              ],
+                            ),
+                            //ハッシュタグ
+                            if (eventDetailList["tag"].length != 0)
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    minWidth: width, // 最小幅をwidthに設定
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start, // 子ウィジェットを左詰めに配置
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      for (int i = 0;
+                                          i < eventDetailList["tag"].length;
+                                          i++)
+                                        TextButton(
+                                          onPressed: () async {
+                                            await Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation,
+                                                        secondaryAnimation) =>
+                                                    SearchPage(
+                                                  text:
+                                                      "#${eventDetailList["tag"][i]["name"]}",
+                                                  eventJobJedge: "おすすめイベント",
+                                                  sort: "新着順",
+                                                  sortType: "id",
+                                                  store: store,
+                                                ),
+                                              ),
+                                            );
+                                            getEventList(
+                                                widget.id, widget.tStore);
+                                          },
+                                          child: Text(
+                                              "#${eventDetailList["tag"][i]["name"]}"),
+                                        ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ],
-                          ))
-                    ],
+
+                            //空白
+                            SizedBox(
+                              height: mediaQueryData.size.height / 200,
+                            ),
+
+                            //イベント詳細
+                            SizedBox(
+                              width: width - 20,
+                              child: Text(eventDetailList["detail"]),
+                            ),
+
+                            //空白
+                            SizedBox(
+                              height: mediaQueryData.size.height / 50,
+                            ),
+
+                            //イベント開催場所・日時
+                            SizedBox(
+                              width: width - 20,
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start, // 子ウィジェットを左詰めに配置
+                                children: [
+                                  const Text(
+                                    "開催場所・日時",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  //空白
+                                  SizedBox(
+                                    height: mediaQueryData.size.height / 100,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // 子ウィジェットを左詰めに配置
+                                    children: [
+                                      generateWidgets(
+                                          0, mediaQueryData.size.height / 100),
+                                      for (int i = 0;
+                                          i <
+                                              eventDetailList["eventTimes"]
+                                                  .length;
+                                          i++)
+                                        Text(
+                                            "${eventDetailList["eventTimes"][i]["start_time"].substring(0, 4)}年${eventDetailList["eventTimes"][i]["start_time"].substring(5, 7)}月${eventDetailList["eventTimes"][i]["start_time"].substring(8, 10)}日 ${eventDetailList["eventTimes"][i]["start_time"].substring(11, 16)}~${eventDetailList["eventTimes"][i]["end_time"].substring(11, 16)}"),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+
+                            //空白
+                            SizedBox(
+                              height: mediaQueryData.size.height / 50,
+                            ),
+
+                            //イベント詳細
+                            //任意入力が一つでもある場合のみ表示
+                            if (eventDetailList["phone"] != "" ||
+                                eventDetailList["mail"] != "" ||
+                                eventDetailList["url"] != "" ||
+                                eventDetailList["fee"] != "" ||
+                                eventDetailList["Capacity"] != "" ||
+                                eventDetailList["notes"] != "" ||
+                                eventDetailList["addMessage"] != "")
+                              SizedBox(
+                                width: width - 20,
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // 子ウィジェットを左詰めに配置
+                                    children: [
+                                      const Text(
+                                        "イベント詳細",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      //空白
+                                      SizedBox(
+                                        height:
+                                            mediaQueryData.size.height / 100,
+                                      ),
+                                      //イベント参加費
+                                      if (eventDetailList["fee"] != "")
+                                        Text("参加費：${eventDetailList["fee"]}円"),
+                                      //定員
+                                      if (eventDetailList["Capacity"] != "")
+                                        Text(
+                                            "定員：${eventDetailList["Capacity"]}人"),
+
+                                      //空白
+                                      SizedBox(
+                                        height:
+                                            mediaQueryData.size.height / 200,
+                                      ),
+
+                                      //電話番号
+                                      if (eventDetailList["phone"] != "")
+                                        Text(
+                                            "電話番号：${eventDetailList["phone"]}"),
+                                      //メールアドレス
+                                      if (eventDetailList["mail"] != "")
+                                        Text(
+                                            "メールアドレス：${eventDetailList["mail"]}"),
+                                      //URL
+                                      if (eventDetailList["url"] != "")
+                                        Text("URL：${eventDetailList["url"]}"),
+
+                                      //空白
+                                      SizedBox(
+                                        height: mediaQueryData.size.height / 50,
+                                      ),
+
+                                      //注意事項
+                                      if (eventDetailList["notes"] != "")
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // 子ウィジェットを左詰めに配置
+                                          children: [
+                                            const Text("注意事項："),
+                                            Text(eventDetailList["notes"]),
+                                          ],
+                                        ),
+
+                                      //空白
+                                      SizedBox(
+                                        height: mediaQueryData.size.height / 50,
+                                      ),
+
+                                      //追加メッセージ
+                                      if (eventDetailList["addMessage"] != "")
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // 子ウィジェットを左詰めに配置
+                                          children: [
+                                            const Text("追加メッセージ："),
+                                            Text(eventDetailList["addMessage"]),
+                                          ],
+                                        ),
+                                      //空白
+                                      SizedBox(
+                                        height: mediaQueryData.size.height / 50,
+                                      ),
+                                    ]),
+                              ),
+                            //空白
+                            SizedBox(
+                              height: mediaQueryData.size.height / 30,
+                            ),
+
+                            //レビュー
+                            SizedBox(
+                                width: width - 20,
+                                //height: 400,
+                                //color: Colors.blue,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start, // 子ウィジェットを左詰めに配置
+                                  children: [
+                                    //タイトル
+                                    const Text(
+                                      "評価とレビュー",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: width / 20), //空白
+
+                                    Row(
+                                      children: [
+                                        SizedBox(width: width / 15), //空白
+                                        //平均評価
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${eventDetailList["reviewPoint"].toString()} ",
+                                              style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontSize: width / 8,
+                                                fontWeight: FontWeight.bold,
+                                                decoration: TextDecoration
+                                                    .underline, //下線
+                                                decorationThickness:
+                                                    2, // 下線の太さの設定
+                                                decorationColor:
+                                                    Colors.grey[600],
+                                              ),
+                                            ),
+                                            Text(
+                                              " 5段階評価中",
+                                              style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontSize: width / 35,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+
+                                        SizedBox(width: width / 9), //空白
+
+                                        //評価分布
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            for (int i = 4; i >= 0; i--)
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "${i + 1} ",
+                                                    style: TextStyle(
+                                                      fontSize: width / 40,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Stack(children: [
+                                                    Container(
+                                                      height: width / 40,
+                                                      width: width / 2,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[300],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      height: width / 40,
+                                                      width: width /
+                                                          2 *
+                                                          eventDetailList[
+                                                              "ratioStarReviews"][i],
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.yellow[800],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    )
+                                                  ])
+                                                ],
+                                              ),
+                                            Text(
+                                                "${eventDetailList["reviewNumber"]}件のレビュー")
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: width / 20), //空白
+
+                                    Center(
+                                      child: TextButton(
+                                        child: Text('タップして評価    ★★★★★',
+                                            style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontSize: width / 25,
+                                                fontWeight: FontWeight.bold)),
+                                        //評価ポップアップ
+                                        onPressed: () {
+                                          //_isSelected初期化
+                                          _isSelected[0] = true;
+                                          for (int buttonIndex = 1;
+                                              buttonIndex < 5;
+                                              buttonIndex++) {
+                                            _isSelected[buttonIndex] = false;
+                                          }
+                                          //投稿済み
+                                          if (eventDetailList["reviewId"] !=
+                                              0) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text('投稿済みです'),
+                                                  content: const Text(
+                                                      'このイベント広告にはレビューを投稿済みです。'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('閉じる'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                          //未投稿
+                                          else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      const Text('評価を選択してください'),
+                                                  content: SizedBox(
+                                                    width: width * 0.7,
+                                                    height: 400,
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                            "※レビューは一般公開され、あなたのアカウント情報が含まれます",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color:
+                                                                    Colors.grey[
+                                                                        600])),
+                                                        //空白
+                                                        SizedBox(
+                                                            height: width / 40),
+                                                        //動的に星の色を変える
+                                                        StatefulBuilder(
+                                                          builder: (BuildContext
+                                                                      context,
+                                                                  StateSetter
+                                                                      setState) =>
+                                                              ToggleButtons(
+                                                            fillColor: Colors
+                                                                .white, //選択中の色
+                                                            borderWidth:
+                                                                0, //枠線の太さ
+                                                            borderColor: Colors
+                                                                .white, //枠線の色
+                                                            selectedBorderColor:
+                                                                Colors
+                                                                    .white, //選択中の枠線の色,
+
+                                                            onPressed:
+                                                                (int index) {
+                                                              setState(() {
+                                                                review_point =
+                                                                    index + 1;
+                                                                for (int buttonIndex =
+                                                                        0;
+                                                                    buttonIndex <=
+                                                                        index;
+                                                                    buttonIndex++) {
+                                                                  _isSelected[
+                                                                          buttonIndex] =
+                                                                      true;
+                                                                }
+                                                                for (int buttonIndex =
+                                                                        index +
+                                                                            1;
+                                                                    buttonIndex <
+                                                                        5;
+                                                                    buttonIndex++) {
+                                                                  _isSelected[
+                                                                          buttonIndex] =
+                                                                      false;
+                                                                }
+                                                              });
+                                                            },
+
+                                                            isSelected:
+                                                                _isSelected,
+                                                            children:
+                                                                List.generate(
+                                                              5,
+                                                              (index) => Icon(
+                                                                Icons.star,
+                                                                color: _isSelected[
+                                                                        index]
+                                                                    ? Colors.yellow[
+                                                                        800]
+                                                                    : Colors
+                                                                        .grey,
+                                                                size: 35,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        //タイトル
+                                                        SizedBox(
+                                                            height: width / 40),
+                                                        SizedBox(
+                                                          width: width,
+                                                          child: const Text(
+                                                              "タイトル",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
+                                                        Container(
+                                                            width: width,
+                                                            height: 100,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: const Color
+                                                                      .fromARGB(
+                                                                      255,
+                                                                      203,
+                                                                      202,
+                                                                      202),
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            8.0),
+                                                                child:
+                                                                    TextField(
+                                                                  maxLines:
+                                                                      null,
+                                                                  maxLength: 50,
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          13),
+                                                                  decoration:
+                                                                      const InputDecoration(
+                                                                    //counterText: '',
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintText:
+                                                                        'ここに入力',
+                                                                  ),
+                                                                  onChanged: (text) =>
+                                                                      titleWrite(
+                                                                          text),
+                                                                ),
+                                                              ),
+                                                            )),
+                                                        //詳細
+                                                        //空白
+                                                        SizedBox(
+                                                            height: width / 40),
+                                                        SizedBox(
+                                                          width: width,
+                                                          child: const Text(
+                                                              "詳細",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
+                                                        Container(
+                                                            width: width,
+                                                            height: 100,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: const Color
+                                                                      .fromARGB(
+                                                                      255,
+                                                                      203,
+                                                                      202,
+                                                                      202),
+                                                                  width: 1.5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            8.0),
+                                                                child:
+                                                                    TextField(
+                                                                  maxLines:
+                                                                      null,
+                                                                  maxLength:
+                                                                      500,
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          13),
+                                                                  decoration:
+                                                                      const InputDecoration(
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintText:
+                                                                        'ここに入力',
+                                                                  ),
+                                                                  onChanged: (text) =>
+                                                                      detailWrite(
+                                                                          text),
+                                                                ),
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('投稿'),
+                                                      onPressed: () {
+                                                        //Navigator.of(context).pop();
+                                                        if (title == "" ||
+                                                            detail == "") {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    '未入力の項目があります'),
+                                                                content: const Text(
+                                                                    'タイトルと詳細を入力してください'),
+                                                                actions: <Widget>[
+                                                                  TextButton(
+                                                                    child: const Text(
+                                                                        '閉じる'),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        } else
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title:
+                                                                    const Text(
+                                                                        '投稿確認'),
+                                                                content: const Text(
+                                                                    'この内容で投稿しますか？'),
+                                                                actions: <Widget>[
+                                                                  TextButton(
+                                                                    child:
+                                                                        const Text(
+                                                                            '投稿'),
+                                                                    onPressed:
+                                                                        () {
+                                                                      reviewWrite(
+                                                                          eventDetailList[
+                                                                              "id"],
+                                                                          store);
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            title:
+                                                                                const Text('投稿完了'),
+                                                                            content:
+                                                                                const Text('投稿が完了しました'),
+                                                                            actions: <Widget>[
+                                                                              TextButton(
+                                                                                child: const Text('閉じる'),
+                                                                                onPressed: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  TextButton(
+                                                                    child: const Text(
+                                                                        'キャンセル'),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: const Text('閉じる'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+
+                                    SizedBox(height: width / 20), //空白
+
+                                    //レビューがない場合
+                                    if (eventDetailList["review"].length == 0)
+                                      const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(30.0),
+                                          child: Text("レビューはまだありません"),
+                                        ),
+                                      ),
+
+                                    //仕切り線
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.grey[400]!, //枠線の色
+                                              width: 0.7, //枠線の太さ
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    //レビュー本体
+                                    SizedBox(
+                                      //height: (160 * eventDetailList["review"].length).toDouble(),
+                                      child: Column(
+                                        children: [
+                                          for (int index = 0;
+                                              index <
+                                                  eventDetailList["review"]
+                                                      .length;
+                                              index++)
+                                            Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: ConstrainedBox(
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                    minHeight: 150, //最小の高さ
+                                                  ),
+                                                  child: Container(
+                                                    //height: 150,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: Colors.grey[
+                                                              400]!, //枠線の色
+                                                          width: 0.7, //枠線の太さ
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        //ユーザー情報
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            //ユーザー画像
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  height: 40,
+                                                                  width: 40,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .blue,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            30),
+                                                                  ),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    // これを追加
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50), // これを追加
+                                                                    child: Image.network(
+                                                                        "${eventDetailList["review"][index]["user"]["image_url"]}",
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width: width /
+                                                                        50), //空白
+                                                                //ユーザー名
+                                                                Text(eventDetailList["review"]
+                                                                            [
+                                                                            index]
+                                                                        ["user"]
+                                                                    [
+                                                                    "username"]),
+                                                              ],
+                                                            ),
+
+                                                            //通報ボタン===================================================================
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    for (int buttonIndex =
+                                                                            0;
+                                                                        buttonIndex <=
+                                                                            eventDetailList["review"][index]["review_point"] -
+                                                                                1;
+                                                                        buttonIndex++) {
+                                                                      _isSelected[
+                                                                              buttonIndex] =
+                                                                          true;
+                                                                    }
+                                                                  });
+                                                                  final TextEditingController
+                                                                      titleController =
+                                                                      TextEditingController(
+                                                                          text: eventDetailList["review"][index]
+                                                                              [
+                                                                              "title"]);
+                                                                  final TextEditingController
+                                                                      detailController =
+                                                                      TextEditingController(
+                                                                          text: eventDetailList["review"][index]
+                                                                              [
+                                                                              "review"]);
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return SimpleDialog(
+                                                                        // title: const Text(
+                                                                        //   "通報",
+                                                                        //   style: TextStyle(
+                                                                        //       fontWeight:
+                                                                        //           FontWeight.bold),
+                                                                        // ),
+                                                                        children: [
+                                                                          if (eventDetailList["review"][index]["user"]["id"] ==
+                                                                              store.myID)
+                                                                            Center(
+                                                                              child: SizedBox(
+                                                                                width: width / 2,
+                                                                                child: const Text(
+                                                                                  "編集・削除",
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          if (eventDetailList["review"][index]["user"]["id"] ==
+                                                                              store.myID)
+                                                                            SimpleDialogOption(
+                                                                              onPressed: () => {
+                                                                                Navigator.pop(context),
+                                                                                showDialog(
+                                                                                  context: context,
+                                                                                  builder: (BuildContext context) {
+                                                                                    return AlertDialog(
+                                                                                      title: const Text('評価を選択してください'),
+                                                                                      content: SizedBox(
+                                                                                        width: width * 0.7,
+                                                                                        height: 400,
+                                                                                        child: Column(
+                                                                                          children: [
+                                                                                            Text("※レビューは一般公開され、あなたのアカウント情報が含まれます", style: TextStyle(fontSize: 15, color: Colors.grey[600])),
+                                                                                            //空白
+                                                                                            SizedBox(height: width / 40),
+                                                                                            //動的に星の色を変える
+                                                                                            StatefulBuilder(
+                                                                                              builder: (BuildContext context, StateSetter setState) => ToggleButtons(
+                                                                                                fillColor: Colors.white, //選択中の色
+                                                                                                borderWidth: 0, //枠線の太さ
+                                                                                                borderColor: Colors.white, //枠線の色
+                                                                                                selectedBorderColor: Colors.white, //選択中の枠線の色,
+
+                                                                                                onPressed: (int index) {
+                                                                                                  setState(() {
+                                                                                                    review_point = index + 1;
+                                                                                                    for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
+                                                                                                      _isSelected[buttonIndex] = true;
+                                                                                                    }
+                                                                                                    for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
+                                                                                                      _isSelected[buttonIndex] = false;
+                                                                                                    }
+                                                                                                  });
+                                                                                                },
+
+                                                                                                isSelected: _isSelected,
+                                                                                                children: List.generate(
+                                                                                                  5,
+                                                                                                  (index) => Icon(
+                                                                                                    Icons.star,
+                                                                                                    color: _isSelected[index] ? Colors.yellow[800] : Colors.grey,
+                                                                                                    size: 35,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            //タイトル
+                                                                                            SizedBox(height: width / 40),
+                                                                                            SizedBox(
+                                                                                              width: width,
+                                                                                              child: const Text("タイトル", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                            ),
+                                                                                            Container(
+                                                                                                width: width,
+                                                                                                height: 100,
+                                                                                                decoration: BoxDecoration(
+                                                                                                  border: Border.all(color: const Color.fromARGB(255, 203, 202, 202), width: 1.5),
+                                                                                                  borderRadius: BorderRadius.circular(8.0),
+                                                                                                ),
+                                                                                                child: SingleChildScrollView(
+                                                                                                  child: Padding(
+                                                                                                    padding: EdgeInsets.all(8.0),
+                                                                                                    child: TextField(
+                                                                                                      controller: titleController,
+                                                                                                      maxLines: null,
+                                                                                                      maxLength: 50,
+                                                                                                      style: const TextStyle(fontSize: 13),
+                                                                                                      decoration: const InputDecoration(
+                                                                                                        //counterText: '',
+                                                                                                        border: InputBorder.none,
+                                                                                                        hintText: 'ここに入力',
+                                                                                                      ),
+                                                                                                      onChanged: (text) => titleWrite(text),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                )),
+                                                                                            //詳細
+                                                                                            //空白
+                                                                                            SizedBox(height: width / 40),
+                                                                                            SizedBox(
+                                                                                              width: width,
+                                                                                              child: const Text("詳細", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                                            ),
+                                                                                            Container(
+                                                                                                width: width,
+                                                                                                height: 100,
+                                                                                                decoration: BoxDecoration(
+                                                                                                  border: Border.all(color: const Color.fromARGB(255, 203, 202, 202), width: 1.5),
+                                                                                                  borderRadius: BorderRadius.circular(8.0),
+                                                                                                ),
+                                                                                                child: SingleChildScrollView(
+                                                                                                  child: Padding(
+                                                                                                    padding: EdgeInsets.all(8.0),
+                                                                                                    child: TextField(
+                                                                                                      controller: detailController,
+                                                                                                      maxLines: null,
+                                                                                                      maxLength: 500,
+                                                                                                      style: const TextStyle(fontSize: 13),
+                                                                                                      decoration: const InputDecoration(
+                                                                                                        border: InputBorder.none,
+                                                                                                        hintText: 'ここに入力',
+                                                                                                      ),
+                                                                                                      onChanged: (text) => detailWrite(text),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                )),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                      actions: <Widget>[
+                                                                                        TextButton(
+                                                                                          child: const Text('編集'),
+                                                                                          onPressed: () {
+                                                                                            //Navigator.of(context).pop();
+                                                                                            if (title == "" || detail == "") {
+                                                                                              showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return AlertDialog(
+                                                                                                    title: const Text('未入力の項目があります'),
+                                                                                                    content: const Text('タイトルと詳細を入力してください'),
+                                                                                                    actions: <Widget>[
+                                                                                                      TextButton(
+                                                                                                        child: const Text('閉じる'),
+                                                                                                        onPressed: () {
+                                                                                                          Navigator.of(context).pop();
+                                                                                                        },
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  );
+                                                                                                },
+                                                                                              );
+                                                                                            } else
+                                                                                              showDialog(
+                                                                                                context: context,
+                                                                                                builder: (BuildContext context) {
+                                                                                                  return AlertDialog(
+                                                                                                    title: const Text('編集確認'),
+                                                                                                    content: const Text('この内容で編集しますか？'),
+                                                                                                    actions: <Widget>[
+                                                                                                      TextButton(
+                                                                                                        child: const Text('編集'),
+                                                                                                        onPressed: () {
+                                                                                                          reviewEdit(eventDetailList["id"], store);
+                                                                                                          Navigator.of(context).pop();
+                                                                                                          Navigator.of(context).pop();
+                                                                                                          showDialog(
+                                                                                                            context: context,
+                                                                                                            builder: (BuildContext context) {
+                                                                                                              return AlertDialog(
+                                                                                                                title: const Text('編集完了'),
+                                                                                                                content: const Text('編集が完了しました'),
+                                                                                                                actions: <Widget>[
+                                                                                                                  TextButton(
+                                                                                                                    child: const Text('閉じる'),
+                                                                                                                    onPressed: () {
+                                                                                                                      Navigator.of(context).pop();
+                                                                                                                    },
+                                                                                                                  ),
+                                                                                                                ],
+                                                                                                              );
+                                                                                                            },
+                                                                                                          );
+                                                                                                        },
+                                                                                                      ),
+                                                                                                      TextButton(
+                                                                                                        child: const Text('キャンセル'),
+                                                                                                        onPressed: () {
+                                                                                                          Navigator.of(context).pop();
+                                                                                                        },
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  );
+                                                                                                },
+                                                                                              );
+                                                                                          },
+                                                                                        ),
+                                                                                        TextButton(
+                                                                                          child: const Text('閉じる'),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                        ),
+                                                                                      ],
+                                                                                    );
+                                                                                  },
+                                                                                )
+                                                                              },
+                                                                              child: const Text("レビューを編集"),
+                                                                            ),
+                                                                          if (eventDetailList["review"][index]["user"]["id"] ==
+                                                                              store.myID)
+                                                                            SimpleDialogOption(
+                                                                              onPressed: () => {
+                                                                                reviewDelite(eventDetailList["id"], store),
+                                                                                Navigator.pop(context),
+                                                                                showDialog(
+                                                                                  context: context,
+                                                                                  builder: (BuildContext context) {
+                                                                                    return AlertDialog(
+                                                                                      title: const Text('レビュー削除'),
+                                                                                      content: const Text('レビューの削除をしました。'),
+                                                                                      actions: <Widget>[
+                                                                                        TextButton(
+                                                                                          child: const Text('閉じる'),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                        ),
+                                                                                      ],
+                                                                                    );
+                                                                                  },
+                                                                                )
+                                                                              },
+                                                                              child: const Text("レビューを削除"),
+                                                                            ),
+                                                                          Center(
+                                                                            child:
+                                                                                SizedBox(
+                                                                              width: width / 2,
+                                                                              child: const Text(
+                                                                                "通報",
+                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          SimpleDialogOption(
+                                                                            onPressed: () =>
+                                                                                {
+                                                                              Navigator.pop(context),
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return AlertDialog(
+                                                                                    title: const Text('通報完了'),
+                                                                                    content: const Text('不適切なレビューとして報告が完了しました'),
+                                                                                    actions: <Widget>[
+                                                                                      TextButton(
+                                                                                        child: const Text('閉じる'),
+                                                                                        onPressed: () {
+                                                                                          Navigator.of(context).pop();
+                                                                                        },
+                                                                                      ),
+                                                                                    ],
+                                                                                  );
+                                                                                },
+                                                                              )
+                                                                            },
+                                                                            child:
+                                                                                const Text("不適切なレビューとして報告"),
+                                                                          ),
+                                                                          SimpleDialogOption(
+                                                                            onPressed: () =>
+                                                                                {
+                                                                              Navigator.pop(context),
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return AlertDialog(
+                                                                                    title: const Text('通報完了'),
+                                                                                    content: const Text('スパムとして報告が完了しました'),
+                                                                                    actions: <Widget>[
+                                                                                      TextButton(
+                                                                                        child: const Text('閉じる'),
+                                                                                        onPressed: () {
+                                                                                          Navigator.of(context).pop();
+                                                                                        },
+                                                                                      ),
+                                                                                    ],
+                                                                                  );
+                                                                                },
+                                                                              )
+                                                                            },
+                                                                            child:
+                                                                                const Text("スパムとして報告"),
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .more_vert,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500],
+                                                                )),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                            height: width /
+                                                                60), //空白
+                                                        Text(
+                                                            eventDetailList[
+                                                                    "review"][
+                                                                index]["title"],
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                        SizedBox(
+                                                            height: width /
+                                                                60), //空白
+                                                        //評価
+                                                        Row(
+                                                          children: [
+                                                            //星(色あり)
+                                                            for (int i = 0;
+                                                                i <
+                                                                    eventDetailList["review"]
+                                                                            [
+                                                                            index]
+                                                                        [
+                                                                        "review_point"];
+                                                                i++)
+                                                              Icon(
+                                                                Icons.star,
+                                                                color: Colors
+                                                                        .yellow[
+                                                                    800],
+                                                                size: 15,
+                                                              ),
+                                                            //星(色なし)
+                                                            for (int i = 0;
+                                                                i <
+                                                                    5 -
+                                                                        eventDetailList["review"][index]
+                                                                            [
+                                                                            "review_point"];
+                                                                i++)
+                                                              Icon(Icons.star,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      400],
+                                                                  size: 15),
+                                                            SizedBox(
+                                                                width: width /
+                                                                    60), //空白
+                                                            //評価日時放置
+                                                            Text(
+                                                                "${eventDetailList["review"][index]["updated_at"].substring(0, 4)}年${eventDetailList["review"][index]["updated_at"].substring(5, 7)}月${eventDetailList["review"][index]["updated_at"].substring(8, 10)}日",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        13,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        500])),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                            height: width /
+                                                                60), //空白
+                                                        //レビュー内容
+                                                        Text(eventDetailList[
+                                                                "review"][index]
+                                                            ["review"]),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }
