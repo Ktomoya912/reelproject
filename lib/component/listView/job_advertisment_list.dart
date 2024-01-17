@@ -199,6 +199,9 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
     }
   }
 
+  //スクロール位置を取得するためのコントローラー
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
@@ -221,8 +224,30 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
           3;
     }
 
+    //スクロール位置をリセットする関数
+
+    void changeScrollController() async {
+      //reloadEventJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadJobJedge) {
+        widget.functionCall();
+        //リロード後、falseに戻す
+        //await Future.delayed(Duration(microseconds: 1));
+
+        //ここにHome画面リロードの処理を記述
+        // スクロール位置をリセットします。
+        _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+        store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+      }
+    }
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => changeScrollController());
+
+    // changeScrollController();
+
     return Expanded(
       child: ListView.builder(
+        controller: _scrollController,
         itemCount: widget.advertisementList.length, //要素数
 
         itemBuilder: (BuildContext context, int index) {

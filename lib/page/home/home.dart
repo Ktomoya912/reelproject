@@ -428,6 +428,9 @@ class _HomeState extends State<Home> {
     }
   }
 
+  //スクロール位置を取得するためのコントローラー
+  ScrollController homeScrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -437,19 +440,40 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
     });
   }
+
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //Home画面リロード用の関数
+    void reloadHome() async {
+      //reloadHomeJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadHomeJedge) {
+        //ここにHome画面リロードの処理を記述
+        // // スクロール位置をリセットします。
+
+        // await Future.delayed(Duration(microseconds: 1));
+
+        getEventList();
+        getJobList();
+        getHistoryList(store);
+
+        homeScrollController
+            .jumpTo(homeScrollController.position.minScrollExtent);
+
+        store.changeReloadHomeJedgeOn(false); //リロード後、falseに戻す
+      }
+    }
+
+    //ビルド後に実行
+    WidgetsBinding.instance.addPostFrameCallback((_) => reloadHome());
+
+    // reloadHome();
 
     //ボタンリスト
     Map<String, List<Map<String, dynamic>>> buttonList = {
@@ -522,6 +546,7 @@ class _HomeState extends State<Home> {
         appBar: const MainAppBar(nextPage: Notice()),
         body: ShaderMaskComponent(
           child: SingleChildScrollView(
+            controller: homeScrollController,
             // SingleChildScrollViewで子ウィジェットをラップ
             child: Center(
               child: Container(
@@ -834,6 +859,7 @@ class _HomeState extends State<Home> {
                                     mediaQueryData.size.height / 200), //ボタン間の空間
                             //閲覧履歴リスト
                             SingleChildScrollView(
+                              //controller: _scrollControllerHistory,
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: [

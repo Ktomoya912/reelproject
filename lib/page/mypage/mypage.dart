@@ -62,15 +62,41 @@ class _MyPageState extends State<MyPage> {
 }
 
 //スクロール可能なマイページの一覧画面
-class ScrollMyPageDetail extends StatelessWidget {
+class ScrollMyPageDetail extends StatefulWidget {
   const ScrollMyPageDetail({
     super.key,
   });
 
   @override
+  State<ScrollMyPageDetail> createState() => _ScrollMyPageDetailState();
+}
+
+class _ScrollMyPageDetailState extends State<ScrollMyPageDetail> {
+  //スクロール位置を取得するためのコントローラー
+  final ScrollController _scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //reloadHomeJedgeがtrueの場合、Home画面をリロードする
+    void changeMypageScroll() async {
+      if (store.reloadMypageJedge) {
+        //ここにHome画面リロードの処理を記述
+        //ユーザ情報更新
+        store.getMyUserInfo();
+        //await Future.delayed(Duration(microseconds: 1));
+        // スクロール位置をリセットします。
+        _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+        store.changeReloadMypageJedgeOn(false); //リロード後、falseに戻す
+      }
+    }
+
+    //ビルド後に実行
+    WidgetsBinding.instance.addPostFrameCallback((_) => changeMypageScroll());
+
+    // changeMypageScroll();
 
     //一般向けマイページリスト
     Map<String, List<Map<String, dynamic>>> generalMypageMap = {
@@ -244,6 +270,7 @@ class ScrollMyPageDetail extends StatelessWidget {
     }
     return ShaderMaskComponent(
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: Center(
           child: Column(
             children: [
