@@ -5,6 +5,36 @@ import 'dart:convert';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
+  //ルート更新用の関数
+  bool reloadHomeJedge = false;
+  bool reloadEventJedge = false;
+  bool reloadJobJedge = false;
+  bool reloadMypageJedge = false;
+
+  //reloadHomeJedgeをtrueに変更する関数
+  void changeReloadHomeJedgeOn(bool b) {
+    reloadHomeJedge = b;
+    notifyListeners();
+  }
+
+  //reloadEventJedgeをtrueに変更する関数
+  void changeReloadEventJedgeOn(bool b) {
+    reloadEventJedge = b;
+    notifyListeners();
+  }
+
+  //reloadJobJedgeをtrueに変更する関数
+  void changeReloadJobJedgeOn(bool b) {
+    reloadJobJedge = b;
+    notifyListeners();
+  }
+
+  //reloadMypageJedgeをtrueに変更する関数
+  void changeReloadMypageJedgeOn(bool b) {
+    reloadMypageJedge = b;
+    notifyListeners();
+  }
+
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
 
@@ -64,6 +94,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     } else {
       throw Exception("Failed");
     }
+    notifyListeners();
   }
 
   //自分のユーザ情報を更新
@@ -82,6 +113,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     } else {
       throw Exception("Failed");
     }
+    notifyListeners();
   }
 
   //=============================================

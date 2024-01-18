@@ -411,6 +411,8 @@ class _HomeState extends State<Home> {
     });
   }
 
+  bool notEventJedge = false; //イベントがない場合の判定
+
   Future getEventDetailList(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
 
@@ -423,10 +425,14 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeEventDetailList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      notEventJedge = true;
+      // print("error");
+      // throw Exception("Failed");
     }
   }
+
+  //スクロール位置を取得するためのコントローラー
+  ScrollController homeScrollController = ScrollController();
 
   @override
   void initState() {
@@ -437,19 +443,40 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getEventList());
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
-      // //一定間隔毎に更新
-      // Timer.periodic(Duration(minutes: 1), (Timer t) => getHistoryList(store));
     });
   }
+
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //Home画面リロード用の関数
+    void reloadHome() async {
+      //reloadHomeJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadHomeJedge) {
+        //ここにHome画面リロードの処理を記述
+        // // スクロール位置をリセットします。
+
+        // await Future.delayed(Duration(microseconds: 1));
+
+        getEventList();
+        getJobList();
+        getHistoryList(store);
+
+        homeScrollController
+            .jumpTo(homeScrollController.position.minScrollExtent);
+
+        store.changeReloadHomeJedgeOn(false); //リロード後、falseに戻す
+      }
+    }
+
+    //ビルド後に実行
+    WidgetsBinding.instance.addPostFrameCallback((_) => reloadHome());
+
+    // reloadHome();
 
     //ボタンリスト
     Map<String, List<Map<String, dynamic>>> buttonList = {
@@ -522,6 +549,7 @@ class _HomeState extends State<Home> {
         appBar: const MainAppBar(nextPage: Notice()),
         body: ShaderMaskComponent(
           child: SingleChildScrollView(
+            controller: homeScrollController,
             // SingleChildScrollViewで子ウィジェットをラップ
             child: Center(
               child: Container(
@@ -603,6 +631,8 @@ class _HomeState extends State<Home> {
                                                         notPostJedge: false,
                                                         eventDetailList:
                                                             eventDetailList,
+                                                        notEventJedge:
+                                                            notEventJedge,
                                                       )));
                                           getEventList();
                                           getJobList();
@@ -834,6 +864,7 @@ class _HomeState extends State<Home> {
                                     mediaQueryData.size.height / 200), //ボタン間の空間
                             //閲覧履歴リスト
                             SingleChildScrollView(
+                              //controller: _scrollControllerHistory,
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: [
@@ -853,6 +884,7 @@ class _HomeState extends State<Home> {
                                           getEventDetailList(
                                               historyList[i]["id"], store),
                                       eventDetailList: eventDetailList,
+                                      notEventJedge: notEventJedge,
                                     ),
                                 ],
                               ),
@@ -884,6 +916,7 @@ class HistoryButton extends StatelessWidget {
     required this.getHistoryList,
     required this.getEventDetailList,
     required this.eventDetailList,
+    required this.notEventJedge,
   });
 
   final MediaQueryData mediaQueryData;
@@ -896,6 +929,7 @@ class HistoryButton extends StatelessWidget {
   final Function getHistoryList;
   final Function getEventDetailList;
   final Map<String, dynamic> eventDetailList;
+  final bool notEventJedge;
 
   @override
   Widget build(BuildContext context) {
@@ -915,6 +949,7 @@ class HistoryButton extends StatelessWidget {
                             tStore: store,
                             notPostJedge: false,
                             eventDetailList: eventDetailList,
+                            notEventJedge: notEventJedge,
                           )));
               getEventList();
               getJobList();

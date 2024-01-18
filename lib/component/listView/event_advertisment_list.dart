@@ -91,6 +91,8 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     "favoriteJedge": false,
   };
 
+  bool notEventJedge = false; //イベント広告がないか否か
+
   //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
 
   changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
@@ -186,10 +188,16 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
     if (response.statusCode == 200) {
       changeEventList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      setState(() {
+        notEventJedge = true;
+      });
+      // print("error");
+      // throw Exception("Failed");
     }
   }
+
+  //スクロール位置を取得するためのコントローラー
+  final ScrollController _scrollController = ScrollController();
 
 // データベースと連携させていないので現在はここでイベント詳細内容を設定
   @override
@@ -214,8 +222,30 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
           3;
     }
 
+    //スクロール位置をリセットする関数
+
+    void changeScrollController() async {
+      //reloadEventJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadEventJedge) {
+        widget.functionCall();
+        //リロード後、falseに戻す
+        //await Future.delayed(Duration(microseconds: 1));
+
+        //ここにHome画面リロードの処理を記述
+        // スクロール位置をリセットします。
+        _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+        store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+      }
+    }
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => changeScrollController());
+
+    //changeScrollController();
+
     return Expanded(
       child: ListView.builder(
+        controller: _scrollController,
         itemCount: widget.advertisementList.length, //要素数
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -237,6 +267,7 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                     tStore: store,
                                     notPostJedge: widget.notPostJedge,
                                     eventDetailList: eventDetailList,
+                                    notEventJedge: notEventJedge,
                                   )));
                   widget.functionCall();
                   //タップ処理

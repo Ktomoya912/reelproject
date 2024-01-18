@@ -54,11 +54,11 @@ class RootPage extends StatelessWidget {
                   IconWithText(icon: Icons.work, text: '　求人　'),
                   IconWithText(icon: Icons.person, text: 'マイページ'),
                 ],
-                onTap: (int index) {
+                onTap: (int index) async {
                   //現在のindexをstoreに保存
                   store.changeRootIndex(index);
-                  //ネストされたルーターのスタック情報を破棄(初期化される)
 
+                  //ネストされたルーターのスタック情報を破棄(初期化される)
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();
@@ -68,6 +68,25 @@ class RootPage extends StatelessWidget {
                     //選択したタブへ移動
                     //context.pushRoute(pushRoutes[index]);
                     tabsRouter.setActiveIndex(index);
+                  }
+
+                  //await Future.delayed(Duration(milliseconds: 5));
+
+                  //ホーム画面のみリロードする
+                  if (index == 0) {
+                    store.changeReloadHomeJedgeOn(true);
+                  }
+                  //イベント画面のみリロードする
+                  else if (index == 1) {
+                    store.changeReloadEventJedgeOn(true);
+                  }
+                  //求人画面のみリロードする
+                  else if (index == 2) {
+                    store.changeReloadJobJedgeOn(true);
+                  }
+                  //マイページ画面のみリロードする
+                  else {
+                    store.changeReloadMypageJedgeOn(true);
                   }
                 }),
             //オーバーレイ表示時にボトムアップバーを触れなくする
