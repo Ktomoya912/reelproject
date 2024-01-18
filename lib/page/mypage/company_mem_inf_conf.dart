@@ -45,13 +45,19 @@ class _CompanyMemInfConfState extends State<CompanyMemInfConf> {
 }
 
 //スクロール可能なマイページの一覧画面
-class ScrollCompanyMemInfConfDetail extends StatelessWidget {
+class ScrollCompanyMemInfConfDetail extends StatefulWidget {
   const ScrollCompanyMemInfConfDetail({
     super.key,
   });
 
-  //一般向けマイページリスト
+  @override
+  State<ScrollCompanyMemInfConfDetail> createState() =>
+      _ScrollCompanyMemInfConfDetailState();
+}
 
+class _ScrollCompanyMemInfConfDetailState
+    extends State<ScrollCompanyMemInfConfDetail> {
+  //一般向けマイページリスト
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
@@ -255,12 +261,15 @@ class ScrollCompanyMemInfConfDetail extends StatelessWidget {
             const Padding(padding: EdgeInsets.all(30)),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CompanyMemInfConfChange(),
-                  ),
-                );
+                setState(() async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CompanyMemInfConfChange(),
+                    ),
+                  );
+                  store.getMyUserInfo();
+                });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: store.mainColor,

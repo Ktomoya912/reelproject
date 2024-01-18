@@ -21,6 +21,7 @@ import 'apply_conf.dart'; //応募者確認
 import 'package:reelproject/page/login/ask_page.dart'; //お問い合わせ
 import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 import 'package:reelproject/overlay/rule/screen/secession.dart'; //利用規約画面
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {
@@ -80,6 +81,8 @@ class _ScrollMyPageDetailState extends State<ScrollMyPageDetail> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
+    //showLoadingDialog(context: context); //ここでローディング画面を表示
+
     //reloadHomeJedgeがtrueの場合、Home画面をリロードする
     void changeMypageScroll() async {
       if (store.reloadMypageJedge) {
@@ -90,6 +93,11 @@ class _ScrollMyPageDetailState extends State<ScrollMyPageDetail> {
         // スクロール位置をリセットします。
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
         store.changeReloadMypageJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
       }
     }
 

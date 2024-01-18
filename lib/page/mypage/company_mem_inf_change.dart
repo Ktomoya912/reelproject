@@ -4,6 +4,10 @@ import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import "package:reelproject/component/finish_screen/finish_screen.dart";
 //push先
 
 class CompanyMemInfConfChange extends StatefulWidget {
@@ -17,7 +21,7 @@ class CompanyMemInfConfChange extends StatefulWidget {
 }
 
 class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
-  String? selectedGender;
+  String? selectedGender = "";
 
   String username = '';
   String mymail = '';
@@ -29,6 +33,32 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
   String year = '';
   String month = '';
   String day = '';
+
+  //会員情報更新関数
+  Future userInfoUpdata(ChangeGeneralCorporation store) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${store.myID}');
+    final response = await put(url,
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer ${store.accessToken}',
+          'Content-Type': 'application/json'
+        },
+        body: json.encode({
+          "password": "password",
+          "username": username,
+          "image_url": "https://example.com",
+          "email": store.userInfo["company"]["email"],
+          "sex": selectedGender == "male"
+              ? "m"
+              : selectedGender == "female"
+                  ? "f"
+                  : "o",
+          "birthday":
+              "$year-${month.length == 2 ? month : "0$month"}-${day.length == 2 ? day : "0$day"}",
+          "user_type": "c"
+        }));
+  }
 
   @override
   void initState() {
@@ -176,11 +206,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             // print(mail);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 50,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '個人用メールアドレス',
+                            labelText: '法人用メールアドレス',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -583,16 +613,28 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
             ElevatedButton(
               onPressed: () {
                 if (checkUserName(username) &&
-                    checkPhoneNumber(phoneNumber) &&
-                    checkPostalCode(postalCode) &&
+                    // checkPhoneNumber(phoneNumber) &&
+                    // checkPostalCode(postalCode) &&
                     checkYear(year) &&
                     checkMonth(month) &&
                     checkDay(day) &&
-                    checkSelectedGender(selectedGender) != '') {
-                  Navigator.push(
-                    context,
+                    selectedGender != '') {
+                  userInfoUpdata(store); //ユーザー情報更新
+                  store.getMyUserInfo();
+                  //完了画面
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const MyPage(),
+                      builder: (context) => FinishScreen(
+                        appbarText: "会員情報編集完了",
+                        appIcon: Icons.playlist_add_check,
+                        finishText: "会員情報の変更を確認しました。",
+                        text:
+                            "会員情報の変更を完了しました。\n先ほど入力を行った内容以外にも変更したい点がある際には、下のお問合せよりお願いいたします。",
+                        buttonText:
+                            "会員情報確認画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                        jedgeBottomAppBar: false,
+                        popTimes: 2,
+                      ),
                     ),
                   );
                 }
@@ -699,7 +741,7 @@ bool checkDay(String day) {
 
 String checkSelectedGender(String? selectedGender) {
   //性別の正規表現
-  if (selectedGender == null) {
+  if (selectedGender == "") {
     return '性別を選択してください';
   } else {
     return '';

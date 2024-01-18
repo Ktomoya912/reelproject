@@ -45,11 +45,18 @@ class _GeneralMemInfConfState extends State<GeneralMemInfConf> {
 }
 
 //スクロール可能なマイページの一覧画面
-class ScrollGeneralMemInfConfDetail extends StatelessWidget {
+class ScrollGeneralMemInfConfDetail extends StatefulWidget {
   const ScrollGeneralMemInfConfDetail({
     super.key,
   });
 
+  @override
+  State<ScrollGeneralMemInfConfDetail> createState() =>
+      _ScrollGeneralMemInfConfDetailState();
+}
+
+class _ScrollGeneralMemInfConfDetailState
+    extends State<ScrollGeneralMemInfConfDetail> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
@@ -187,12 +194,15 @@ class ScrollGeneralMemInfConfDetail extends StatelessWidget {
             const Padding(padding: EdgeInsets.all(30)),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GeneralMemInfConfChange(),
-                  ),
-                );
+                setState(() async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GeneralMemInfConfChange(),
+                    ),
+                  );
+                  store.getMyUserInfo();
+                });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: store.mainColor,
