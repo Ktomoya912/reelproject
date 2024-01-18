@@ -202,7 +202,7 @@ class LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () async {
                       //context.navigateTo(const RootRoute()),
-                      //showLoadingDialog(context: context); //ここでローディング画面を表示
+                      showLoadingDialog(context: context); //ここでローディング画面を表示
                       await getAccessToken(name, password,
                           ChangeGeneralCorporation.apiUrl); //ここでログイン処理
                       await Future.delayed(const Duration(seconds: 1)); //1秒待つ

@@ -84,15 +84,17 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           return true; // 成功時は true を返す
         } else {
           final Map<String, dynamic> data = json.decode(response.body);
-          Navigator.pop(context); //pop
+
           if (data["detail"] == "Username already registered") {
             // 既にユーザー名が登録されている場合//pop
+
+            Navigator.pop(context);
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
                   title: const Text('エラー'),
-                  content: const Text('既にユーザー名が登録されています'),
+                  content: const Text('登録予定のユーザー名は既に登録されています'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('OK'),
@@ -105,12 +107,13 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             return false; // エラー時は false を返す
           } else if (data["detail"] == "Email already registered") {
             // 既にメールアドレスが登録されている場合
+            Navigator.pop(context); //
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
                   title: const Text('エラー'),
-                  content: const Text('既にメールアドレスが登録されています'),
+                  content: const Text('登録予定のメールアドレスは既に登録されています'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('OK'),
@@ -128,6 +131,21 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
         }
       } catch (error) {
         // 通信エラーなどの例外が発生した場合
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('エラー'),
+              content: const Text('通信エラーが発生しました'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
         return false; // エラー時は false を返す
       }
     }
@@ -524,8 +542,8 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck == true) {
                   showLoadingDialog(context: context);
-                  createUser(username, password, mail, "", year, month, day,
-                          selectedGender as String)
+                  await createUser(username, password, mail, "", year, month,
+                          day, selectedGender as String)
                       .then((success) {
                     //ここでローディング画面を表示
                     if (success) {
@@ -545,8 +563,6 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                                   popTimes: 0,
                                 )),
                       );
-                    } else {
-                      Navigator.pop(context); //pop
                     }
                   });
                 } else {
