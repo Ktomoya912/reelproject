@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:reelproject/page/login/new_menber_company.dart';
+import 'package:reelproject/page/login/new_menber_general.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 
@@ -50,6 +53,60 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
         centerTitle: true, //中央揃え
         toolbarHeight: 100, //アップバーの高さ
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 10),
+            child: InkWell(
+              onTap: () {
+                store.changeGC(!store.jedgeGC);
+
+                if (store.jedgeGC) {
+                  Navigator.pushReplacement(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade, // アニメーションなし
+                      child: NewMemberGeneral(
+                        onVisibilityToggle: (isVisible) {},
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade, // アニメーションなし
+                      child: NewMemberCompany(
+                        onVisibilityToggle: (isVisible) {},
+                      ),
+                    ),
+                  );
+                }
+              },
+              splashColor: Colors.transparent, // splashColorを透明にする。
+              child: store.jedgeGC
+                  ? Text(
+                      '法人の方はこちら',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        decorationColor: store.mainColor,
+                        decorationThickness: 2,
+                        color: store.mainColor,
+                      ),
+                    )
+                  : Text(
+                      '個人の方はこちら',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        decorationColor: store.mainColor,
+                        decorationThickness: 2,
+                        color: store.mainColor,
+                      ),
+                    ),
+            ),
+          ),
+        ],
 
         //画面説明アップバー
         bottom: PreferredSize(

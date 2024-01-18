@@ -202,7 +202,7 @@ class LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () async {
                       //context.navigateTo(const RootRoute()),
-                      showLoadingDialog(context: context); //ここでローディング画面を表示
+                      //showLoadingDialog(context: context); //ここでローディング画面を表示
                       await getAccessToken(name, password,
                           ChangeGeneralCorporation.apiUrl); //ここでログイン処理
                       await Future.delayed(const Duration(seconds: 1)); //1秒待つ
@@ -341,38 +341,6 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(color: Colors.grey), //戻るボタン
       centerTitle: true, //中央揃え
       toolbarHeight: 80, //アップバーの高さ
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20, top: 50),
-          child: InkWell(
-            onTap: () {
-              store.changeGC(!store.jedgeGC);
-            },
-            splashColor: Colors.transparent, // splashColorを透明にする。
-            child: store.jedgeGC
-                ? const Text(
-                    '法人の方はこちら',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                      decorationThickness: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text(
-                    '個人の方はこちら',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                      decorationThickness: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-          ),
-        ),
-      ],
     );
   }
 }
