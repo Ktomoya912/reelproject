@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
@@ -48,7 +49,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
-    Future createUser(
+    Future<bool> createUser(
       String username,
       String password,
       String email,
@@ -59,25 +60,93 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
       String sex,
     ) async {
       Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/users/");
-      final response = await post(url,
+
+      try {
+        final response = await post(
+          url,
           headers: {
             'Content-Type': 'application/json',
-            'accept': 'application/json'
+            'accept': 'application/json',
           },
           body: jsonEncode({
             'username': username,
             'password': password,
             'image_url':
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Communist_star_with_golden_border_and_red_rims.svg/250px-Communist_star_with_golden_border_and_red_rims.svg.png',
+                'https://reelproject.s3.amazonaws.com/1_20240118193811.png',
             'email': email,
             'sex': sex,
             'birthday': '$year-$months-$days',
-            'user_type': 'g'
-          }));
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception(response.body);
+            'user_type': 'g',
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          return true; // 成功時は true を返す
+        } else {
+          final Map<String, dynamic> data = json.decode(response.body);
+
+          if (data["detail"] == "Username already registered") {
+            // 既にユーザー名が登録されている場合//pop
+
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('エラー'),
+                  content: const Text('登録予定のユーザー名は既に登録されています'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
+            );
+            return false; // エラー時は false を返す
+          } else if (data["detail"] == "Email already registered") {
+            // 既にメールアドレスが登録されている場合
+            Navigator.pop(context); //
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('エラー'),
+                  content: const Text('登録予定のメールアドレスは既に登録されています'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
+            );
+            return false; // エラー時は false を返す
+          } else {
+            // その他のエラーの場合
+            return false; // エラー時は false を返す
+          }
+        }
+      } catch (error) {
+        // 通信エラーなどの例外が発生した場合
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('エラー'),
+              content: const Text('通信エラーが発生しました'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+        return false; // エラー時は false を返す
       }
     }
 
@@ -460,7 +529,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
             ),
             const Padding(padding: EdgeInsets.only(top: 10.0)),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // ログインボタンが押されたときの処理をここに追加予定
                 if (checkUserName(username) &&
                     checkMail(mail) &&
@@ -472,24 +541,45 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     checkPassword(passwordCheck) &&
                     checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck == true) {
-                  //print('未入力の項目があります');
-                  createUser(username, password, mail, "", year, month, day,
-                      selectedGender as String);
-                  Navigator.pop(context); //pop
-                  Navigator.push(
-                    context,
-                    // MaterialPageRoute(builder: (context) => Home()),
-                    MaterialPageRoute(
-                        builder: (context) => const FinishScreen(
-                              appbarText: "会員登録完了",
-                              appIcon: Icons.task_alt,
-                              finishText: "会員登録が完了いたしました。",
-                              text:
-                                  "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                              buttonText: "ログイン画面に戻る",
-                              jedgeBottomAppBar: true,
-                              popTimes: 0,
-                            )),
+                  showLoadingDialog(context: context);
+                  await createUser(username, password, mail, "", year, month,
+                          day, selectedGender as String)
+                      .then((success) {
+                    //ここでローディング画面を表示
+                    if (success) {
+                      Navigator.pop(context); //pop
+                      Navigator.push(
+                        context,
+                        // MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(
+                            builder: (context) => const FinishScreen(
+                                  appbarText: "会員登録完了",
+                                  appIcon: Icons.task_alt,
+                                  finishText: "会員登録が完了いたしました。",
+                                  text:
+                                      "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
+                                  buttonText: "ログイン画面に戻る",
+                                  jedgeBottomAppBar: true,
+                                  popTimes: 0,
+                                )),
+                      );
+                    }
+                  });
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('エラー'),
+                        content: const Text('入力内容に誤りがあります'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },
@@ -585,4 +675,16 @@ bool checkPassword(String password) {
 bool checkPasswordMatch(String password, String passwordCheck) {
   //パスワードの正規表現
   return password == passwordCheck;
+}
+
+// 既にユーザー名が登録されている例外クラス
+class UserAlreadyExistsException implements Exception {
+  final String message;
+  UserAlreadyExistsException(this.message);
+}
+
+// 既にメールアドレスが登録されている例外クラス
+class EmailAlreadyExistsException implements Exception {
+  final String message;
+  EmailAlreadyExistsException(this.message);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
@@ -78,37 +79,103 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
     ) async {
       Uri url = Uri.parse(
           "${ChangeGeneralCorporation.apiUrl}/users/company?send_verification_email=true");
-      final response = await post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': 'application/json'
-        },
-        body: json.encode({
-          'username': username,
-          'password': password,
-          'image_url': image_url,
-          'email': mymail,
-          'sex': sex,
-          'birthday': '$year-$months-$days',
-          'user_type': 'c',
-          'company': {
-            'name': name,
-            'postal_code': postalCode,
-            'prefecture': prefecture,
-            'city': city,
-            'address': address,
-            'phone_number': phoneNumber,
-            'email': usermail,
-            'homepage': '',
-            'representative': '',
+
+      try {
+        final response = await post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+          },
+          body: json.encode({
+            'username': username,
+            'password': password,
+            'image_url': image_url,
+            'email': mymail,
+            'sex': sex,
+            'birthday': '$year-$months-$days',
+            'user_type': 'c',
+            'company': {
+              'name': name,
+              'postal_code': postalCode,
+              'prefecture': prefecture,
+              'city': city,
+              'address': address,
+              'phone_number': phoneNumber,
+              'email': usermail,
+              'homepage': '',
+              'representative': '',
+            }
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          return true; // 成功時は true を返す
+        } else {
+          final Map<String, dynamic> data = json.decode(response.body);
+
+          if (data["detail"] == "Username already registered") {
+            // 既にユーザー名が登録されている場合//pop
+
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('エラー'),
+                  content: const Text('登録予定のユーザー名は既に登録されています'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
+            );
+            return false; // エラー時は false を返す
+          } else if (data["detail"] == "Email already registered") {
+            // 既にメールアドレスが登録されている場合
+            Navigator.pop(context); //
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('エラー'),
+                  content: const Text('登録予定のメールアドレスは他のユーザが登録しています'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
+            );
+            return false; // エラー時は false を返す
+          } else {
+            // その他のエラーの場合
+            return false; // エラー時は false を返す
           }
-        }),
-      );
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception(json.decode(response.body));
+        }
+      } catch (error) {
+        // 通信エラーなどの例外が発生した場合
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('エラー'),
+              content: const Text('通信エラーが発生しました'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+        return false; // エラー時は false を返す
       }
     }
 
@@ -823,41 +890,46 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     checkPassword(passwordCheck) &&
                     checkPasswordMatch(password, passwordCheck) &&
                     ruleCheck) {
+                  showLoadingDialog(context: context);
                   createUser(
-                      username,
-                      password,
-                      '',
-                      year,
-                      month,
-                      day,
-                      selectedGender as String,
-                      name,
-                      postalCode,
-                      prefecture,
-                      city,
-                      address,
-                      phoneNumber,
-                      mymail,
-                      usermail,
-                      homePage,
-                      representative);
-                  Navigator.pop(context); //pop
-                  Navigator.push(
-                    context,
-                    // MaterialPageRoute(builder: (context) => Home()),
+                          username,
+                          password,
+                          '',
+                          year,
+                          month,
+                          day,
+                          selectedGender as String,
+                          name,
+                          postalCode,
+                          prefecture,
+                          city,
+                          address,
+                          phoneNumber,
+                          mymail,
+                          usermail,
+                          homePage,
+                          representative)
+                      .then((result) {
+                    if (result) {
+                      Navigator.pop(context); //pop
+                      Navigator.push(
+                        context,
+                        // MaterialPageRoute(builder: (context) => Home()),
 
-                    MaterialPageRoute(
-                        builder: (context) => const FinishScreen(
-                              appbarText: "会員登録完了",
-                              appIcon: Icons.task_alt,
-                              finishText: "会員登録が完了いたしました。",
-                              text:
-                                  "法人会員登録ありがとうございます。\nこちらで法人確認を行ったあと、法人会員登録完了メールをご登録メールアドレスへと送信いたしますので、メールが届くまで今しばらくお待ちください。\n万が一法人会員登録完了メールが１か月以上届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                              buttonText: "ログイン画面に戻る",
-                              jedgeBottomAppBar: true,
-                              popTimes: 0,
-                            )),
-                  );
+                        MaterialPageRoute(
+                            builder: (context) => const FinishScreen(
+                                  appbarText: "会員登録完了",
+                                  appIcon: Icons.task_alt,
+                                  finishText: "会員登録が完了いたしました。",
+                                  text:
+                                      "法人会員登録ありがとうございます。\nこちらで法人確認を行ったあと、法人会員登録完了メールをご登録メールアドレスへと送信いたしますので、メールが届くまで今しばらくお待ちください。\n万が一法人会員登録完了メールが１か月以上届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
+                                  buttonText: "ログイン画面に戻る",
+                                  jedgeBottomAppBar: true,
+                                  popTimes: 0,
+                                )),
+                      );
+                    }
+                  });
                 } else {
                   showDialog(
                     context: context,
