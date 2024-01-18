@@ -341,6 +341,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(color: Colors.grey), //戻るボタン
       centerTitle: true, //中央揃え
       toolbarHeight: 80, //アップバーの高さ
+      automaticallyImplyLeading: false,
     );
   }
 }
