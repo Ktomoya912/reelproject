@@ -6,6 +6,9 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/app_router/app_router.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -108,6 +111,17 @@ class ToggleRadioState extends State<ToggleRadio> {
     super.initState();
   }
 
+  //削除
+  Future DeleteUser(ChangeGeneralCorporation store) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${store.myID}');
+
+    final response = await delete(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
@@ -134,7 +148,7 @@ class ToggleRadioState extends State<ToggleRadio> {
         ),
         const SizedBox(height: 20), //余白調整
         const Text(
-          "退会するとあなたのアカウントはシステム\nから削除され、使用できなくなります。",
+          "退会するとあなたのアカウントはシステムから削除され、使用できなくなります。",
           style: TextStyle(
               //fontWeight: FontWeight.bold
               fontSize: 11.5),
@@ -171,6 +185,7 @@ class ToggleRadioState extends State<ToggleRadio> {
               store.changeOverlay(false);
               Secession().hide();
               context.navigateTo(const SecessionFinishRoute());
+              DeleteUser(store);
 
               //消す作業記述
               //
