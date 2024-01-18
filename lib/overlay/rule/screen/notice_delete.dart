@@ -14,20 +14,18 @@ import 'dart:convert';
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
 
-class NotpostDeleteConf {
-  factory NotpostDeleteConf() => _shared;
-  static final NotpostDeleteConf _shared = NotpostDeleteConf._sharedInstance();
+class NoticeDelete {
+  factory NoticeDelete() => _shared;
+  static final NoticeDelete _shared = NoticeDelete._sharedInstance();
 
-  NotpostDeleteConf._sharedInstance();
+  NoticeDelete._sharedInstance();
 
   OverScreenControl? controller;
 
   //投稿削除
-  Future deletePost(
-      int id, ChangeGeneralCorporation store, String eventJobJedge) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/${eventJobJedge}s/$id');
-    final response = await delete(url, headers: {
+  Future deletePost(int id, ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/notices/$id/read');
+    final response = await post(url, headers: {
       'accept': 'application/json',
       //'Authorization': 'Bearer ${store.accessToken}'
       'authorization': 'Bearer ${store.accessToken}'
@@ -38,7 +36,6 @@ class NotpostDeleteConf {
     // オーバーレイ表示動作
     required BuildContext context,
     required int id,
-    required String eventJobJedge,
   }) {
     if (controller?.update() ?? false) {
       return;
@@ -46,7 +43,6 @@ class NotpostDeleteConf {
       controller = showOverlay(
         context: context,
         id: id,
-        eventJobJedge: eventJobJedge,
       );
     }
   }
@@ -60,7 +56,6 @@ class NotpostDeleteConf {
   OverScreenControl showOverlay({
     required BuildContext context,
     required int id,
-    required String eventJobJedge,
   }) {
     final text0 = StreamController<String>();
 
@@ -71,16 +66,16 @@ class NotpostDeleteConf {
     final overlay = OverlayEntry(
       builder: (context) {
         final store = Provider.of<ChangeGeneralCorporation>(context);
-        String buttonText = "ホーム画面に戻る";
-        if (store.rootIndex == 0) {
-          buttonText = "ホーム画面に戻る";
-        } else if (store.rootIndex == 1) {
-          buttonText = "イベント画面に戻る";
-        } else if (store.rootIndex == 2) {
-          buttonText = "求人画面に戻る";
-        } else if (store.rootIndex == 3) {
-          buttonText = "マイページ画面に戻る";
-        }
+        // String buttonText = "ホーム画面に戻る";
+        // if (store.rootIndex == 0) {
+        //   buttonText = "ホーム画面に戻る";
+        // } else if (store.rootIndex == 1) {
+        //   buttonText = "イベント画面に戻る";
+        // } else if (store.rootIndex == 2) {
+        //   buttonText = "求人画面に戻る";
+        // } else if (store.rootIndex == 3) {
+        //   buttonText = "マイページ画面に戻る";
+        // }
         return Material(
           color: Colors.black.withAlpha(150),
           child: Center(
@@ -115,21 +110,21 @@ class NotpostDeleteConf {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            deletePost(id, store, eventJobJedge);
+                            deletePost(id, store);
                             store.changeOverlay(false);
                             //Navigator.pop(context);
                             //Navigator.pop(context);
-                            NotpostDeleteConf().hide();
+                            NoticeDelete().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const FinishScreen(
-                                  appbarText: "未投稿削除完了",
+                                  appbarText: "通知削除完了",
                                   appIcon: Icons.playlist_add_check,
-                                  finishText: "未投稿広告の削除を完了しました",
+                                  finishText: "通知の削除を完了しました",
                                   text:
-                                      "未投稿広告の削除を完了しました。\n削除した広告は公開されないため、プラン料金を支払う必要はございません。",
+                                      "対象通知の削除を完了いたしました。\n削除した通知は元に戻すことができませんのでご注意ください。",
                                   buttonText:
-                                      "未投稿一覧に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                                      "通知一覧に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
                                   jedgeBottomAppBar: false,
                                   popTimes: 2,
                                 ),
@@ -158,7 +153,7 @@ class NotpostDeleteConf {
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
                             store.changeOverlay(false);
-                            NotpostDeleteConf().hide();
+                            NoticeDelete().hide();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
