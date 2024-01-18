@@ -67,7 +67,8 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           body: jsonEncode({
             'username': username,
             'password': password,
-            'image_url': image_url,
+            'image_url':
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Communist_star_with_golden_border_and_red_rims.svg/250px-Communist_star_with_golden_border_and_red_rims.svg.png',
             'email': email,
             'sex': sex,
             'birthday': '$year-$months-$days',
