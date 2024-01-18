@@ -37,6 +37,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
+  // static const String apiUrl = "http://34.196.90.77:8000/api/v1";
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "type=all";

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
-import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:provider/provider.dart';
 
 class PassChange extends StatefulWidget {
   const PassChange({
@@ -19,11 +23,41 @@ class PassChange extends StatefulWidget {
 
 class PassChangeState extends State<PassChange> {
   // bool _autoLogin = false; // チェックボックスの状態を管理する変数
+  bool passChange = false; // パスワード変更の状態を管理する変数
+  String email = ""; // メールアドレス
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
     MediaQueryData mediaQueryData = MediaQuery.of(context);
+
+    Future<bool> forgotPassword(String email) async {
+      Uri url =
+          Uri.parse("${ChangeGeneralCorporation.apiUrl}/auth/forgot-password");
+      final requsetEmail = json.encode({
+        'email': email,
+      });
+
+      try {
+        Response response = await post(
+          url,
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: requsetEmail,
+        );
+
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    }
+
     return Scaffold(
       appBar: const TitleAppBar(
         title: "パスワード再設定",
@@ -80,11 +114,14 @@ class PassChangeState extends State<PassChange> {
                               width: 20),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: const SizedBox(
+                        child: SizedBox(
                           width: 10,
                           child: TextField(
+                            onChanged: (value) {
+                              email = value;
+                            },
                             textAlign: TextAlign.start,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: "メールアドレス",
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
@@ -100,24 +137,48 @@ class PassChangeState extends State<PassChange> {
                         height: 15,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          // ログインボタンが押されたときの処理をここに追加予定
-                          Navigator.pop(context, true);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => FinishScreen(
-                                      appbarText: "パスワード再設定",
-                                      appIcon: Icons.mail_outlined,
-                                      finishText: "送信完了",
-                                      text:
-                                          "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
-                                      buttonText: widget.loginJedge == true
-                                          ? "ログイン画面に戻る"
-                                          : "マイページに戻る",
-                                      jedgeBottomAppBar: widget.loginJedge,
-                                      popTimes: 0,
-                                    )),
-                          );
+                        onPressed: () async {
+                          showLoadingDialog(context: context);
+
+                          forgotPassword(email).then((success) {
+                            Navigator.pop(context);
+
+                            if (success) {
+                              Navigator.pop(context, true);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => FinishScreen(
+                                    appbarText: "パスワード再設定",
+                                    appIcon: Icons.mail_outlined,
+                                    finishText: "送信完了",
+                                    text:
+                                        "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
+                                    buttonText: widget.loginJedge == true
+                                        ? "ログイン画面に戻る"
+                                        : "マイページに戻る",
+                                    jedgeBottomAppBar: widget.loginJedge,
+                                    popTimes: 0,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("エラー"),
+                                    content: const Text("メールアドレスが間違っています。"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text("OK"),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -128,7 +189,7 @@ class PassChangeState extends State<PassChange> {
                         ),
                         child: const Text('送信する',
                             style: TextStyle(color: Colors.white)),
-                      ),
+                      )
                       // const ButtonSet(buttonName: "送信する"),
                     ],
                   ),
