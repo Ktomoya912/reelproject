@@ -15,7 +15,7 @@ import 'package:reelproject/overlay/rule/screen/return_write.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
-  LoginPage({
+  const LoginPage({
     super.key,
     this.isObscure = true,
     required this.onVisibilityToggle,
@@ -60,7 +60,6 @@ class LoginPageState extends State<LoginPage> {
         isActive = data["user"]["is_active"];
       } else {
         jedgeGC = false;
-        print(data["detail"]);
       }
     }
 
@@ -209,7 +208,9 @@ class LoginPageState extends State<LoginPage> {
                       await Future.delayed(const Duration(seconds: 1)); //1秒待つ
 
                       if (jedgeGC) {
+                        //ログイン成功
                         if (!isActive) {
+                          //本登録が完了していない場合
                           Navigator.pop(context); //ローディング画面を閉じる
                           showDialog(
                               context: context,
@@ -229,10 +230,13 @@ class LoginPageState extends State<LoginPage> {
                                 );
                               });
                         } else {
+                          //本登録が完了している場合
+                          await store.getMyUserInfo(); //ここで自分のユーザ情報を取得
                           context.popRoute();
                           context.pushRoute(const RootRoute());
                         }
                       } else {
+                        //ログイン失敗
                         context.popRoute();
                         ReturnWrite().show(context: context);
                       }
