@@ -6,6 +6,8 @@ import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
+import 'package:reelproject/component/rule_screen/general_rule_screen.dart';
+import 'package:reelproject/component/rule_screen/company_rule_screen.dart';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -19,9 +21,9 @@ class RuleScreen {
   OverScreenControl? controller;
 
   //一般向け利用規約
-  final String ruleGeneral = "aaa";
+  final String ruleGeneral = generalRuleScreenText;
 //企業向け利用規約
-  final String ruleCompany = "bbb";
+  final String ruleCompany = companyRuleScreenText;
 
   void show({
     // オーバーレイ表示動作
@@ -88,7 +90,7 @@ class RuleScreen {
                         //-------利用規約（現在はtextのみ）を表示している部分------------
                         Container(
                           height: 400,
-                          width: 250,
+                          width: 320,
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 203, 202, 202),
