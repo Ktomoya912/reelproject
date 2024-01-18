@@ -209,11 +209,49 @@ class _JobPostDetailState extends State<JobPostDetail> {
     }
   }
 
+  //応募確認されたか否か
+  bool applyJedge = false;
+
+  //応募者一覧取得
+  static Map<String, dynamic> postMemList = {"users": []};
+
+  void changeAdvertisementList(
+      Map<String, dynamic> e, ChangeGeneralCorporation store) {
+    setState(() {
+      postMemList = e;
+      for (int i = 0; i < e["users"].length; i++) {
+        if (e["users"][i]["status"] == "a" &&
+            e["users"][i]["user_id"] == store.myID) {
+          applyJedge = true;
+        }
+      }
+    });
+  }
+
+  //応募者一覧取得
+  Future getApplyList(int id, ChangeGeneralCorporation store) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+      'authorization': 'Bearer ${store.accessToken}'
+    });
+
+    final data = utf8.decode(response.bodyBytes);
+    if (response.statusCode == 200) {
+      changeAdvertisementList(json.decode(data), store);
+    } else {
+      throw Exception("Failed");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     notJobJedge = false;
     getJobList(widget.id, widget.tStore);
+    getApplyList(widget.id, widget.tStore);
   }
 
   //お気に入り登録
@@ -274,6 +312,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         }));
     if (response.statusCode == 200) {
       getJobList(widget.id, widget.tStore);
+      getApplyList(widget.id, widget.tStore);
     } else {
       setState(() {
         notJobJedge = true;
@@ -291,6 +330,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
     });
     if (response.statusCode == 200) {
       getJobList(widget.id, widget.tStore);
+      getApplyList(widget.id, widget.tStore);
     } else {
       setState(() {
         notJobJedge = true;
@@ -315,6 +355,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         }));
     if (response.statusCode == 200) {
       getJobList(widget.id, widget.tStore);
+      getApplyList(widget.id, widget.tStore);
     } else {
       setState(() {
         notJobJedge = true;
@@ -502,6 +543,8 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                               ),
                                             );
                                             getJobList(widget.id, store);
+                                            getApplyList(
+                                                widget.id, widget.tStore);
                                           },
                                           child: Text(
                                               "#${jobDetailList["tag"][i]["name"]}"),
@@ -821,343 +864,367 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                             _isSelected[buttonIndex] = false;
                                           }
                                           //投稿済み
-                                          if (jobDetailList["reviewId"] != 0) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text('投稿済みです'),
-                                                  content: const Text(
-                                                      'このイベント広告にはレビューを投稿済みです。'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child: const Text('閉じる'),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
+                                          if (applyJedge) {
+                                            if (jobDetailList["reviewId"] !=
+                                                0) {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text('投稿済みです'),
+                                                    content: const Text(
+                                                        'このイベント広告にはレビューを投稿済みです。'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child:
+                                                            const Text('閉じる'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                            //未投稿
+                                            else {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        '評価を選択してください'),
+                                                    content: SizedBox(
+                                                      width: width * 0.7,
+                                                      height: 400,
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                              "※レビューは一般公開され、あなたのアカウント情報が含まれます",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      600])),
+                                                          //空白
+                                                          SizedBox(
+                                                              height:
+                                                                  width / 40),
+                                                          //動的に星の色を変える
+                                                          StatefulBuilder(
+                                                            builder: (BuildContext
+                                                                        context,
+                                                                    StateSetter
+                                                                        setState) =>
+                                                                ToggleButtons(
+                                                              fillColor: Colors
+                                                                  .white, //選択中の色
+                                                              borderWidth:
+                                                                  0, //枠線の太さ
+                                                              borderColor: Colors
+                                                                  .white, //枠線の色
+                                                              selectedBorderColor:
+                                                                  Colors
+                                                                      .white, //選択中の枠線の色,
+
+                                                              onPressed:
+                                                                  (int index) {
+                                                                setState(() {
+                                                                  review_point =
+                                                                      index + 1;
+                                                                  for (int buttonIndex =
+                                                                          0;
+                                                                      buttonIndex <=
+                                                                          index;
+                                                                      buttonIndex++) {
+                                                                    _isSelected[
+                                                                            buttonIndex] =
+                                                                        true;
+                                                                  }
+                                                                  for (int buttonIndex =
+                                                                          index +
+                                                                              1;
+                                                                      buttonIndex <
+                                                                          5;
+                                                                      buttonIndex++) {
+                                                                    _isSelected[
+                                                                            buttonIndex] =
+                                                                        false;
+                                                                  }
+                                                                });
+                                                              },
+
+                                                              isSelected:
+                                                                  _isSelected,
+                                                              children:
+                                                                  List.generate(
+                                                                5,
+                                                                (index) => Icon(
+                                                                  Icons.star,
+                                                                  color: _isSelected[
+                                                                          index]
+                                                                      ? Colors.yellow[
+                                                                          800]
+                                                                      : Colors
+                                                                          .grey,
+                                                                  size: 35,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          //タイトル
+                                                          SizedBox(
+                                                              height:
+                                                                  width / 40),
+                                                          SizedBox(
+                                                            width: width,
+                                                            child: const Text(
+                                                                "タイトル",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                          ),
+                                                          Container(
+                                                              width: width,
+                                                              height: 100,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: const Color
+                                                                        .fromARGB(
+                                                                        255,
+                                                                        203,
+                                                                        202,
+                                                                        202),
+                                                                    width: 1.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8.0),
+                                                              ),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child:
+                                                                      TextField(
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .multiline,
+                                                                    maxLines:
+                                                                        null,
+                                                                    maxLength:
+                                                                        50,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            13),
+                                                                    decoration:
+                                                                        const InputDecoration(
+                                                                      //counterText: '',
+                                                                      border: InputBorder
+                                                                          .none,
+                                                                      hintText:
+                                                                          'ここに入力',
+                                                                    ),
+                                                                    onChanged: (text) =>
+                                                                        titleWrite(
+                                                                            text),
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                          //詳細
+                                                          //空白
+                                                          SizedBox(
+                                                              height:
+                                                                  width / 40),
+                                                          SizedBox(
+                                                            width: width,
+                                                            child: const Text(
+                                                                "詳細",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                          ),
+                                                          Container(
+                                                              width: width,
+                                                              height: 100,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: const Color
+                                                                        .fromARGB(
+                                                                        255,
+                                                                        203,
+                                                                        202,
+                                                                        202),
+                                                                    width: 1.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8.0),
+                                                              ),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child:
+                                                                      TextField(
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .multiline,
+                                                                    maxLines:
+                                                                        null,
+                                                                    maxLength:
+                                                                        500,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            13),
+                                                                    decoration:
+                                                                        const InputDecoration(
+                                                                      border: InputBorder
+                                                                          .none,
+                                                                      hintText:
+                                                                          'ここに入力',
+                                                                    ),
+                                                                    onChanged: (text) =>
+                                                                        detailWrite(
+                                                                            text),
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                );
-                                              },
-                                            );
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('投稿'),
+                                                        onPressed: () {
+                                                          //Navigator.of(context).pop();
+                                                          if (title == "" ||
+                                                              detail == "") {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title: const Text(
+                                                                      '未入力の項目があります'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'タイトルと詳細を入力してください'),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                      child: const Text(
+                                                                          '閉じる'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                          } else
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                          '投稿確認'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'この内容で投稿しますか？'),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                      child: const Text(
+                                                                          '投稿'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        reviewWrite(
+                                                                            jobDetailList["id"],
+                                                                            store);
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return AlertDialog(
+                                                                              title: const Text('投稿完了'),
+                                                                              content: const Text('投稿が完了しました'),
+                                                                              actions: <Widget>[
+                                                                                TextButton(
+                                                                                  child: const Text('閉じる'),
+                                                                                  onPressed: () {
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                ),
+                                                                              ],
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                    TextButton(
+                                                                      child: const Text(
+                                                                          'キャンセル'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child:
+                                                            const Text('閉じる'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
                                           }
-                                          //未投稿
+                                          //応募確認されていないと表示
                                           else {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
-                                                  title:
-                                                      const Text('評価を選択してください'),
-                                                  content: SizedBox(
-                                                    width: width * 0.7,
-                                                    height: 400,
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                            "※レビューは一般公開され、あなたのアカウント情報が含まれます",
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                color:
-                                                                    Colors.grey[
-                                                                        600])),
-                                                        //空白
-                                                        SizedBox(
-                                                            height: width / 40),
-                                                        //動的に星の色を変える
-                                                        StatefulBuilder(
-                                                          builder: (BuildContext
-                                                                      context,
-                                                                  StateSetter
-                                                                      setState) =>
-                                                              ToggleButtons(
-                                                            fillColor: Colors
-                                                                .white, //選択中の色
-                                                            borderWidth:
-                                                                0, //枠線の太さ
-                                                            borderColor: Colors
-                                                                .white, //枠線の色
-                                                            selectedBorderColor:
-                                                                Colors
-                                                                    .white, //選択中の枠線の色,
-
-                                                            onPressed:
-                                                                (int index) {
-                                                              setState(() {
-                                                                review_point =
-                                                                    index + 1;
-                                                                for (int buttonIndex =
-                                                                        0;
-                                                                    buttonIndex <=
-                                                                        index;
-                                                                    buttonIndex++) {
-                                                                  _isSelected[
-                                                                          buttonIndex] =
-                                                                      true;
-                                                                }
-                                                                for (int buttonIndex =
-                                                                        index +
-                                                                            1;
-                                                                    buttonIndex <
-                                                                        5;
-                                                                    buttonIndex++) {
-                                                                  _isSelected[
-                                                                          buttonIndex] =
-                                                                      false;
-                                                                }
-                                                              });
-                                                            },
-
-                                                            isSelected:
-                                                                _isSelected,
-                                                            children:
-                                                                List.generate(
-                                                              5,
-                                                              (index) => Icon(
-                                                                Icons.star,
-                                                                color: _isSelected[
-                                                                        index]
-                                                                    ? Colors.yellow[
-                                                                        800]
-                                                                    : Colors
-                                                                        .grey,
-                                                                size: 35,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        //タイトル
-                                                        SizedBox(
-                                                            height: width / 40),
-                                                        SizedBox(
-                                                          width: width,
-                                                          child: const Text(
-                                                              "タイトル",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                        ),
-                                                        Container(
-                                                            width: width,
-                                                            height: 100,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: const Color
-                                                                      .fromARGB(
-                                                                      255,
-                                                                      203,
-                                                                      202,
-                                                                      202),
-                                                                  width: 1.5),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            8.0),
-                                                                child:
-                                                                    TextField(
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .multiline,
-                                                                  maxLines:
-                                                                      null,
-                                                                  maxLength: 50,
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          13),
-                                                                  decoration:
-                                                                      const InputDecoration(
-                                                                    //counterText: '',
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintText:
-                                                                        'ここに入力',
-                                                                  ),
-                                                                  onChanged: (text) =>
-                                                                      titleWrite(
-                                                                          text),
-                                                                ),
-                                                              ),
-                                                            )),
-                                                        //詳細
-                                                        //空白
-                                                        SizedBox(
-                                                            height: width / 40),
-                                                        SizedBox(
-                                                          width: width,
-                                                          child: const Text(
-                                                              "詳細",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                        ),
-                                                        Container(
-                                                            width: width,
-                                                            height: 100,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: const Color
-                                                                      .fromARGB(
-                                                                      255,
-                                                                      203,
-                                                                      202,
-                                                                      202),
-                                                                  width: 1.5),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            8.0),
-                                                                child:
-                                                                    TextField(
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .multiline,
-                                                                  maxLines:
-                                                                      null,
-                                                                  maxLength:
-                                                                      500,
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          13),
-                                                                  decoration:
-                                                                      const InputDecoration(
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintText:
-                                                                        'ここに入力',
-                                                                  ),
-                                                                  onChanged: (text) =>
-                                                                      detailWrite(
-                                                                          text),
-                                                                ),
-                                                              ),
-                                                            )),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  title: const Text('応募未確認'),
+                                                  content: const Text(
+                                                      'あなたはまだ広告者に応募確認をされていません。\n応募確認されるまでレビューを投稿することはできません。'),
                                                   actions: <Widget>[
-                                                    TextButton(
-                                                      child: const Text('投稿'),
-                                                      onPressed: () {
-                                                        //Navigator.of(context).pop();
-                                                        if (title == "" ||
-                                                            detail == "") {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    '未入力の項目があります'),
-                                                                content: const Text(
-                                                                    'タイトルと詳細を入力してください'),
-                                                                actions: <Widget>[
-                                                                  TextButton(
-                                                                    child: const Text(
-                                                                        '閉じる'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          );
-                                                        } else
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title:
-                                                                    const Text(
-                                                                        '投稿確認'),
-                                                                content: const Text(
-                                                                    'この内容で投稿しますか？'),
-                                                                actions: <Widget>[
-                                                                  TextButton(
-                                                                    child:
-                                                                        const Text(
-                                                                            '投稿'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      reviewWrite(
-                                                                          jobDetailList[
-                                                                              "id"],
-                                                                          store);
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            title:
-                                                                                const Text('投稿完了'),
-                                                                            content:
-                                                                                const Text('投稿が完了しました'),
-                                                                            actions: <Widget>[
-                                                                              TextButton(
-                                                                                child: const Text('閉じる'),
-                                                                                onPressed: () {
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                              ),
-                                                                            ],
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: const Text(
-                                                                        'キャンセル'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          );
-                                                      },
-                                                    ),
                                                     TextButton(
                                                       child: const Text('閉じる'),
                                                       onPressed: () {

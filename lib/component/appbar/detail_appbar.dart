@@ -406,7 +406,7 @@ class _DetailAppbarState extends State<DetailAppbar> {
                 SizedBox(
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         store.changeOverlay(true);
                         JobApp().show(
                           //これでおーばーれい表示
