@@ -482,6 +482,11 @@ class _HomeState extends State<Home> {
             .jumpTo(homeScrollController.position.minScrollExtent);
 
         store.changeReloadHomeJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
       }
     }
 

@@ -6,6 +6,11 @@ import '/provider/change_general_corporation.dart';
 
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+//finish_screen.dart
+import "package:reelproject/component/finish_screen/finish_screen.dart";
 
 //push先
 
@@ -30,6 +35,32 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
   String passwordCheck = '';
   bool ruleCheck = false;
 
+  //会員情報更新関数
+  Future userInfoUpdata(ChangeGeneralCorporation store) async {
+    Uri url =
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${store.myID}');
+    final response = await put(url,
+        headers: {
+          'accept': 'application/json',
+          'authorization': 'Bearer ${store.accessToken}',
+          'Content-Type': 'application/json'
+        },
+        body: json.encode({
+          "password": "password",
+          "username": username,
+          "image_url": "https://example.com",
+          "email": store.userInfo["email"],
+          "sex": selectedGender == "mele"
+              ? "m"
+              : selectedGender == "female"
+                  ? "f"
+                  : "o",
+          "birthday":
+              "$year-${month.length == 2 ? month : "0$month"}-${day.length == 2 ? day : "0$day"}",
+          "user_type": "c"
+        }));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +69,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
     return Scaffold(
       //アップバー
       appBar: const TitleAppBar(title: "会員情報", jedgeBuck: true),
@@ -150,7 +182,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                             // print(mail);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 50,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
@@ -382,8 +414,24 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                     checkMonth(month) &&
                     checkDay(day) &&
                     selectedGender != null) {
-                  //一つ戻る
-                  Navigator.pop(context);
+                  //更新
+                  userInfoUpdata(store);
+                  //完了画面
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => FinishScreen(
+                        appbarText: "会員情報編集完了",
+                        appIcon: Icons.playlist_add_check,
+                        finishText: "会員情報の変更を確認しました。",
+                        text:
+                            "会員情報の変更を完了しました。\n先ほど入力を行った内容以外にも変更したい点がある際には、下のお問合せよりお願いいたします。",
+                        buttonText:
+                            "会員情報確認画面に戻る", // 今は既存のfinish_screenをつかっているのでログイン画面に戻ってしまうが後に変更予定
+                        jedgeBottomAppBar: false,
+                        popTimes: 2,
+                      ),
+                    ),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(

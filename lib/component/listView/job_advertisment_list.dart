@@ -6,6 +6,8 @@ import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+//ローディング
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 //求人広告リストコンポーネント
 class JobAdvertisementList extends StatefulWidget {
@@ -247,6 +249,11 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
         // スクロール位置をリセットします。
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
         store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
       }
     }
 

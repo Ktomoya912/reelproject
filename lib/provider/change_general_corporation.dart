@@ -5,6 +5,9 @@ import 'dart:convert';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
+  //ロード待ち時間(アプリ内):1000 = 1秒
+  static const int waitTime = 800;
+
   //ルート更新用の関数
   bool reloadHomeJedge = false;
   bool reloadEventJedge = false;
@@ -79,6 +82,15 @@ class ChangeGeneralCorporation with ChangeNotifier {
   changeUserInfo(Map<String, dynamic> info) {
     userInfo = info; //ユーザ情報変更
     myID = info["id"]; //自分のID変更
+    //ユーザーの状態変更
+    //一般
+    if ("user_type" == "g") {
+      changeGC(true);
+    }
+    //法人
+    else {
+      changeGC(false);
+    }
     notifyListeners();
   }
 

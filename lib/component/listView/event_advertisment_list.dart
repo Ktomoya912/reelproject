@@ -242,6 +242,11 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
         // スクロール位置をリセットします。
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
         store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
       }
     }
 

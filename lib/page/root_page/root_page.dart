@@ -6,6 +6,8 @@ import '/provider/change_general_corporation.dart';
 
 import 'package:reelproject/app_router/app_router.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+//ローディング
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
 
 // //オーバーレイ
 // import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
@@ -55,6 +57,7 @@ class RootPage extends StatelessWidget {
                   IconWithText(icon: Icons.person, text: 'マイページ'),
                 ],
                 onTap: (int index) async {
+                  showLoadingDialog(context: context); //ここでローディング画面を表示
                   //現在のindexをstoreに保存
                   store.changeRootIndex(index);
 
