@@ -1156,17 +1156,23 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         //アップバーアイコン
         actions: <Widget>[
           //通知ボタン
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            color: Colors.white,
-            //通知ページへ移動(push)
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          nextPage));
-            },
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.add_alert),
+                color: Colors.white,
+                //通知ページへ移動(push)
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  nextPage));
+                },
+              ),
+              const SizedBox(width: 10),
+            ],
           )
         ]);
   }

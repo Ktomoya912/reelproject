@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 //import '/provider/change_general_corporation.dart';
 import '../../component/appbar/title_appbar.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:provider/provider.dart';
+import '/provider/change_general_corporation.dart';
+//オーバーレイ
+import '../../overlay/rule/screen/notice_delete.dart';
 
 //通知詳細クラス
 //このクラスをpopすると任意の通知内容を開くことができる
@@ -17,7 +21,7 @@ class NoticeDetail extends StatelessWidget {
 
   final int index; //index個目の通知
   final int jedgeEJ; //イベント、求人区別
-  final List<List<Map<String, dynamic>>> noticeList; //通知タイトル
+  final List<dynamic> noticeList; //通知タイトル
   final String content; //文章内容
 
   @override
@@ -25,7 +29,7 @@ class NoticeDetail extends StatelessWidget {
     return Scaffold(
       //アップバー
       appBar: TitleAppBar(
-        title: noticeList[jedgeEJ][index]["subtitle"],
+        title: "通知詳細",
         jedgeBuck: true,
       ),
 
@@ -33,6 +37,7 @@ class NoticeDetail extends StatelessWidget {
       body: NoticeContent(
         title: noticeList[jedgeEJ][index]["title"],
         content: content,
+        id: noticeList[jedgeEJ][index]["id"],
       ),
     );
   }
@@ -44,15 +49,18 @@ class NoticeContent extends StatelessWidget {
     super.key,
     required this.title,
     required this.content,
+    required this.id,
   });
 
   final String title; //タイトル
   final String content; //内容
+  final int id; //id
 
   @override
   Widget build(BuildContext context) {
     //final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     MediaQueryData mediaQueryData = MediaQuery.of(context); //サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     //横画面サイズにより幅設定
     double widthBlank = (mediaQueryData.size.width / 2) - 300;
     if (widthBlank < 0) {
@@ -76,16 +84,60 @@ class NoticeContent extends StatelessWidget {
                   //左詰め
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //空白
+                    const SizedBox(height: 10),
                     //タイトル
-                    Text(
-                      title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "タイトル : $title",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        //アイコンボタン(ゴミ箱)
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: store.mainColor, // アイコンの色を設定
+                          iconSize: 25, // アイコンのサイズを設定
+                          onPressed: () {
+                            //オーバーレイを表示
+                            store.changeOverlay(true);
+                            NoticeDelete().show(
+                              //これでおーばーれい表示
+                              context: context,
+                              id: id,
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      //内容
-                      child: Text(content),
+                    //空白
+                    const SizedBox(height: 20),
+                    //内容
+                    const Text(
+                      " 詳細",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    //空白
+                    const SizedBox(height: 5),
+
+                    Container(
+                      constraints: BoxConstraints(
+                        minHeight: mediaQueryData.size.height / 20 * 12,
+                      ),
+                      width: width + (widthBlank / 8) + blank - 100,
+                      decoration: BoxDecoration(
+                        //color: Colors.grey[100],
+                        border: Border.all(
+                          color: Color.fromARGB(255, 207, 207, 207), // 枠線の色
+                          width: 1, // 枠線の幅
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text(content),
+                      ),
                     )
                   ])),
         ),
