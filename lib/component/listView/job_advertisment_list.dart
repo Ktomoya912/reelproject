@@ -194,13 +194,23 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
     if (response.statusCode == 200) {
       changeJobList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      setState(() {
+        notJobJedge = true;
+      });
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notJobJedge = false;
   }
 
   //スクロール位置を取得するためのコントローラー
   final ScrollController _scrollController = ScrollController();
+
+  bool notJobJedge = false; //イベント広告がないか否か
 
   @override
   Widget build(BuildContext context) {
@@ -269,8 +279,10 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                     tStore: store,
                                     notPostJedge: widget.notPostJedge,
                                     jobDetailList: jobDetailList,
+                                    notJobJedge: notJobJedge,
                                   )));
                   widget.functionCall();
+                  notJobJedge = false;
                   //タップ処理
                 },
                 child:

@@ -141,11 +141,20 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
-                          enabled: false,
+                          validator: (value) {
+                            if (!checkMail(value as String)) {
+                              mail = '';
+                              return '適切な入力ではありません';
+                            }
+                            mail = value;
+                            // print(mail);
+                            return null;
+                          },
+                          enabled: true,
                           maxLength: 50,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: 'メールアドレスは編集できません',
+                            labelText: '個人用メールアドレス',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -155,6 +164,25 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                         ),
                       ),
                     ),
+                    // Form(
+                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //   child: SizedBox(
+                    //     width: 300,
+                    //     child: TextFormField(
+                    //       enabled: true,
+                    //       maxLength: 50,
+                    //       textAlign: TextAlign.start,
+                    //       decoration: const InputDecoration(
+                    //         labelText: 'メールアドレス',
+                    //         border: OutlineInputBorder(),
+                    //         contentPadding: EdgeInsets.symmetric(
+                    //             vertical: 8, horizontal: 10),
+                    //         hintText: '例：info@example.com',
+                    //         counterText: '50文字以内',
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
@@ -387,6 +415,15 @@ bool checkUserName(String username) {
     r"^[a-zA-Z0-9_]+$",
   );
   return regName.hasMatch(username);
+}
+
+bool checkMail(String mail) {
+  //メールアドレスの正規表現
+  final regEmail = RegExp(
+    caseSensitive: false,
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
+  );
+  return regEmail.hasMatch(mail);
 }
 
 bool checkYear(String year) {

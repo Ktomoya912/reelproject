@@ -140,9 +140,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
   @override
   void initState() {
     super.initState();
-    if (!widget.notEventJedge) {
-      getEventList(widget.id, widget.tStore);
-    }
+    notEventJedge = false;
+    getEventList(widget.id, widget.tStore);
   }
 
   //お気に入り登録
@@ -321,13 +320,14 @@ class _EventPostDetailState extends State<EventPostDetail> {
     double width = mediaQueryData.size.width - (widthBlank * 2);
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
-    return notEventJedge
-        ? Scaffold(
+    return notEventJedge || widget.notEventJedge
+        ? const Scaffold(
             //アップバー
             appBar: TitleAppBar(
-              title: "イベント詳細",
+              title: "イベントが存在しません",
               jedgeBuck: true,
             ),
+            body: Center(child: Text("対象イベントページは削除されました。")),
           )
         : Scaffold(
             //アップバー
@@ -338,6 +338,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
               mediaQueryData: mediaQueryData,
               notPostJedge: eventDetailList["notPost"],
               id: eventDetailList["id"],
+              callback: () => "",
             ),
             //body
             body: ShaderMaskComponent(

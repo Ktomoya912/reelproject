@@ -20,7 +20,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
   String? selectedGender;
 
   String username = '';
-
+  String mymail = '';
   String phoneNumber = '';
   String postalCode = '';
   String prefecture = '';
@@ -167,11 +167,20 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
-                          enabled: false,
+                          validator: (value) {
+                            if (!checkMail(value as String)) {
+                              mymail = '';
+                              return '適切な入力ではありません';
+                            }
+                            mymail = value;
+                            // print(mail);
+                            return null;
+                          },
+                          enabled: true,
                           maxLength: 50,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: 'メールアドレスは編集できません',
+                            labelText: '個人用メールアドレス',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -181,9 +190,29 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                    ),
+
+                    // Form(
+                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //   child: SizedBox(
+                    //     width: 300,
+                    //     child: TextFormField(
+                    //       enabled: true,
+                    //       maxLength: 50,
+                    //       textAlign: TextAlign.start,
+                    //       decoration: const InputDecoration(
+                    //         labelText: 'メールアドレス',
+                    //         border: OutlineInputBorder(),
+                    //         contentPadding: EdgeInsets.symmetric(
+                    //             vertical: 8, horizontal: 10),
+                    //         hintText: '例：info@example.com',
+                    //         counterText: '50文字以内',
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const Padding(
+                    //   padding: EdgeInsets.all(10.0),
+                    // ),
 
                     Form(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -199,11 +228,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             // print(phoneNumber);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 11,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '電話番号',
+                            labelText: '電話番号は変更できません',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -248,11 +277,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             // print(postalCode);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 8,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '郵便番号',
+                            labelText: '郵便番号は変更できません',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -281,11 +310,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             //print(prefecture);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 4,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '都道府県',
+                            labelText: '都道府県は変更できません',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -314,11 +343,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             // print(city);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 7,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '市区町村',
+                            labelText: '市区町村は変更できません',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -346,11 +375,11 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                             // print(address);
                             return null;
                           },
-                          enabled: true,
+                          enabled: false,
                           maxLength: 7,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
-                            labelText: '番地・建物名',
+                            labelText: '番地・建物名は変更できません',
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 10),
@@ -597,6 +626,15 @@ bool checkUserName(String username) {
     r"^[a-zA-Z0-9_]+$",
   );
   return regName.hasMatch(username);
+}
+
+bool checkMail(String mail) {
+  //メールアドレスの正規表現
+  final regEmail = RegExp(
+    caseSensitive: false,
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
+  );
+  return regEmail.hasMatch(mail);
 }
 
 bool checkPhoneNumber(String phoneNumber) {

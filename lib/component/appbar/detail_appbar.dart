@@ -21,6 +21,7 @@ class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
     required this.mediaQueryData,
     required this.notPostJedge,
     required this.id,
+    required this.callback,
   });
 
   final bool postJedge;
@@ -29,6 +30,7 @@ class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
   final MediaQueryData mediaQueryData;
   final bool notPostJedge;
   final int id;
+  final Function callback;
 
   static Color greyColor = Colors.grey[500]!;
 
@@ -405,12 +407,13 @@ class _DetailAppbarState extends State<DetailAppbar> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        // print('Button pressed!');
                         store.changeOverlay(true);
                         JobApp().show(
-                            //これでおーばーれい表示
-                            context: context,
-                            id: widget.id);
+                          //これでおーばーれい表示
+                          context: context,
+                          id: widget.id,
+                          callback: widget.callback,
+                        );
                       },
 
                       //色

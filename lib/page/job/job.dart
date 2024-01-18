@@ -83,6 +83,8 @@ class _JobState extends State<Job> {
     //Timer.periodic(Duration(minutes: 1), (Timer t) => getJobList());
   }
 
+  //スクロール位置を取得するためのコントローラー
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得

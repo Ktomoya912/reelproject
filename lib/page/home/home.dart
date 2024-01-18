@@ -1,6 +1,8 @@
 // import 'dart:js_interop';
 //使用していないためコメントアウト
 
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import '/page/home/notice.dart';
@@ -16,6 +18,7 @@ import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +44,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final int index = 0; //BottomAppBarのIcon番号
+
+  bool notEventJedge = false; //イベントがない場合の判定
+  bool notJobJedge = false; //イベントがない場合の判定
+
+  changeNotJedge() {
+    setState(() {
+      notEventJedge = false; //イベントがない場合の判定
+      notJobJedge = false; //イベントがない場合の判定
+    });
+  }
 
   //閲覧履歴リスト
   List<dynamic> historyList = [];
@@ -266,8 +279,7 @@ class _HomeState extends State<Home> {
     if (response.statusCode == 200) {
       changeJobDetailList(data, id, store);
     } else {
-      print("error");
-      throw Exception("Failed");
+      notJobJedge = true;
     }
   }
 
@@ -411,8 +423,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  bool notEventJedge = false; //イベントがない場合の判定
-
   Future getEventDetailList(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id');
 
@@ -426,8 +436,6 @@ class _HomeState extends State<Home> {
       changeEventDetailList(data, id, store);
     } else {
       notEventJedge = true;
-      // print("error");
-      // throw Exception("Failed");
     }
   }
 
@@ -443,6 +451,8 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
+      notEventJedge = false; //イベントがない場合の判定
+      notJobJedge = false; //イベントがない場合の判定
     });
   }
 
@@ -465,6 +475,8 @@ class _HomeState extends State<Home> {
         getEventList();
         getJobList();
         getHistoryList(store);
+        notEventJedge = false; //イベントがない場合の判定
+        notJobJedge = false; //イベントがない場合の判定
 
         homeScrollController
             .jumpTo(homeScrollController.position.minScrollExtent);
@@ -514,9 +526,8 @@ class _HomeState extends State<Home> {
         {
           "title": "広告投稿",
           "icon": Icons.post_add,
-          "push": ApplyHist(
-            store: store,
-          ),
+          "push": "overlay",
+          "overlay": SelectPost(),
         },
         {
           "title": "投稿一覧",
@@ -637,6 +648,8 @@ class _HomeState extends State<Home> {
                                           getEventList();
                                           getJobList();
                                           getHistoryList(store);
+                                          notEventJedge = false; //イベントがない場合の判定
+                                          notJobJedge = false; //イベントがない場合の判定
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
@@ -718,10 +731,14 @@ class _HomeState extends State<Home> {
                                                         notPostJedge: false,
                                                         jobDetailList:
                                                             jobDetailList,
+                                                        notJobJedge:
+                                                            notJobJedge,
                                                       )));
                                           getEventList();
                                           getJobList();
                                           getHistoryList(store);
+                                          notEventJedge = false; //イベントがない場合の判定
+                                          notJobJedge = false; //イベントがない場合の判定
                                         },
                                         child: Container(
                                           height: width / 10 * 7,
@@ -885,6 +902,8 @@ class _HomeState extends State<Home> {
                                               historyList[i]["id"], store),
                                       eventDetailList: eventDetailList,
                                       notEventJedge: notEventJedge,
+                                      notEventJedgeFunction: () =>
+                                          changeNotJedge(),
                                     ),
                                 ],
                               ),
@@ -917,6 +936,7 @@ class HistoryButton extends StatelessWidget {
     required this.getEventDetailList,
     required this.eventDetailList,
     required this.notEventJedge,
+    required this.notEventJedgeFunction,
   });
 
   final MediaQueryData mediaQueryData;
@@ -930,6 +950,7 @@ class HistoryButton extends StatelessWidget {
   final Function getEventDetailList;
   final Map<String, dynamic> eventDetailList;
   final bool notEventJedge;
+  final Function notEventJedgeFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -954,6 +975,7 @@ class HistoryButton extends StatelessWidget {
               getEventList();
               getJobList();
               getHistoryList();
+              notEventJedgeFunction();
               // Navigator.push(
               //         context,
               //         PageRouteBuilder(
@@ -980,6 +1002,13 @@ class HistoryButton extends StatelessWidget {
                     ),
                   ],
                 ),
+                child: ClipRRect(
+                  // これを追加
+                  borderRadius: BorderRadius.circular(10), // これを追加
+                  child: Image.network(
+                      historyList.elementAt(i)["image_url"].toString(),
+                      fit: BoxFit.cover),
+                ),
               ),
               //タイトル枠
               Container(
@@ -993,7 +1022,11 @@ class HistoryButton extends StatelessWidget {
                   ),
                 ),
                 //タイトル
-                child: Center(child: Text(historyList[i]["name"])),
+                child: Center(
+                    child: Text(
+                  "${historyList[i]["name"]}",
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                )),
               ),
             ]),
           ),
@@ -1057,12 +1090,21 @@ class CenterButton extends StatelessWidget {
                 color: Colors.white,
                 //ボタンを押した時の動作
                 onPressed: () async {
-                  await Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  buttonList?["push"]));
+                  if (buttonList?["push"] == "overlay") {
+                    store.changeOverlay(true);
+                    await buttonList?["overlay"].show(
+                      //これでおーばーれい表示
+                      context: context,
+                    );
+                  } else {
+                    await Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    buttonList?["push"]));
+                  }
+
                   getEventList();
                   getJobList();
                   getHistoryList();
