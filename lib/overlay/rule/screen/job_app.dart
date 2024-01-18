@@ -24,7 +24,7 @@ class JobApp {
 
   //応募
   Future apply(int id, ChangeGeneralCorporation store, context,
-      String buttonText) async {
+      String buttonText, Function callback) async {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/apply');
     final response = await post(
       url,
@@ -72,17 +72,25 @@ class JobApp {
         ),
       );
     }
+    //削除されている場合
+    else {
+      store.changeOverlay(false);
+      JobApp().hide();
+      callback();
+    }
   }
 
-  void show({
-    // オーバーレイ表示動作
-    required BuildContext context,
-    required int id,
-  }) {
+  void show(
+      {
+      // オーバーレイ表示動作
+      required BuildContext context,
+      required int id,
+      required Function callback,
+      z}) {
     if (controller?.update() ?? false) {
       return;
     } else {
-      controller = showOverlay(context: context, id: id);
+      controller = showOverlay(context: context, id: id, callback: callback);
     }
   }
 
@@ -95,6 +103,7 @@ class JobApp {
   OverScreenControl showOverlay({
     required BuildContext context,
     required int id,
+    required Function callback,
   }) {
     final text0 = StreamController<String>();
 
@@ -155,7 +164,7 @@ class JobApp {
                           // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
-                            apply(id, store, context, buttonText);
+                            apply(id, store, context, buttonText, callback);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

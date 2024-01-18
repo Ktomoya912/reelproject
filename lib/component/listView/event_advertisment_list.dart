@@ -199,6 +199,13 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
   //スクロール位置を取得するためのコントローラー
   final ScrollController _scrollController = ScrollController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notEventJedge = false;
+  }
+
 // データベースと連携させていないので現在はここでイベント詳細内容を設定
   @override
   Widget build(BuildContext context) {
@@ -270,6 +277,7 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                     notEventJedge: notEventJedge,
                                   )));
                   widget.functionCall();
+                  notEventJedge = false;
                   //タップ処理
                 },
                 child:
