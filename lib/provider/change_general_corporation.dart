@@ -40,7 +40,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
-  // static const String apiUrl = "http://34.196.90.77:8000/api/v1";
+  //static const String apiUrl = "http://34.196.90.77:8000/api/v1";
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "type=all";
@@ -84,7 +84,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     myID = info["id"]; //自分のID変更
     //ユーザーの状態変更
     //一般
-    if ("user_type" == "g") {
+    if (info["user_type"] == "g") {
       changeGC(true);
     }
     //法人
