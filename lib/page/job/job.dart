@@ -64,7 +64,7 @@ class _JobState extends State<Job> {
 
   Future getJobList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&sort=recent&order=asc&offset=0&limit=20');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
     final data = utf8.decode(response.bodyBytes);
@@ -88,6 +88,43 @@ class _JobState extends State<Job> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+
+    //スクロール位置をリセットする関数
+
+    // void changeScrollController() async {
+    //   //reloadEventJedgeがtrueの場合、Home画面をリロードする
+    //   if (store.reloadJobJedge) {
+    //     await getJobList();
+    //     store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+    //     //0.5秒待つ
+    //     await Future.delayed(
+    //         const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+    //     //ローディングをpop
+    //     Navigator.of(context, rootNavigator: true).pop();
+    //   }
+    // }
+
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) => changeScrollController());
+
+    //Home画面リロード用の関数
+    void reloadHome() async {
+      //reloadHomeJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadJobJedge) {
+        //getJobList();
+        store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    }
+
+    //ビルド後に実行
+    WidgetsBinding.instance.addPostFrameCallback((_) => reloadHome());
+
     return Scaffold(
         appBar: EventJobSearchBar(
           tagList: tagList,

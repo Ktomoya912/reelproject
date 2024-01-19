@@ -176,6 +176,8 @@ class _DetailAppbarState extends State<DetailAppbar> {
         iconTheme: IconThemeData(color: store.greyColor), //戻るボタン
         centerTitle: true, //中央揃え
         toolbarHeight: 50, //アップバーの高さ
+        //影
+        //elevation: 4,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -421,10 +423,11 @@ class _DetailAppbarState extends State<DetailAppbar> {
                         backgroundColor: store.mainColor,
                         //onPrimary: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text('求人に応募する'),
+                      child: const Text('求人に応募する',
+                          style: TextStyle(color: Colors.white)),
                     )),
                 const SizedBox(
                   width: 20,

@@ -519,24 +519,22 @@ class _MyPageListViewState extends State<MyPageListView> {
                           vertical: 5,
                           horizontal: widget._mediaQueryData.size.width / 20 +
                               addWidth / 2), //タイル内の余白
-                      onTap: () {
-                        setState(() async {
-                          if (widget.list[index]["push"] == "overlay") {
-                            widget.store.changeOverlay(true);
-                            await widget.list[index]["overlay"].show(
-                              //これでおーばーれい表示
-                              context: context,
-                            );
-                          } else {
-                            await Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        widget.list[index]["push"]));
-                          }
-                          widget.store.getMyUserInfo();
-                        });
+                      onTap: () async {
+                        if (widget.list[index]["push"] == "overlay") {
+                          widget.store.changeOverlay(true);
+                          await widget.list[index]["overlay"].show(
+                            //これでおーばーれい表示
+                            context: context,
+                          );
+                        } else {
+                          await Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      widget.list[index]["push"]));
+                        }
+                        widget.store.getMyUserInfo();
                       }),
                   Container(
                     width: widget._mediaQueryData.size.width *

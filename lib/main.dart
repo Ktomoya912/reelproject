@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             title: 'Flutter Demo',
             theme: ThemeData(
+              useMaterial3: false,
               //フォント
               textTheme: GoogleFonts.mPlus1pTextTheme(
                 Theme.of(context).textTheme,

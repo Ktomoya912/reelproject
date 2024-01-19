@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:auto_route/auto_route.dart';
 //import 'package:reelproject/component/appbar/event_job_appbar.dart';
 import 'package:reelproject/component/listView/event_advertisment_list.dart';
-import 'package:reelproject/component/appbar/search_appbar.dart';
 import 'package:reelproject/component/listView/job_advertisment_list.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
@@ -92,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
           '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=${sortType}&order=asc&offset=0&limit=60');
     }
 
-    print(url);
+    //print(url);
 
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
@@ -251,32 +250,38 @@ class _SearchPageState extends State<SearchPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            //右寄せ
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Icon(Icons.menu,
-                                  color: store.mainColor, size: 30),
-                              Text(
-                                sort,
-                                style: TextStyle(
-                                  color: store.mainColor,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   //右寄せ
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   children: <Widget>[
+                          //     Container(
+                          //       constraints: BoxConstraints(
+                          //         maxWidth: mediaQueryData.size.width / 2,
+                          //       ),
+                          //       child: Text(
+                          //         "検索結果　:　${widget.text}",
+                          //         overflow: TextOverflow.ellipsis,
+                          //         maxLines: 1,
+                          //         style: TextStyle(
+                          //           color: Colors.white,
+                          //           fontWeight: FontWeight.w500,
+                          //           fontSize: 15,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
 
                           Row(
                             children: [
-                              const Text("「",
+                              const Text("      検索結果  :  「",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 17)),
                               Container(
                                 constraints: BoxConstraints(
-                                  maxWidth: mediaQueryData.size.width / 5,
+                                  maxWidth: mediaQueryData.size.width / 4,
                                 ),
                                 child: Text(widget.text,
                                     overflow: TextOverflow.ellipsis,
@@ -287,7 +292,7 @@ class _SearchPageState extends State<SearchPage> {
                                         fontSize: 17)),
                               ),
                               const Text(
-                                "」検索結果",
+                                "」",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
@@ -305,7 +310,7 @@ class _SearchPageState extends State<SearchPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
                                     const Icon(Icons.sort,
-                                        color: Colors.white, size: 30),
+                                        color: Colors.white, size: 25),
                                     Text(
                                       sort,
                                       style: const TextStyle(

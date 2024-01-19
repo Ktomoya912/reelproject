@@ -241,12 +241,12 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
         //ここにHome画面リロードの処理を記述
         // スクロール位置をリセットします。
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
-        store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
-        //0.5秒待つ
-        await Future.delayed(
-            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
-        //ローディングをpop
-        Navigator.of(context, rootNavigator: true).pop();
+        // store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+        // //0.5秒待つ
+        // await Future.delayed(
+        //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        // //ローディングをpopする
+        // Navigator.of(context, rootNavigator: true).pop();
       }
     }
 
@@ -316,11 +316,11 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                 //開催日
                                 Text(
                                     "開催日     : ${widget.advertisementList.elementAt(index)["event_times"][0]["start_time"].substring(0, 4)}年${widget.advertisementList.elementAt(index)["event_times"][0]["start_time"].substring(5, 7)}月${widget.advertisementList.elementAt(index)["event_times"][0]["start_time"].substring(8, 10)}日",
-                                    style: const TextStyle(fontSize: 18)),
+                                    style: const TextStyle(fontSize: 14)),
                                 //開催時
                                 Text(
                                     "開催時間 : ${widget.advertisementList.elementAt(index)["event_times"][0]["start_time"].substring(11, 13)}時${widget.advertisementList.elementAt(index)["event_times"][0]["start_time"].substring(14, 16)}分",
-                                    style: const TextStyle(fontSize: 18)),
+                                    style: const TextStyle(fontSize: 14)),
                                 //開催場所
                                 Text(
                                     placeString +
@@ -330,7 +330,7 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                                             .elementAt(index)["city"] +
                                         widget.advertisementList
                                             .elementAt(index)["address"],
-                                    style: const TextStyle(fontSize: 18)),
+                                    style: const TextStyle(fontSize: 14)),
                               ],
                             ),
                           ],

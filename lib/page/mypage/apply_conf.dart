@@ -106,7 +106,7 @@ class ApplyConfState extends State<ApplyConf> {
                         ),
                         SizedBox(
                           // 後にデータベースから情報を取得しその内容を反映させるようにするのでconstにはしない
-                          width: 200,
+                          width: 155,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,

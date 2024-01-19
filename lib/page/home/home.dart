@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
 
   Future getEventList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&sort=pv&order=asc&offset=0&limit=5');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&${ChangeGeneralCorporation.sortPv}&order=asc&offset=0&limit=5');
 
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
@@ -94,7 +94,7 @@ class _HomeState extends State<Home> {
 
   Future getJobList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&sort=pv&order=asc&offset=0&limit=5');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&${ChangeGeneralCorporation.sortPv}&order=asc&offset=0&limit=5');
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
     final data = utf8.decode(response.bodyBytes);
@@ -853,7 +853,7 @@ class _HomeState extends State<Home> {
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text("閲覧履歴"),
+                                Text("閲覧履歴(イベント)"),
                               ],
                             ),
                             //全ての閲覧履歴を見るボタン

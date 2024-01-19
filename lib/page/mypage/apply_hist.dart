@@ -25,19 +25,15 @@ class _ApplyHistState extends State<ApplyHist> {
 
   void changeJobList(List<dynamic> e) {
     setState(() {
-      jobList = [];
-      for (int i = 0; i < e.length; i++) {
-        jobList.add(e[i]["job"]);
-      }
+      jobList = e;
     });
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-applications');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortLastWatched}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeActive}&user_id=${store.myID}&target=apply');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
