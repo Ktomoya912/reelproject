@@ -8,6 +8,26 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //ロード待ち時間(アプリ内):1000 = 1秒
   static const int waitTime = 800;
 
+  //イベント、求人スクロール更新関数
+  bool reloadEventScroll = false;
+  bool reloadJobScroll = false;
+
+  //reloadEventScrollをtrueに変更する関数
+  void changeReloadEventScrollOn(bool b) {
+    Future.delayed(Duration.zero, () {
+      reloadEventScroll = b;
+      notifyListeners();
+    });
+  }
+
+  //reloadJobScrollをtrueに変更する関数
+  void changeReloadJobScrollOn(bool b) {
+    Future.delayed(Duration.zero, () {
+      reloadJobScroll = b;
+      notifyListeners();
+    });
+  }
+
   //ルート更新用の関数
   bool reloadHomeJedge = false;
   bool reloadEventJedge = false;

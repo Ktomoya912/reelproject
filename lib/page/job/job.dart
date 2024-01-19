@@ -112,10 +112,12 @@ class _JobState extends State<Job> {
 
     //Home画面リロード用の関数
     void reloadHome() async {
+      //print("DDD");
       //reloadHomeJedgeがtrueの場合、Home画面をリロードする
       if (store.reloadJobJedge) {
-        //getJobList();
+        getJobList();
         store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+        store.changeReloadJobScrollOn(true);
         //0.5秒待つ
         await Future.delayed(
             const Duration(milliseconds: ChangeGeneralCorporation.waitTime));

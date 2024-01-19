@@ -204,7 +204,8 @@ class EventAdvertisementList extends StatelessWidget {
                     Text(
                         "ユーザー名         :   ${advertisementList["users"][index]["user"]["username"]}"),
                     Text(
-                        "メールアドレス  :   ${advertisementList["users"][index]["user"]["email"]}"),
+                      "メールアドレス  :   ${advertisementList["users"][index]["user"]["email"].length > 14 ? advertisementList["users"][index]["user"]["email"].toString().substring(0, 14) + "..." : advertisementList["users"][index]["user"]["email"]}",
+                    ),
                     Text(
                         "確認状態            :   ${advertisementList["users"][index]["status"] == "p" ? '未確認' : advertisementList["users"][index]["status"] == "a" ? '確認済み' : '不採用'}"),
                   ],

@@ -47,7 +47,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
         body: json.encode({
           "password": "password",
           "username": username,
-          "image_url": "https://example.com",
+          "image_url": store.userInfo["image_url"],
           "email": store.userInfo["company"]["email"],
           "sex": selectedGender == "male"
               ? "m"

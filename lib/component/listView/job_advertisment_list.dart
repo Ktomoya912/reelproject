@@ -238,23 +238,28 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
 
     //スクロール位置をリセットする関数
 
-    void changeScrollController() async {
-      //reloadEventJedgeがtrueの場合、Home画面をリロードする
-      if (store.reloadJobJedge) {
-        widget.functionCall();
-        // スクロール位置をリセットします。
+    // void changeScrollController() async {
+    //reloadEventJedgeがtrueの場合、Home画面をリロードする
+    if (store.reloadJobScroll) {
+      //widget.functionCall();
+      // スクロール位置をリセットします。
+      if (_scrollController.hasClients) {
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
-        //store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
-        //0.5秒待つ
-        // await Future.delayed(
-        //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
-        // //ローディングをpop
-        // Navigator.of(context, rootNavigator: true).pop();
       }
+      store.changeReloadJobScrollOn(false); //リロード後、falseに戻す
+      //store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+      //0.5秒待つ
+      // await Future.delayed(
+      //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+      // //ローディングをpop
+      // Navigator.of(context, rootNavigator: true).pop();
     }
+    // }
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => changeScrollController());
+    // changeScrollController();
+
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) => changeScrollController());
 
     // changeScrollController();
 
