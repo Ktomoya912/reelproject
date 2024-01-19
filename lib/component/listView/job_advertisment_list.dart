@@ -242,18 +242,14 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
       //reloadEventJedgeがtrueの場合、Home画面をリロードする
       if (store.reloadJobJedge) {
         widget.functionCall();
-        //リロード後、falseに戻す
-        //await Future.delayed(Duration(microseconds: 1));
-
-        //ここにHome画面リロードの処理を記述
         // スクロール位置をリセットします。
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
-        store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+        //store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
         //0.5秒待つ
-        await Future.delayed(
-            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
-        //ローディングをpop
-        Navigator.of(context, rootNavigator: true).pop();
+        // await Future.delayed(
+        //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        // //ローディングをpop
+        // Navigator.of(context, rootNavigator: true).pop();
       }
     }
 
@@ -313,7 +309,9 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                             Text(
                               widget.advertisementList.elementAt(index)["name"],
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 23),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 23,
+                              ),
                             ),
                             Column(
                               crossAxisAlignment:
@@ -322,13 +320,13 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                 //時給
                                 Text(
                                     "時給 : ${widget.advertisementList.elementAt(index)["salary"].substring(2)}",
-                                    style: const TextStyle(fontSize: 18)),
+                                    style: const TextStyle(fontSize: 14)),
                                 //時間
                                 if (widget.advertisementList
                                     .elementAt(index)["is_one_day"])
                                   Text(
                                     "時間 : ${widget.advertisementList.elementAt(index)["job_times"][0]["start_time"].substring(11, 16)}~${widget.advertisementList.elementAt(index)["job_times"][0]["end_time"].substring(11, 16)}",
-                                    style: const TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 14),
                                   ),
                                 //場所
                                 Text(
@@ -339,7 +337,7 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                                             .elementAt(index)["city"] +
                                         widget.advertisementList
                                             .elementAt(index)["address"],
-                                    style: const TextStyle(fontSize: 18)),
+                                    style: const TextStyle(fontSize: 14)),
                               ],
                             ),
                           ],

@@ -57,7 +57,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                   : "o",
           "birthday":
               "$year-${month.length == 2 ? month : "0$month"}-${day.length == 2 ? day : "0$day"}",
-          "user_type": "c"
+          "user_type": "g"
         }));
   }
 
@@ -441,10 +441,11 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                 ),
                 minimumSize: const Size(300, 50),
               ),
-              child: const Text('編集内容を決定'),
+              child:
+                  const Text('編集内容を決定', style: TextStyle(color: Colors.white)),
             ),
 
-            const Padding(padding: EdgeInsets.all(10)),
+            const Padding(padding: EdgeInsets.all(20)),
           ],
         ),
       )),

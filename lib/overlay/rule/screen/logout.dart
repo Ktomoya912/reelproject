@@ -72,7 +72,7 @@ class Logout {
                 //   maxHeight: size.height * 1.5,
                 //   minWidth: size.width * 0.2,
                 // ),
-                height: 225,
+                height: 250,
                 width: 350,
                 decoration: BoxDecoration(
                   color: Colors.white,

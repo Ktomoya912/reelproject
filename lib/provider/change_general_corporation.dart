@@ -43,12 +43,19 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //static const String apiUrl = "http://34.196.90.77:8000/api/v1";
 
   //タイプ一覧(デバック中はすべてallとする)
-  static const String typeAll = "type=all";
-  static const String typeActive = "type=all";
-  static const String typeInactive = "type=inactive";
-  static const String typeDraft = "type=draft";
-  static const String typePosted = "type=posted";
+  static const String typeAll = "status=all";
+  static const String typeActive = "status=all";
+  static const String typeInactive = "status=inactive";
+  static const String typeDraft = "status=draft";
+  static const String typePosted = "status=posted";
 
+  //ソート一覧
+  static const String sortRecent = "sort=recent";
+  static const String sortReview = "sort=review";
+  static const String sortFavorite = "sort=favorite";
+  static const String sortPv = "sort=pv";
+  static const String sortId = "sort=id";
+  static const String sortLastWatched = "sort=last_watched";
   //ユーザ情報
   String accessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwODEwMjY1N30.CNaV-8Fs595LdFzF6ahVqwYl5OX89Tt3mYHd4LE0Hm4";

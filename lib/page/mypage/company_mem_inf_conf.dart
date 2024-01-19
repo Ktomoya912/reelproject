@@ -260,16 +260,14 @@ class _ScrollCompanyMemInfConfDetailState
             ),
             const Padding(padding: EdgeInsets.all(30)),
             ElevatedButton(
-              onPressed: () {
-                setState(() async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CompanyMemInfConfChange(),
-                    ),
-                  );
-                  store.getMyUserInfo();
-                });
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CompanyMemInfConfChange(),
+                  ),
+                );
+                store.getMyUserInfo();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: store.mainColor,
@@ -278,7 +276,8 @@ class _ScrollCompanyMemInfConfDetailState
                 ),
                 minimumSize: const Size(300, 50),
               ),
-              child: const Text('会員情報を編集する'),
+              child: const Text('会員情報を編集する',
+                  style: TextStyle(color: Colors.white)),
             ),
             const Padding(padding: EdgeInsets.all(10)),
             InkWell(

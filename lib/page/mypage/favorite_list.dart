@@ -37,12 +37,11 @@ class _FavoriteListState extends State<FavoriteList> {
   }
 
   Future getEventList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-bookmarks');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortLastWatched}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeActive}&user_id=${store.myID}&target=favorite');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
@@ -59,11 +58,10 @@ class _FavoriteListState extends State<FavoriteList> {
   }
 
   Future getJobList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/job-bookmarks');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortLastWatched}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeActive}&user_id=${store.myID}&target=favorite');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {

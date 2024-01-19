@@ -75,24 +75,24 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     //検索ボタンを押したときの処理
-    void _submission(text) {
-      setState(() async {
-        if (text != "") {
-          await Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    SearchPage(
-                  text: text,
-                  eventJobJedge: widget.title,
-                  sort: "新着順",
-                  sortType: "id",
-                  store: store,
-                ),
-              ));
+    void _submission(text) async {
+      if (text != "") {
+        await Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  SearchPage(
+                text: text,
+                eventJobJedge: widget.title,
+                sort: "新着順",
+                sortType: "id",
+                store: store,
+              ),
+            ));
+        setState(() {
           widget.functionCall();
-        }
-      });
+        });
+      }
     }
 
     //タイトルバーの最大、最小サイズ

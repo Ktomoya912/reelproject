@@ -164,21 +164,21 @@ class ScrollImpressionsDetail extends StatelessWidget {
                     width: 0,
                   ),
                   Text(
-                    '男性:${impressionData["sex"]["mJedge"] / impressionData["sex"]["allJedge"] * 100}%',
+                    '男性:${(impressionData["sex"]["mJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    '女性:${impressionData["sex"]["fJedge"] / impressionData["sex"]["allJedge"] * 100}%',
+                    '女性:${(impressionData["sex"]["fJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    'その他:${impressionData["sex"]["oJedge"] / impressionData["sex"]["allJedge"] * 100}%  ',
+                    'その他:${(impressionData["sex"]["oJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%  ',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 18,

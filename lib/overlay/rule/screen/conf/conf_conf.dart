@@ -92,7 +92,7 @@ class ConfConf {
                 //   maxHeight: size.height * 1.5,
                 //   minWidth: size.width * 0.2,
                 // ),
-                height: 225,
+                height: 250,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,

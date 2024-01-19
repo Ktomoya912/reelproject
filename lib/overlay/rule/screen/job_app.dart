@@ -133,7 +133,7 @@ class JobApp {
                 //   maxHeight: size.height * 1.5,
                 //   minWidth: size.width * 0.2,
                 // ),
-                height: 250,
+                height: 280,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,

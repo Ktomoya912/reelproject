@@ -63,7 +63,7 @@ class _EventState extends State<Event> {
 
   Future getEventList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&sort=recent&order=asc&offset=0&limit=20');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
 
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
@@ -91,7 +91,25 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     //final store = Provider.of<ChangeGeneralCorporation>(context);
+
+    //Home画面リロード用の関数
+    void reloadHome() async {
+      //reloadHomeJedgeがtrueの場合、Home画面をリロードする
+      if (store.reloadEventJedge) {
+        //getJobList();
+        store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+        //0.5秒待つ
+        await Future.delayed(
+            const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+        //ローディングをpop
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    }
+
+    //ビルド後に実行
+    WidgetsBinding.instance.addPostFrameCallback((_) => reloadHome());
 
     return Scaffold(
         appBar: EventJobSearchBar(

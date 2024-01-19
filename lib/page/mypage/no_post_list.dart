@@ -34,11 +34,10 @@ class _NoPostListState extends State<NoPostList> {
 
   Future getEventList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/users/event-postings?${ChangeGeneralCorporation.typeDraft}');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeInactive}&user_id=${store.myID}&target=posted');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
@@ -56,10 +55,9 @@ class _NoPostListState extends State<NoPostList> {
 
   Future getJobList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/users/job-postings?${ChangeGeneralCorporation.typeDraft}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeInactive}&user_id=${store.myID}&target=posted');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
