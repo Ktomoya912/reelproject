@@ -60,10 +60,10 @@ class _SearchPageState extends State<SearchPage> {
         case "開催期間順":
           sortType = "recent";
           break;
-        case "いいね数順":
+        case "お気に入り数順":
           sortType = "favorite";
           break;
-        case "レビュー順":
+        case "レビュー評価順":
           sortType = "review";
           break;
         case "閲覧数順":
@@ -274,7 +274,7 @@ class _SearchPageState extends State<SearchPage> {
 
                           Row(
                             children: [
-                              const Text("      検索結果  :  「",
+                              const Text("    検索結果 :「",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,
@@ -332,15 +332,15 @@ class _SearchPageState extends State<SearchPage> {
                                           children: <Widget>[
                                             ListTile(
                                                 leading:
-                                                    const Icon(Icons.schedule),
+                                                    const Icon(Icons.history),
                                                 title: const Text('新着順'),
                                                 onTap: () => {
                                                       Navigator.pop(context, 0),
                                                       changeSort("新着順"),
                                                     }),
                                             ListTile(
-                                                leading:
-                                                    const Icon(Icons.schedule),
+                                                leading: const Icon(
+                                                    Icons.calendar_month),
                                                 title: const Text('開催期間順'),
                                                 onTap: () => {
                                                       Navigator.pop(context, 1),
@@ -349,10 +349,10 @@ class _SearchPageState extends State<SearchPage> {
                                             ListTile(
                                                 leading:
                                                     const Icon(Icons.favorite),
-                                                title: const Text('いいね数順'),
+                                                title: const Text('お気に入り数順'),
                                                 onTap: () => {
                                                       Navigator.pop(context, 2),
-                                                      changeSort("いいね数順"),
+                                                      changeSort("お気に入り数順"),
                                                     }),
                                             ListTile(
                                                 leading: const Icon(Icons.star),
@@ -362,12 +362,19 @@ class _SearchPageState extends State<SearchPage> {
                                                       changeSort("レビュー順"),
                                                     }),
                                             ListTile(
-                                                leading: const Icon(Icons.star),
+                                                //色
+                                                leading: const Icon(
+                                                    Icons.visibility),
                                                 title: const Text('閲覧数順'),
                                                 onTap: () => {
                                                       Navigator.pop(context, 2),
                                                       changeSort("閲覧数順"),
                                                     }),
+                                            //空白
+                                            Container(
+                                              height: 20,
+                                              color: Colors.white,
+                                            ),
                                           ],
                                         ));
                                       });

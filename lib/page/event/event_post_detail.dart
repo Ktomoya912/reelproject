@@ -792,7 +792,8 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                           title: const Text(
                                                               '投稿済みです'),
                                                           content: const Text(
-                                                              'このイベント広告にはレビューを投稿済みです。'),
+                                                            'このイベント広告にはレビューを投稿済みです。',
+                                                          ),
                                                           actions: <Widget>[
                                                             TextButton(
                                                               child: const Text(

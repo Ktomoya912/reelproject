@@ -85,7 +85,7 @@ class NoticeDelete {
                 //   maxHeight: size.height * 1.5,
                 //   minWidth: size.width * 0.2,
                 // ),
-                height: 250,
+                height: 290,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -98,6 +98,8 @@ class NoticeDelete {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //空白
+                        const SizedBox(height: 20), //余白調整
                         //ウィジェットを保管
                         const Text(
                           "本当に削除しますか？",
@@ -105,7 +107,7 @@ class NoticeDelete {
                               //fontWeight: FontWeight.bold,
                               fontSize: 24),
                         ),
-                        const SizedBox(height: 20), //余白調整
+                        const SizedBox(height: 40), //余白調整
                         ElevatedButton(
                           // ボタンを作る関数
                           //ボタン設置

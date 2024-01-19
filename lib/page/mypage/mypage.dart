@@ -308,7 +308,7 @@ class _ScrollMyPageDetailState extends State<ScrollMyPageDetail> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                    "${store.jedgeGC ? store.userInfo["username"] : store.userInfo["company"]["name"]}",
+                    "${store.jedgeGC ? store.userInfo["username"] : store.userInfo["username"]}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 15)),
               ), //ユーザー名
@@ -616,38 +616,38 @@ class MypageAppBar extends StatelessWidget implements PreferredSizeWidget {
               automaticallyImplyLeading: false, //戻るボタンの非表示
               backgroundColor: store.mainColor, //背景
               //elevation: 0.0, //影なし
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 5),
-                  child: InkWell(
-                    onTap: () {
-                      store.changeGC(!store.jedgeGC);
-                    },
-                    splashColor: Colors.transparent, // splashColorを透明にする。
-                    child: store.jedgeGC
-                        ? const Text(
-                            '法人の方はこちら',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.white,
-                              decorationThickness: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Text(
-                            '個人の方はこちら',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.white,
-                              decorationThickness: 2,
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                ),
-              ],
+              // actions: [
+              //   Padding(
+              //     padding: const EdgeInsets.only(right: 20, top: 5),
+              //     child: InkWell(
+              //       onTap: () {
+              //         store.changeGC(!store.jedgeGC);
+              //       },
+              //       splashColor: Colors.transparent, // splashColorを透明にする。
+              //       child: store.jedgeGC
+              //           ? const Text(
+              //               '法人の方はこちら',
+              //               style: TextStyle(
+              //                 fontWeight: FontWeight.bold,
+              //                 decoration: TextDecoration.underline,
+              //                 decorationColor: Colors.white,
+              //                 decorationThickness: 2,
+              //                 color: Colors.white,
+              //               ),
+              //             )
+              //           : const Text(
+              //               '個人の方はこちら',
+              //               style: TextStyle(
+              //                 fontWeight: FontWeight.bold,
+              //                 decoration: TextDecoration.underline,
+              //                 decorationColor: Colors.white,
+              //                 decorationThickness: 2,
+              //                 color: Colors.white,
+              //               ),
+              //             ),
+              //     ),
+              //   ),
+              // ],
             ), //高さ
           )), //高さ
     ));

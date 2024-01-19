@@ -8,6 +8,7 @@ import 'package:reelproject/app_router/app_router.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 //ローディング
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
+import 'package:bordered_text/bordered_text.dart';
 
 // //オーバーレイ
 // import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
@@ -165,11 +166,22 @@ class IconWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Icon(icon, color: Colors.white),
-        Text(text, style: const TextStyle(color: Colors.white)),
+        BorderedText(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.white,
+            ),
+          ),
+          strokeWidth: 5.0, //縁の太さ
+          strokeColor: store.mainColor, //縁の色
+        ),
       ],
     );
   }

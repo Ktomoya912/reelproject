@@ -48,8 +48,8 @@ class ReturnWrite {
           color: Colors.black.withAlpha(150),
           child: Center(
             child: Container(
-                height: 180,
-                width: 220,
+                height: 220,
+                width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0),
@@ -58,17 +58,21 @@ class ReturnWrite {
                   padding: const EdgeInsets.all(16.0),
                   child: SingleChildScrollView(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly, // ここで子要素の配置を均等に設定します
+                      //mainAxisSize: MainAxisSize.min,
+                      //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //空白
+                        const SizedBox(height: 10),
                         const Text(
                           "ユーザー名または\nパスワードが間違っています。",
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            //fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 50),
                         ElevatedButton(
                           //ボタン設置
                           onPressed: () {
@@ -79,11 +83,12 @@ class ReturnWrite {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: const Size(190, 40),
+                            minimumSize: const Size(200, 45),
                             backgroundColor: store.greyColor,
                           ),
                           child: const Text("戻る",
-                              style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18)),
                         ),
                       ],
                     ),

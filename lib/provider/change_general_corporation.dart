@@ -41,6 +41,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
   //static const String apiUrl = "http://34.196.90.77:8000/api/v1";
+  //static const String apiUrl = "http://10.0.2.2:8000/api/v1"; //アンドロイドエミュレーター用
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "status=all";
@@ -146,8 +147,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   //一般の色(定数)
   static const Color generalMainColor = Color.fromARGB(255, 233, 146, 7);
-  static const Color generalSubColor = Color.fromARGB(255, 239, 178, 102);
-  static const Color generalThinColor = Color.fromARGB(255, 255, 226, 182);
+  static const Color generalSubColor = Color.fromARGB(255, 255, 195, 104);
+  static const Color generalThinColor = Color.fromARGB(255, 255, 207, 134);
   static const Color generalBlackColor = Color.fromARGB(255, 49, 30, 0);
 
   //法人の色(定数)
