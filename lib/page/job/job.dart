@@ -35,9 +35,11 @@ class _JobState extends State<Job> {
     "香美市",
     "秋祭り",
     "イベント",
-    "イベント",
-    "イベント",
-    "イ"
+    "居酒屋",
+    "学際",
+    "大学",
+    "神社",
+    "個人経営"
   ];
 
   //お気に入り、閲覧履歴リスト
@@ -110,10 +112,12 @@ class _JobState extends State<Job> {
 
     //Home画面リロード用の関数
     void reloadHome() async {
+      //print("DDD");
       //reloadHomeJedgeがtrueの場合、Home画面をリロードする
       if (store.reloadJobJedge) {
-        //getJobList();
+        getJobList();
         store.changeReloadJobJedgeOn(false); //リロード後、falseに戻す
+        store.changeReloadJobScrollOn(true);
         //0.5秒待つ
         await Future.delayed(
             const Duration(milliseconds: ChangeGeneralCorporation.waitTime));

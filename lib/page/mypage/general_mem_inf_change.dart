@@ -48,7 +48,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
         body: json.encode({
           "password": "password",
           "username": username,
-          "image_url": "https://example.com",
+          "image_url": store.userInfo["image_url"],
           "email": store.userInfo["email"],
           "sex": selectedGender == "mele"
               ? "m"

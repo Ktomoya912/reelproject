@@ -8,6 +8,26 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //ロード待ち時間(アプリ内):1000 = 1秒
   static const int waitTime = 800;
 
+  //イベント、求人スクロール更新関数
+  bool reloadEventScroll = false;
+  bool reloadJobScroll = false;
+
+  //reloadEventScrollをtrueに変更する関数
+  void changeReloadEventScrollOn(bool b) {
+    Future.delayed(Duration.zero, () {
+      reloadEventScroll = b;
+      notifyListeners();
+    });
+  }
+
+  //reloadJobScrollをtrueに変更する関数
+  void changeReloadJobScrollOn(bool b) {
+    Future.delayed(Duration.zero, () {
+      reloadJobScroll = b;
+      notifyListeners();
+    });
+  }
+
   //ルート更新用の関数
   bool reloadHomeJedge = false;
   bool reloadEventJedge = false;
@@ -41,6 +61,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   // APIのリンク
   static const String apiUrl = "http://localhost:8000/api/v1";
   //static const String apiUrl = "http://34.196.90.77:8000/api/v1";
+  //static const String apiUrl = "http://10.0.2.2:8000/api/v1"; //アンドロイドエミュレーター用
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "status=all";
@@ -146,8 +167,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   //一般の色(定数)
   static const Color generalMainColor = Color.fromARGB(255, 233, 146, 7);
-  static const Color generalSubColor = Color.fromARGB(255, 239, 178, 102);
-  static const Color generalThinColor = Color.fromARGB(255, 255, 226, 182);
+  static const Color generalSubColor = Color.fromARGB(255, 255, 195, 104);
+  static const Color generalThinColor = Color.fromARGB(255, 255, 207, 134);
   static const Color generalBlackColor = Color.fromARGB(255, 49, 30, 0);
 
   //法人の色(定数)

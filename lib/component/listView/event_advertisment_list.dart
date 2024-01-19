@@ -231,27 +231,33 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
 
     //スクロール位置をリセットする関数
 
-    void changeScrollController() async {
-      //reloadEventJedgeがtrueの場合、Home画面をリロードする
-      if (store.reloadEventJedge) {
-        widget.functionCall();
-        //リロード後、falseに戻す
-        //await Future.delayed(Duration(microseconds: 1));
+    // void changeScrollController() async {
+    //reloadEventJedgeがtrueの場合、Home画面をリロードする
+    if (store.reloadEventScroll) {
+      //print("dd");
+      //widget.functionCall();
+      //リロード後、falseに戻す
+      //await Future.delayed(Duration(microseconds: 1));
 
-        //ここにHome画面リロードの処理を記述
-        // スクロール位置をリセットします。
+      //ここにHome画面リロードの処理を記述
+      // スクロール位置をリセットします。
+      if (_scrollController.hasClients) {
         _scrollController.jumpTo(_scrollController.position.minScrollExtent);
-        // store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
-        // //0.5秒待つ
-        // await Future.delayed(
-        //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
-        // //ローディングをpopする
-        // Navigator.of(context, rootNavigator: true).pop();
       }
+      store.changeReloadEventScrollOn(false);
+      // store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+      // //0.5秒待つ
+      // await Future.delayed(
+      //     const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+      // //ローディングをpopする
+      // Navigator.of(context, rootNavigator: true).pop();
     }
+    //}
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => changeScrollController());
+    //changeScrollController();
+
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) => changeScrollController());
 
     //changeScrollController();
 

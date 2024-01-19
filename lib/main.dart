@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             title: 'Flutter Demo',
             theme: ThemeData(
+              canvasColor: Colors.white, // ここでcanvasColorを設定します
               useMaterial3: false,
               //フォント
               textTheme: GoogleFonts.mPlus1pTextTheme(

@@ -34,9 +34,10 @@ class _EventState extends State<Event> {
     "香美市",
     "秋祭り",
     "イベント",
-    "イベント",
-    "イベント",
-    "イ"
+    "屋台",
+    "学際",
+    "大学",
+    "神社"
   ];
 
   //お気に入り、閲覧履歴リスト
@@ -98,11 +99,13 @@ class _EventState extends State<Event> {
     void reloadHome() async {
       //reloadHomeJedgeがtrueの場合、Home画面をリロードする
       if (store.reloadEventJedge) {
-        //getJobList();
+        getEventList();
         store.changeReloadEventJedgeOn(false); //リロード後、falseに戻す
+        store.changeReloadEventScrollOn(true);
         //0.5秒待つ
         await Future.delayed(
             const Duration(milliseconds: ChangeGeneralCorporation.waitTime));
+
         //ローディングをpop
         Navigator.of(context, rootNavigator: true).pop();
       }
