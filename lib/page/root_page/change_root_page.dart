@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:reelproject/app_router/app_router.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 //アプリ全体を包括するレイヤー
 @RoutePage()
@@ -9,11 +10,13 @@ class ChangeRootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? skiplogin = dotenv.env['SKIP_LOGIN'];
     return AutoTabsRouter(
-        routes: const [
-          LoginRoute(),
-          RootRoute(),
-          SecessionFinishRoute()
+        routes: [
+          skiplogin == "true" ? const RootRoute() : const LoginRoute(),
+          //ログイン済みの場合はRootRoute、未ログインの場合はLoginRoute
+          const RootRoute(),
+          const SecessionFinishRoute()
         ], //このレイヤーから移動可能なRoute
         builder: (context, child) {
           // タブが切り替わると発火します

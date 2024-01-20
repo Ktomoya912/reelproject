@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/overlay/rule/screen/return_write.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -35,7 +36,6 @@ class LoginPageState extends State<LoginPage> {
   bool isActive = false; //ボタンの活性化
 
   @override
-  @override
   void initState() {
     super.initState();
     _isObscure = widget.isObscure;
@@ -44,7 +44,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
-
     //トークン取得
     Future getAccessToken(
         String username, String password, String apiUrl) async {
@@ -54,26 +53,20 @@ class LoginPageState extends State<LoginPage> {
           body: {'username': username, 'password': password});
       final Map<String, dynamic> data = json.decode(response.body);
       if (response.statusCode == 200) {
-        store.accessToken = data["access_token"];
-        jedgeGC = true;
-
-        isActive = data["user"]["is_active"];
+        store.accessToken = data["access_token"]; //トークンをプロバイダに保存
+        jedgeGC = true; //一般ユーザーと判定
+        isActive = data["user"]["is_active"]; //本登録が完了しているか判定
+        //トークンを保存
+        if (_autoLogin) {
+          final SharedPreferences storage =
+              await SharedPreferences.getInstance();
+          await storage.setString("ACCESS_TOKEN", data["access_token"]);
+          //print("トークンを保存しました");
+        }
       } else {
         jedgeGC = false;
       }
     }
-
-    //ユーザーidを取得
-    // Future<String> getUserId(String apiUrl) async {
-    //   Uri url = Uri.parse("$apiUrl/users/me");
-    //   final response = await get(url, headers: {'accept': 'application/json'});
-    //   final Map<String, dynamic> data = json.decode(response.body);
-    //   if (response.statusCode == 200) {
-    //     return data["id"];
-    //   } else {
-    //     return "";
-    //   }
-    // }
 
     return Scaffold(
       appBar: LoginAppBar(store: store),

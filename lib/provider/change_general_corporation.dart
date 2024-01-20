@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
@@ -50,8 +50,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const String typePosted = "type=posted";
 
   //ユーザ情報
-  String accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwODEwMjY1N30.CNaV-8Fs595LdFzF6ahVqwYl5OX89Tt3mYHd4LE0Hm4";
+  String? accessToken = dotenv.env['ACCESS_TOKEN']; //初期値はnull
+  bool skiplogin = true; //ログインスキップ判断
   int myID = 2; //自分のID(一般ID)
 
   //自分のユーザ情報マップ(APIにて取得)
@@ -99,7 +99,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/me');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${accessToken}'
+      'authorization': 'Bearer $accessToken',
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
@@ -115,7 +115,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${myID}');
     final response = await http.put(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${accessToken}',
+      'authorization': 'Bearer $accessToken',
       'Content-Type': 'application/json',
     }, body: {
       "password"
@@ -134,7 +134,6 @@ class ChangeGeneralCorporation with ChangeNotifier {
   //一般と法人を判断する変数
   //一般:true,  法人:flase
   bool jedgeGC = true;
-
   //[jedgeGCに依存する色一覧]
 
   //一般の色(定数)
