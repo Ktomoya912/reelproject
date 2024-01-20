@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // 他ファイルから使用するために、変数とメソッドの_を削除。
 class ChangeGeneralCorporation with ChangeNotifier {
@@ -78,8 +78,8 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const String sortId = "sort=id";
   static const String sortLastWatched = "sort=last_watched";
   //ユーザ情報
-  String accessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwODEwMjY1N30.CNaV-8Fs595LdFzF6ahVqwYl5OX89Tt3mYHd4LE0Hm4";
+  String? accessToken = dotenv.env['ACCESS_TOKEN']; //初期値はnull
+  bool skiplogin = true; //ログインスキップ判断
   int myID = 2; //自分のID(一般ID)
 
   //自分のユーザ情報マップ(APIにて取得)

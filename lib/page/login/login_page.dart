@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/overlay/rule/screen/return_write.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -58,6 +59,14 @@ class LoginPageState extends State<LoginPage> {
         jedgeGC = true;
 
         isActive = data["user"]["is_active"];
+        store.accessToken = data["access_token"]; //トークンをプロバイダに保存
+        //トークンを保存
+        if (_autoLogin) {
+          final SharedPreferences storage =
+              await SharedPreferences.getInstance();
+          await storage.setString("ACCESS_TOKEN", data["access_token"]);
+          //print("トークンを保存しました");
+        }
       } else {
         jedgeGC = false;
       }
