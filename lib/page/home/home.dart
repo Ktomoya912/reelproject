@@ -913,6 +913,8 @@ class _HomeState extends State<Home> {
                                 ],
                               ),
                             ),
+                            //空白
+                            SizedBox(height: 20), //ボタン間の空間
                           ],
                         ),
                       ),
