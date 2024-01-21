@@ -65,7 +65,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "status=all";
-  static const String typeActive = "status=all";
+  static const String typeActive = "status=active";
   static const String typeInactive = "status=inactive";
   static const String typeDraft = "status=draft";
   static const String typePosted = "status=posted";
