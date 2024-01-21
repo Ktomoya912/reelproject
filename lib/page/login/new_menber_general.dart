@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/component/appbar/title_appbar.dart';
+import 'package:reelproject/component/appbar/new_member_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
@@ -151,7 +151,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
     }
 
     return Scaffold(
-      appBar: const TitleAppBar(
+      appBar: const NewMemberAppBar(
         title: "新規会員登録",
         jedgeBuck: true,
       ),
@@ -427,6 +427,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
               child: SizedBox(
                 width: 300,
                 child: TextFormField(
+                  maxLength: 20,
                   obscureText: _isObscure,
                   validator: (value) {
                     if (!checkPassword(value as String)) {
@@ -439,6 +440,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     return null;
                   },
                   decoration: InputDecoration(
+                    counterText: '',
                     labelText: 'パスワード',
                     hintText: '8文字以上の英数字',
                     border: const OutlineInputBorder(),
@@ -477,7 +479,9 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                     return null;
                   },
                   obscureText: _isObscureCheck,
+                  maxLength: 20,
                   decoration: InputDecoration(
+                    counterText: '',
                     labelText: 'パスワード確認用',
                     hintText: '8文字以上の英数字',
                     border: const OutlineInputBorder(),

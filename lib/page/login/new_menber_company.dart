@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:reelproject/component/appbar/new_member_appbar.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
@@ -180,7 +180,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
     }
 
     return Scaffold(
-      appBar: const TitleAppBar(
+      appBar: const NewMemberAppBar(
         title: "新規会員登録",
         jedgeBuck: true,
       ),
@@ -774,6 +774,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
               child: SizedBox(
                 width: 300,
                 child: TextFormField(
+                  maxLength: 20,
                   obscureText: _isObscure,
                   validator: (value) {
                     if (!checkPassword(value as String)) {
@@ -786,6 +787,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                     return null;
                   },
                   decoration: InputDecoration(
+                    counterText: '',
                     labelText: 'パスワード',
                     hintText: '8文字以上の英数字',
                     border: const OutlineInputBorder(),
@@ -813,6 +815,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
               child: SizedBox(
                 width: 300,
                 child: TextFormField(
+                  maxLength: 20,
                   validator: (value) {
                     if (!checkPassword(value as String)) {
                       passwordCheck = '';
@@ -825,6 +828,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                   },
                   obscureText: _isObscureCheck,
                   decoration: InputDecoration(
+                    counterText: '',
                     labelText: 'パスワード確認用',
                     hintText: '8文字以上の英数字',
                     border: const OutlineInputBorder(),

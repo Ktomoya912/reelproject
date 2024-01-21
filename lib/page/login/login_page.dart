@@ -141,6 +141,7 @@ class LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: 300,
                     child: TextField(
+                      maxLength: 20,
                       textAlign: TextAlign.start,
                       onChanged: (text) {
                         //入力されたテキストを受け取る
@@ -151,6 +152,7 @@ class LoginPageState extends State<LoginPage> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         hintText: '英数字と_のみ使用可能',
+                        counterText: '',
                       ),
                     ),
                   ),
@@ -169,8 +171,10 @@ class LoginPageState extends State<LoginPage> {
                       onChanged: (text) {
                         password = text;
                       },
+                      maxLength: 20,
                       obscureText: _isObscure,
                       decoration: InputDecoration(
+                        counterText: '',
                         border: const OutlineInputBorder(),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 10),
