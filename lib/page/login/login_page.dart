@@ -45,6 +45,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+    //WidgetsBinding.instance.addPostFrameCallback((_) => store.changeGC(true));
 
     //トークン取得
     Future getAccessToken(
@@ -103,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               InkWell(
-                onTap: () {
+                onTap: () async {
                   if (store.jedgeGC) {
                     Navigator.push(
                       context,
@@ -115,8 +116,9 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NewMemberCompany(
-                              onVisibilityToggle: (isVisible) {})),
+                        builder: (context) => NewMemberCompany(
+                            onVisibilityToggle: (isVisible) {}),
+                      ),
                     );
                   }
                 },
