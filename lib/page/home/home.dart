@@ -451,6 +451,7 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
+      store.getMyUserInfo();
       notEventJedge = false; //イベントがない場合の判定
       notJobJedge = false; //イベントがない場合の判定
     });
