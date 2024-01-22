@@ -295,7 +295,9 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                     //ボタン全体のサイズ
                     SizedBox(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
+                    // mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // ここで配置を設定します
                     children: [
                       SizedBox(
                           width: (widget.mediaQueryData.size.width / 100) +
@@ -344,9 +346,10 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
                       ),
                       //画像
                       SizedBox(
+                        //color: Colors.blue,
                         height: buttonWidthPower + 10, //ボタン全体の高さ,
-                        width: (widget.mediaQueryData.size.width / 12 * 5) -
-                            (addWidth),
+                        // width: (widget.mediaQueryData.size.width / 12 * 5) -
+                        //     (addWidth),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end, //右寄せ
                           children: [
