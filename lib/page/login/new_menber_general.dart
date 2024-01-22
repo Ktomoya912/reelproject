@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/new_member_appbar.dart';
-import 'package:reelproject/component/bottom_appbar/new_member_bottombar.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
@@ -621,7 +621,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           ],
         ),
       ),
-      bottomNavigationBar: const NewMemberBottomBar(),
+      bottomNavigationBar: const NormalBottomAppBar(),
     );
   }
 }
@@ -632,7 +632,7 @@ bool checkUserName(String username) {
     caseSensitive: false,
     r"^[a-zA-Z0-9_]+$",
   );
-  return regName.hasMatch(username) && username.length >= 8;
+  return regName.hasMatch(username) && username.length >= 5;
 }
 
 bool checkMail(String mail) {
