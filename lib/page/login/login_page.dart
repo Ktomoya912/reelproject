@@ -104,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               InkWell(
-                onTap: () {
+                onTap: () async {
                   if (store.jedgeGC) {
                     Navigator.push(
                       context,
@@ -116,8 +116,9 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NewMemberCompany(
-                              onVisibilityToggle: (isVisible) {})),
+                        builder: (context) => NewMemberCompany(
+                            onVisibilityToggle: (isVisible) {}),
+                      ),
                     );
                   }
                 },
@@ -256,7 +257,7 @@ class LoginPageState extends State<LoginPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 233, 146, 7),
+                      backgroundColor: store.mainColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -314,10 +315,10 @@ class LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomAppBar(
-        color: Color.fromARGB(255, 233, 146, 7),
+      bottomNavigationBar: BottomAppBar(
+        color: store.mainColor,
         height: 40,
-        child: Text(
+        child: const Text(
           '© 2023 REEL',
           style: TextStyle(
             color: Colors.white,
@@ -351,7 +352,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             fontSize: 44,
             color: Colors.white), //書体
       ),
-      backgroundColor: const Color.fromARGB(255, 233, 146, 7), //背景
+      backgroundColor: store.mainColor, //背景
       iconTheme: const IconThemeData(color: Colors.grey), //戻るボタン
       centerTitle: true, //中央揃え
       toolbarHeight: 80, //アップバーの高さ
