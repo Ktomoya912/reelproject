@@ -45,6 +45,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+    //WidgetsBinding.instance.addPostFrameCallback((_) => store.changeGC(true));
 
     //トークン取得
     Future getAccessToken(
@@ -255,7 +256,7 @@ class LoginPageState extends State<LoginPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: store.mainColor,
+                      backgroundColor: const Color.fromARGB(255, 233, 146, 7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -313,10 +314,10 @@ class LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: store.mainColor,
+      bottomNavigationBar: const BottomAppBar(
+        color: Color.fromARGB(255, 233, 146, 7),
         height: 40,
-        child: const Text(
+        child: Text(
           '© 2023 REEL',
           style: TextStyle(
             color: Colors.white,
@@ -350,7 +351,7 @@ class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             fontSize: 44,
             color: Colors.white), //書体
       ),
-      backgroundColor: store.mainColor, //背景
+      backgroundColor: const Color.fromARGB(255, 233, 146, 7), //背景
       iconTheme: const IconThemeData(color: Colors.grey), //戻るボタン
       centerTitle: true, //中央揃え
       toolbarHeight: 80, //アップバーの高さ

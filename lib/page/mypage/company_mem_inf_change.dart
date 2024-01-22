@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
 //push先
@@ -49,11 +47,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
           "username": username,
           "image_url": store.userInfo["image_url"],
           "email": store.userInfo["company"]["email"],
-          "sex": selectedGender == "male"
-              ? "m"
-              : selectedGender == "female"
-                  ? "f"
-                  : "o",
+          "sex": selectedGender,
           "birthday":
               "$year-${month.length == 2 ? month : "0$month"}-${day.length == 2 ? day : "0$day"}",
           "user_type": "c"
@@ -63,6 +57,18 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
   @override
   void initState() {
     super.initState();
+    final store = Provider.of<ChangeGeneralCorporation>(context, listen: false);
+    username = store.userInfo["username"];
+    mymail = store.userInfo["email"];
+    phoneNumber = store.userInfo["company"]["phone_number"];
+    postalCode = store.userInfo["company"]["postal_code"];
+    prefecture = store.userInfo["company"]["prefecture"];
+    city = store.userInfo["company"]["city"];
+    address = store.userInfo["company"]["address"];
+    year = store.userInfo["birthday"].substring(0, 4);
+    month = store.userInfo["birthday"].substring(5, 7);
+    day = store.userInfo["birthday"].substring(8, 10);
+    selectedGender = store.userInfo["sex"];
   }
 
   @override
@@ -142,6 +148,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]["name"],
                           enabled: false,
                           maxLength: 20,
                           textAlign: TextAlign.start,
@@ -165,6 +172,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["username"],
                           validator: (value) {
                             if (!checkUserName(value as String)) {
                               username = '';
@@ -197,6 +205,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]["email"],
                           validator: (value) {
                             if (!checkMail(value as String)) {
                               mymail = '';
@@ -249,6 +258,8 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]
+                              ["phone_number"],
                           validator: (value) {
                             if (!checkPhoneNumber(value as String)) {
                               phoneNumber = '';
@@ -298,6 +309,8 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]
+                              ["postal_code"],
                           validator: (value) {
                             if (!checkPostalCode(value as String)) {
                               postalCode = '';
@@ -331,6 +344,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]["prefecture"],
                           validator: (value) {
                             if (!checkPrefecture(value as String)) {
                               prefecture = '';
@@ -364,6 +378,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]["city"],
                           validator: (value) {
                             if (!checkCity(value as String)) {
                               city = '';
@@ -396,6 +411,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: store.userInfo["company"]["address"],
                           validator: (value) {
                             if (!checkAddress(value as String)) {
                               address = '';
@@ -446,6 +462,8 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                               SizedBox(
                                 width: 100,
                                 child: TextFormField(
+                                  initialValue: store.userInfo["birthday"]
+                                      .substring(0, 4),
                                   onChanged: (value) {
                                     if (checkYear(value)) {
                                       setState(() {
@@ -478,6 +496,8 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
+                                  initialValue: store.userInfo["birthday"]
+                                      .substring(5, 7),
                                   onChanged: (value) {
                                     if (checkMonth(value)) {
                                       setState(() {
@@ -509,6 +529,8 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
+                                  initialValue: store.userInfo["birthday"]
+                                      .substring(8, 10),
                                   onChanged: (value) {
                                     if (checkDay(value)) {
                                       setState(() {
@@ -551,7 +573,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Radio(
-                          value: 'male',
+                          value: 'm',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -567,7 +589,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                           padding: EdgeInsets.all(15.0),
                         ),
                         Radio(
-                          value: 'female',
+                          value: 'f',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -583,7 +605,7 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
                           padding: EdgeInsets.all(15.0),
                         ),
                         Radio(
-                          value: 'other',
+                          value: 'o',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -675,7 +697,7 @@ bool checkMail(String mail) {
   //メールアドレスの正規表現
   final regEmail = RegExp(
     caseSensitive: false,
-    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|\.[A-Za-z]{2}\.[A-Za-z]{2})$",
   );
   return regEmail.hasMatch(mail);
 }

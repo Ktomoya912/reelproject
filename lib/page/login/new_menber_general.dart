@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/new_member_appbar.dart';
-import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/component/bottom_appbar/new_member_bottombar.dart';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import 'package:reelproject/overlay/rule/screen/rule_screen.dart'; //オーバ�
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'dart:math';
 
 class NewMemberGeneral extends StatefulWidget {
   final bool isObscure;
@@ -53,13 +54,31 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
       String username,
       String password,
       String email,
-      String image_url,
+      String imageUrl,
       String year,
       String months,
       String days,
       String sex,
     ) async {
       Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/users/");
+      Random random = Random();
+
+      // 0から2までのランダムな数を生成
+      int randomNumber = random.nextInt(8);
+
+      // 選択肢となるURLリスト
+      List<String> urls = [
+        'https://soco-st.com/wp-content/uploads/clownfish_16502_color.png',
+        'https://soco-st.com/wp-content/uploads/squirrel_16433_color.png',
+        'https://soco-st.com/wp-content/uploads/stoat_16441_color.png',
+        'https://soco-st.com/wp-content/uploads/budgerigar_16451_color.png',
+        'https://soco-st.com/wp-content/uploads/penguin_16457_color.png',
+        'https://soco-st.com/wp-content/uploads/squirrel_16425_color.png',
+        'https://soco-st.com/wp-content/uploads/2020/11/cow_4749_color-2.png',
+        'https://soco-st.com/wp-content/uploads/pigeon_olive_17322_color.png'
+      ];
+
+      imageUrl = urls[randomNumber];
 
       try {
         final response = await post(
@@ -71,8 +90,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           body: jsonEncode({
             'username': username,
             'password': password,
-            'image_url':
-                'https://reelproject.s3.amazonaws.com/1_20240118193811.png',
+            'image_url': imageUrl,
             'email': email,
             'sex': sex,
             'birthday': '$year-$months-$days',
@@ -603,7 +621,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
           ],
         ),
       ),
-      bottomNavigationBar: const NormalBottomAppBar(),
+      bottomNavigationBar: const NewMemberBottomBar(),
     );
   }
 }
@@ -621,7 +639,7 @@ bool checkMail(String mail) {
   //メールアドレスの正規表現
   final regEmail = RegExp(
     caseSensitive: false,
-    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|\.[A-Za-z]{2}\.[A-Za-z]{2})$",
   );
   return regEmail.hasMatch(mail);
 }
