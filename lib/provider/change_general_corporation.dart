@@ -59,13 +59,13 @@ class ChangeGeneralCorporation with ChangeNotifier {
   }
 
   // APIのリンク
-  static const String apiUrl = "http://localhost:8000/api/v1";
+  //static const String apiUrl = "http://localhost:8000/api/v1";
   //static const String apiUrl = "http://34.196.90.77:8000/api/v1";
-  //static const String apiUrl = "http://10.0.2.2:8000/api/v1"; //アンドロイドエミュレーター用
+  static const String apiUrl = "http://10.0.2.2:8000/api/v1"; //アンドロイドエミュレーター用
 
   //タイプ一覧(デバック中はすべてallとする)
   static const String typeAll = "status=all";
-  static const String typeActive = "status=all";
+  static const String typeActive = "status=active";
   static const String typeInactive = "status=inactive";
   static const String typeDraft = "status=draft";
   static const String typePosted = "status=posted";
