@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:reelproject/provider/change_general_corporation.dart';
+import 'package:provider/provider.dart';
 import '../over_screen_controller.dart';
 // import 'package:reelproject/provider/change_general_corporation.dart';
 // import 'package:provider/provider.dart'; //パッケージをインポート
@@ -45,12 +47,12 @@ class ImageOver {
 
     final overlay = OverlayEntry(
       builder: (context) {
-        // final store = Provider.of<ChangeGeneralCorporation>(context);
+        final store = Provider.of<ChangeGeneralCorporation>(context);
         return Material(
           color: Colors.black.withAlpha(150),
           child: Center(
             child: Container(
-                height: 220,
+                height: 240,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -82,35 +84,12 @@ class ImageOver {
                             color: Colors.red,
                           ),
                         ),
-                        const SizedBox(height: 50),
+                        const SizedBox(height: 20),
                         SizedBox(
                           width: 280,
-                          child: Row(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              ElevatedButton(
-                                //ボタン設置
-                                onPressed: () {
-                                  // store.changeOverlay(false);
-                                  bool judgeImage = false;
-                                  onInputChanged
-                                      ?.call(judgeImage); // 呼び出し元へ反応さえるための要素
-                                  ImageOver().hide();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  minimumSize: const Size(125, 45),
-                                  // backgroundColor: store.greyColor,
-                                ),
-                                child: const Text("キャンセル",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 11)),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
                               ElevatedButton(
                                 //ボタン設置
                                 onPressed: () {
@@ -121,17 +100,39 @@ class ImageOver {
                                   ImageOver().hide();
                                 },
                                 style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    minimumSize: const Size(180, 60),
+                                    // backgroundColor: store.greyColor,
+                                    backgroundColor: store.mainColor),
+                                child: const Text("設定",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 17)),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                //ボタン設置
+                                onPressed: () {
+                                  // store.changeOverlay(false);
+                                  bool judgeImage = false;
+                                  onInputChanged
+                                      ?.call(judgeImage); // 呼び出し元へ反応さえるための要素
+                                  ImageOver().hide();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  minimumSize: const Size(125, 45),
+                                  minimumSize: const Size(180, 60),
                                   // backgroundColor: store.greyColor,
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 143, 205, 255),
                                 ),
-                                child: const Text("設定",
+                                child: const Text("キャンセル",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 13)),
+                                        color: Colors.white, fontSize: 17)),
                               ),
                             ],
                           ),
