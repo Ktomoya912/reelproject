@@ -71,7 +71,8 @@ class MyApp extends StatelessWidget {
         create: (context) => ChangeGeneralCorporation(),
         child: Builder(builder: (BuildContext context) {
           return MaterialApp.router(
-            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false, // ここでDebugバナーを非表示にします
+            title: 'REEL',
             theme: ThemeData(
               canvasColor: Colors.white, // ここでcanvasColorを設定します
               useMaterial3: false,
