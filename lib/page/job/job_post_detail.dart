@@ -188,6 +188,10 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
       //未投稿か否か
       jobDetailList["notPost"] = widget.notPostJedge;
+
+      //投稿期間
+      jobDetailList["postTerm"] =
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
     });
   }
 
