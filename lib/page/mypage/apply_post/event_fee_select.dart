@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 //import '/provider/change_general_corporation.dart';
 //import "package:reelproject/component/button/SelectFeeButton.dart";
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:reelproject/page/create_ad/event_post_write.dart';
 
 //イベント広告掲載プロバイダ
 class EventApplyPostDetail with ChangeNotifier {
@@ -146,6 +147,8 @@ class SelectFeeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventStore = Provider.of<EventApplyPostDetail>(context); //プロバイダ
     //final jobStore = Provider.of<JobApplyPostDetail>(context); //プロバイダ
+    int planId = 0; // プランＩＤ
+    int planPeriod = 1; // プラン期間
     return InkWell(
       onTap: () => {
         eventStore.changeEventFee(title),
@@ -159,8 +162,18 @@ class SelectFeeButton extends StatelessWidget {
                 TextButton(
                   child: const Text('進める'),
                   onPressed: () {
+                    if (title == "1回の掲載料金") {
+                      planId = 1;
+                    } else {
+                      planId = 2;
+                    }
                     Navigator.of(context).pop();
                     //Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EventPostWrite(
+                              planId: planId,
+                              planPeriod: planPeriod,
+                            )));
                   },
                 ),
                 TextButton(
