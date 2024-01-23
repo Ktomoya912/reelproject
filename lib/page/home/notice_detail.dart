@@ -90,8 +90,7 @@ class NoticeContent extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          color: Colors.red,
+                        SizedBox(
                           width: width + (widthBlank / 8) + blank - 100 - 70,
                           child: Text(
                             "タイトル : \n$title",
