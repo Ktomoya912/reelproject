@@ -1554,6 +1554,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                                                 planId: planId,
                                                 planPeriod: planPeriod,
                                                 eventJobJedge: false,
+                                                botommBarJedge: true,
                                               )),
                                     );
                                   }

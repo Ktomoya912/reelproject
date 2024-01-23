@@ -12,6 +12,8 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:reelproject/page/create_ad/job_fee_watch.dart';
+
 class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
   const DetailAppbar({
     super.key,
@@ -393,6 +395,49 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                         },
                                       ),
                                     ),
+                                    //振込金額記入
+                                    if (widget.notPostJedge)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: DetailAppbar.greyColor,
+                                              width: 0.5,
+                                            ),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          //右側の矢印アイコン
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                            color: DetailAppbar.greyColor,
+                                          ),
+                                          tileColor: Colors.white, //背景
+                                          leading: const Icon(Icons.money),
+                                          title: const Text('振込金額確認'),
+                                          onTap: () => {
+                                            Navigator.of(context).pop(),
+                                            Navigator.push(
+                                              context,
+                                              // MaterialPageRoute(builder: (context) => Home()),
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobFeeWatch(
+                                                        planId: 5,
+                                                        planPeriod: 5,
+                                                        eventJobJedge:
+                                                            widget.eventJobJedge ==
+                                                                    "event"
+                                                                ? true
+                                                                : false,
+                                                        botommBarJedge: false,
+                                                      )),
+                                            )
+                                          },
+                                        ),
+                                      ),
+
                                     Container(
                                       decoration: BoxDecoration(
                                         border: Border(

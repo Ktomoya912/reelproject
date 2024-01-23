@@ -20,11 +20,13 @@ class JobFeeWatch extends StatefulWidget {
     required this.planId,
     required this.planPeriod,
     required this.eventJobJedge,
+    required this.botommBarJedge,
   });
 
   final int planId;
   final int planPeriod;
   final bool eventJobJedge; //イベント:True,求人:False
+  final bool botommBarJedge;
 
   @override
   State<JobFeeWatch> createState() => _JobFeeWatchState();
@@ -76,7 +78,8 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
           title: widget.eventJobJedge ? "イベント掲載料金プラン" : "求人掲載料金プラン",
           jedgeBuck: false,
         ),
-        bottomNavigationBar: NormalBottomAppBar(),
+        bottomNavigationBar:
+            widget.botommBarJedge ? NormalBottomAppBar() : null,
         body: SizedBox(
           height: mediaQueryData.size.height,
           child: SingleChildScrollView(
