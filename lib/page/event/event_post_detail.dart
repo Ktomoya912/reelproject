@@ -671,7 +671,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${eventDetailList["reviewPoint"].toString()} ",
+                                                "${((eventDetailList["reviewPoint"] * 10).ceilToDouble() / 10).toString()} ",
                                                 style: TextStyle(
                                                   color: Colors.grey[600],
                                                   fontSize: width / 8,

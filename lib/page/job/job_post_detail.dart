@@ -769,7 +769,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${jobDetailList["reviewPoint"].toString()} ",
+                                              "${((jobDetailList["reviewPoint"] * 10).ceilToDouble() / 10).toString()} ",
                                               style: TextStyle(
                                                 color: Colors.grey[600],
                                                 fontSize: width / 8,

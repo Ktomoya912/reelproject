@@ -167,21 +167,21 @@ class ScrollImpressionsDetail extends StatelessWidget {
                     '男性:${(impressionData["sex"]["mJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                   ),
                   Text(
                     '女性:${(impressionData["sex"]["fJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                   ),
                   Text(
                     'その他:${(impressionData["sex"]["oJedge"] / impressionData["sex"]["allJedge"] * 100).ceil()}%  ',
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -333,12 +333,12 @@ class MyPieChart extends StatelessWidget {
                 ? 150
                 : MediaQuery.of(context).size.width *
                     MediaQuery.of(context).size.height /
-                    5250,
+                    5000,
             height: !mainflag
                 ? 107
                 : MediaQuery.of(context).size.width *
                     MediaQuery.of(context).size.height /
-                    5250,
+                    5000,
             child: const Center(
               child: Text(
                 'データがありません',

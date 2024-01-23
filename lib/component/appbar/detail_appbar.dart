@@ -333,8 +333,64 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                         tileColor: Colors.white, //背景
                                         leading: const Icon(Icons.edit),
                                         title: const Text('投稿内容編集'),
-                                        onTap: () =>
-                                            Navigator.of(context).pop(3),
+                                        onTap: () {
+                                          //Navigator.of(context).pop();
+                                          //ポップアップ表示(編集)
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Center(
+                                                child: SingleChildScrollView(
+                                                  child: AlertDialog(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10), // ここで角の丸みを調整します
+                                                    ),
+                                                    title: const Text('編集確認'),
+                                                    content: const Text(
+                                                        '本当に投稿を編集しますか？'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('編集'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          //ここに移動処理を書く
+                                                          // Navigator.push(
+                                                          //   context,
+                                                          //   MaterialPageRoute(
+                                                          //     builder: (context) =>
+                                                          //         PostMemList(id: widget.id),
+                                                          //   ),
+                                                          // );
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child:
+                                                            const Text('キャンセル'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         PostMemList(id: widget.id),
+                                          //   ),
+                                          // );
+                                        },
                                       ),
                                     ),
                                     Container(
