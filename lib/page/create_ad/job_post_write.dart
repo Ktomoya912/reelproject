@@ -137,7 +137,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 // 確認へと送る写真--------------------------------
   XFile? posImage;
   bool posImageJudge = false; // 画像をDBに送るかの判定
-  String? imageUrl;
+  String imageUrl = "NO";
 // -----------------------------------------------
 
 // 広告確認画面へ送るマップ--------------------------------------------------------
