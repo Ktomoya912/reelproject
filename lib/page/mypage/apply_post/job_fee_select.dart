@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 //import '/provider/change_general_corporation.dart';
 //import "package:reelproject/component/button/SelectFeeButton.dart";
 import 'package:reelproject/component/listView/shader_mask_component.dart';
+import 'package:reelproject/page/create_ad/job_post_write.dart';
 
 //イベント広告掲載プロバイダ
 class JobApplyPostDetail with ChangeNotifier {
@@ -129,6 +130,8 @@ class SelectFeeButton extends StatefulWidget {
 }
 
 class _SelectFeeButtonState extends State<SelectFeeButton> {
+  int planId = 0; // プランＩＤ
+  int planPeriod = 0; // プラン期間
   @override
   Widget build(BuildContext context) {
     //final eventStore = Provider.of<EventApplyPostDetail>(context); //プロバイダ
@@ -175,6 +178,7 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                             onChanged: (int? value) {
                               setState(() {
                                 jobStore.changeJobPeriod(value!);
+                                planPeriod = value; // 月を格納
                               });
                             },
                             items: [
@@ -209,8 +213,22 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                                       TextButton(
                                         child: const Text('進める'),
                                         onPressed: () {
+                                          setState(() {
+                                            if (widget.title == "1か月掲載契約") {
+                                              planId = 1;
+                                            } else {
+                                              planId = 2;
+                                            }
+                                          });
                                           Navigator.of(context).pop();
                                           //Navigator.of(context).pop();
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobPostWrite(
+                                                        planId: planId,
+                                                        planPeriod: planPeriod,
+                                                      )));
                                         },
                                       ),
                                       TextButton(
@@ -259,8 +277,15 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                     TextButton(
                       child: const Text('進める'),
                       onPressed: () {
+                        setState(() {
+                          planId = 3;
+                        });
                         Navigator.of(context).pop();
-                        //Navigator.of(context).pop();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => JobPostWrite(
+                                  planId: planId,
+                                  planPeriod: planPeriod,
+                                )));
                       },
                     ),
                     TextButton(
