@@ -297,7 +297,9 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                     //ボタン全体のサイズ
                     SizedBox(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
+                    // mainAxisAlignment: MainAxisAlignment.center, //横方向真ん中寄寄せ
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // ここで配置を設定します
                     children: [
                       SizedBox(
                           width: (widget.mediaQueryData.size.width / 100) +
@@ -351,9 +353,9 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                       //画像
                       SizedBox(
                         height: buttonWidthPower + 10, //ボタン全体の高さ,
-                        width: (widget.mediaQueryData.size.width / 12 * 5) -
-                            (addWidth) +
-                            10,
+                        // width: (widget.mediaQueryData.size.width / 12 * 5) -
+                        //     (addWidth) +
+                        //     10,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end, //右寄せ
                           children: [

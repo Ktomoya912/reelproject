@@ -45,6 +45,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context);
+    //WidgetsBinding.instance.addPostFrameCallback((_) => store.changeGC(true));
 
     //トークン取得
     Future getAccessToken(
@@ -103,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               InkWell(
-                onTap: () {
+                onTap: () async {
                   if (store.jedgeGC) {
                     Navigator.push(
                       context,
@@ -115,8 +116,9 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NewMemberCompany(
-                              onVisibilityToggle: (isVisible) {})),
+                        builder: (context) => NewMemberCompany(
+                            onVisibilityToggle: (isVisible) {}),
+                      ),
                     );
                   }
                 },
@@ -141,6 +143,7 @@ class LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: 300,
                     child: TextField(
+                      maxLength: 20,
                       textAlign: TextAlign.start,
                       onChanged: (text) {
                         //入力されたテキストを受け取る
@@ -151,6 +154,7 @@ class LoginPageState extends State<LoginPage> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         hintText: '英数字と_のみ使用可能',
+                        counterText: '',
                       ),
                     ),
                   ),
@@ -169,8 +173,10 @@ class LoginPageState extends State<LoginPage> {
                       onChanged: (text) {
                         password = text;
                       },
+                      maxLength: 20,
                       obscureText: _isObscure,
                       decoration: InputDecoration(
+                        counterText: '',
                         border: const OutlineInputBorder(),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 10),

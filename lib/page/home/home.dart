@@ -451,6 +451,7 @@ class _HomeState extends State<Home> {
       getHistoryList(store);
       getEventList();
       getJobList();
+      store.getMyUserInfo();
       notEventJedge = false; //イベントがない場合の判定
       notJobJedge = false; //イベントがない場合の判定
     });
@@ -913,6 +914,8 @@ class _HomeState extends State<Home> {
                                 ],
                               ),
                             ),
+                            //空白
+                            SizedBox(height: 20), //ボタン間の空間
                           ],
                         ),
                       ),

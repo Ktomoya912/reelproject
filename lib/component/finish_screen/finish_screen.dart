@@ -148,31 +148,40 @@ class QuestionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
     return OutlinedButton(
-      //ボタン設置
-      onPressed: () {
-        // ボタンが押されたときの処理をここに追加予定
-        Navigator.pop(context);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => AskPage(
-                    loginJedge: jedgeBottomAppBar,
-                    buttonTex: buttonText,
-                    popTimes: popTimes,
-                  )),
-        );
-      },
-
-      style: OutlinedButton.styleFrom(
-        //下線付きボタンにするためoutlinedbuttonにしている
-        side: BorderSide.none, //ここで周りの線を消している
-      ),
-      child: Text("お問い合わせ",
-          style: TextStyle(
-            fontSize: 17,
-            color: store.mainColor,
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
-          )),
-    );
+        //ボタン設置
+        onPressed: () {
+          // ボタンが押されたときの処理をここに追加予定
+          Navigator.pop(context);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => AskPage(
+                      loginJedge: jedgeBottomAppBar,
+                      buttonTex: buttonText,
+                      popTimes: popTimes,
+                    )),
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          //下線付きボタンにするためoutlinedbuttonにしている
+          side: BorderSide.none, //ここで周りの線を消している
+        ),
+        child: Text.rich(
+          TextSpan(
+            style: TextStyle(
+              fontSize: 17,
+              color: store.mainColor,
+              fontWeight: FontWeight.bold,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: "お問い合わせ",
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationColor: store.mainColor, // ここで下線の色を設定します
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }

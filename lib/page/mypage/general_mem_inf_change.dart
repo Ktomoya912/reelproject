@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:reelproject/page/mypage/mypage.dart';
 import '/provider/change_general_corporation.dart';
-
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-//finish_screen.dart
 import "package:reelproject/component/finish_screen/finish_screen.dart";
 
 //push先
@@ -50,11 +45,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
           "username": username,
           "image_url": store.userInfo["image_url"],
           "email": store.userInfo["email"],
-          "sex": selectedGender == "mele"
-              ? "m"
-              : selectedGender == "female"
-                  ? "f"
-                  : "o",
+          "sex": selectedGender,
           "birthday":
               "$year-${month.length == 2 ? month : "0$month"}-${day.length == 2 ? day : "0$day"}",
           "user_type": "g"
@@ -64,6 +55,15 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
   @override
   void initState() {
     super.initState();
+    // initState 内でプロバイダーから初期値を取得する
+    final store = Provider.of<ChangeGeneralCorporation>(context, listen: false);
+
+    username = store.userInfo["username"] ?? '';
+    mail = store.userInfo["email"] ?? '';
+    year = store.userInfo["birthday"]?.substring(0, 4) ?? '';
+    month = store.userInfo["birthday"]?.substring(5, 7) ?? '';
+    day = store.userInfo["birthday"]?.substring(8, 10) ?? '';
+    selectedGender = store.userInfo["sex"] ?? '';
   }
 
   @override
@@ -142,6 +142,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: '${store.userInfo["username"]}',
                           validator: (value) {
                             if (!checkUserName(value as String)) {
                               username = '';
@@ -173,6 +174,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                       child: SizedBox(
                         width: 300,
                         child: TextFormField(
+                          initialValue: '${store.userInfo["email"]}',
                           validator: (value) {
                             if (!checkMail(value as String)) {
                               mail = '';
@@ -240,6 +242,8 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                               SizedBox(
                                 width: 100,
                                 child: TextFormField(
+                                  initialValue:
+                                      '${store.userInfo["birthday"].substring(0, 4)}',
                                   onChanged: (value) {
                                     if (checkYear(value)) {
                                       setState(() {
@@ -272,11 +276,17 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
+                                  initialValue:
+                                      '${store.userInfo["birthday"].substring(5, 7)}',
                                   onChanged: (value) {
                                     if (checkMonth(value)) {
                                       setState(() {
                                         month = value;
+                                        if (month.length == 1) {
+                                          month = '0$month';
+                                        }
                                       });
+
                                       //print(value);
                                     } else {
                                       setState(() {
@@ -303,10 +313,15 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                               SizedBox(
                                 width: 50,
                                 child: TextFormField(
+                                  initialValue:
+                                      '${store.userInfo["birthday"].substring(8, 10)}',
                                   onChanged: (value) {
                                     if (checkDay(value)) {
                                       setState(() {
                                         day = value;
+                                        if (day.length == 1) {
+                                          day = '0$day';
+                                        }
                                       });
                                       //print(value);
                                     } else {
@@ -345,7 +360,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Radio(
-                          value: 'male',
+                          value: 'm',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -361,7 +376,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                           padding: EdgeInsets.all(15.0),
                         ),
                         Radio(
-                          value: 'female',
+                          value: 'f',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -377,7 +392,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                           padding: EdgeInsets.all(15.0),
                         ),
                         Radio(
-                          value: 'other',
+                          value: 'o',
                           groupValue: selectedGender,
                           onChanged: (value) {
                             setState(() {
@@ -470,7 +485,7 @@ bool checkMail(String mail) {
   //メールアドレスの正規表現
   final regEmail = RegExp(
     caseSensitive: false,
-    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|\.[A-Za-z]{2}\.[A-Za-z]{2})$",
   );
   return regEmail.hasMatch(mail);
 }
