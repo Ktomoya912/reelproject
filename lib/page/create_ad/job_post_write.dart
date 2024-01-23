@@ -1196,7 +1196,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                             maxLength: 10,
                             onChanged: (value) {
                               setState(() {
-                                salary = "{$selectedDay$value円}";
+                                salary = "$selectedDay$value円";
                               });
                             },
                             style: const TextStyle(fontSize: 13),
