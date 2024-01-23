@@ -19,6 +19,9 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+//job_fee_watch.dartからのimport
+import 'package:reelproject/page/create_ad/job_fee_watch.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -137,7 +140,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 // 確認へと送る写真--------------------------------
   XFile? posImage;
   bool posImageJudge = false; // 画像をDBに送るかの判定
-  String imageUrl = "NO";
+  String? imageUrl = "NO";
 // -----------------------------------------------
 
 // 広告確認画面へ送るマップ--------------------------------------------------------
@@ -207,8 +210,9 @@ class JobPostWriteState extends State<JobPostWrite> {
     return Scaffold(
       appBar: const TitleAppBar(
         title: "広告作成",
-        jedgeBuck: false,
+        jedgeBuck: true,
       ),
+      bottomNavigationBar: const NormalBottomAppBar(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -277,6 +281,9 @@ class JobPostWriteState extends State<JobPostWrite> {
                     const Icon(Icons.photo_camera,
                         size: 100, color: Color.fromARGB(255, 137, 137, 137)),
                     ElevatedButton(
+                      // 背景色
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: store.mainColor),
                       child: const Text(
                         'デバイスのライブラリから取得',
                         style: TextStyle(
@@ -483,7 +490,7 @@ class JobPostWriteState extends State<JobPostWrite> {
               Stack(children: [
                 selectedValue == "短期"
                     ? SizedBox(
-                        width: 350,
+                        width: 345,
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -589,9 +596,9 @@ class JobPostWriteState extends State<JobPostWrite> {
                       ),
               ]),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               SizedBox(
-                width: 400,
+                width: 390,
                 child: Row(
                   children: <Widget>[
                     const SizedBox(
@@ -726,6 +733,9 @@ class JobPostWriteState extends State<JobPostWrite> {
               ),
 
               ElevatedButton(
+                  // 背景色
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: store.mainColor),
                   child: const Text(
                     "日程を追加",
                     style: TextStyle(
@@ -784,7 +794,7 @@ class JobPostWriteState extends State<JobPostWrite> {
               Stack(children: [
                 selectedValue == "短期"
                     ? SizedBox(
-                        width: 370,
+                        width: 390,
                         height: 200,
                         child: ListView.builder(
                           itemCount: jobShort.length,
@@ -965,6 +975,9 @@ class JobPostWriteState extends State<JobPostWrite> {
 
                     // 住所検索ボタン
                     ElevatedButton(
+                      //背景色
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: store.mainColor),
                       child: const Text(
                         '住所を検索',
                         style: TextStyle(
@@ -1249,6 +1262,10 @@ class JobPostWriteState extends State<JobPostWrite> {
                             width: 10,
                           ),
                           ElevatedButton(
+                              //背景色
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: store.mainColor,
+                              ),
                               child: const Text(
                                 "タグを追加",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -1381,160 +1398,176 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(
                 height: 70,
               ),
-              SizedBox(
-                width: 350,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const SizedBox(
-                      width: 27,
-                    ),
-                    ElevatedButton(
-                        child: const Text(
-                          "キャンセル",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10.0), // ここで角の丸みを設定します
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton(
-                      child: const Text(
-                        '広告完成図確認',
-                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          postList = {
-                            "name": postTitle, //タイトル
-                            //詳細
-                            "description": detail,
-
-                            "image_url": imageUrl,
-
-                            "is_one_day": isOneDay, //勤務体系
-
-                            "job_times": jobTimes,
-
-                            //開催場所
-                            "postalNumber": posAddressNum, //郵便番号
-                            "prefecture": posPrefecture, //都道府県
-                            "city": posCity, //市町村
-                            "houseNumber": posHouseNumber, //番地・建物名
-
-                            //給料
-                            "salary": salary,
-
-                            //その他(任意)
-                            "tags": tagname,
-
-                            "additional_message": additionalMessage, //追加メッセージ
-
-                            //レビュー
-                            "reviewPoint": 4.5, //評価
-                            //星の割合(前から1,2,3,4,5)
-                            "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
-                            //レビュー数
-                            "reviewNumber": 100,
-                            //レビュー内容
-                            "review": [
-                              {
-                                "reviewerName": "名前aiueo",
-                                //"reviewerImage" : "test"   //予定
-                                "reviewPoint": 3, //レビュー点数
-                                "reviewDetail": "testfffff\n\nfffff", //レビュー内容
-                                "reviewDate": "2021年8月1日", //レビュー日時
-                              },
-                              {
-                                "reviewerName": "名前kakikukeko",
-                                //"reviewerImage" : "test"   //予定
-                                "reviewPoint": 3, //レビュー点数
-                                "reviewDetail": "test", //レビュー内容
-                                "reviewDate": "2021年8月1日", //レビュー日時
-                              },
-                            ]
-                          };
-                        });
-
-                        // Navigator.pop(context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PostWriteComp(
-                                  jobList: postList,
-                                  image: posImage,
-                                )));
-                      },
+                      minimumSize: MaterialStateProperty.all<Size>(
+                          const Size(150, 50)), // ここでボタンの大きさを設定します
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey), // ここで背景色を設定します
                     ),
-                  ],
-                ),
+                    child: const Text(
+                      '広告完成図確認',
+                      style: TextStyle(
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 18),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        postList = {
+                          "name": postTitle, //タイトル
+                          //詳細
+                          "description": detail,
+
+                          "image_url": imageUrl,
+
+                          "is_one_day": isOneDay, //勤務体系
+
+                          "job_times": jobTimes,
+
+                          //開催場所
+                          "postalNumber": posAddressNum, //郵便番号
+                          "prefecture": posPrefecture, //都道府県
+                          "city": posCity, //市町村
+                          "houseNumber": posHouseNumber, //番地・建物名
+
+                          //給料
+                          "salary": salary,
+
+                          //その他(任意)
+                          "tags": tagname,
+
+                          "additional_message": additionalMessage, //追加メッセージ
+
+                          //レビュー
+                          "reviewPoint": 4.5, //評価
+                          //星の割合(前から1,2,3,4,5)
+                          "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
+                          //レビュー数
+                          "reviewNumber": 100,
+                          //レビュー内容
+                          "review": [
+                            {
+                              "reviewerName": "名前aiueo",
+                              //"reviewerImage" : "test"   //予定
+                              "reviewPoint": 3, //レビュー点数
+                              "reviewDetail": "testfffff\n\nfffff", //レビュー内容
+                              "reviewDate": "2021年8月1日", //レビュー日時
+                            },
+                            {
+                              "reviewerName": "名前kakikukeko",
+                              //"reviewerImage" : "test"   //予定
+                              "reviewPoint": 3, //レビュー点数
+                              "reviewDetail": "test", //レビュー内容
+                              "reviewDate": "2021年8月1日", //レビュー日時
+                            },
+                          ]
+                        };
+                      });
+
+                      // Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PostWriteComp(
+                                jobList: postList,
+                                image: posImage,
+                              )));
+                    },
+                  ),
+                  //空白
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0), // ここで角の丸みを設定します
+                          ),
+                        ),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                            const Size(150, 50)), // ここでボタンの大きさを設定します
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            store.mainColor), // ここで背景色を設定します
+                      ),
+                      child: const Text(
+                        "   投稿する   ",
+                        style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 18),
+                      ),
+                      onPressed: () {
+                        bool judgePost;
+                        PostComfOver().show(
+                          context: context,
+                          onInputChanged: (value) {
+                            // 入力値が変更されたときの処理
+                            setState(() {
+                              judgePost = value;
+                              if (imageUrl == "NO") {
+                                imageUrl = null;
+                              }
+                              if (judgePost) {
+                                Map<String, dynamic> dbPostList;
+                                dbPostList = {
+                                  "purchase": {
+                                    "plan_id": planId,
+                                    "contract_amount": planPeriod
+                                  },
+                                  "job": {
+                                    "name": postTitle,
+                                    "image_url": imageUrl,
+                                    "salary": salary,
+                                    "postal_code": posAddressNum,
+                                    "prefecture": posPrefecture,
+                                    "city": posCity,
+                                    "address": posHouseNumber,
+                                    "description": detail,
+                                    "is_one_day": isOneDay,
+                                    "additional_message": additionalMessage,
+                                    "tags": tagname,
+                                    "job_times": posJobTimes
+                                  }
+                                };
+                                createUser(context, store, dbPostList)
+                                    .then((success) {
+                                  //ここでローディング画面を表示
+                                  if (success) {
+                                    Navigator.pop(context); //pop
+                                    Navigator.push(
+                                      context,
+                                      // MaterialPageRoute(builder: (context) => Home()),
+                                      MaterialPageRoute(
+                                          builder: (context) => JobFeeWatch(
+                                                planId: planId,
+                                                planPeriod: planPeriod,
+                                                eventJobJedge: false,
+                                              )),
+                                    );
+                                  }
+                                });
+                              } else {}
+                            });
+                          },
+                        );
+                      }),
+                ],
               ),
 
-              ElevatedButton(
-                  child: const Text(
-                    "完成",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    bool judgePost;
-                    PostComfOver().show(
-                      context: context,
-                      onInputChanged: (value) {
-                        // 入力値が変更されたときの処理
-                        setState(() {
-                          judgePost = value;
-                          if (judgePost) {
-                            Map<String, dynamic> dbPostList;
-                            dbPostList = {
-                              "purchase": {
-                                "plan_id": planId,
-                                "contract_amount": planPeriod
-                              },
-                              "job": {
-                                "name": postTitle,
-                                "image_url": imageUrl,
-                                "salary": salary,
-                                "postal_code": posAddressNum,
-                                "prefecture": posPrefecture,
-                                "city": posCity,
-                                "address": posHouseNumber,
-                                "description": detail,
-                                "is_one_day": isOneDay,
-                                "additional_message": additionalMessage,
-                                "tags": tagname,
-                                "job_times": posJobTimes
-                              }
-                            };
-                            createUser(context, store, dbPostList)
-                                .then((success) {
-                              //ここでローディング画面を表示
-                              if (success) {
-                                Navigator.pop(context); //pop
-                                Navigator.push(
-                                  context,
-                                  // MaterialPageRoute(builder: (context) => Home()),
-                                  MaterialPageRoute(
-                                      builder: (context) => const FinishScreen(
-                                            appbarText: "会員登録完了",
-                                            appIcon: Icons.task_alt,
-                                            finishText: "会員登録が完了いたしました。",
-                                            text:
-                                                "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                                            buttonText: "ログイン画面に戻る",
-                                            jedgeBottomAppBar: true,
-                                            popTimes: 0,
-                                          )),
-                                );
-                              }
-                            });
-                          } else {}
-                        });
-                      },
-                    );
-                  }),
-
               const SizedBox(
-                height: 100,
+                height: 50,
               ),
             ],
           ),

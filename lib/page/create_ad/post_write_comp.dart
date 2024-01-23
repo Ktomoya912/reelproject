@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+import 'package:reelproject/component/appbar/title_appbar.dart';
+import '/provider/change_general_corporation.dart';
 
 // XFile?は？がつくことでnull許容型にしている
 
@@ -36,6 +39,7 @@ class _PostWriteCompState extends State<PostWriteComp> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQueryData = MediaQuery.of(context); //画面サイズ取得
+    final store = Provider.of<ChangeGeneralCorporation>(context);
 
     //短期or長期の色
     MaterialColor termColor = Colors.green;
@@ -64,6 +68,11 @@ class _PostWriteCompState extends State<PostWriteComp> {
       //   mediaQueryData: mediaQueryData,
       // ),
       //body
+      appBar: const TitleAppBar(
+        title: "広告完成図確認",
+        jedgeBuck: true,
+      ),
+      bottomNavigationBar: const NormalBottomAppBar(),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -132,9 +141,9 @@ class _PostWriteCompState extends State<PostWriteComp> {
                             ToggleButtons(
                               borderWidth: 0.01, // 枠線をなくす
                               color: Colors.grey[500], //選択していない時の色
-                              selectedColor: Colors.red, //選択時の色
+                              selectedColor: store.mainColor, //選択時の色
                               fillColor: Colors.white, //選択時の背景色
-                              splashColor: Colors.blue, //選択時のアクションの色
+                              splashColor: store.mainColor, //選択時のアクションの色
                               borderRadius: BorderRadius.circular(50.0), //角丸
                               isSelected: [favoriteJedge], //on off
                               //ボタンを押した時の処理
@@ -364,15 +373,15 @@ class _PostWriteCompState extends State<PostWriteComp> {
                       height: mediaQueryData.size.height / 30,
                     ),
 
-                    ElevatedButton(
-                        child: Text("閉じる"),
-                        onPressed: () async {
-                          Navigator.pop(context);
-                        }),
+                    // ElevatedButton(
+                    //     child: Text("閉じる"),
+                    //     onPressed: () async {
+                    //       Navigator.pop(context);
+                    //     }),
 
-                    SizedBox(
-                      height: 50,
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    // ),
                   ],
                 ),
               ),
