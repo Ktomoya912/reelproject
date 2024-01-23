@@ -102,17 +102,13 @@ class _PostWriteCompState extends State<PostWriteComp> {
                                     jobDetailList["image_url"].toString(),
                                     fit: BoxFit.cover),
                               ))
-                          : SizedBox(
+                          : Container(
+                              // nullである(偽)
+                              alignment: Alignment.topRight,
                               height: width * 0.6,
-                              width: width,
-                              child: ClipRRect(
-                                // これを追加
-                                borderRadius:
-                                    BorderRadius.circular(10), // これを追加
-                                child: Image.network(
-                                    jobDetailList["image_url"].toString(),
-                                    fit: BoxFit.cover),
-                              )),
+                              //width: width,
+                              color: Colors.blue,
+                            ),
                     ]),
                     //タイトル
                     Row(
