@@ -34,7 +34,7 @@ class _NoPostListState extends State<NoPostList> {
 
   Future getEventList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeDraft}&user_id=${store.myID}&target=posted');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortId}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeDraft}&user_id=${store.myID}&target=posted');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -55,7 +55,7 @@ class _NoPostListState extends State<NoPostList> {
 
   Future getJobList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeDraft}&user_id=${store.myID}&target=posted');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortId}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typeDraft}&user_id=${store.myID}&target=posted');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
     });
