@@ -100,6 +100,7 @@ class Logout {
 
                             Logout().hide();
                             context.navigateTo(const LoginRoute());
+                            //しょうえい
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

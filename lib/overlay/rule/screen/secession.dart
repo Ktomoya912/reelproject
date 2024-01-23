@@ -186,6 +186,7 @@ class ToggleRadioState extends State<ToggleRadio> {
               Secession().hide();
               context.navigateTo(const SecessionFinishRoute());
               DeleteUser(store);
+              //しょうえい
 
               //消す作業記述
               //
