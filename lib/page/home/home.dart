@@ -106,11 +106,10 @@ class _HomeState extends State<Home> {
   }
 
   Future getHistoryList(ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/event-watched');
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortLastWatched}&order=asc&offset=0&limit=10&${ChangeGeneralCorporation.typeActive}&user_id=${store.myID}&target=history');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${store.accessToken}'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
