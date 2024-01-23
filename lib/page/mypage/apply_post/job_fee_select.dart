@@ -215,9 +215,9 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                                         onPressed: () {
                                           setState(() {
                                             if (widget.title == "1か月掲載契約") {
-                                              planId = 1;
+                                              planId = 3;
                                             } else {
-                                              planId = 2;
+                                              planId = 4;
                                             }
                                           });
                                           Navigator.of(context).pop();
@@ -278,7 +278,7 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                       child: const Text('進める'),
                       onPressed: () {
                         setState(() {
-                          planId = 3;
+                          planId = 5;
                         });
                         Navigator.of(context).pop();
                         Navigator.of(context).push(MaterialPageRoute(
