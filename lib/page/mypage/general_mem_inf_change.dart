@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:reelproject/overlay/rule/screen/return_write.dart';
 import '/provider/change_general_corporation.dart';
 import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
+import "package:reelproject/overlay/rule/screen/image_over.dart";
+import 'package:flutter/services.dart';
+import 'package:http_parser/http_parser.dart';
 
 //push先
 
@@ -29,6 +34,9 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
   String password = '';
   String passwordCheck = '';
   bool ruleCheck = false;
+  String? imageUrl;
+  String imageName = "";
+  XFile? posImage;
 
   //会員情報更新関数
   Future userInfoUpdata(ChangeGeneralCorporation store) async {
@@ -43,7 +51,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
         body: json.encode({
           "password": "password",
           "username": username,
-          "image_url": store.userInfo["image_url"],
+          "image_url": imageUrl,
           "email": store.userInfo["email"],
           "sex": selectedGender,
           "birthday":
@@ -68,6 +76,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
 
   @override
   Widget build(BuildContext context) {
+    final ImagePicker picker = ImagePicker();
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     return Scaffold(
@@ -99,15 +108,46 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
               ),
             ),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PassChange(
-                      loginJedge: false,
-                    ), //写真編集画面を作成する必要あり
-                  ),
-                );
+              onTap: () async {
+                final XFile? image =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (image != null) {
+                  setState(() {
+                    imageName = image.name;
+                    int length = imageName.length;
+                    String judge = imageName.substring(length - 5);
+                    if (judge.contains('.png') ||
+                        judge.contains('.jpeg') ||
+                        judge.contains('.jpg') ||
+                        judge.contains('.JPG')) {
+                      posImage = image;
+                      ImageOver().show(
+                        context: context,
+                        onInputChanged: (value) {
+                          // 入力値が変更されたときの処理
+                          setState(() {
+                            bool posImageJudge = value;
+                            if (posImageJudge && posImage != null) {
+                              // postImage(context, store, posImage).then((url) {
+                              //   //AWS使用時解放
+                              //   //ここでローディング画面を表示
+                              //   if (url != "failed") {
+                              //     imageUrl = url;
+                              //   } else {
+                              imageUrl = store.userInfo["image_url"];
+                              //   }
+                              // });
+                            } else {
+                              imageUrl = store.userInfo["image_url"];
+                            }
+                          });
+                        },
+                      );
+                    } else {
+                      posImage = null;
+                    }
+                  });
+                }
               },
               splashColor: Colors.transparent,
               child: const Text(
@@ -543,4 +583,109 @@ bool checkPassword(String password) {
 bool checkPasswordMatch(String password, String passwordCheck) {
   //パスワードの正規表現
   return password == passwordCheck;
+}
+
+Future<String> postImage(
+  BuildContext context,
+  final store,
+  XFile? image,
+  // Map<String, dynamic> jobList,
+) async {
+  Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/upload-image");
+
+  try {
+    // final response = await post(
+    //   url,
+    //   headers: {
+    //     'Content-Type': 'multipart/from-data',
+    //     'authorization': 'Bearer ${store.accessToken}',
+    //     'accept': 'application/json',
+    //   },
+
+    // );
+    final test = await image!.readAsBytes();
+    final request = MultipartRequest("POST", url);
+    request.headers.addAll({"Authorization": 'Bearer ${store.accessToken}'});
+    request.files.add(MultipartFile.fromBytes('file', test,
+        filename: image.name,
+        contentType: MediaType.parse("multipart/form-data")));
+    final stream = await request.send();
+
+    return Response.fromStream(stream).then((response) {
+      if (response.statusCode == 200) {
+        final data = json.decode(utf8.decode(response.bodyBytes));
+        // final data = response.body;
+        return data["url"].toString();
+      }
+      return "failed";
+    });
+    // if (response.statusCode == 200) {
+    //   return true; // 成功時は true を返す
+    // } else {
+    //   return false; // 仮置き
+    // final Map<String, dynamic> data = json.decode(response.body);
+
+    // if (data["detail"] == "Username already registered") {
+    //   // 既にユーザー名が登録されている場合//pop
+
+    //   Navigator.pop(context);
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         title: const Text('エラー'),
+    //         content: const Text('登録予定のユーザー名は既に登録されています'),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             child: const Text('OK'),
+    //             onPressed: () => Navigator.pop(context),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    //   return false; // エラー時は false を返す
+    // } else if (data["detail"] == "Email already registered") {
+    //   // 既にメールアドレスが登録されている場合
+    //   Navigator.pop(context); //
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         title: const Text('エラー'),
+    //         content: const Text('登録予定のメールアドレスは既に登録されています'),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             child: const Text('OK'),
+    //             onPressed: () => Navigator.pop(context),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    //   return false; // エラー時は false を返す
+    // } else {
+    //   // その他のエラーの場合
+    //   return false; // エラー時は false を返す
+    // }
+    // }
+  } catch (error) {
+    // 通信エラーなどの例外が発生した場合
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('エラー'),
+          content: const Text('通信エラーが発生しました'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+    return "failed"; // エラー時は false を返す
+  }
 }
