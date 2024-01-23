@@ -115,4 +115,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
+  # このパスにアイコンを置く
   image_path: "assets/logo.png"
+  # アイコンを配置した後に、以下のコマンドを実行する
+  # flutter pub run flutter_launcher_icons:main
