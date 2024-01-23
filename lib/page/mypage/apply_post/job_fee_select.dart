@@ -131,7 +131,7 @@ class SelectFeeButton extends StatefulWidget {
 
 class _SelectFeeButtonState extends State<SelectFeeButton> {
   int planId = 0; // プランＩＤ
-  int planPeriod = 0; // プラン期間
+  int planPeriod = 1; // プラン期間
   @override
   Widget build(BuildContext context) {
     //final eventStore = Provider.of<EventApplyPostDetail>(context); //プロバイダ

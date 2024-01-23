@@ -14,7 +14,6 @@ import 'dart:convert';
 import 'post_write_comp.dart';
 // import 'text_add.dart';
 import 'package:reelproject/overlay/rule/screen/image_over.dart';
-import 'package:reelproject/overlay/rule/screen/post_comf_over.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
@@ -39,26 +38,26 @@ import 'package:reelproject/component/finish_screen/finish_screen.dart';
 //         appBar: AppBar(
 //           title: const Text("PageView Sample"),
 //         ),
-//         body: const JobPostWrite(),
+//         body: const EventPostWrite(),
 //       ),
 //     );
 //   }
 // }
 
-class JobPostWrite extends StatefulWidget {
+class EventPostWrite extends StatefulWidget {
   final int planId;
   final int planPeriod;
-  const JobPostWrite({
+  const EventPostWrite({
     super.key,
     required this.planId,
     required this.planPeriod,
   });
 
   @override
-  JobPostWriteState createState() => JobPostWriteState();
+  EventPostWriteState createState() => EventPostWriteState();
 }
 
-class JobPostWriteState extends State<JobPostWrite> {
+class EventPostWriteState extends State<EventPostWrite> {
   late int planId;
   late int planPeriod;
   @override
@@ -143,7 +142,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 // 広告確認画面へ送るマップ--------------------------------------------------------
 // 確認ボタンを押すときにmapをつくりなおしているので，押す前に要素を使わなければエラーは出ないが念のために初期化している
   late Map<String, dynamic> postList;
-  JobPostWriteState() {
+  EventPostWriteState() {
     postList = {
       "title": postTitle, //タイトル
       //詳細
@@ -201,7 +200,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
   @override
   Widget build(BuildContext context) {
-    final ImagePicker picker = ImagePicker();
+    final ImagePicker _picker = ImagePicker();
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
     return Scaffold(
@@ -219,7 +218,7 @@ class JobPostWriteState extends State<JobPostWrite> {
               //   child: Text('デバイスのライブラリから取得'),
               //   onPressed: () async {
               //     final XFile? image =
-              //         await picker.pickImage(source: ImageSource.gallery);
+              //         await _picker.pickImage(source: ImageSource.gallery);
               //     // if (image != null) {
               //     //   setState(() {
               //     //     hyoji_text = text;
@@ -257,10 +256,6 @@ class JobPostWriteState extends State<JobPostWrite> {
               // Text('File size: $fileSizeInKB KB'),
               // Text(imageJudge),
 
-              const SizedBox(
-                height: 50,
-              ),
-
 // ----------写真投稿部分----------------------------------------------------------------------
               Container(
                 width: 350,
@@ -273,19 +268,19 @@ class JobPostWriteState extends State<JobPostWrite> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 30),
-                    const Icon(Icons.photo_camera,
+                    SizedBox(height: 30),
+                    Icon(Icons.photo_camera,
                         size: 100, color: Color.fromARGB(255, 137, 137, 137)),
                     ElevatedButton(
-                      child: const Text(
+                      child: Text(
                         'デバイスのライブラリから取得',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       onPressed: () async {
-                        final XFile? image =
-                            await picker.pickImage(source: ImageSource.gallery);
+                        final XFile? image = await _picker.pickImage(
+                            source: ImageSource.gallery);
                         // if (image != null) {
                         //   setState(() {
                         //     hyoji_text = text;
@@ -358,7 +353,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               const SizedBox(height: 40),
               // 広告名入力欄
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   "求人名",
@@ -377,7 +372,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                       postTitle = value;
                     });
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                     hintText: "求人名",
@@ -389,7 +384,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 詳細入力欄（500文字）
               const SizedBox(height: 40),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   "求人詳細情報",
@@ -399,7 +394,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                   ),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               Container(
@@ -412,7 +407,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: TextField(
                     maxLines: null,
                     maxLength: 500,
@@ -421,8 +416,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                         detail = value;
                       });
                     },
-                    style: const TextStyle(fontSize: 13),
-                    decoration: const InputDecoration(
+                    style: TextStyle(fontSize: 13),
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "ここに入力",
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
@@ -433,7 +428,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 勤務体系
               const SizedBox(height: 40),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   "勤務体系",
@@ -466,7 +461,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 日付設定
               const SizedBox(height: 40),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '日付設定',
@@ -505,15 +500,15 @@ class JobPostWriteState extends State<JobPostWrite> {
                                     inYear = value;
                                   });
                                 },
-                                style: const TextStyle(fontSize: 13),
-                                decoration: const InputDecoration(
+                                style: TextStyle(fontSize: 13),
+                                decoration: InputDecoration(
                                   border: InputBorder.none,
                                   counterText:
                                       '', //maxLengthによる"0/100"の表示を消すための処理
                                 ),
                               ),
                             ),
-                            const Text(
+                            Text(
                               " 年 ",
                               style: TextStyle(fontSize: 13),
                             ),
@@ -536,15 +531,15 @@ class JobPostWriteState extends State<JobPostWrite> {
                                     inMonth = value;
                                   });
                                 },
-                                style: const TextStyle(fontSize: 13),
-                                decoration: const InputDecoration(
+                                style: TextStyle(fontSize: 13),
+                                decoration: InputDecoration(
                                   border: InputBorder.none,
                                   counterText:
                                       '', //maxLengthによる"0/100"の表示を消すための処理
                                 ),
                               ),
                             ),
-                            const Text(
+                            Text(
                               " 月 ",
                               style: TextStyle(fontSize: 13),
                             ),
@@ -567,22 +562,22 @@ class JobPostWriteState extends State<JobPostWrite> {
                                     inDay = value;
                                   });
                                 },
-                                style: const TextStyle(fontSize: 13),
-                                decoration: const InputDecoration(
+                                style: TextStyle(fontSize: 13),
+                                decoration: InputDecoration(
                                   border: InputBorder.none,
                                   counterText:
                                       '', //maxLengthによる"0/100"の表示を消すための処理
                                 ),
                               ),
                             ),
-                            const Text(
+                            Text(
                               " 日 ",
                               style: TextStyle(fontSize: 13),
                             ),
                           ],
                         ),
                       )
-                    : const Text(
+                    : Text(
                         "勤務体系が長期の場合勤務時間のみの設定となります",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.red),
@@ -594,7 +589,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                 width: 400,
                 child: Row(
                   children: <Widget>[
-                    const SizedBox(
+                    SizedBox(
                       width: 25,
                     ),
                     Container(
@@ -615,14 +610,14 @@ class JobPostWriteState extends State<JobPostWrite> {
                             stTime = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       " 時 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -644,18 +639,18 @@ class JobPostWriteState extends State<JobPostWrite> {
                             stMinute = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       " 分 ",
                       style: TextStyle(fontSize: 13),
                     ),
-                    const Text(
+                    Text(
                       " ～ ",
                       style: TextStyle(fontSize: 20),
                     ),
@@ -677,14 +672,14 @@ class JobPostWriteState extends State<JobPostWrite> {
                             finTime = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       " 時 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -706,14 +701,14 @@ class JobPostWriteState extends State<JobPostWrite> {
                             finMinute = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       " 分 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -726,7 +721,7 @@ class JobPostWriteState extends State<JobPostWrite> {
               ),
 
               ElevatedButton(
-                  child: const Text(
+                  child: Text(
                     "日程を追加",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -783,7 +778,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               Stack(children: [
                 selectedValue == "短期"
-                    ? SizedBox(
+                    ? Container(
                         width: 370,
                         height: 200,
                         child: ListView.builder(
@@ -795,12 +790,12 @@ class JobPostWriteState extends State<JobPostWrite> {
                                 TextButton(
                                   onPressed: () {},
                                   style: TextButton.styleFrom(
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 235, 235, 235),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 235, 235, 235),
                                   ),
                                   child: Text(jobShort[index]["start_time"]),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 5,
                                 ),
                                 TextButton(
@@ -814,9 +809,9 @@ class JobPostWriteState extends State<JobPostWrite> {
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:
-                                        const Color.fromARGB(255, 255, 75, 51),
+                                        Color.fromARGB(255, 255, 75, 51),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     "削除",
                                     style: TextStyle(
                                         color: Colors.white,
@@ -828,7 +823,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                           },
                         ),
                       )
-                    : SizedBox(
+                    : Container(
                         width: 350,
                         height: 200,
                         child: ListView.builder(
@@ -841,12 +836,12 @@ class JobPostWriteState extends State<JobPostWrite> {
                                 TextButton(
                                   onPressed: () {},
                                   style: TextButton.styleFrom(
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 235, 235, 235),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 235, 235, 235),
                                   ),
                                   child: Text(jobLong[index]["start_time"]),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 5,
                                 ),
                                 TextButton(
@@ -860,9 +855,9 @@ class JobPostWriteState extends State<JobPostWrite> {
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:
-                                        const Color.fromARGB(255, 255, 75, 51),
+                                        Color.fromARGB(255, 255, 75, 51),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     "削除",
                                     style: TextStyle(
                                         color: Colors.white,
@@ -878,7 +873,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 開催場所設定
               const SizedBox(height: 40),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '開催場所設定',
@@ -891,7 +886,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 郵便番号
               const SizedBox(height: 10),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '郵便番号',
@@ -923,14 +918,14 @@ class JobPostWriteState extends State<JobPostWrite> {
                             firstNumber = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       " - ",
                       style: TextStyle(fontSize: 30),
                     ),
@@ -952,20 +947,20 @@ class JobPostWriteState extends State<JobPostWrite> {
                             backNumber = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 10,
                     ),
 
                     // 住所検索ボタン
                     ElevatedButton(
-                      child: const Text(
+                      child: Text(
                         '住所を検索',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -1005,7 +1000,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 都道府県
               const SizedBox(height: 20),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '都道府県',
@@ -1036,8 +1031,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                             posPrefecture = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
@@ -1050,7 +1045,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 市町村
               const SizedBox(height: 20),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '市町村',
@@ -1081,8 +1076,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                             posCity = value;
                           });
                         },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
@@ -1095,7 +1090,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 番地・建物名
               const SizedBox(height: 20),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   '番地・建物名',
@@ -1124,8 +1119,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                         posHouseNumber = value;
                       });
                     },
-                    style: const TextStyle(fontSize: 13),
-                    decoration: const InputDecoration(
+                    style: TextStyle(fontSize: 13),
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                     ),
@@ -1141,7 +1136,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
                   children: <Widget>[
-                    const Text(
+                    Text(
                       '給料',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
@@ -1186,8 +1181,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                                 salary = "{$selectedDay$value円}";
                               });
                             },
-                            style: const TextStyle(fontSize: 13),
-                            decoration: const InputDecoration(
+                            style: TextStyle(fontSize: 13),
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                             ),
@@ -1206,7 +1201,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
                   children: <Widget>[
-                    const Text(
+                    Text(
                       "タグ設定",
                       style: TextStyle(
                         decoration: TextDecoration.underline,
@@ -1237,19 +1232,19 @@ class JobPostWriteState extends State<JobPostWrite> {
                                   tagName = value;
                                 });
                               },
-                              style: const TextStyle(fontSize: 13),
-                              decoration: const InputDecoration(
+                              style: TextStyle(fontSize: 13),
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 counterText:
                                     '', //maxLengthによる"0/100"の表示を消すための処理
                               ),
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             width: 10,
                           ),
                           ElevatedButton(
-                              child: const Text(
+                              child: Text(
                                 "タグを追加",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -1299,7 +1294,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 10,
                                   ),
                                   TextButton(
@@ -1309,10 +1304,10 @@ class JobPostWriteState extends State<JobPostWrite> {
                                       });
                                     },
                                     style: TextButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 255, 75, 51),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 255, 75, 51),
                                     ),
-                                    child: const Text(
+                                    child: Text(
                                       "削除",
                                       style: TextStyle(
                                           color: Colors.white,
@@ -1321,7 +1316,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               )
                             ],
@@ -1335,7 +1330,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               // 追加メッセージ（500文字）
               const SizedBox(height: 40),
-              const SizedBox(
+              SizedBox(
                 width: 350,
                 child: Text(
                   "追加メッセージ（500文字）",
@@ -1345,7 +1340,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                   ),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               Container(
@@ -1358,7 +1353,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: TextField(
                     maxLines: null,
                     maxLength: 500,
@@ -1367,8 +1362,8 @@ class JobPostWriteState extends State<JobPostWrite> {
                         additionalMessage = value;
                       });
                     },
-                    style: const TextStyle(fontSize: 13),
-                    decoration: const InputDecoration(
+                    style: TextStyle(fontSize: 13),
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'ここに入力',
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
@@ -1386,22 +1381,22 @@ class JobPostWriteState extends State<JobPostWrite> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const SizedBox(
+                    SizedBox(
                       width: 27,
                     ),
                     ElevatedButton(
-                        child: const Text(
+                        child: Text(
                           "キャンセル",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
-                    const SizedBox(
+                    SizedBox(
                       width: 50,
                     ),
                     ElevatedButton(
-                      child: const Text(
+                      child: Text(
                         '広告完成図確認',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -1471,69 +1466,53 @@ class JobPostWriteState extends State<JobPostWrite> {
               ),
 
               ElevatedButton(
-                  child: const Text(
+                  child: Text(
                     "完成",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
-                    bool judgePost;
-                    PostComfOver().show(
-                      context: context,
-                      onInputChanged: (value) {
-                        // 入力値が変更されたときの処理
-                        setState(() {
-                          judgePost = value;
-                          if (judgePost) {
-                            Map<String, dynamic> dbPostList;
-                            dbPostList = {
-                              "purchase": {
-                                "plan_id": planId,
-                                "contract_amount": planPeriod
-                              },
-                              "job": {
-                                "name": postTitle,
-                                "image_url": imageUrl,
-                                "salary": salary,
-                                "postal_code": posAddressNum,
-                                "prefecture": posPrefecture,
-                                "city": posCity,
-                                "address": posHouseNumber,
-                                "description": detail,
-                                "is_one_day": isOneDay,
-                                "additional_message": additionalMessage,
-                                "tags": tagname,
-                                "job_times": posJobTimes
-                              }
-                            };
-                            createUser(context, store, dbPostList)
-                                .then((success) {
-                              //ここでローディング画面を表示
-                              if (success) {
-                                Navigator.pop(context); //pop
-                                Navigator.push(
-                                  context,
-                                  // MaterialPageRoute(builder: (context) => Home()),
-                                  MaterialPageRoute(
-                                      builder: (context) => const FinishScreen(
-                                            appbarText: "会員登録完了",
-                                            appIcon: Icons.task_alt,
-                                            finishText: "会員登録が完了いたしました。",
-                                            text:
-                                                "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                                            buttonText: "ログイン画面に戻る",
-                                            jedgeBottomAppBar: true,
-                                            popTimes: 0,
-                                          )),
-                                );
-                              }
-                            });
-                          } else {}
-                        });
-                      },
-                    );
+                    Map<String, dynamic> dbPostList;
+                    dbPostList = {
+                      // "purchase": {"plan_id": 1, "contract_amount": 0},
+                      // "job": {
+                      "name": postTitle,
+                      "image_url": imageUrl,
+                      "salary": salary,
+                      "postal_code": posAddressNum,
+                      "prefecture": posPrefecture,
+                      "city": posCity,
+                      "address": posHouseNumber,
+                      "description": detail,
+                      "is_one_day": isOneDay,
+                      "additional_message": additionalMessage,
+                      "tags": tagname,
+                      "job_times": posJobTimes
+                      // }
+                    };
+                    createUser(context, store, dbPostList).then((success) {
+                      //ここでローディング画面を表示
+                      if (success) {
+                        Navigator.pop(context); //pop
+                        Navigator.push(
+                          context,
+                          // MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(
+                              builder: (context) => const FinishScreen(
+                                    appbarText: "会員登録完了",
+                                    appIcon: Icons.task_alt,
+                                    finishText: "会員登録が完了いたしました。",
+                                    text:
+                                        "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
+                                    buttonText: "ログイン画面に戻る",
+                                    jedgeBottomAppBar: true,
+                                    popTimes: 0,
+                                  )),
+                        );
+                      }
+                    });
                   }),
 
-              const SizedBox(
+              SizedBox(
                 height: 100,
               ),
             ],
@@ -1592,7 +1571,7 @@ Future<bool> createUser(
   final store,
   Map<String, dynamic> jobList,
 ) async {
-  Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/jobs/purchase-job");
+  Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/jobs/");
 
   try {
     final response = await post(

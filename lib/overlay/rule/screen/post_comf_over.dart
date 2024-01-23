@@ -8,10 +8,10 @@ import '../over_screen_controller.dart';
 // controllerによってこの画面の表示、閉じるを制御している
 // 画像挿入時に表示されるその画像を設定するかを問うオーバーレイ
 
-class ImageOver {
-  factory ImageOver() => _shared;
-  static final ImageOver _shared = ImageOver._sharedInstance();
-  ImageOver._sharedInstance();
+class PostComfOver {
+  factory PostComfOver() => _shared;
+  static final PostComfOver _shared = PostComfOver._sharedInstance();
+  PostComfOver._sharedInstance();
   OverScreenControl? controller;
   void show({
     // オーバーレイ表示動作
@@ -67,19 +67,13 @@ class ImageOver {
                       children: [
                         //空白
                         const SizedBox(height: 10),
+
                         const Text(
-                          "選択した画像に設定しますか？",
+                          "この内容で投稿しますか？",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Text(
-                          "設定後も変更は可能です",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                            // color: Colors.red,
                           ),
                         ),
                         const SizedBox(height: 50),
@@ -95,7 +89,7 @@ class ImageOver {
                                   bool judgeImage = false;
                                   onInputChanged
                                       ?.call(judgeImage); // 呼び出し元へ反応さえるための要素
-                                  ImageOver().hide();
+                                  PostComfOver().hide();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -104,7 +98,7 @@ class ImageOver {
                                   minimumSize: const Size(125, 45),
                                   // backgroundColor: store.greyColor,
                                 ),
-                                child: const Text("キャンセル",
+                                child: const Text("戻る",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 11)),
                               ),
@@ -118,7 +112,7 @@ class ImageOver {
                                   bool judgeImage = true;
                                   onInputChanged
                                       ?.call(judgeImage); // 呼び出し元へ反応さえるための要素
-                                  ImageOver().hide();
+                                  PostComfOver().hide();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -129,7 +123,7 @@ class ImageOver {
                                   backgroundColor:
                                       const Color.fromARGB(255, 143, 205, 255),
                                 ),
-                                child: const Text("設定",
+                                child: const Text("投稿する",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 13)),
                               ),
