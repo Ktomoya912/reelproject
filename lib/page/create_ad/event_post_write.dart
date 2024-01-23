@@ -14,35 +14,14 @@ import 'dart:convert';
 import 'post_write_comp.dart';
 // import 'text_add.dart';
 import 'package:reelproject/overlay/rule/screen/image_over.dart';
+import 'package:reelproject/overlay/rule/screen/post_comf_over.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'PageView Sample',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text("PageView Sample"),
-//         ),
-//         body: const EventPostWrite(),
-//       ),
-//     );
-//   }
-// }
+import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
+//job_fee_watch.dartからのimport
+import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 class EventPostWrite extends StatefulWidget {
   final int planId;
@@ -67,8 +46,6 @@ class EventPostWriteState extends State<EventPostWrite> {
     planPeriod = widget.planPeriod;
   }
 
-  // bool _autoLogin = false; // チェックボックスの状態を管理する変数
-  // String text = "OK";
   String hyoji_text = "";
   String imageJudge = "";
   String selectedValue = "短期";
@@ -87,6 +64,12 @@ class EventPostWriteState extends State<EventPostWrite> {
   final city = TextEditingController(); // 市町村
   final houseNumber = TextEditingController(); // 番地・建物名
 
+// 電話番号関連------------------
+  String firstPhone = ""; // 最初の4桁
+  String centralPhone = ""; // 中央の2桁
+  String backPhone = ""; // 後半の4桁
+  String phoneNumber = ""; // 電話番号
+
 // マップで送られる要素-------------------------------------
   String postTitle = ""; // 広告のタイトル
   String detail = ""; // 広告詳細説明
@@ -100,6 +83,10 @@ class EventPostWriteState extends State<EventPostWrite> {
   String posHouseNumber = ""; // 番地・建物名
   String salary = ""; // 給料
   String additionalMessage = ""; // 追加メッセージ
+  String caution = ""; // 注意事項
+  String email = ""; // メールアドレス
+  String homepage = ""; // ホームページ
+  int capacity = 0; // 定員
 
 // -------------------------------------------------
 
@@ -108,10 +95,10 @@ class EventPostWriteState extends State<EventPostWrite> {
 // 日時関連-------------------------------------------------
   List<Map<String, dynamic>> jobTimes = []; // シフト時間を入れるリスト
   List<Map<String, dynamic>> jobLong = []; // シフト時間を入れるリスト(長期)
-  List<Map<String, dynamic>> jobShort = []; // シフト時間を入れるリスト(短期)
-  List<Map<String, dynamic>> posJobTimes = []; // シフト時間を入れるリストdbに送る用
+  List<Map<String, dynamic>> eventTime = []; // シフト時間を入れるリスト(短期)
+  List<Map<String, dynamic>> posEventTimes = []; // シフト時間を入れるリストdbに送る用
   List<Map<String, dynamic>> posJobLong = []; // シフト時間を入れるリスト(長期)dbに送る用
-  List<Map<String, dynamic>> posJobShort = []; // シフト時間を入れるリスト(短期)dbに送る用
+  List<Map<String, dynamic>> poseventTime = []; // シフト時間を入れるリスト(短期)dbに送る用
   String daytime = ""; // 勤務時間をまとめる(日+時間)
   String dDay = ""; // 勤務時間をまとめる(日)
   String dTime = ""; // 勤務時間をまとめる(時間)
@@ -136,7 +123,11 @@ class EventPostWriteState extends State<EventPostWrite> {
 // 確認へと送る写真--------------------------------
   XFile? posImage;
   bool posImageJudge = false; // 画像をDBに送るかの判定
-  String? imageUrl;
+  String? imageUrl = "NO";
+// -----------------------------------------------
+
+// エラー文---------------------------------------------
+  String errEmail = "";
 // -----------------------------------------------
 
 // 広告確認画面へ送るマップ--------------------------------------------------------
@@ -200,14 +191,15 @@ class EventPostWriteState extends State<EventPostWrite> {
 
   @override
   Widget build(BuildContext context) {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     final store = Provider.of<ChangeGeneralCorporation>(context);
 
     return Scaffold(
       appBar: const TitleAppBar(
-        title: "広告作成",
-        jedgeBuck: false,
+        title: "イベント広告作成",
+        jedgeBuck: true,
       ),
+      bottomNavigationBar: const NormalBottomAppBar(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -218,7 +210,7 @@ class EventPostWriteState extends State<EventPostWrite> {
               //   child: Text('デバイスのライブラリから取得'),
               //   onPressed: () async {
               //     final XFile? image =
-              //         await _picker.pickImage(source: ImageSource.gallery);
+              //         await picker.pickImage(source: ImageSource.gallery);
               //     // if (image != null) {
               //     //   setState(() {
               //     //     hyoji_text = text;
@@ -256,6 +248,10 @@ class EventPostWriteState extends State<EventPostWrite> {
               // Text('File size: $fileSizeInKB KB'),
               // Text(imageJudge),
 
+              const SizedBox(
+                height: 50,
+              ),
+
 // ----------写真投稿部分----------------------------------------------------------------------
               Container(
                 width: 350,
@@ -268,19 +264,22 @@ class EventPostWriteState extends State<EventPostWrite> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 30),
-                    Icon(Icons.photo_camera,
+                    const SizedBox(height: 30),
+                    const Icon(Icons.photo_camera,
                         size: 100, color: Color.fromARGB(255, 137, 137, 137)),
                     ElevatedButton(
-                      child: Text(
+                      // 背景色
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: store.mainColor),
+                      child: const Text(
                         'デバイスのライブラリから取得',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       onPressed: () async {
-                        final XFile? image = await _picker.pickImage(
-                            source: ImageSource.gallery);
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
                         // if (image != null) {
                         //   setState(() {
                         //     hyoji_text = text;
@@ -353,10 +352,10 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               const SizedBox(height: 40),
               // 広告名入力欄
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
-                  "求人名",
+                  "イベント名",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
@@ -372,10 +371,10 @@ class EventPostWriteState extends State<EventPostWrite> {
                       postTitle = value;
                     });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                    hintText: "求人名",
+                    hintText: "イベント名",
                     hintStyle: TextStyle(color: Colors.red),
                   ),
                 ),
@@ -384,17 +383,17 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 詳細入力欄（500文字）
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
-                  "求人詳細情報",
+                  "イベント詳細情報",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -407,7 +406,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     maxLines: null,
                     maxLength: 500,
@@ -416,8 +415,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                         detail = value;
                       });
                     },
-                    style: TextStyle(fontSize: 13),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "ここに入力",
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
@@ -426,42 +425,53 @@ class EventPostWriteState extends State<EventPostWrite> {
                 ),
               ),
 
-              // 勤務体系
+              // 注意事項入力欄（500文字）
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
-                  "勤務体系",
+                  "注意事項",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              DropdownButton(
-                value: selectedValue,
-                items: lists.map((String list) {
-                  return DropdownMenuItem(
-                    value: list,
-                    child: Text(list),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedValue = value!;
-                    term = selectedValue;
-                    if (selectedValue == "短期") {
-                      isOneDay = true;
-                    } else {
-                      isOneDay = false;
-                    }
-                  });
-                },
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: 300,
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 203, 202, 202),
+                      width: 2.5),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    maxLines: null,
+                    maxLength: 500,
+                    onChanged: (value) {
+                      setState(() {
+                        caution = value;
+                      });
+                    },
+                    style: const TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "ここに入力",
+                      counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                    ),
+                  ),
+                ),
               ),
 
               // 日付設定
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '日付設定',
@@ -475,121 +485,107 @@ class EventPostWriteState extends State<EventPostWrite> {
                 height: 15,
               ),
 
-              Stack(children: [
-                selectedValue == "短期"
-                    ? SizedBox(
-                        width: 350,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 80,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 203, 202, 202),
-                                    width: 2),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                maxLines: null,
-                                maxLength: 4,
-                                onChanged: (value) {
-                                  setState(() {
-                                    inYear = value;
-                                  });
-                                },
-                                style: TextStyle(fontSize: 13),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  counterText:
-                                      '', //maxLengthによる"0/100"の表示を消すための処理
-                                ),
-                              ),
-                            ),
-                            Text(
-                              " 年 ",
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            Container(
-                              width: 60,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 203, 202, 202),
-                                    width: 2),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                maxLines: null,
-                                maxLength: 2,
-                                onChanged: (value) {
-                                  setState(() {
-                                    inMonth = value;
-                                  });
-                                },
-                                style: TextStyle(fontSize: 13),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  counterText:
-                                      '', //maxLengthによる"0/100"の表示を消すための処理
-                                ),
-                              ),
-                            ),
-                            Text(
-                              " 月 ",
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            Container(
-                              width: 60,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 203, 202, 202),
-                                    width: 2),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                maxLines: null,
-                                maxLength: 2,
-                                onChanged: (value) {
-                                  setState(() {
-                                    inDay = value;
-                                  });
-                                },
-                                style: TextStyle(fontSize: 13),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  counterText:
-                                      '', //maxLengthによる"0/100"の表示を消すための処理
-                                ),
-                              ),
-                            ),
-                            Text(
-                              " 日 ",
-                              style: TextStyle(fontSize: 13),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Text(
-                        "勤務体系が長期の場合勤務時間のみの設定となります",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
-                      ),
-              ]),
-
-              const SizedBox(height: 10),
               SizedBox(
-                width: 400,
+                width: 345,
                 child: Row(
                   children: <Widget>[
-                    SizedBox(
+                    Container(
+                      width: 80,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 4,
+                        onChanged: (value) {
+                          setState(() {
+                            inYear = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      " 年 ",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 2,
+                        onChanged: (value) {
+                          setState(() {
+                            inMonth = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      " 月 ",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 2,
+                        onChanged: (value) {
+                          setState(() {
+                            inDay = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      " 日 ",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 390,
+                child: Row(
+                  children: <Widget>[
+                    const SizedBox(
                       width: 25,
                     ),
                     Container(
@@ -610,14 +606,14 @@ class EventPostWriteState extends State<EventPostWrite> {
                             stTime = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       " 時 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -639,18 +635,18 @@ class EventPostWriteState extends State<EventPostWrite> {
                             stMinute = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       " 分 ",
                       style: TextStyle(fontSize: 13),
                     ),
-                    Text(
+                    const Text(
                       " ～ ",
                       style: TextStyle(fontSize: 20),
                     ),
@@ -672,14 +668,14 @@ class EventPostWriteState extends State<EventPostWrite> {
                             finTime = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       " 時 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -701,14 +697,14 @@ class EventPostWriteState extends State<EventPostWrite> {
                             finMinute = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       " 分 ",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -721,7 +717,10 @@ class EventPostWriteState extends State<EventPostWrite> {
               ),
 
               ElevatedButton(
-                  child: Text(
+                  // 背景色
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: store.mainColor),
+                  child: const Text(
                     "日程を追加",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -729,36 +728,24 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ),
                   onPressed: () async {
                     setState(() {
-                      // if (tagName != "" && tagname.length < 20) {
-
                       //日時分合成
                       dDay = "$inYear年 $inMonth月 $inDay日";
                       dTime = "$stTime時 $stMinute分 ～ $finTime時 $finMinute分";
                       daytime = "$dDay:　$dTime";
                       // 日程追加
-                      if (term == "長期" && jobLong.length < 5) {
-                        String posDaytimeS = "3333-01-22 $stTime:$stMinute:00";
-                        String posDaytimeE =
-                            "3333-01-22 $finTime:$finMinute:00";
-                        jobLong.add({"start_time": dTime, "end_time": "22"});
-                        jobTimes = jobLong;
-                        posJobLong.add({
-                          "start_time": posDaytimeS,
-                          "end_time": posDaytimeE
-                        });
-                        posJobTimes = posJobLong;
-                      } else if (jobShort.length < 5) {
+                      if (eventTime.length < 5) {
                         String posDaytimeS =
                             "$inYear-$inMonth-$inDay $stTime:$stMinute:00";
                         String posDaytimeE =
                             "$inYear-$inMonth-$inDay $finTime:$finMinute:00";
-                        jobShort.add({"start_time": daytime, "end_time": "22"});
-                        jobTimes = jobShort;
-                        posJobShort.add({
+                        eventTime
+                            .add({"start_time": daytime, "end_time": "22"});
+                        jobTimes = eventTime;
+                        poseventTime.add({
                           "start_time": posDaytimeS,
                           "end_time": posDaytimeE
                         });
-                        posJobTimes = posJobShort;
+                        posEventTimes = poseventTime;
                       }
 
                       // 入力内容リセット
@@ -776,104 +763,55 @@ class EventPostWriteState extends State<EventPostWrite> {
                 height: 15,
               ),
 
-              Stack(children: [
-                selectedValue == "短期"
-                    ? Container(
-                        width: 370,
-                        height: 200,
-                        child: ListView.builder(
-                          itemCount: jobShort.length,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 235, 235, 235),
-                                  ),
-                                  child: Text(jobShort[index]["start_time"]),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      jobShort.removeAt(index);
-                                      jobTimes = jobShort;
-                                      posJobShort.removeAt(index);
-                                      posJobTimes = posJobShort;
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 75, 51),
-                                  ),
-                                  child: Text(
-                                    "削除",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+              SizedBox(
+                width: 390,
+                height: 200,
+                child: ListView.builder(
+                  itemCount: eventTime.length,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 235, 235, 235),
+                          ),
+                          child: Text(eventTime[index]["start_time"]),
                         ),
-                      )
-                    : Container(
-                        width: 350,
-                        height: 200,
-                        child: ListView.builder(
-                          itemCount: jobLong.length,
-                          itemBuilder: (context, index) {
-                            // return Card(
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 235, 235, 235),
-                                  ),
-                                  child: Text(jobLong[index]["start_time"]),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      jobLong.removeAt(index);
-                                      jobTimes = jobLong;
-                                      posJobLong.removeAt(index);
-                                      jobTimes = posJobLong;
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 75, 51),
-                                  ),
-                                  child: Text(
-                                    "削除",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                        const SizedBox(
+                          width: 5,
                         ),
-                      )
-              ]),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              eventTime.removeAt(index);
+                              jobTimes = eventTime;
+                              poseventTime.removeAt(index);
+                              posEventTimes = poseventTime;
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 75, 51),
+                          ),
+                          child: const Text(
+                            "削除",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
 
               // 開催場所設定
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '開催場所設定',
@@ -886,7 +824,7 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 郵便番号
               const SizedBox(height: 10),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '郵便番号',
@@ -918,14 +856,14 @@ class EventPostWriteState extends State<EventPostWrite> {
                             firstNumber = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    Text(
+                    const Text(
                       " - ",
                       style: TextStyle(fontSize: 30),
                     ),
@@ -947,20 +885,23 @@ class EventPostWriteState extends State<EventPostWrite> {
                             backNumber = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
 
                     // 住所検索ボタン
                     ElevatedButton(
-                      child: Text(
+                      //背景色
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: store.mainColor),
+                      child: const Text(
                         '住所を検索',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -1000,7 +941,7 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 都道府県
               const SizedBox(height: 20),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '都道府県',
@@ -1031,8 +972,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                             posPrefecture = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
@@ -1045,7 +986,7 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 市町村
               const SizedBox(height: 20),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '市町村',
@@ -1076,8 +1017,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                             posCity = value;
                           });
                         },
-                        style: TextStyle(fontSize: 13),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
@@ -1090,7 +1031,7 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 番地・建物名
               const SizedBox(height: 20),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   '番地・建物名',
@@ -1119,8 +1060,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                         posHouseNumber = value;
                       });
                     },
-                    style: TextStyle(fontSize: 13),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                     ),
@@ -1129,66 +1070,291 @@ class EventPostWriteState extends State<EventPostWrite> {
                 ),
               ),
 
-              // 給料設定
+              // 電話番号
+              const SizedBox(height: 40),
+              const SizedBox(
+                width: 350,
+                child: Text(
+                  '電話番号',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: 350,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 60,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 3,
+                        onChanged: (value) {
+                          setState(() {
+                            firstPhone = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      " - ",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Container(
+                      width: 80,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 4,
+                        onChanged: (value) {
+                          setState(() {
+                            centralPhone = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      " - ",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Container(
+                      width: 80,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: null,
+                        maxLength: 4,
+                        onChanged: (value) {
+                          setState(() {
+                            backPhone = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // メールアドレス
               const SizedBox(height: 40),
               SizedBox(
                 width: 350,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
                   children: <Widget>[
-                    Text(
-                      '給料',
+                    const Text(
+                      'メールアドレス',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        DropdownButton(
-                          value: selectedDay,
-                          items: listsFee.map((String list) {
-                            return DropdownMenuItem(
-                              value: list,
-                              child: Text(list),
-                            );
-                          }).toList(),
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedDay = value!;
-                              salary = "{$selectedDay$value円}";
-                            });
-                          },
+                    Container(
+                      width: 230,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        maxLength: 30,
+                        onChanged: (value) {
+                          setState(() {
+                            if (checkMail(value)) {
+                              errEmail = "";
+                              email = value;
+                            } else {
+                              errEmail = "入力が間違っています";
+                            }
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
-                        const SizedBox(
-                          width: 20,
+                      ),
+                    ),
+                    Text(
+                      errEmail,
+                      style: const TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+
+              // ホームページ
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                  children: <Widget>[
+                    const Text(
+                      'イベントのホームページ',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 230,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        maxLength: 50,
+                        onChanged: (value) {
+                          setState(() {
+                            homepage = value;
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
-                        Container(
-                          width: 230,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color.fromARGB(255, 203, 202, 202),
-                                width: 2),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: TextField(
-                            maxLines: null,
-                            maxLength: 10,
-                            onChanged: (value) {
-                              setState(() {
-                                salary = "{$selectedDay$value円}";
-                              });
-                            },
-                            style: TextStyle(fontSize: 13),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              counterText: '', //maxLengthによる"0/100"の表示を消すための処理
-                            ),
-                          ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // 参加費設定
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                  children: <Widget>[
+                    const Text(
+                      'イベント参加費',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 230,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        maxLength: 10,
+                        onChanged: (value) {
+                          setState(() {
+                            salary = "$selectedDay$value円";
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
-                      ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // 定員
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                  children: <Widget>[
+                    const Text(
+                      '定員',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 230,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 203, 202, 202),
+                            width: 2),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        maxLength: 10,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            capacity = int.parse(value);
+                          });
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -1201,7 +1367,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "タグ設定",
                       style: TextStyle(
                         decoration: TextDecoration.underline,
@@ -1232,19 +1398,23 @@ class EventPostWriteState extends State<EventPostWrite> {
                                   tagName = value;
                                 });
                               },
-                              style: TextStyle(fontSize: 13),
-                              decoration: InputDecoration(
+                              style: const TextStyle(fontSize: 13),
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 counterText:
                                     '', //maxLengthによる"0/100"の表示を消すための処理
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           ElevatedButton(
-                              child: Text(
+                              //背景色
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: store.mainColor,
+                              ),
+                              child: const Text(
                                 "タグを追加",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -1294,7 +1464,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   TextButton(
@@ -1304,10 +1474,10 @@ class EventPostWriteState extends State<EventPostWrite> {
                                       });
                                     },
                                     style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 255, 75, 51),
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 255, 75, 51),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       "削除",
                                       style: TextStyle(
                                           color: Colors.white,
@@ -1316,7 +1486,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               )
                             ],
@@ -1330,7 +1500,7 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               // 追加メッセージ（500文字）
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
                 child: Text(
                   "追加メッセージ（500文字）",
@@ -1340,7 +1510,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -1353,7 +1523,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     maxLines: null,
                     maxLength: 500,
@@ -1362,8 +1532,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                         additionalMessage = value;
                       });
                     },
-                    style: TextStyle(fontSize: 13),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'ここに入力',
                       counterText: '', //maxLengthによる"0/100"の表示を消すための処理
@@ -1376,144 +1546,183 @@ class EventPostWriteState extends State<EventPostWrite> {
               const SizedBox(
                 height: 70,
               ),
-              SizedBox(
-                width: 350,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 27,
-                    ),
-                    ElevatedButton(
-                        child: Text(
-                          "キャンセル",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10.0), // ここで角の丸みを設定します
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton(
-                      child: Text(
-                        '広告完成図確認',
-                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          postList = {
-                            "name": postTitle, //タイトル
-                            //詳細
-                            "description": detail,
-
-                            "image_url": imageUrl,
-
-                            "is_one_day": isOneDay, //勤務体系
-
-                            "job_times": jobTimes,
-
-                            //開催場所
-                            "postalNumber": posAddressNum, //郵便番号
-                            "prefecture": posPrefecture, //都道府県
-                            "city": posCity, //市町村
-                            "houseNumber": posHouseNumber, //番地・建物名
-
-                            //給料
-                            "salary": salary,
-
-                            //その他(任意)
-                            "tags": tagname,
-
-                            "additional_message": additionalMessage, //追加メッセージ
-
-                            //レビュー
-                            "reviewPoint": 4.5, //評価
-                            //星の割合(前から1,2,3,4,5)
-                            "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
-                            //レビュー数
-                            "reviewNumber": 100,
-                            //レビュー内容
-                            "review": [
-                              {
-                                "reviewerName": "名前aiueo",
-                                //"reviewerImage" : "test"   //予定
-                                "reviewPoint": 3, //レビュー点数
-                                "reviewDetail": "testfffff\n\nfffff", //レビュー内容
-                                "reviewDate": "2021年8月1日", //レビュー日時
-                              },
-                              {
-                                "reviewerName": "名前kakikukeko",
-                                //"reviewerImage" : "test"   //予定
-                                "reviewPoint": 3, //レビュー点数
-                                "reviewDetail": "test", //レビュー内容
-                                "reviewDate": "2021年8月1日", //レビュー日時
-                              },
-                            ]
-                          };
-                        });
-
-                        // Navigator.pop(context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PostWriteComp(
-                                  jobList: postList,
-                                  image: posImage,
-                                )));
-                      },
+                      minimumSize: MaterialStateProperty.all<Size>(
+                          const Size(150, 50)), // ここでボタンの大きさを設定します
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.grey), // ここで背景色を設定します
                     ),
-                  ],
-                ),
+                    child: const Text(
+                      '広告完成図確認',
+                      style: TextStyle(
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 18),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        postList = {
+                          "name": postTitle, //タイトル
+                          //詳細
+                          "description": detail,
+
+                          "image_url": imageUrl,
+
+                          "is_one_day": isOneDay, //勤務体系
+
+                          "job_times": jobTimes,
+
+                          //開催場所
+                          "postalNumber": posAddressNum, //郵便番号
+                          "prefecture": posPrefecture, //都道府県
+                          "city": posCity, //市町村
+                          "houseNumber": posHouseNumber, //番地・建物名
+
+                          //給料
+                          "salary": salary,
+
+                          //その他(任意)
+                          "tags": tagname,
+
+                          "additional_message": additionalMessage, //追加メッセージ
+
+                          //レビュー
+                          "reviewPoint": 4.5, //評価
+                          //星の割合(前から1,2,3,4,5)
+                          "ratioStarReviews": [0.03, 0.07, 0.1, 0.3, 0.5],
+                          //レビュー数
+                          "reviewNumber": 100,
+                          //レビュー内容
+                          "review": [
+                            {
+                              "reviewerName": "名前aiueo",
+                              //"reviewerImage" : "test"   //予定
+                              "reviewPoint": 3, //レビュー点数
+                              "reviewDetail": "testfffff\n\nfffff", //レビュー内容
+                              "reviewDate": "2021年8月1日", //レビュー日時
+                            },
+                            {
+                              "reviewerName": "名前kakikukeko",
+                              //"reviewerImage" : "test"   //予定
+                              "reviewPoint": 3, //レビュー点数
+                              "reviewDetail": "test", //レビュー内容
+                              "reviewDate": "2021年8月1日", //レビュー日時
+                            },
+                          ]
+                        };
+                      });
+
+                      // Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PostWriteComp(
+                                jobList: postList,
+                                image: posImage,
+                              )));
+                    },
+                  ),
+                  //空白
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0), // ここで角の丸みを設定します
+                          ),
+                        ),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                            const Size(150, 50)), // ここでボタンの大きさを設定します
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            store.mainColor), // ここで背景色を設定します
+                      ),
+                      child: const Text(
+                        "   投稿する   ",
+                        style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 18),
+                      ),
+                      onPressed: () {
+                        bool judgePost;
+                        PostComfOver().show(
+                          context: context,
+                          onInputChanged: (value) {
+                            // 入力値が変更されたときの処理
+                            setState(() {
+                              judgePost = value;
+                              phoneNumber =
+                                  "$firstPhone-$centralPhone-$backPhone";
+                              if (imageUrl == "NO") {
+                                imageUrl = null;
+                              }
+                              if (judgePost) {
+                                Map<String, dynamic> dbPostList;
+                                dbPostList = {
+                                  "purchase": {
+                                    "plan_id": planId,
+                                    "contract_amount": planPeriod
+                                  },
+                                  "event": {
+                                    "name": postTitle,
+                                    "image_url": imageUrl,
+                                    "postal_code": posAddressNum,
+                                    "prefecture": posPrefecture,
+                                    "city": posCity,
+                                    "address": posHouseNumber,
+                                    "phone_number": phoneNumber,
+                                    "email": email,
+                                    "homepage": homepage,
+                                    "participation_fee": "無料",
+                                    "capacity": capacity,
+                                    "additional_message": additionalMessage,
+                                    "description": detail,
+                                    "caution": caution,
+                                    "tags": tagname,
+                                    "event_times": posEventTimes
+                                  }
+                                };
+                                createUser(context, store, dbPostList)
+                                    .then((success) {
+                                  //ここでローディング画面を表示
+                                  if (success) {
+                                    Navigator.pop(context); //pop
+                                    Navigator.push(
+                                      context,
+                                      // MaterialPageRoute(builder: (context) => Home()),
+                                      MaterialPageRoute(
+                                          builder: (context) => JobFeeWatch(
+                                                planId: planId,
+                                                planPeriod: planPeriod,
+                                                eventJobJedge: false,
+                                                botommBarJedge: true,
+                                              )),
+                                    );
+                                  }
+                                });
+                              } else {}
+                            });
+                          },
+                        );
+                      }),
+                ],
               ),
 
-              ElevatedButton(
-                  child: Text(
-                    "完成",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Map<String, dynamic> dbPostList;
-                    dbPostList = {
-                      // "purchase": {"plan_id": 1, "contract_amount": 0},
-                      // "job": {
-                      "name": postTitle,
-                      "image_url": imageUrl,
-                      "salary": salary,
-                      "postal_code": posAddressNum,
-                      "prefecture": posPrefecture,
-                      "city": posCity,
-                      "address": posHouseNumber,
-                      "description": detail,
-                      "is_one_day": isOneDay,
-                      "additional_message": additionalMessage,
-                      "tags": tagname,
-                      "job_times": posJobTimes
-                      // }
-                    };
-                    createUser(context, store, dbPostList).then((success) {
-                      //ここでローディング画面を表示
-                      if (success) {
-                        Navigator.pop(context); //pop
-                        Navigator.push(
-                          context,
-                          // MaterialPageRoute(builder: (context) => Home()),
-                          MaterialPageRoute(
-                              builder: (context) => const FinishScreen(
-                                    appbarText: "会員登録完了",
-                                    appIcon: Icons.task_alt,
-                                    finishText: "会員登録が完了いたしました。",
-                                    text:
-                                        "会員登録ありがとうございます。\nご登録メールアドレスへご確認メールをお送りしました。\n万が一メールが届かない場合、ご登録メールアドレスが正しいかご確認ください。\nメールアドレスが受け取り可能なものにもかかわらずご確認メールが届かない場合、お問い合わせホームにてお問い合わせをしていただくと幸いです。",
-                                    buttonText: "ログイン画面に戻る",
-                                    jedgeBottomAppBar: true,
-                                    popTimes: 0,
-                                  )),
-                        );
-                      }
-                    });
-                  }),
-
-              SizedBox(
-                height: 100,
+              const SizedBox(
+                height: 50,
               ),
             ],
           ),
@@ -1569,9 +1778,10 @@ String checkTagErr(bool tagNotInput, int tagLength) {
 Future<bool> createUser(
   BuildContext context,
   final store,
-  Map<String, dynamic> jobList,
+  Map<String, dynamic> eventList,
 ) async {
-  Uri url = Uri.parse("${ChangeGeneralCorporation.apiUrl}/jobs/");
+  Uri url =
+      Uri.parse("${ChangeGeneralCorporation.apiUrl}/events/purchase-event");
 
   try {
     final response = await post(
@@ -1581,7 +1791,7 @@ Future<bool> createUser(
         'authorization': 'Bearer ${store.accessToken}',
         'accept': 'application/json',
       },
-      body: jsonEncode(jobList),
+      body: jsonEncode(eventList),
     );
 
     if (response.statusCode == 200) {
@@ -1758,4 +1968,13 @@ Future<String> postImage(
     );
     return "failed"; // エラー時は false を返す
   }
+}
+
+bool checkMail(String mail) {
+  //メールアドレスの正規表現
+  final regEmail = RegExp(
+    caseSensitive: false,
+    r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|\.[A-Za-z]{2}\.[A-Za-z]{2})$",
+  );
+  return regEmail.hasMatch(mail);
 }
