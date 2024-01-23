@@ -117,7 +117,7 @@ class NotpostDeleteConf {
                           onPressed: () {
                             deletePost(id, store, eventJobJedge);
                             store.changeOverlay(false);
-                            //Navigator.pop(context);
+                            Navigator.pop(context);
                             //Navigator.pop(context);
                             NotpostDeleteConf().hide();
                             Navigator.of(context).push(

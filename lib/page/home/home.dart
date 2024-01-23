@@ -25,7 +25,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 //job_fee_watch.dartからのimport
-import 'package:reelproject/page/create_ad/job_fee_watch.dart';
+import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {

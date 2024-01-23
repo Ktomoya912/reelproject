@@ -76,7 +76,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
     return Scaffold(
         appBar: TitleAppBar(
           title: widget.eventJobJedge ? "イベント掲載料金プラン" : "求人掲載料金プラン",
-          jedgeBuck: false,
+          jedgeBuck: widget.botommBarJedge ? false : true,
         ),
         bottomNavigationBar:
             widget.botommBarJedge ? NormalBottomAppBar() : null,

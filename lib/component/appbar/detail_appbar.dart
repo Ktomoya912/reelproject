@@ -12,7 +12,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:reelproject/page/create_ad/job_fee_watch.dart';
+import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
   const DetailAppbar({
