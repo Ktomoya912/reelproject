@@ -90,10 +90,14 @@ class NoticeContent extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "タイトル : $title",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                        Container(
+                          color: Colors.red,
+                          width: width + (widthBlank / 8) + blank - 100 - 70,
+                          child: Text(
+                            "タイトル : \n$title",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
                         ),
                         //アイコンボタン(ゴミ箱)
                         IconButton(

@@ -173,6 +173,10 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
 
       //未投稿か否か(true:未投稿,false:投稿済み)
       eventDetailList["notPost"] = widget.notPostJedge;
+
+      //投稿期間
+      eventDetailList["postTerm"] =
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
     });
   }
 

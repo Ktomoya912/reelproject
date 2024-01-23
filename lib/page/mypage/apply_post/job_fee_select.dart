@@ -221,7 +221,7 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                                             }
                                           });
                                           Navigator.of(context).pop();
-                                          //Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>

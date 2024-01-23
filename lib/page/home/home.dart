@@ -24,6 +24,8 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+//job_fee_watch.dartからのimport
+import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -263,6 +265,10 @@ class _HomeState extends State<Home> {
 
       //未投稿か否か
       jobDetailList["notPost"] = false;
+
+      //投稿期間
+      jobDetailList["postTerm"] =
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
     });
   }
 
@@ -419,6 +425,9 @@ class _HomeState extends State<Home> {
 
       //未投稿か否か(true:未投稿,false:投稿済み)
       eventDetailList["notPost"] = false;
+      //投稿期間
+      eventDetailList["postTerm"] =
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
     });
   }
 
