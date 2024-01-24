@@ -186,8 +186,11 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                 ),
                                 //下文字
                                 Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text("${widget.planPeriod}ヶ月", //契約希望月
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                      widget.planId != 5
+                                          ? "${widget.planPeriod}ヶ月"
+                                          : "${widget.planPeriod}年", //契約希望月
                                       style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
@@ -239,7 +242,8 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                 Container(
                                   width: 350,
                                   height: 30,
-                                  color: const Color.fromARGB(255, 235, 168, 13),
+                                  color:
+                                      const Color.fromARGB(255, 235, 168, 13),
                                   child: const Center(
                                     child: Text("合計金額",
                                         style: TextStyle(
