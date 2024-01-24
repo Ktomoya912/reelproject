@@ -77,9 +77,10 @@ class ApplyConfState extends State<ApplyConf> {
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       // ----------応募者情報表示部分（アイコンなど）----------
                       children: [
-                        const SizedBox(width: 10),
+                        //const SizedBox(width: 10),
                         SizedBox(
                           child: Column(
                             children: [
@@ -87,12 +88,21 @@ class ApplyConfState extends State<ApplyConf> {
                                 height: 20,
                               ),
                               Container(
-                                height: 150, //アイコン高さ
-                                width: 150, //アイコン幅
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, //円形に
-                                    color: store.subColor), //アイコン周囲円の色
-                              ),
+                                  height: 150, //アイコン高さ
+                                  width: 150, //アイコン幅
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, //円形に
+                                      color: store.subColor), //アイコン周囲円の色
+                                  child: ClipRRect(
+                                    // これを追加
+                                    borderRadius:
+                                        BorderRadius.circular(80), // これを追加
+                                    child: Image.network(
+                                        widget.advertisementList["user"]
+                                                ["image_url"]
+                                            .toString(),
+                                        fit: BoxFit.cover),
+                                  )),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -182,9 +192,9 @@ class ApplyConfState extends State<ApplyConf> {
                                 thickness: 1,
                                 endIndent: 2,
                               ),
-                              const SizedBox(
-                                width: 50,
-                              ),
+                              // const SizedBox(
+                              //   width: 50,
+                              // ),
                             ],
                           ),
                         ),
