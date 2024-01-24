@@ -16,16 +16,13 @@ import 'package:reelproject/page/job/job_post_detail.dart';
 import 'package:reelproject/page/event/event_post_detail.dart';
 import 'package:reelproject/component/listView/carousel.dart';
 // import 'package:reelproject/page/event/event_post_detail.dart';
-import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 //job_fee_watch.dartからのimport
-import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {
@@ -923,7 +920,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             //空白
-                            SizedBox(height: 20), //ボタン間の空間
+                            const SizedBox(height: 20), //ボタン間の空間
                           ],
                         ),
                       ),
@@ -1041,7 +1038,7 @@ class HistoryButton extends StatelessWidget {
                 child: Center(
                     child: Text(
                   "${historyList[i]["name"]}",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
                 )),
               ),
             ]),

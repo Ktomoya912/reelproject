@@ -3,11 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/job/job_post_detail.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 //ローディング
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 //求人広告リストコンポーネント
 class JobAdvertisementList extends StatefulWidget {

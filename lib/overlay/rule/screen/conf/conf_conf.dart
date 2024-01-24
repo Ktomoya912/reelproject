@@ -8,8 +8,6 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -25,7 +23,7 @@ class ConfConf {
   //応募者確認
   Future confConf(int jobID, ChangeGeneralCorporation store, int userID) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${jobID}/application/approve?user_id=${userID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$jobID/application/approve?user_id=$userID');
     final response = await put(
       url,
       headers: {
@@ -124,7 +122,7 @@ class ConfConf {
                             ConfConf().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者確認",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "確認完了",

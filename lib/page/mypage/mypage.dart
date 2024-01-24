@@ -14,14 +14,13 @@ import 'posted_list.dart'; //投稿一覧
 import 'watch_history.dart'; //閲覧履歴
 import 'favorite_list.dart'; //お気に入りリスト
 import 'no_post_list.dart'; //投稿なしリスト
-import 'apply_post/event_fee_select.dart'; //イベント掲載料金プラン
+//イベント掲載料金プラン
 //import 'apply_post/job_fee_select.dart'; //イベント掲載料金プラン
 import 'transfer_to.dart'; //振込口座確認
-import 'apply_conf.dart'; //応募者確認
+//応募者確認
 import 'package:reelproject/page/login/ask_page.dart'; //お問い合わせ
 import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 import 'package:reelproject/overlay/rule/screen/secession.dart'; //利用規約画面
-import 'package:reelproject/component/loading/show_loading_dialog.dart';
 
 @RoutePage()
 class MyPageRouterPage extends AutoRouter {

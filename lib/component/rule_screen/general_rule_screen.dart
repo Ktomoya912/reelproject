@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 String generalRuleScreenText = """
 【REEL利用規約】

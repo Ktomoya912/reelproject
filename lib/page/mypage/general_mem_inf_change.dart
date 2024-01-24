@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:reelproject/overlay/rule/screen/return_write.dart';
 import '/provider/change_general_corporation.dart';
-import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
 import "package:reelproject/overlay/rule/screen/image_over.dart";
-import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
 
 //push先
@@ -474,7 +471,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                   //完了画面
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => FinishScreen(
+                      builder: (context) => const FinishScreen(
                         appbarText: "会員情報編集完了",
                         appIcon: Icons.playlist_add_check,
                         finishText: "会員情報の変更を確認しました。",

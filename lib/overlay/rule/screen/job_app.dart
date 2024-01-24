@@ -8,8 +8,6 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -25,7 +23,7 @@ class JobApp {
   //応募
   Future apply(int id, ChangeGeneralCorporation store, context,
       String buttonText, Function callback) async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/apply');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/apply');
     final response = await post(
       url,
       headers: {
@@ -39,7 +37,7 @@ class JobApp {
       JobApp().hide();
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => FinishScreen(
+          builder: (context) => const FinishScreen(
             appbarText: "求人応募完了",
             appIcon: Icons.playlist_add_check,
             finishText: "求人応募が完了しました。",
@@ -58,7 +56,7 @@ class JobApp {
       JobApp().hide();
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => FinishScreen(
+          builder: (context) => const FinishScreen(
             appbarText: "応募失敗",
             appIcon: Icons.playlist_add_check,
             finishText: "すでに応募済みです",

@@ -172,15 +172,15 @@ class IconWithText extends StatelessWidget {
       children: <Widget>[
         Icon(icon, color: Colors.white),
         BorderedText(
+          strokeWidth: 5.0, //縁の太さ
+          strokeColor: store.mainColor,
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13,
               color: Colors.white,
             ),
-          ),
-          strokeWidth: 5.0, //縁の太さ
-          strokeColor: store.mainColor, //縁の色
+          ), //縁の色
         ),
       ],
     );

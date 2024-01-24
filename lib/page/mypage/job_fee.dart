@@ -48,7 +48,7 @@ class ScrollJobFeeDetail extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               const Text(
                 "以下の料金をご確認ください",
                 style: TextStyle(
@@ -56,7 +56,7 @@ class ScrollJobFeeDetail extends StatelessWidget {
                   fontSize: 15,
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               FeeJob(mediaQueryData, store, "求人掲載料金", Colors.blue, "20,000円/月"),
               const Icon(
                 Icons.clear,
@@ -71,7 +71,7 @@ class ScrollJobFeeDetail extends StatelessWidget {
                 ),
               ),
               FeeJob(mediaQueryData, store, "合計金額", Colors.amber, "20,000円"),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               SizedBox(
                 width: mediaQueryData.size.width * 0.7,
                 child: const Text(
@@ -83,7 +83,7 @@ class ScrollJobFeeDetail extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -124,7 +124,7 @@ class ScrollJobFeeDetail extends StatelessWidget {
                     ),
                   ),
                 )),
-            Padding(padding: EdgeInsets.only(top: 10)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Text(
               // jobStore.jobPeriod as String,
               text,

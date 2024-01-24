@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 // import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 // import 'done.dart';
-import 'package:flutter/cupertino.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart';
-import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'post_write_comp.dart';
 // import 'text_add.dart';
@@ -18,7 +16,6 @@ import 'package:reelproject/overlay/rule/screen/post_comf_over.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
-import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 //job_fee_watch.dartからのimport
 import 'package:reelproject/page/create_ad/fee_watch.dart';

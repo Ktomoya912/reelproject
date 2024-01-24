@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import '/provider/change_general_corporation.dart';

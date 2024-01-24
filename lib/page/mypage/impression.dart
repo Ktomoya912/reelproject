@@ -160,7 +160,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 0,
                   ),
                   Text(

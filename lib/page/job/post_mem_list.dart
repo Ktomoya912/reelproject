@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/apply_conf.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -35,7 +34,7 @@ class _PostMemListState extends State<PostMemList> {
   //応募者一覧取得
   Future getApplyList(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/application');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -161,7 +160,7 @@ class EventAdvertisementList extends StatelessWidget {
           //色
           color: advertisementList["users"][index]["status"] == "p"
               ? Colors.white
-              : Color.fromARGB(255, 238, 238, 238),
+              : const Color.fromARGB(255, 238, 238, 238),
           border: Border(
             bottom: BorderSide(color: store.greyColor),
           ),
@@ -204,7 +203,7 @@ class EventAdvertisementList extends StatelessWidget {
                     Text(
                         "ユーザー名         :   ${advertisementList["users"][index]["user"]["username"]}"),
                     Text(
-                      "メールアドレス  :   ${advertisementList["users"][index]["user"]["email"].length > 14 ? advertisementList["users"][index]["user"]["email"].toString().substring(0, 14) + "..." : advertisementList["users"][index]["user"]["email"]}",
+                      "メールアドレス  :   ${advertisementList["users"][index]["user"]["email"].length > 14 ? "${advertisementList["users"][index]["user"]["email"].toString().substring(0, 14)}..." : advertisementList["users"][index]["user"]["email"]}",
                     ),
                     Text(
                         "確認状態            :   ${advertisementList["users"][index]["status"] == "p" ? '未確認' : advertisementList["users"][index]["status"] == "a" ? '確認済み' : '不採用'}"),

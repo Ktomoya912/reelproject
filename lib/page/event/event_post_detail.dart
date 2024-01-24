@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:http/http.dart';
@@ -239,7 +238,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/${id}/review');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -265,7 +264,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/$id/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -282,7 +281,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/$id/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',
@@ -956,7 +955,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              EdgeInsets.all(8.0),
+                                                                              const EdgeInsets.all(8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
@@ -1017,7 +1016,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              EdgeInsets.all(8.0),
+                                                                              const EdgeInsets.all(8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
@@ -1084,7 +1083,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                       );
                                                                     },
                                                                   );
-                                                                } else
+                                                                } else {
                                                                   showDialog(
                                                                     context:
                                                                         context,
@@ -1150,6 +1149,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                       );
                                                                     },
                                                                   );
+                                                                }
                                                               },
                                                             ),
                                                             TextButton(
@@ -1442,7 +1442,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                           child: Center(
                                                                                                             child: SingleChildScrollView(
                                                                                                               child: Padding(
-                                                                                                                padding: EdgeInsets.all(8.0),
+                                                                                                                padding: const EdgeInsets.all(8.0),
                                                                                                                 child: TextField(
                                                                                                                   controller: titleController,
                                                                                                                   maxLines: null,
@@ -1475,7 +1475,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                           child: Center(
                                                                                                             child: SingleChildScrollView(
                                                                                                               child: Padding(
-                                                                                                                padding: EdgeInsets.all(8.0),
+                                                                                                                padding: const EdgeInsets.all(8.0),
                                                                                                                 child: TextField(
                                                                                                                   controller: detailController,
                                                                                                                   maxLines: null,
@@ -1524,7 +1524,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                             );
                                                                                                           },
                                                                                                         );
-                                                                                                      } else
+                                                                                                      } else {
                                                                                                         showDialog(
                                                                                                           context: context,
                                                                                                           builder: (BuildContext context) {
@@ -1583,6 +1583,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                             );
                                                                                                           },
                                                                                                         );
+                                                                                                      }
                                                                                                     },
                                                                                                   ),
                                                                                                   TextButton(
@@ -1806,7 +1807,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                         ),
 
                                       //空白
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                     ],

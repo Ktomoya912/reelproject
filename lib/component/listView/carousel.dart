@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class Carousel extends StatefulWidget {
   const Carousel({
-    Key? key,
+    super.key,
     required this.pages,
     required this.timeJedge,
-  }) : super(key: key);
+  });
   final List<Widget> pages;
   final bool timeJedge;
 

@@ -100,7 +100,7 @@ Map<String, dynamic> decodeToken(String token) {
     }
     return json.decode(utf8.decode(base64Url.decode(normalizedPayload)));
   } else {
-    throw FormatException('Invalid token');
+    throw const FormatException('Invalid token');
   }
 }
 

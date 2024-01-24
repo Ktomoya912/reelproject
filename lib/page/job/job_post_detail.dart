@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
-import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -235,7 +234,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //応募者一覧取得
   Future getApplyList(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/application');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -300,7 +299,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -327,7 +326,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$id/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -345,7 +344,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$id/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',
@@ -1048,7 +1047,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            EdgeInsets.all(8.0),
+                                                                            const EdgeInsets.all(8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:
@@ -1110,7 +1109,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            EdgeInsets.all(8.0),
+                                                                            const EdgeInsets.all(8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:
@@ -1180,7 +1179,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       );
                                                                     },
                                                                   );
-                                                                } else
+                                                                } else {
                                                                   showDialog(
                                                                     context:
                                                                         context,
@@ -1248,6 +1247,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       );
                                                                     },
                                                                   );
+                                                                }
                                                               },
                                                             ),
                                                             TextButton(
@@ -1581,7 +1581,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                     ),
                                                                                                     child: SingleChildScrollView(
                                                                                                       child: Padding(
-                                                                                                        padding: EdgeInsets.all(8.0),
+                                                                                                        padding: const EdgeInsets.all(8.0),
                                                                                                         child: TextField(
                                                                                                           keyboardType: TextInputType.multiline,
                                                                                                           controller: titleController,
@@ -1613,7 +1613,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                     ),
                                                                                                     child: SingleChildScrollView(
                                                                                                       child: Padding(
-                                                                                                        padding: EdgeInsets.all(8.0),
+                                                                                                        padding: const EdgeInsets.all(8.0),
                                                                                                         child: TextField(
                                                                                                           keyboardType: TextInputType.multiline,
                                                                                                           controller: detailController,
@@ -1662,7 +1662,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                       );
                                                                                                     },
                                                                                                   );
-                                                                                                } else
+                                                                                                } else {
                                                                                                   showDialog(
                                                                                                     context: context,
                                                                                                     builder: (BuildContext context) {
@@ -1721,6 +1721,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                       );
                                                                                                     },
                                                                                                   );
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             TextButton(
@@ -1947,7 +1948,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                       ),
 
                                     //空白
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 30,
                                     ),
                                   ],

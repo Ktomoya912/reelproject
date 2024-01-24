@@ -6,7 +6,6 @@ import 'package:reelproject/component/listView/job_advertisment_list.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -85,10 +84,10 @@ class _SearchPageState extends State<SearchPage> {
     Uri url;
     if (widget.text.startsWith('#') || widget.text.startsWith('＃')) {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/events/?tag=${Uri.encodeFull(widget.text.substring(1))}&${ChangeGeneralCorporation.typeActive}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/events/?tag=${Uri.encodeFull(widget.text.substring(1))}&${ChangeGeneralCorporation.typeActive}&sort=$sortType&order=asc&offset=0&limit=60');
     } else {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=$sortType&order=asc&offset=0&limit=60');
     }
 
     //print(url);
@@ -114,10 +113,10 @@ class _SearchPageState extends State<SearchPage> {
     Uri url;
     if (widget.text.startsWith('#') || widget.text.startsWith('＃')) {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&tag=${Uri.encodeFull(widget.text.substring(1))}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&tag=${Uri.encodeFull(widget.text.substring(1))}&sort=$sortType&order=asc&offset=0&limit=60');
     } else {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=$sortType&order=asc&offset=0&limit=60');
     }
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -149,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     //検索ボタンを押したときの処理
-    void _submission(text) {
+    void submission(text) {
       setState(() {
         if (text != "") {
           Navigator.push(
@@ -232,7 +231,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         //検索ボタンを押したときの処理
                         //上に記述
-                        onSubmitted: (text) => _submission(text),
+                        onSubmitted: (text) => submission(text),
                       ),
                     ),
                   ],

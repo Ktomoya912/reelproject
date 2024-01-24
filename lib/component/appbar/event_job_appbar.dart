@@ -75,7 +75,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     //検索ボタンを押したときの処理
-    void _submission(text) async {
+    void submission(text) async {
       if (text != "") {
         await Navigator.push(
             context,
@@ -168,7 +168,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                   ),
                   //検索ボタンを押したときの処理
                   //上に記述
-                  onSubmitted: (text) => _submission(text),
+                  onSubmitted: (text) => submission(text),
                 ),
               ),
               //高さ調整
@@ -201,7 +201,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                                   pageBuilder: (context, animation,
                                           secondaryAnimation) =>
                                       SearchPage(
-                                    text: "#${tag}",
+                                    text: "#$tag",
                                     eventJobJedge: widget.title,
                                     sort: "新着順",
                                     sortType: "id",
