@@ -54,10 +54,14 @@ class EventPostWriteState extends State<EventPostWrite> {
   final lists = ["長期", "短期"];
   String selectedPrace = "無料";
   final listPrace = ["有料", "無料"];
+  String selectedCapa = "無制限";
+  final listCapa = ["制限有り", "無制限"];
+  bool capaInput = false;
   bool praceInput = false;
   List<String> todoList = [];
   List<String> shortageList = [];
   var feeController = TextEditingController();
+  var capaController = TextEditingController();
 
 // 郵便番号関連------------------
   String firstNumber = ""; // 最初の3桁
@@ -139,6 +143,13 @@ class EventPostWriteState extends State<EventPostWrite> {
   bool addressSh = false;
   String dayErr = "";
   String homepageErr = "";
+  String capaErrTex = "";
+  bool capaErr = false;
+  String capaErrval = "0";
+  String numberErrtex = "";
+  String phoneErTex = "";
+  String feeErTex = "";
+  bool feeEr = false;
 // -----------------------------------------------
 
 // 広告確認画面へ送るマップ--------------------------------------------------------
@@ -1059,10 +1070,15 @@ class EventPostWriteState extends State<EventPostWrite> {
                       ),
                       onPressed: () async {
                         setState(() {
-                          addressNum =
-                              "$firstNumber$backNumber"; // APIに送る用のアドレス
-                          posAddressNum =
-                              "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                          if (checkTree(firstNumber) && checkYear(backNumber)) {
+                            addressNum =
+                                "$firstNumber$backNumber"; // APIに送る用のアドレス
+                            posAddressNum =
+                                "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                            numberErrtex = "";
+                          } else {
+                            numberErrtex = "入力に誤りがあります";
+                          }
                         });
 
                         if (addressNum.length != 7) {
@@ -1088,6 +1104,13 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(numberErrtex,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               // 都道府県
               const SizedBox(height: 20),
@@ -1370,6 +1393,10 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ],
                 ),
               ),
+              Text(phoneErTex,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               // メールアドレス
               const SizedBox(height: 40),
@@ -1454,10 +1481,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                         SizedBox(
                           width: 10,
                         ),
-                        Text("必須",
-                            style: TextStyle(
-                              color: Colors.red,
-                            )),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -1499,10 +1522,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                           counterText: '', //maxLengthによる"0/100"の表示を消すための処理
                         ),
                       ),
-                    ),
-                    Text(
-                      homepageErr,
-                      style: const TextStyle(color: Colors.red),
                     ),
                   ],
                 ),
@@ -1595,50 +1614,110 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ],
                 ),
               ),
+              Text(feeErTex,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               // 定員
               const SizedBox(height: 40),
-              SizedBox(
+              const SizedBox(
                 width: 350,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                child: Row(
                   children: <Widget>[
-                    const Text(
-                      '定員',
+                    Text(
+                      "定員",
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                  children: <Widget>[
                     const SizedBox(height: 10),
-                    Container(
-                      width: 230,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 203, 202, 202),
-                            width: 2),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: TextField(
-                        maxLines: null,
-                        maxLength: 10,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
+                    SizedBox(
+                      width: 350,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start, // 左寄せ
+                        children: <Widget>[
+                          DropdownButton(
+                            value: selectedCapa,
+                            items: listCapa.map((String list) {
+                              return DropdownMenuItem(
+                                value: list,
+                                child: Text(list),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedCapa = value!;
+                                if (selectedCapa == "制限有り") {
+                                  capaInput = true;
+                                  capacity = 0;
+                                } else {
+                                  capaController.clear();
+                                  capacity = 0;
+                                  capaErrval = "0";
+                                  capaInput = false;
+                                }
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            width: 230,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 203, 202, 202),
+                                  width: 2),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: TextField(
+                              controller: capaController,
+                              enabled: capaInput,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              maxLines: null,
+                              maxLength: 10,
+                              onChanged: (value) {
+                                setState(() {
+                                  capacity = int.parse(value);
+                                });
+                              },
+                              style: const TextStyle(fontSize: 13),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                counterText:
+                                    '', //maxLengthによる"0/100"の表示を消すための処理
+                              ),
+                            ),
+                          ),
                         ],
-                        onChanged: (value) {
-                          setState(() {
-                            capacity = int.parse(value);
-                          });
-                        },
-                        style: const TextStyle(fontSize: 13),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          counterText: '', //maxLengthによる"0/100"の表示を消すための処理
-                        ),
                       ),
                     ),
+                    Text(capaErrTex,
+                        style: const TextStyle(
+                          color: Colors.red,
+                        )),
                   ],
                 ),
               ),
@@ -1855,12 +1934,53 @@ class EventPostWriteState extends State<EventPostWrite> {
                     ),
                     onPressed: () async {
                       setState(() {
-                        phoneNumber = "$firstPhone-$centralPhone-$backPhone";
                         if (imageUrl == "NO") {
                           imageUrl = null;
                         }
                         if (posAddressNum == "") {
                           posAddressNum = "$firstNumber-$backNumber";
+                        }
+                        if (checkTen(capaErrval)) {
+                          capacity = int.parse(capaErrval);
+                          capaErrTex = "";
+                        } else {
+                          capaErrTex = "入力に誤りがあります";
+                        }
+                        String valueCapa = capacity.toString();
+                        if (checkTen(valueCapa)) {
+                          capaErrTex = "";
+                        } else {
+                          capaErrTex = "入力に誤りがあります";
+                        }
+                        if (checkTree(firstNumber) && checkYear(backNumber)) {
+                          addressNum =
+                              "$firstNumber$backNumber"; // APIに送る用のアドレス
+                          posAddressNum =
+                              "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                          numberErrtex = "";
+                        } else {
+                          numberErrtex = "入力に誤りがあります";
+                        }
+                        if (checkTree(firstPhone) &&
+                            checkYear(centralPhone) &&
+                            checkYear(backPhone)) {
+                          phoneNumber = "$firstPhone-$centralPhone-$backPhone";
+                          phoneErTex = "";
+                        } else {
+                          phoneNumber = "";
+                          phoneErTex = "入力に誤りがあります";
+                        }
+                        if (checkTen(fee)) {
+                          feeErTex = "";
+                        } else {
+                          if (praceInput) {
+                            feeEr = true;
+                            feeErTex = "入力に誤りがあります";
+                            fee = "";
+                          } else {
+                            feeEr = false;
+                            feeErTex = "";
+                          }
                         }
                         postList = {
                           "name": postTitle,
@@ -1938,12 +2058,56 @@ class EventPostWriteState extends State<EventPostWrite> {
                               } else {
                                 addressSh = false;
                               }
+                              if (checkTree(firstNumber) &&
+                                  checkYear(backNumber)) {
+                                addressNum =
+                                    "$firstNumber$backNumber"; // APIに送る用のアドレス
+                                posAddressNum =
+                                    "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                                numberErrtex = "";
+                                addressSh = false;
+                              } else {
+                                numberErrtex = "入力に誤りがあります";
+                                addressSh = true;
+                              }
                               if (firstPhone == "" ||
                                   centralPhone == "" ||
                                   backPhone == "") {
                                 phoneSh = true;
                               } else {
                                 phoneSh = false;
+                              }
+                              if (checkTree(firstPhone) &&
+                                  checkYear(centralPhone) &&
+                                  checkYear(backPhone)) {
+                                phoneNumber =
+                                    "$firstPhone-$centralPhone-$backPhone";
+                                phoneErTex = "";
+                                phoneSh = false;
+                              } else {
+                                phoneNumber = "";
+                                phoneErTex = "入力に誤りがあります";
+                                phoneSh = true;
+                              }
+                              String valueCapa = capacity.toString();
+                              if (checkTen(valueCapa)) {
+                                capaErrTex = "";
+                                capaErr = false;
+                              } else {
+                                capaErrTex = "入力に誤りがあります";
+                                capaErr = true;
+                              }
+                              if (checkTen(fee)) {
+                                feeEr = false;
+                                feeErTex = "";
+                              } else {
+                                if (praceInput) {
+                                  feeEr = true;
+                                  feeErTex = "入力に誤りがあります";
+                                } else {
+                                  feeEr = false;
+                                  feeErTex = "";
+                                }
                               }
                               shortageList = [];
                               shortageList = [
@@ -1956,8 +2120,8 @@ class EventPostWriteState extends State<EventPostWrite> {
                                 if (posHouseNumber == "") "番地",
                                 if (phoneSh) "電話番号",
                                 if (email == "") "メールアドレス",
-                                if (homepage == "") "ホームページ",
-                                if (fee == "") "イベント参加費",
+                                if (feeEr) "イベント参加費",
+                                if (capaErr) "定員",
                               ];
                               if (shortageList.isEmpty) {
                                 shortageErr = false;
@@ -2315,6 +2479,14 @@ bool checkTree(String value) {
   final regDay = RegExp(
     caseSensitive: false,
     r"^[0-9]{3}$",
+  );
+  return regDay.hasMatch(value);
+}
+
+bool checkTen(String value) {
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,10}$",
   );
   return regDay.hasMatch(value);
 }

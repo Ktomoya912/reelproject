@@ -551,7 +551,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                   eventDetailList["mail"] != "" ||
                                   eventDetailList["url"] != "" ||
                                   eventDetailList["fee"] != "" ||
-                                  eventDetailList["Capacity"] != "" ||
+                                  eventDetailList["Capacity"] != 0 ||
                                   eventDetailList["notes"] != "" ||
                                   eventDetailList["addMessage"] != "")
                                 SizedBox(
@@ -577,7 +577,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                           Text(
                                               "参加費：${eventDetailList["fee"]}円"),
                                         //定員
-                                        if (eventDetailList["Capacity"] != "")
+                                        if (eventDetailList["Capacity"] != 0)
                                           Text(
                                               "定員：${eventDetailList["Capacity"]}人"),
 
