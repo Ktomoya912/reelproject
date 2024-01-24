@@ -37,91 +37,93 @@ class _EventPostDetailState extends State<EventPostDetail> {
   late bool notEventJedge = widget.notEventJedge;
 
   changeEventList(dynamic data, int id, ChangeGeneralCorporation store) {
-    setState(() {
-      eventDetailList["id"] = id; //id
-      eventDetailList["image_url"] = data["image_url"]; //画像
-      eventDetailList["title"] = data["name"]; //タイトル
-      eventDetailList["detail"] = data["description"]; //詳細
+    if (mounted) {
+      setState(() {
+        eventDetailList["id"] = id; //id
+        eventDetailList["image_url"] = data["image_url"]; //画像
+        eventDetailList["title"] = data["name"]; //タイトル
+        eventDetailList["detail"] = data["description"]; //詳細
 
-      //タグ
-      eventDetailList["tag"] = data["tags"];
+        //タグ
+        eventDetailList["tag"] = data["tags"];
 
-      //開催日時
-      eventDetailList["eventTimes"] = data["event_times"];
+        //開催日時
+        eventDetailList["eventTimes"] = data["event_times"];
 
-      //住所
-      eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
-      eventDetailList["prefecture"] = data["prefecture"]; //都道府県
-      eventDetailList["city"] = data["city"]; //市町村
-      eventDetailList["houseNumber"] = data["address"]; //番地・建物名
-      //任意
-      eventDetailList["phone"] = data["phone_number"]; //電話番号
-      eventDetailList["mail"] = data["email"]; //メールアドレス
-      eventDetailList["url"] = data["homepage"]; //URL
-      eventDetailList["fee"] = data["participation_fee"]; //参加費
-      eventDetailList["Capacity"] = data["capacity"]; //定員
-      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
-      eventDetailList["notes"] = data["caution"]; //注意事項
+        //住所
+        eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+        eventDetailList["prefecture"] = data["prefecture"]; //都道府県
+        eventDetailList["city"] = data["city"]; //市町村
+        eventDetailList["houseNumber"] = data["address"]; //番地・建物名
+        //任意
+        eventDetailList["phone"] = data["phone_number"]; //電話番号
+        eventDetailList["mail"] = data["email"]; //メールアドレス
+        eventDetailList["url"] = data["homepage"]; //URL
+        eventDetailList["fee"] = data["participation_fee"]; //参加費
+        eventDetailList["Capacity"] = data["capacity"]; //定員
+        eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+        eventDetailList["notes"] = data["caution"]; //注意事項
 
-      //レビュー
-      eventDetailList["review"] = data["reviews"]; //評価
-      //初期化
-      eventDetailList["reviewPoint"] = 0; //平均点
-      eventDetailList["ratioStarReviews"] = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; //星の割合(前から1,2,3,4,5)
-      eventDetailList["reviewNumber"] = 0; //レビュー数
-      eventDetailList["reviewId"] = 0; //投稿ID
-      if (eventDetailList["review"].length != 0) {
-        //平均点
-        for (int i = 0; i < data["reviews"].length; i++) {
-          eventDetailList["reviewPoint"] +=
-              data["reviews"][i]["review_point"]; //平均点
-          eventDetailList["ratioStarReviews"]
-              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
-          //自分のレビューか否か
-          if (store.myID == data["reviews"][i]["user"]["id"]) {
-            eventDetailList["reviewId"] = data["reviews"][i]["id"];
+        //レビュー
+        eventDetailList["review"] = data["reviews"]; //評価
+        //初期化
+        eventDetailList["reviewPoint"] = 0; //平均点
+        eventDetailList["ratioStarReviews"] = [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]; //星の割合(前から1,2,3,4,5)
+        eventDetailList["reviewNumber"] = 0; //レビュー数
+        eventDetailList["reviewId"] = 0; //投稿ID
+        if (eventDetailList["review"].length != 0) {
+          //平均点
+          for (int i = 0; i < data["reviews"].length; i++) {
+            eventDetailList["reviewPoint"] +=
+                data["reviews"][i]["review_point"]; //平均点
+            eventDetailList["ratioStarReviews"]
+                [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+            //自分のレビューか否か
+            if (store.myID == data["reviews"][i]["user"]["id"]) {
+              eventDetailList["reviewId"] = data["reviews"][i]["id"];
+            }
+          }
+          //平均を出す
+          eventDetailList["reviewPoint"] =
+              eventDetailList["reviewPoint"] / data["reviews"].length;
+
+          //レビュー数
+          eventDetailList["reviewNumber"] = data["reviews"].length;
+
+          //割合計算
+          for (int i = 0; i < 5; i++) {
+            eventDetailList["ratioStarReviews"][i] =
+                eventDetailList["ratioStarReviews"][i] /
+                    eventDetailList["reviewNumber"];
           }
         }
-        //平均を出す
-        eventDetailList["reviewPoint"] =
-            eventDetailList["reviewPoint"] / data["reviews"].length;
 
-        //レビュー数
-        eventDetailList["reviewNumber"] = data["reviews"].length;
+        eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
 
-        //割合計算
-        for (int i = 0; i < 5; i++) {
-          eventDetailList["ratioStarReviews"][i] =
-              eventDetailList["ratioStarReviews"][i] /
-                  eventDetailList["reviewNumber"];
+        //この広告を投稿したか
+        if (data["author"]["id"] == store.myID) {
+          eventDetailList["postJedge"] = true;
+        } else {
+          eventDetailList["postJedge"] = false;
         }
-      }
 
-      eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+        //未投稿か否か(true:未投稿,false:投稿済み)
+        eventDetailList["notPost"] = widget.notPostJedge;
 
-      //この広告を投稿したか
-      if (data["author"]["id"] == store.myID) {
-        eventDetailList["postJedge"] = true;
-      } else {
-        eventDetailList["postJedge"] = false;
-      }
+        //投稿期間
+        eventDetailList["postTerm"] =
+            "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
 
-      //未投稿か否か(true:未投稿,false:投稿済み)
-      eventDetailList["notPost"] = widget.notPostJedge;
-
-      //投稿期間
-      eventDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
-
-      //プラン情報
-      eventDetailList["parchase"] = data["purchase"];
-    });
+        //プラン情報
+        eventDetailList["parchase"] = data["purchase"];
+      });
+    }
   }
 
   //イベント詳細取得
@@ -137,9 +139,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       changeEventList(data, id, store);
     } else {
-      setState(() {
-        notEventJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notEventJedge = true;
+        });
+      }
     }
   }
 
@@ -162,9 +166,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       getEventList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notEventJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notEventJedge = true;
+        });
+      }
     }
   }
 
@@ -222,20 +228,24 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
   //タイトル入力時の処理
   void titleWrite(text) {
-    setState(() {
-      if (text != "") {
-        title = text;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (text != "") {
+          title = text;
+        }
+      });
+    }
   }
 
   //詳細入力時の処理
   void detailWrite(text) {
-    setState(() {
-      if (text != "") {
-        detail = text;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (text != "") {
+          detail = text;
+        }
+      });
+    }
   }
 
   //レビュー
@@ -257,9 +267,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       getEventList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notEventJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notEventJedge = true;
+        });
+      }
     }
   }
 
@@ -274,9 +286,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       getEventList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notEventJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notEventJedge = true;
+        });
+      }
     }
   }
 
@@ -298,9 +312,11 @@ class _EventPostDetailState extends State<EventPostDetail> {
     if (response.statusCode == 200) {
       getEventList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notEventJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notEventJedge = true;
+        });
+      }
     }
   }
 
@@ -311,6 +327,12 @@ class _EventPostDetailState extends State<EventPostDetail> {
     false,
     false
   ]; //星の色を変えるための変数
+
+  @override
+  void dispose() {
+    // タイマーやアニメーションのリスナーをここでキャンセルします
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -422,10 +444,13 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                           eventDetailList["favoriteJedge"]
                                         ], //on off
                                         //ボタンを押した時の処理
-                                        onPressed: (int index) => setState(() {
-                                          boobkmark(
-                                              eventDetailList["id"], store);
-                                        }),
+                                        onPressed: (int index) {
+                                          if (mounted)
+                                            setState(() {
+                                              boobkmark(
+                                                  eventDetailList["id"], store);
+                                            });
+                                        },
                                         //アイコン
                                         children: <Widget>[
                                           eventDetailList["favoriteJedge"]
@@ -880,28 +905,25 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
                                                                     onPressed: (int
                                                                         index) {
-                                                                      setState(
-                                                                          () {
-                                                                        review_point =
-                                                                            index +
-                                                                                1;
-                                                                        for (int buttonIndex =
-                                                                                0;
-                                                                            buttonIndex <=
-                                                                                index;
-                                                                            buttonIndex++) {
-                                                                          _isSelected[buttonIndex] =
-                                                                              true;
-                                                                        }
-                                                                        for (int buttonIndex = index +
-                                                                                1;
-                                                                            buttonIndex <
-                                                                                5;
-                                                                            buttonIndex++) {
-                                                                          _isSelected[buttonIndex] =
-                                                                              false;
-                                                                        }
-                                                                      });
+                                                                      if (mounted) {
+                                                                        setState(
+                                                                            () {
+                                                                          review_point =
+                                                                              index + 1;
+                                                                          for (int buttonIndex = 0;
+                                                                              buttonIndex <= index;
+                                                                              buttonIndex++) {
+                                                                            _isSelected[buttonIndex] =
+                                                                                true;
+                                                                          }
+                                                                          for (int buttonIndex = index + 1;
+                                                                              buttonIndex < 5;
+                                                                              buttonIndex++) {
+                                                                            _isSelected[buttonIndex] =
+                                                                                false;
+                                                                          }
+                                                                        });
+                                                                      }
                                                                     },
 
                                                                     isSelected:
@@ -1328,17 +1350,19 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                               IconButton(
                                                                   onPressed:
                                                                       () {
-                                                                    setState(
-                                                                        () {
-                                                                      for (int buttonIndex =
-                                                                              0;
-                                                                          buttonIndex <=
-                                                                              eventDetailList["review"][index]["review_point"] - 1;
-                                                                          buttonIndex++) {
-                                                                        _isSelected[buttonIndex] =
-                                                                            true;
-                                                                      }
-                                                                    });
+                                                                    if (mounted) {
+                                                                      setState(
+                                                                          () {
+                                                                        for (int buttonIndex =
+                                                                                0;
+                                                                            buttonIndex <=
+                                                                                eventDetailList["review"][index]["review_point"] - 1;
+                                                                            buttonIndex++) {
+                                                                          _isSelected[buttonIndex] =
+                                                                              true;
+                                                                        }
+                                                                      });
+                                                                    }
                                                                     final TextEditingController
                                                                         titleController =
                                                                         TextEditingController(
@@ -1412,15 +1436,17 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                           selectedBorderColor: Colors.white, //選択中の枠線の色,
 
                                                                                                           onPressed: (int index) {
-                                                                                                            setState(() {
-                                                                                                              review_point = index + 1;
-                                                                                                              for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
-                                                                                                                _isSelected[buttonIndex] = true;
-                                                                                                              }
-                                                                                                              for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
-                                                                                                                _isSelected[buttonIndex] = false;
-                                                                                                              }
-                                                                                                            });
+                                                                                                            if (mounted) {
+                                                                                                              setState(() {
+                                                                                                                review_point = index + 1;
+                                                                                                                for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
+                                                                                                                  _isSelected[buttonIndex] = true;
+                                                                                                                }
+                                                                                                                for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
+                                                                                                                  _isSelected[buttonIndex] = false;
+                                                                                                                }
+                                                                                                              });
+                                                                                                            }
                                                                                                           },
 
                                                                                                           isSelected: _isSelected,

@@ -36,9 +36,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //求人が存在しない場合の処理
   void changeNotJobJedge(bool jedge) {
-    setState(() {
-      notJobJedge = jedge;
-    });
+    if (mounted) {
+      setState(() {
+        notJobJedge = jedge;
+      });
+    }
   }
 
   // データベースと連携させていないので現在はここでイベント詳細内容を設定
@@ -102,99 +104,101 @@ class _JobPostDetailState extends State<JobPostDetail> {
   // };
 
   changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
-    setState(() {
-      jobDetailList["id"] = id; //id
-      jobDetailList["image_url"] = data["image_url"]; //画像
-      jobDetailList["title"] = data["name"]; //タイトル
-      jobDetailList["detail"] = data["description"]; //詳細
+    if (mounted) {
+      setState(() {
+        jobDetailList["id"] = id; //id
+        jobDetailList["image_url"] = data["image_url"]; //画像
+        jobDetailList["title"] = data["name"]; //タイトル
+        jobDetailList["detail"] = data["description"]; //詳細
 
-      //タグ
-      jobDetailList["tag"] = data["tags"];
+        //タグ
+        jobDetailList["tag"] = data["tags"];
 
-      //開催期間
-      jobDetailList["jobTimes"] = data["job_times"];
+        //開催期間
+        jobDetailList["jobTimes"] = data["job_times"];
 
-      //勤務体系
-      if (data["is_one_day"]) {
-        jobDetailList["term"] = "短期";
-      } else {
-        jobDetailList["term"] = "長期";
-      }
+        //勤務体系
+        if (data["is_one_day"]) {
+          jobDetailList["term"] = "短期";
+        } else {
+          jobDetailList["term"] = "長期";
+        }
 
-      //住所
-      jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
-      jobDetailList["prefecture"] = data["prefecture"]; //都道府県
-      jobDetailList["city"] = data["city"]; //市町村
-      jobDetailList["houseNumber"] = data["address"]; //番地・建物名
-      //時給
-      jobDetailList["pay"] = data["salary"]; //給料
-      //任意
-      //jobDetailList["phone"] = data["phone_number"]; //電話番号
-      //jobDetailList["mail"] = data["email"]; //メールアドレス
-      //jobDetailList["url"] = data["homepage"]; //URL
-      //jobDetailList["fee"] = data["participation_fee"]; //参加費
-      //jobDetailList["Capacity"] = data["capacity"]; //定員
-      jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
-      //jobDetailList["notes"] = data["caution"]; //注意事項
+        //住所
+        jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+        jobDetailList["prefecture"] = data["prefecture"]; //都道府県
+        jobDetailList["city"] = data["city"]; //市町村
+        jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+        //時給
+        jobDetailList["pay"] = data["salary"]; //給料
+        //任意
+        //jobDetailList["phone"] = data["phone_number"]; //電話番号
+        //jobDetailList["mail"] = data["email"]; //メールアドレス
+        //jobDetailList["url"] = data["homepage"]; //URL
+        //jobDetailList["fee"] = data["participation_fee"]; //参加費
+        //jobDetailList["Capacity"] = data["capacity"]; //定員
+        jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+        //jobDetailList["notes"] = data["caution"]; //注意事項
 
-      //レビュー
-      jobDetailList["review"] = data["reviews"]; //評価
-      //初期化
-      jobDetailList["reviewPoint"] = 0; //平均点
-      jobDetailList["ratioStarReviews"] = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; //星の割合(前から1,2,3,4,5)
-      jobDetailList["reviewNumber"] = 0; //レビュー数
-      jobDetailList["reviewId"] = 0; //自分のレビューか否か
-      if (jobDetailList["review"].length != 0) {
-        //平均点
-        for (int i = 0; i < data["reviews"].length; i++) {
-          jobDetailList["reviewPoint"] +=
-              data["reviews"][i]["review_point"]; //平均点
-          jobDetailList["ratioStarReviews"]
-              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
-          //自分のレビューか否か
-          if (store.myID == data["reviews"][i]["user"]["id"]) {
-            jobDetailList["reviewId"] = data["reviews"][i]["id"];
+        //レビュー
+        jobDetailList["review"] = data["reviews"]; //評価
+        //初期化
+        jobDetailList["reviewPoint"] = 0; //平均点
+        jobDetailList["ratioStarReviews"] = [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]; //星の割合(前から1,2,3,4,5)
+        jobDetailList["reviewNumber"] = 0; //レビュー数
+        jobDetailList["reviewId"] = 0; //自分のレビューか否か
+        if (jobDetailList["review"].length != 0) {
+          //平均点
+          for (int i = 0; i < data["reviews"].length; i++) {
+            jobDetailList["reviewPoint"] +=
+                data["reviews"][i]["review_point"]; //平均点
+            jobDetailList["ratioStarReviews"]
+                [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+            //自分のレビューか否か
+            if (store.myID == data["reviews"][i]["user"]["id"]) {
+              jobDetailList["reviewId"] = data["reviews"][i]["id"];
+            }
+          }
+          //平均を出す
+          jobDetailList["reviewPoint"] =
+              jobDetailList["reviewPoint"] / data["reviews"].length;
+
+          //レビュー数
+          jobDetailList["reviewNumber"] = data["reviews"].length;
+
+          //割合計算
+          for (int i = 0; i < 5; i++) {
+            jobDetailList["ratioStarReviews"][i] =
+                jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
           }
         }
-        //平均を出す
-        jobDetailList["reviewPoint"] =
-            jobDetailList["reviewPoint"] / data["reviews"].length;
 
-        //レビュー数
-        jobDetailList["reviewNumber"] = data["reviews"].length;
+        jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
 
-        //割合計算
-        for (int i = 0; i < 5; i++) {
-          jobDetailList["ratioStarReviews"][i] =
-              jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
+        //この広告を投稿したか
+        if (data["author"]["id"] == store.myID) {
+          jobDetailList["postJedge"] = true;
+        } else {
+          jobDetailList["postJedge"] = false;
         }
-      }
 
-      jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+        //未投稿か否か
+        jobDetailList["notPost"] = widget.notPostJedge;
 
-      //この広告を投稿したか
-      if (data["author"]["id"] == store.myID) {
-        jobDetailList["postJedge"] = true;
-      } else {
-        jobDetailList["postJedge"] = false;
-      }
+        //投稿期間
+        jobDetailList["postTerm"] =
+            "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
 
-      //未投稿か否か
-      jobDetailList["notPost"] = widget.notPostJedge;
-
-      //投稿期間
-      jobDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
-
-      //プラン情報
-      jobDetailList["parchase"] = data["purchase"];
-    });
+        //プラン情報
+        jobDetailList["parchase"] = data["purchase"];
+      });
+    }
   }
 
   Future getJobList(int id, ChangeGeneralCorporation store) async {
@@ -209,9 +213,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
     if (response.statusCode == 200) {
       changeJobList(data, id, store);
     } else {
-      setState(() {
-        notJobJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notJobJedge = true;
+        });
+      }
     }
   }
 
@@ -223,15 +229,17 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   void changeAdvertisementList(
       Map<String, dynamic> e, ChangeGeneralCorporation store) {
-    setState(() {
-      postMemList = e;
-      for (int i = 0; i < e["users"].length; i++) {
-        if (e["users"][i]["status"] == "a" &&
-            e["users"][i]["user_id"] == store.myID) {
-          applyJedge = true;
+    if (mounted) {
+      setState(() {
+        postMemList = e;
+        for (int i = 0; i < e["users"].length; i++) {
+          if (e["users"][i]["status"] == "a" &&
+              e["users"][i]["user_id"] == store.myID) {
+            applyJedge = true;
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   //応募者一覧取得
@@ -253,6 +261,12 @@ class _JobPostDetailState extends State<JobPostDetail> {
   }
 
   @override
+  void dispose() {
+    // タイマーやアニメーションのリスナーをここでキャンセルします
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     notJobJedge = false;
@@ -271,9 +285,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
     if (response.statusCode == 200) {
       getJobList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notJobJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notJobJedge = true;
+        });
+      }
     }
   }
 
@@ -284,20 +300,24 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //タイトル入力時の処理
   void titleWrite(text) {
-    setState(() {
-      if (text != "") {
-        title = text;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (text != "") {
+          title = text;
+        }
+      });
+    }
   }
 
   //詳細入力時の処理
   void detailWrite(text) {
-    setState(() {
-      if (text != "") {
-        detail = text;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (text != "") {
+          detail = text;
+        }
+      });
+    }
   }
 
   //レビュー
@@ -320,9 +340,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
       getJobList(widget.id, widget.tStore);
       getApplyList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notJobJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notJobJedge = true;
+        });
+      }
     }
   }
 
@@ -338,9 +360,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
       getJobList(widget.id, widget.tStore);
       getApplyList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notJobJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notJobJedge = true;
+        });
+      }
     }
   }
 
@@ -363,9 +387,11 @@ class _JobPostDetailState extends State<JobPostDetail> {
       getJobList(widget.id, widget.tStore);
       getApplyList(widget.id, widget.tStore);
     } else {
-      setState(() {
-        notJobJedge = true;
-      });
+      if (mounted) {
+        setState(() {
+          notJobJedge = true;
+        });
+      }
     }
   }
 
@@ -495,9 +521,13 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                       ], //on off
                                       //ボタンを押した時の処理
                                       onPressed: (int index) => {
-                                        setState(() {
-                                          boobkmark(jobDetailList["id"], store);
-                                        })
+                                        if (mounted)
+                                          {
+                                            setState(() {
+                                              boobkmark(
+                                                  jobDetailList["id"], store);
+                                            })
+                                          }
                                       },
 
                                       //アイコン
@@ -975,28 +1005,25 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
                                                                     onPressed: (int
                                                                         index) {
-                                                                      setState(
-                                                                          () {
-                                                                        review_point =
-                                                                            index +
-                                                                                1;
-                                                                        for (int buttonIndex =
-                                                                                0;
-                                                                            buttonIndex <=
-                                                                                index;
-                                                                            buttonIndex++) {
-                                                                          _isSelected[buttonIndex] =
-                                                                              true;
-                                                                        }
-                                                                        for (int buttonIndex = index +
-                                                                                1;
-                                                                            buttonIndex <
-                                                                                5;
-                                                                            buttonIndex++) {
-                                                                          _isSelected[buttonIndex] =
-                                                                              false;
-                                                                        }
-                                                                      });
+                                                                      if (mounted) {
+                                                                        setState(
+                                                                            () {
+                                                                          review_point =
+                                                                              index + 1;
+                                                                          for (int buttonIndex = 0;
+                                                                              buttonIndex <= index;
+                                                                              buttonIndex++) {
+                                                                            _isSelected[buttonIndex] =
+                                                                                true;
+                                                                          }
+                                                                          for (int buttonIndex = index + 1;
+                                                                              buttonIndex < 5;
+                                                                              buttonIndex++) {
+                                                                            _isSelected[buttonIndex] =
+                                                                                false;
+                                                                          }
+                                                                        });
+                                                                      }
                                                                     },
 
                                                                     isSelected:
@@ -1465,18 +1492,19 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                             //通報ボタン===================================================================
                                                             IconButton(
                                                                 onPressed: () {
-                                                                  setState(() {
-                                                                    for (int buttonIndex =
-                                                                            0;
-                                                                        buttonIndex <=
-                                                                            jobDetailList["review"][index]["review_point"] -
-                                                                                1;
-                                                                        buttonIndex++) {
-                                                                      _isSelected[
-                                                                              buttonIndex] =
-                                                                          true;
-                                                                    }
-                                                                  });
+                                                                  if (mounted) {
+                                                                    setState(
+                                                                        () {
+                                                                      for (int buttonIndex =
+                                                                              0;
+                                                                          buttonIndex <=
+                                                                              jobDetailList["review"][index]["review_point"] - 1;
+                                                                          buttonIndex++) {
+                                                                        _isSelected[buttonIndex] =
+                                                                            true;
+                                                                      }
+                                                                    });
+                                                                  }
                                                                   final TextEditingController
                                                                       titleController =
                                                                       TextEditingController(
@@ -1553,15 +1581,17 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                     selectedBorderColor: Colors.white, //選択中の枠線の色,
 
                                                                                                     onPressed: (int index) {
-                                                                                                      setState(() {
-                                                                                                        review_point = index + 1;
-                                                                                                        for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
-                                                                                                          _isSelected[buttonIndex] = true;
-                                                                                                        }
-                                                                                                        for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
-                                                                                                          _isSelected[buttonIndex] = false;
-                                                                                                        }
-                                                                                                      });
+                                                                                                      if (mounted) {
+                                                                                                        setState(() {
+                                                                                                          review_point = index + 1;
+                                                                                                          for (int buttonIndex = 0; buttonIndex <= index; buttonIndex++) {
+                                                                                                            _isSelected[buttonIndex] = true;
+                                                                                                          }
+                                                                                                          for (int buttonIndex = index + 1; buttonIndex < 5; buttonIndex++) {
+                                                                                                            _isSelected[buttonIndex] = false;
+                                                                                                          }
+                                                                                                        });
+                                                                                                      }
                                                                                                     },
 
                                                                                                     isSelected: _isSelected,
