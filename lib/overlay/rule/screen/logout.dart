@@ -8,6 +8,7 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/app_router/app_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
 // オーバーレイによって表示される画面である
@@ -94,12 +95,34 @@ class Logout {
                         ElevatedButton(
                           // ボタンを作る関数
                           //ボタン設置
-                          onPressed: () {
+                          onPressed: () async {
                             // ボタンが押されたときの処理をここに追加予定
-                            store.changeOverlay(false);
+                            try {
+                              store.changeOverlay(false);
+                              Logout().hide();
+                              context.navigateTo(const LoginRoute());
 
-                            Logout().hide();
-                            context.navigateTo(const LoginRoute());
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.remove('ACCESS_TOKEN');
+                            } catch (e) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text('エラー'),
+                                    content: Text(e.toString()),
+                                    actions: <Widget>[
+                                      // ボタン領域
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                             //しょうえい
                           },
                           style: ElevatedButton.styleFrom(

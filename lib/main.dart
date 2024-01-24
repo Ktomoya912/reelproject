@@ -38,7 +38,7 @@ Future getToken() async {
   //シュミレーター等で実行している場合は、アプリを再起動するとtokenが消える
   //しかし、実機で実行している場合は、アプリを再起動してもtokenは消えない
   final String token = prefs.getString('ACCESS_TOKEN') ?? 'null';
-  prefs.remove('ACCESS_TOKEN'); //tokenを削除する場合はコメントアウトを外す
+  //prefs.remove('ACCESS_TOKEN'); //tokenを削除する場合はコメントアウトを外す
   if (token.contains('.')) {
     if (await isTokenExpired(token)) {
       prefs.remove('ACCESS_TOKEN');
