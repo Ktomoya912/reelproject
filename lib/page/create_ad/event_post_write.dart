@@ -406,16 +406,16 @@ class EventPostWriteState extends State<EventPostWrite> {
                                     if (posImageJudge && posImage != null) {
                                       imageJudge = "確認できたお";
 
-                                      // postImage(context, store, posImage)
-                                      //     .then((url) {
-                                      //   //AWS使用時解放
-                                      //   //ここでローディング画面を表示
-                                      //   if (url != "failed") {
-                                      //     imageUrl = url;
-                                      //   } else {
-                                      //     imageUrl = "NO";
-                                      //   }
-                                      // });
+                                      postImage(context, store, posImage)
+                                          .then((url) {
+                                        //AWS使用時解放
+                                        //ここでローディング画面を表示
+                                        if (url != "failed") {
+                                          imageUrl = url;
+                                        } else {
+                                          imageUrl = "NO";
+                                        }
+                                      });
                                     } else {
                                       posImage = null;
                                       imageJudge = 'NO';

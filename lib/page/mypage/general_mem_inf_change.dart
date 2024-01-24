@@ -125,15 +125,15 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                           setState(() {
                             bool posImageJudge = value;
                             if (posImageJudge && posImage != null) {
-                              // postImage(context, store, posImage).then((url) {
-                              //   //AWS使用時解放
-                              //   //ここでローディング画面を表示
-                              //   if (url != "failed") {
-                              //     imageUrl = url;
-                              //   } else {
-                              imageUrl = store.userInfo["image_url"];
-                              //   }
-                              // });
+                              postImage(context, store, posImage).then((url) {
+                                //AWS使用時解放
+                                //ここでローディング画面を表示
+                                if (url != "failed") {
+                                  imageUrl = url;
+                                } else {
+                                  imageUrl = store.userInfo["image_url"];
+                                }
+                              });
                             } else {
                               imageUrl = store.userInfo["image_url"];
                             }
