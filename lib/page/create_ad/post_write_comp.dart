@@ -322,7 +322,8 @@ class _PostWriteCompState extends State<PostWriteComp> {
                               SizedBox(
                                 height: mediaQueryData.size.height / 100,
                               ),
-                              Text("時給 : ${jobDetailList["salary"]}円")
+                              Text(
+                                  "${jobDetailList["salary"].substring(0, 2)} : ${jobDetailList["salary"].substring(2)}")
                             ])),
 
                     //空白
