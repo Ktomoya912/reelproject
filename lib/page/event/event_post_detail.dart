@@ -939,7 +939,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                             ? Colors.yellow[800]
                                                                             : Colors.grey,
                                                                         size:
-                                                                            35,
+                                                                            30,
                                                                       ),
                                                                     ),
                                                                   ),
