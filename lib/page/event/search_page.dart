@@ -148,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
 
     //検索ボタンを押したときの処理
-    void _submission(text) {
+    void submission(text) {
       setState(() {
         if (text != "") {
           Navigator.push(
@@ -231,7 +231,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         //検索ボタンを押したときの処理
                         //上に記述
-                        onSubmitted: (text) => _submission(text),
+                        onSubmitted: (text) => submission(text),
                       ),
                     ),
                   ],
