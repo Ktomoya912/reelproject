@@ -460,7 +460,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   decoration: InputDecoration(
                     counterText: '',
                     labelText: 'パスワード',
-                    hintText: '8文字以上の英数字',
+                    hintText: '大文字含め8文字以上の英数字',
                     border: const OutlineInputBorder(),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -501,7 +501,7 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                   decoration: InputDecoration(
                     counterText: '',
                     labelText: 'パスワード確認用',
-                    hintText: '8文字以上の英数字',
+                    hintText: '大文字含めた8文字以上の英数字',
                     border: const OutlineInputBorder(),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -587,6 +587,22 @@ class NewMemberGeneralState extends State<NewMemberGeneral> {
                       );
                     }
                   });
+                } else if (ruleCheck == false) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('エラー'),
+                        content: const Text('利用規約に同意してください'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
                   showDialog(
                     context: context,
