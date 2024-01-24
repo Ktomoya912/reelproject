@@ -6,9 +6,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
 
 class JobFeeWatch extends StatefulWidget {
   const JobFeeWatch({
