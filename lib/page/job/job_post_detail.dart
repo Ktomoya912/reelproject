@@ -465,8 +465,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 //タイトル
-                                Container(
-                                  color: Colors.red,
+                                SizedBox(
                                   width: width * 0.8,
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
