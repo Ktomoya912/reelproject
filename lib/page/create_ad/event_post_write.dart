@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart';
 import 'package:flutter/services.dart';
-import 'package:reelproject/overlay/rule/screen/return_write.dart';
+import 'package:reelproject/overlay/rule/screen/return_write_post.dart';
 import 'package:reelproject/page/create_ad/post_write_comp_ev.dart';
 import 'dart:convert';
 // import 'text_add.dart';
@@ -2172,11 +2172,13 @@ class EventPostWriteState extends State<EventPostWrite> {
                                                   botommBarJedge: true,
                                                 )),
                                       );
+                                    } else {
+                                      ReturnWritePost().show(context: context);
                                     }
                                   });
                                 }
                               } else {
-                                ReturnWrite().show(context: context);
+                                ReturnWritePost().show(context: context);
                                 shortageErr = true;
                               }
                             });

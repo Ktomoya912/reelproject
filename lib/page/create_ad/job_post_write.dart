@@ -19,6 +19,7 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 //job_fee_watch.dartからのimport
 import 'package:reelproject/page/create_ad/fee_watch.dart';
+import 'package:reelproject/overlay/rule/screen/return_write_post.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -77,6 +78,7 @@ class JobPostWriteState extends State<JobPostWrite> {
   String selectedDay = "時給";
   final listsFee = ["日給", "時給"];
   List<String> todoList = [];
+  List<String> shortageList = [];
 
 // 郵便番号関連------------------
   String firstNumber = ""; // 最初の3桁
@@ -91,7 +93,7 @@ class JobPostWriteState extends State<JobPostWrite> {
 // マップで送られる要素-------------------------------------
   String postTitle = ""; // 広告のタイトル
   String detail = ""; // 広告詳細説明
-  String term = ""; // 勤務体系
+  String term = "短期"; // 勤務体系
   bool isOneDay = true; // false=長期, true=短期
   List day = []; // 日付
   List time = []; // 時間
@@ -100,6 +102,7 @@ class JobPostWriteState extends State<JobPostWrite> {
   String posCity = ""; // 市町村
   String posHouseNumber = ""; // 番地・建物名
   String salary = ""; // 給料
+  String salaryNum = "";
   String additionalMessage = ""; // 追加メッセージ
 
 // -------------------------------------------------
@@ -125,6 +128,23 @@ class JobPostWriteState extends State<JobPostWrite> {
   String finMinute = ""; // 勤務時間（finish分）
 
 // ----------------------------------------------------
+
+// エラー文or判定---------------------------------------------
+  String errEmail = "";
+  bool daytimeSh = false;
+  bool shortageErr = false;
+  bool phoneSh = false;
+  bool addressSh = false;
+  String dayErr = "";
+  String homepageErr = "";
+  String capaErrTex = "";
+  bool capaErr = false;
+  String capaErrval = "0";
+  String numberErrtex = "";
+  String phoneErTex = "";
+  String feeErTex = "";
+  bool feeEr = false;
+// -----------------------------------------------
 
 // タグ関連--------------------------------------------
   List<Map<String, dynamic>> tagname = []; // タグ情報が入っている
@@ -259,8 +279,84 @@ class JobPostWriteState extends State<JobPostWrite> {
               // Text(imageJudge),
 
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
+              Stack(children: [
+                shortageErr
+                    ? Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.bottomCenter, //下ぞろえ
+                            //影
+                            decoration: const BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey, //色
+                                  //spreadRadius: 5,//拡散
+                                  blurRadius: 5, //ぼかし
+                                  offset: Offset(3, 3), //影の位置
+                                ),
+                              ],
+                              color: Colors.white,
+                            ),
+                            width: 350,
+                            height: 100,
+                            //height: width * 0.7 / 2.5,
+                            child: Column(
+                              children: [
+                                //上枠
+                                Container(
+                                  width: 350,
+                                  height: 30,
+                                  color: const Color.fromARGB(255, 248, 45, 45),
+                                  child: const Center(
+                                    child: Text("以下の必須項目が抜けています",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15)),
+                                  ),
+                                ),
+                                //下文字
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 20, // 最小幅をwidthに設定
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .start, // 子ウィジェットを左詰めに配置
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          for (int i = 0;
+                                              i < shortageList.length;
+                                              i++)
+                                            Text(
+                                              "${shortageList[i]}, ",
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 240, 160, 85),
+                                                  fontSize: 16),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      )
+                    : const SizedBox(
+                        height: 10,
+                      )
+              ]),
 
 // ----------写真投稿部分----------------------------------------------------------------------
               Container(
@@ -356,7 +452,6 @@ class JobPostWriteState extends State<JobPostWrite> {
                 ),
               ),
               // Text(imageJudge), // 確認用
-              Text("{$planId$planPeriod}"),
 
 // ----------------------------------------------------------------------------------------------
 
@@ -364,18 +459,30 @@ class JobPostWriteState extends State<JobPostWrite> {
               // 広告名入力欄
               const SizedBox(
                 width: 350,
-                child: Text(
-                  "求人名",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "求人名",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               SizedBox(
                 width: 300,
                 child: TextField(
                   textAlign: TextAlign.start,
+                  maxLength: 20,
                   onChanged: (value) {
                     setState(() {
                       postTitle = value;
@@ -395,12 +502,23 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(height: 40),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  "求人詳細情報",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "求人詳細情報",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -472,12 +590,23 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(height: 40),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  '日付設定',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "日付設定",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -750,40 +879,108 @@ class JobPostWriteState extends State<JobPostWrite> {
                       daytime = "$dDay:　$dTime";
                       // 日程追加
                       if (term == "長期" && jobLong.length < 5) {
-                        String posDaytimeS = "3333-01-22 $stTime:$stMinute:00";
-                        String posDaytimeE =
-                            "3333-01-22 $finTime:$finMinute:00";
-                        jobLong.add({"start_time": dTime, "end_time": "22"});
-                        jobTimes = jobLong;
-                        posJobLong.add({
-                          "start_time": posDaytimeS,
-                          "end_time": posDaytimeE
-                        });
-                        posJobTimes = posJobLong;
-                      } else if (jobShort.length < 5) {
-                        String posDaytimeS =
-                            "$inYear-$inMonth-$inDay $stTime:$stMinute:00";
-                        String posDaytimeE =
-                            "$inYear-$inMonth-$inDay $finTime:$finMinute:00";
-                        jobShort.add({"start_time": daytime, "end_time": "22"});
-                        jobTimes = jobShort;
-                        posJobShort.add({
-                          "start_time": posDaytimeS,
-                          "end_time": posDaytimeE
-                        });
-                        posJobTimes = posJobShort;
-                      }
+                        if (checkDay(stTime) &&
+                            checkDay(stMinute) &&
+                            checkDay(finTime) &&
+                            checkDay(finMinute)) {
+                          dayErr = "";
+                          if (checkOne(stTime)) {
+                            stTime = "0$stTime";
+                          }
+                          if (checkOne(stMinute)) {
+                            stMinute = "0$stMinute";
+                          }
+                          if (checkOne(finTime)) {
+                            finTime = "0$finTime";
+                          }
+                          if (checkOne(finMinute)) {
+                            finMinute = "0$finMinute";
+                          }
 
-                      // 入力内容リセット
-                      //   textFieldController.clear();
-                      //   tagName = "";
-                      //   tagLength = tagname.length;
-                      //   tagNotInput = false;
-                      // } else {
-                      //   tagNotInput = true;
-                      // }
+                          //日時分合成
+                          String posDaytimeS =
+                              "3333-01-22 $stTime:$stMinute:00";
+                          String posDaytimeE =
+                              "3333-01-22 $finTime:$finMinute:00";
+                          jobLong.add({"start_time": dTime, "end_time": "22"});
+                          jobTimes = jobLong;
+                          posJobLong.add({
+                            "start_time": posDaytimeS,
+                            "end_time": posDaytimeE
+                          });
+                          posJobTimes = posJobLong;
+                        } else {
+                          dayErr = "入力に誤りがあります";
+                        }
+                      } else if (term == "短期" && jobShort.length < 5) {
+                        if (checkYear(inYear) &&
+                            checkDay(inDay) &&
+                            checkMonth(inMonth) &&
+                            checkDay(stTime) &&
+                            checkDay(stMinute) &&
+                            checkDay(finTime) &&
+                            checkDay(finMinute)) {
+                          dayErr = "";
+                          String thing = "";
+                          if (checkOne(stTime)) {
+                            stTime = "0$stTime";
+                          }
+                          if (checkOne(stMinute)) {
+                            stMinute = "0$stMinute";
+                          }
+                          if (checkOne(finTime)) {
+                            finTime = "0$finTime";
+                          }
+                          if (checkOne(finMinute)) {
+                            finMinute = "0$finMinute";
+                          }
+                          if (checkOne(inDay)) {
+                            inDay = "0$inDay";
+                          }
+                          if (checkOne(inMonth)) {
+                            inMonth = "0$inMonth";
+                          }
+
+                          //日時分合成
+                          dDay = "$inYear年 $inMonth月 $inDay日";
+                          dTime = "$stTime時 $stMinute分 ～ $finTime時 $finMinute分";
+                          daytime = "$dDay:　$dTime";
+                          // 日程追加
+                          if (jobShort.length < 5) {
+                            String posDaytimeS =
+                                "$inYear-$inMonth-$inDay $stTime:$stMinute:00";
+                            String posDaytimeE =
+                                "$inYear-$inMonth-$inDay $finTime:$finMinute:00";
+                            jobShort
+                                .add({"start_time": daytime, "end_time": "22"});
+                            jobTimes = jobShort;
+                            posJobShort.add({
+                              "start_time": posDaytimeS,
+                              "end_time": posDaytimeE
+                            });
+                            posJobTimes = posJobShort;
+                          }
+                        } else {
+                          dayErr = "入力に誤りがあります";
+                        }
+
+                        // 入力内容リセット
+                        //   textFieldController.clear();
+                        //   tagName = "";
+                        //   tagLength = tagname.length;
+                        //   tagNotInput = false;
+                        // } else {
+                        //   tagNotInput = true;
+                        // }
+                      } else {
+                        dayErr = "追加出来る日程が最大です（最大５個）";
+                      }
                     });
                   }),
+              Text(dayErr,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               const SizedBox(
                 height: 15,
@@ -901,11 +1098,23 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(height: 10),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  '郵便番号',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "郵便番号",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -984,10 +1193,15 @@ class JobPostWriteState extends State<JobPostWrite> {
                       ),
                       onPressed: () async {
                         setState(() {
-                          addressNum =
-                              "$firstNumber$backNumber"; // APIに送る用のアドレス
-                          posAddressNum =
-                              "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                          if (checkTree(firstNumber) && checkYear(backNumber)) {
+                            addressNum =
+                                "$firstNumber$backNumber"; // APIに送る用のアドレス
+                            posAddressNum =
+                                "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                            numberErrtex = "";
+                          } else {
+                            numberErrtex = "入力に誤りがあります";
+                          }
                         });
 
                         if (addressNum.length != 7) {
@@ -1013,16 +1227,35 @@ class JobPostWriteState extends State<JobPostWrite> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(numberErrtex,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               // 都道府県
               const SizedBox(height: 20),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  '都道府県',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "都道府県",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -1063,11 +1296,23 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(height: 20),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  '市町村',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "市町村",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -1086,7 +1331,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                       ),
                       child: TextField(
                         maxLines: null,
-                        maxLength: 100,
+                        maxLength: 20,
                         onChanged: (value) {
                           setState(() {
                             posCity = value;
@@ -1108,11 +1353,23 @@ class JobPostWriteState extends State<JobPostWrite> {
               const SizedBox(height: 20),
               const SizedBox(
                 width: 350,
-                child: Text(
-                  '番地・建物名',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "番地・建物名",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("必須",
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -1129,7 +1386,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                   ),
                   child: TextField(
                     maxLines: null,
-                    maxLength: 200,
+                    maxLength: 50,
                     onChanged: (value) {
                       setState(() {
                         posHouseNumber = value;
@@ -1195,6 +1452,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                             onChanged: (value) {
                               setState(() {
                                 salary = "$selectedDay$value円";
+                                salaryNum = value;
                               });
                             },
                             style: const TextStyle(fontSize: 13),
@@ -1209,6 +1467,10 @@ class JobPostWriteState extends State<JobPostWrite> {
                   ],
                 ),
               ),
+              Text(feeErTex,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  )),
 
               // タグ設定
               const SizedBox(height: 40),
@@ -1513,51 +1775,120 @@ class JobPostWriteState extends State<JobPostWrite> {
                           onInputChanged: (value) {
                             // 入力値が変更されたときの処理
                             setState(() {
-                              judgePost = value;
-                              if (imageUrl == "NO") {
-                                imageUrl = null;
+                              if (term == "短期") {
+                                if (inYear == "" ||
+                                    inMonth == "" ||
+                                    inDay == "" ||
+                                    stTime == "" ||
+                                    stMinute == "" ||
+                                    finTime == "" ||
+                                    finMinute == "") {
+                                  daytimeSh = true;
+                                } else {
+                                  daytimeSh = false;
+                                }
+                              } else {
+                                if (stTime == "" ||
+                                    stMinute == "" ||
+                                    finTime == "" ||
+                                    finMinute == "") {
+                                  daytimeSh = true;
+                                } else {
+                                  daytimeSh = false;
+                                }
                               }
-                              if (judgePost) {
-                                Map<String, dynamic> dbPostList;
-                                dbPostList = {
-                                  "purchase": {
-                                    "plan_id": planId,
-                                    "contract_amount": planPeriod
-                                  },
-                                  "job": {
-                                    "name": postTitle,
-                                    "image_url": imageUrl,
-                                    "salary": salary,
-                                    "postal_code": posAddressNum,
-                                    "prefecture": posPrefecture,
-                                    "city": posCity,
-                                    "address": posHouseNumber,
-                                    "description": detail,
-                                    "is_one_day": isOneDay,
-                                    "additional_message": additionalMessage,
-                                    "tags": tagname,
-                                    "job_times": posJobTimes
-                                  }
-                                };
-                                createUser(context, store, dbPostList)
-                                    .then((success) {
-                                  //ここでローディング画面を表示
-                                  if (success) {
-                                    Navigator.pop(context); //pop
-                                    Navigator.push(
-                                      context,
-                                      // MaterialPageRoute(builder: (context) => Home()),
-                                      MaterialPageRoute(
-                                          builder: (context) => JobFeeWatch(
-                                                planId: planId,
-                                                planPeriod: planPeriod,
-                                                eventJobJedge: false,
-                                                botommBarJedge: true,
-                                              )),
-                                    );
-                                  }
-                                });
-                              } else {}
+                              if (firstNumber == "" || backNumber == "") {
+                                addressSh = true;
+                              } else {
+                                addressSh = false;
+                              }
+                              if (checkTree(firstNumber) &&
+                                  checkYear(backNumber)) {
+                                addressNum =
+                                    "$firstNumber$backNumber"; // APIに送る用のアドレス
+                                posAddressNum =
+                                    "$firstNumber-$backNumber"; // 確認画面へと送る(mapに入る)用のアドレス
+                                numberErrtex = "";
+                                addressSh = false;
+                              } else {
+                                numberErrtex = "入力に誤りがあります";
+                                addressSh = true;
+                              }
+                              if (checkTen(salaryNum)) {
+                                feeErTex = "";
+                              } else {
+                                salary = "";
+                                salaryNum = "";
+                                feeErTex = "入力に誤りがあります";
+                              }
+
+                              shortageList = [];
+                              shortageList = [
+                                if (postTitle == "") "求人名",
+                                if (detail == "") "求人詳細情報",
+                                if (daytimeSh) "日付設定",
+                                if (addressSh) "郵便番号",
+                                if (posPrefecture == "") "都道府県",
+                                if (posCity == "") "市町村",
+                                if (posHouseNumber == "") "番地",
+                                if (salary == "") "給料",
+                              ];
+                              if (shortageList.isEmpty) {
+                                shortageErr = false;
+                                judgePost = value;
+                                if (imageUrl == "NO") {
+                                  imageUrl = null;
+                                }
+                                if (posAddressNum == "") {
+                                  posAddressNum = "$firstNumber-$backNumber";
+                                }
+                                if (judgePost) {
+                                  Map<String, dynamic> dbPostList;
+                                  dbPostList = {
+                                    "purchase": {
+                                      "plan_id": planId,
+                                      "contract_amount": planPeriod
+                                    },
+                                    "job": {
+                                      "name": postTitle,
+                                      "image_url": imageUrl,
+                                      "salary": salary,
+                                      "postal_code": posAddressNum,
+                                      "prefecture": posPrefecture,
+                                      "city": posCity,
+                                      "address": posHouseNumber,
+                                      "description": detail,
+                                      "is_one_day": isOneDay,
+                                      "additional_message": additionalMessage,
+                                      "tags": tagname,
+                                      "job_times": posJobTimes
+                                    }
+                                  };
+                                  createUser(context, store, dbPostList)
+                                      .then((success) {
+                                    //ここでローディング画面を表示
+                                    if (success) {
+                                      Navigator.pop(context); //pop
+                                      Navigator.push(
+                                        context,
+                                        // MaterialPageRoute(builder: (context) => Home()),
+                                        MaterialPageRoute(
+                                            builder: (context) => JobFeeWatch(
+                                                  planId: planId,
+                                                  planPeriod: planPeriod,
+                                                  eventJobJedge: false,
+                                                  botommBarJedge: true,
+                                                )),
+                                      );
+                                    } else {
+                                      ReturnWritePost().show(context: context);
+                                    }
+                                  });
+                                }
+                              } else {
+                                ReturnWritePost().show(context: context);
+                                shortageErr = true;
+                              }
                             });
                           },
                         );
@@ -1811,4 +2142,56 @@ Future<String> postImage(
     );
     return "failed"; // エラー時は false を返す
   }
+}
+
+bool checkYear(String year) {
+  //年の正規表現
+  final regYear = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{4}$",
+  );
+  return regYear.hasMatch(year);
+}
+
+bool checkMonth(String month) {
+  //月の正規表現
+  final regMonth = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,2}$",
+  );
+  return regMonth.hasMatch(month) && int.parse(month) <= 12 && month != '';
+}
+
+bool checkDay(String day) {
+  //日の正規表現
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,2}$",
+  );
+  return regDay.hasMatch(day);
+}
+
+bool checkOne(String day) {
+  //日の正規表現
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1}$",
+  );
+  return regDay.hasMatch(day);
+}
+
+bool checkTree(String value) {
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{3}$",
+  );
+  return regDay.hasMatch(value);
+}
+
+bool checkTen(String value) {
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1,10}$",
+  );
+  return regDay.hasMatch(value);
 }
