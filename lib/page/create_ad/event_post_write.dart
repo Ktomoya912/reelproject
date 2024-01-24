@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 // import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 // import 'done.dart';
-import 'package:flutter/cupertino.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart';
 import 'package:flutter/services.dart';

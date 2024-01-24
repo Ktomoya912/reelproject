@@ -7,7 +7,6 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
 import "package:reelproject/overlay/rule/screen/image_over.dart";
-import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
 
 //push先
