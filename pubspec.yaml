@@ -53,6 +53,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: "^0.13.1" #アイコン変更
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -109,3 +111,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true
+  ios: true
+  # このパスにアイコンを置く
+  image_path: "assets/logo.png"
+  # アイコンを配置した後に、以下のコマンドを実行する
+  # flutter pub run flutter_launcher_icons:main
