@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/page/mypage/apply_conf.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

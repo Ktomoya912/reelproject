@@ -8,7 +8,6 @@ import '../../page/Job/post_mem_list.dart';
 import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
 import 'package:reelproject/overlay/rule/screen/job_app.dart';
 import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

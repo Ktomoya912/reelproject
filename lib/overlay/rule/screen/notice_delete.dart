@@ -8,8 +8,6 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)

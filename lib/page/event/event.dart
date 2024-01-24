@@ -5,7 +5,6 @@ import 'package:reelproject/component/listView/event_advertisment_list.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';

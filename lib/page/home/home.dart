@@ -20,12 +20,10 @@ import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/overlay/rule/screen/select_post.dart'; //投稿選択画面
 import 'package:google_fonts/google_fonts.dart'; //googleフォント
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 //job_fee_watch.dartからのimport
-import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 @RoutePage()
 class HomeRouterPage extends AutoRouter {

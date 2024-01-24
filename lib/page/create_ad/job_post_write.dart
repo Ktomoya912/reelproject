@@ -18,7 +18,6 @@ import 'package:reelproject/overlay/rule/screen/post_comf_over.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
-import 'package:reelproject/component/finish_screen/finish_screen.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 //job_fee_watch.dartからのimport
 import 'package:reelproject/page/create_ad/fee_watch.dart';

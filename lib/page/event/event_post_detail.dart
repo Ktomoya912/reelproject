@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:reelproject/component/appbar/detail_appbar.dart';
 //import 'package:reelproject/page/event/event.dart';
 import '/provider/change_general_corporation.dart';
-import 'package:reelproject/component/listView/carousel.dart';
 import 'package:reelproject/page/event/search_page.dart'; //イベント検索
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:http/http.dart';

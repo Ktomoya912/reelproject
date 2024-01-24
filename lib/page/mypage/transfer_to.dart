@@ -1,6 +1,5 @@
 // import 'package:reelproject/component/finish_screen/finish_screen.dart';
 
-import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 // import 'package:reelproject/component/comment_box/comment_box.dart';

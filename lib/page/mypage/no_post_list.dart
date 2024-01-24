@@ -6,7 +6,6 @@ import 'package:reelproject/component/button/toggle_button.dart';
 import 'package:provider/provider.dart';
 import 'package:reelproject/component/listView/shader_mask_component.dart';
 import 'package:reelproject/provider/change_general_corporation.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 //import 'package:reelproject/page/event/event.dart';

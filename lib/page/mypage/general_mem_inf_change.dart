@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:reelproject/overlay/rule/screen/return_write.dart';
 import '/provider/change_general_corporation.dart';
-import '../login/pass_change.dart';
 import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
