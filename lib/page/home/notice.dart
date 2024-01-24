@@ -86,7 +86,7 @@ class _NoticeState extends State<Notice> {
                   //リスト
                   SizedBox(
                     width: width + (widthBlank / 8) + blank - 10,
-                    height: mediaQueryData.size.height - 230,
+                    height: mediaQueryData.size.height - 260,
                     child: NoticeListView(
                       jedgeEJ: store.onButtonIndex,
                       noticeList: noticeList,
