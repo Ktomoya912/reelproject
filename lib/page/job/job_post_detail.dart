@@ -191,7 +191,10 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
       //投稿期間
       jobDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
+
+      //プラン情報
+      jobDetailList["parchase"] = data["purchase"];
     });
   }
 
@@ -407,6 +410,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
         : Scaffold(
             //アップバー
             appBar: DetailAppbar(
+              eventJobDetail: jobDetailList,
               postJedge: jobDetailList["postJedge"],
               eventJobJedge: "job",
               postTerm: jobDetailList["postTerm"],

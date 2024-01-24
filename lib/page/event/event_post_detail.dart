@@ -118,7 +118,10 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
       //投稿期間
       eventDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
+
+      //プラン情報
+      eventDetailList["parchase"] = data["purchase"];
     });
   }
 
@@ -336,6 +339,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
         : Scaffold(
             //アップバー
             appBar: DetailAppbar(
+              eventJobDetail: eventDetailList,
               postJedge: eventDetailList["postJedge"],
               eventJobJedge: "event",
               postTerm: eventDetailList["postTerm"],

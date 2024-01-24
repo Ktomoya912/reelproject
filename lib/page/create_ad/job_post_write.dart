@@ -598,12 +598,13 @@ class JobPostWriteState extends State<JobPostWrite> {
 
               const SizedBox(height: 20),
               SizedBox(
-                width: 390,
+                width: 355,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const SizedBox(
-                      width: 25,
-                    ),
+                    // const SizedBox(
+                    //   width: 25,
+                    // ),
                     Container(
                       width: 60,
                       height: 50,
@@ -664,7 +665,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                     ),
                     const Text(
                       " ～ ",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 15),
                     ),
                     Container(
                       width: 60,

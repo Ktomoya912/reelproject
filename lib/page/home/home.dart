@@ -176,7 +176,10 @@ class _HomeState extends State<Home> {
     "favoriteJedge": false,
 
     //掲載期間
-    "postTerm": "2023年12月10日"
+    "postTerm": "2023年12月10日",
+
+    //プラン情報
+    "parchase": {}
   };
 
   changeJobDetailList(dynamic data, int id, ChangeGeneralCorporation store) {
@@ -269,6 +272,9 @@ class _HomeState extends State<Home> {
       //投稿期間
       jobDetailList["postTerm"] =
           "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+
+      //プラン情報
+      jobDetailList["parchase"] = data["purchase"];
     });
   }
 
@@ -343,6 +349,9 @@ class _HomeState extends State<Home> {
 
     //お気に入りか否か
     "favoriteJedge": false,
+
+    //プラン情報
+    "parchase": {}
   };
 
   //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
@@ -428,6 +437,9 @@ class _HomeState extends State<Home> {
       //投稿期間
       eventDetailList["postTerm"] =
           "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+
+      //プラン情報
+      eventDetailList["parchase"] = data["purchase"];
     });
   }
 

@@ -713,12 +713,9 @@ class EventPostWriteState extends State<EventPostWrite> {
 
               const SizedBox(height: 20),
               SizedBox(
-                width: 390,
+                width: 355,
                 child: Row(
                   children: <Widget>[
-                    const SizedBox(
-                      width: 25,
-                    ),
                     Container(
                       width: 60,
                       height: 50,
@@ -779,7 +776,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                     ),
                     const Text(
                       " ～ ",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 15),
                     ),
                     Container(
                       width: 60,
@@ -2172,7 +2169,7 @@ class EventPostWriteState extends State<EventPostWrite> {
                                             builder: (context) => JobFeeWatch(
                                                   planId: planId,
                                                   planPeriod: planPeriod,
-                                                  eventJobJedge: false,
+                                                  eventJobJedge: true,
                                                   botommBarJedge: true,
                                                 )),
                                       );
