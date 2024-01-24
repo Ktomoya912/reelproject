@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:reelproject/app_router/app_router.dart';
 import 'package:reelproject/page/login/new_menber_company.dart';
@@ -51,25 +54,65 @@ class LoginPageState extends State<LoginPage> {
     Future getAccessToken(
         String username, String password, String apiUrl) async {
       Uri url = Uri.parse("$apiUrl/auth/token");
-      final response = await post(url,
-          headers: {'content-type': 'application/x-www-form-urlencoded'},
-          body: {'username': username, 'password': password});
-      final Map<String, dynamic> data = json.decode(response.body);
-      if (response.statusCode == 200) {
-        store.accessToken = data["access_token"];
-        jedgeGC = true;
+      try {
+        //throw TimeoutException('タイムアウトしました');
+        final response = await post(url,
+                headers: {'content-type': 'application/x-www-form-urlencoded'},
+                body: {'username': username, 'password': password})
+            .timeout(const Duration(seconds: 10));
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (response.statusCode == 200) {
+          store.accessToken = data["access_token"];
+          jedgeGC = true;
 
-        isActive = data["user"]["is_active"];
-        store.accessToken = data["access_token"]; //トークンをプロバイダに保存
-        //トークンを保存
-        if (_autoLogin) {
-          final SharedPreferences storage =
-              await SharedPreferences.getInstance();
-          await storage.setString("ACCESS_TOKEN", data["access_token"]);
-          //print("トークンを保存しました");
+          isActive = data["user"]["is_active"];
+          store.accessToken = data["access_token"]; //トークンをプロバイダに保存
+          //トークンを保存
+          if (_autoLogin) {
+            final SharedPreferences storage =
+                await SharedPreferences.getInstance();
+            await storage.setString("ACCESS_TOKEN", data["access_token"]);
+            //print("トークンを保存しました");
+          }
+        } else {
+          jedgeGC = false;
         }
-      } else {
-        jedgeGC = false;
+      } on TimeoutException catch (e) {
+        print(e);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('エラー'),
+                content: const Text('通信がタイムアウトしました。'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            });
+      } on Error catch (e) {
+        print(e);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('エラー'),
+                content: const Text('通信に失敗しました。'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            });
       }
     }
 
