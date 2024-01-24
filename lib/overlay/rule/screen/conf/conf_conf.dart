@@ -23,7 +23,7 @@ class ConfConf {
   //応募者確認
   Future confConf(int jobID, ChangeGeneralCorporation store, int userID) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${jobID}/application/approve?user_id=${userID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$jobID/application/approve?user_id=$userID');
     final response = await put(
       url,
       headers: {

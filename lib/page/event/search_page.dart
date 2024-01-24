@@ -84,10 +84,10 @@ class _SearchPageState extends State<SearchPage> {
     Uri url;
     if (widget.text.startsWith('#') || widget.text.startsWith('＃')) {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/events/?tag=${Uri.encodeFull(widget.text.substring(1))}&${ChangeGeneralCorporation.typeActive}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/events/?tag=${Uri.encodeFull(widget.text.substring(1))}&${ChangeGeneralCorporation.typeActive}&sort=$sortType&order=asc&offset=0&limit=60');
     } else {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=$sortType&order=asc&offset=0&limit=60');
     }
 
     //print(url);
@@ -113,10 +113,10 @@ class _SearchPageState extends State<SearchPage> {
     Uri url;
     if (widget.text.startsWith('#') || widget.text.startsWith('＃')) {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&tag=${Uri.encodeFull(widget.text.substring(1))}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&tag=${Uri.encodeFull(widget.text.substring(1))}&sort=$sortType&order=asc&offset=0&limit=60');
     } else {
       url = Uri.parse(
-          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=${sortType}&order=asc&offset=0&limit=60');
+          '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.typeActive}&keyword=${Uri.encodeFull(widget.text)}&sort=$sortType&order=asc&offset=0&limit=60');
     }
     final response = await http.get(url, headers: {
       'accept': 'application/json',

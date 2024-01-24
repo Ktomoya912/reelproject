@@ -238,7 +238,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/${id}/review');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -264,7 +264,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/$id/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -281,7 +281,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/events/$id/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',

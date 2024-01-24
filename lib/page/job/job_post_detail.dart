@@ -234,7 +234,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //応募者一覧取得
   Future getApplyList(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/application');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',
@@ -299,7 +299,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
 
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -326,7 +326,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー削除
   Future reviewDelite(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$id/review?user_id=${store.myID}');
     final response = await delete(url, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${store.accessToken}',
@@ -344,7 +344,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
   //レビュー編集
   Future reviewEdit(int id, ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/${id}/review?user_id=${store.myID}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/$id/review?user_id=${store.myID}');
     final response = await put(url,
         headers: {
           'accept': 'application/json',

@@ -201,7 +201,7 @@ class EventJobSearchBarState extends State<EventJobSearchBar> {
                                   pageBuilder: (context, animation,
                                           secondaryAnimation) =>
                                       SearchPage(
-                                    text: "#${tag}",
+                                    text: "#$tag",
                                     eventJobJedge: widget.title,
                                     sort: "新着順",
                                     sortType: "id",

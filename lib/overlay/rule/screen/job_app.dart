@@ -23,7 +23,7 @@ class JobApp {
   //応募
   Future apply(int id, ChangeGeneralCorporation store, context,
       String buttonText, Function callback) async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/apply');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/apply');
     final response = await post(
       url,
       headers: {

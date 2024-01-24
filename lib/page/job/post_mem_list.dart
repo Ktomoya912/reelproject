@@ -34,7 +34,7 @@ class _PostMemListState extends State<PostMemList> {
   //応募者一覧取得
   Future getApplyList(int id, ChangeGeneralCorporation store) async {
     Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/${id}/application');
+        Uri.parse('${ChangeGeneralCorporation.apiUrl}/jobs/$id/application');
 
     final response = await http.get(url, headers: {
       'accept': 'application/json',

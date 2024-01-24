@@ -127,7 +127,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
     Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/me');
     final response = await http.get(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${accessToken}'
+      'authorization': 'Bearer $accessToken'
     });
     final data = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
@@ -140,10 +140,10 @@ class ChangeGeneralCorporation with ChangeNotifier {
 
   //自分のユーザ情報を更新
   Future UpdateUserInfo() async {
-    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/${myID}');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/users/$myID');
     final response = await http.put(url, headers: {
       'accept': 'application/json',
-      'authorization': 'Bearer ${accessToken}',
+      'authorization': 'Bearer $accessToken',
       'Content-Type': 'application/json',
     }, body: {
       "password"
