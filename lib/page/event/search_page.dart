@@ -77,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  static double widthPower = 11 / 12; //検索バーの幅の割合
+  static double widthPower = 10.5 / 12; //検索バーの幅の割合
   static double lineWidth = 1.3; //線の太さ定数
 
   Future getEventList(ChangeGeneralCorporation store) async {

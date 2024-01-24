@@ -393,7 +393,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                 children: [
                                   //タイトル
                                   SizedBox(
-                                    width: width - 100,
+                                    width: width * 0.8,
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Text(
