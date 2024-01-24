@@ -140,130 +140,146 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         ),
                       ],
                     ),
-                    if (!widget.eventJobJedge || widget.planId != 2)
-                      const Text(
-                        "×",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 102, 102, 102)),
-                      ),
-                    //合計金額
-                    if (!widget.eventJobJedge || widget.planId != 2)
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomCenter, //下ぞろえ
-                            //影
-                            decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey, //色
-                                  //spreadRadius: 5,//拡散
-                                  blurRadius: 5, //ぼかし
-                                  offset: Offset(3, 3), //影の位置
-                                ),
-                              ],
-                              color: Colors.white,
-                            ),
-                            width: 350,
-                            height: 100,
-                            //height: width * 0.7 / 2.5,
-                            child: Column(
-                              children: [
-                                //上枠
-                                Container(
-                                  width: 350,
-                                  height: 30,
-                                  color:
-                                      const Color.fromARGB(255, 11, 198, 179),
-                                  child: Center(
-                                    child: Text(
-                                        widget.planId != 5 ? "契約希望月" : "契約希望年",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15)),
-                                  ),
-                                ),
-                                //下文字
-                                Padding(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Text(
-                                      widget.planId != 5
-                                          ? "${widget.planPeriod}ヶ月"
-                                          : "${widget.planPeriod}年", //契約希望月
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    else
-                      const SizedBox(
-                        height: 100,
-                      ),
-                    if (!widget.eventJobJedge || widget.planId != 2)
-                      Transform.rotate(
-                        angle: -3.14 / 2,
-                        child: const Text(
-                          "＝",
+                    if (!widget.eventJobJedge)
+                      if (widget.planId != 2)
+                        const Text(
+                          "×",
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 102, 102, 102)),
                         ),
-                      ),
-                    //プラン基本料金
-                    if (!widget.eventJobJedge || widget.planId != 2)
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomCenter, //下ぞろえ
-                            //影
-                            decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey, //色
-                                  //spreadRadius: 5,//拡散
-                                  blurRadius: 5, //ぼかし
-                                  offset: Offset(3, 3), //影の位置
-                                ),
-                              ],
-                              color: Colors.white,
-                            ),
-                            width: 350,
-                            height: 100,
-                            //height: width * 0.7 / 2.5,
-                            child: Column(
-                              children: [
-                                //上枠
-                                Container(
-                                  width: 350,
-                                  height: 30,
-                                  color:
-                                      const Color.fromARGB(255, 235, 168, 13),
-                                  child: const Center(
-                                    child: Text("合計金額",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15)),
+                    //合計金額
+                    if (!widget.eventJobJedge)
+                      if (widget.planId != 2)
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.bottomCenter, //下ぞろえ
+                              //影
+                              decoration: const BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey, //色
+                                    //spreadRadius: 5,//拡散
+                                    blurRadius: 5, //ぼかし
+                                    offset: Offset(3, 3), //影の位置
                                   ),
-                                ),
-                                //下文字
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text(
-                                      "${plan["price"] * widget.planPeriod}円", //合計金額
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
+                                ],
+                                color: Colors.white,
+                              ),
+                              width: 350,
+                              height: 100,
+                              //height: width * 0.7 / 2.5,
+                              child: Column(
+                                children: [
+                                  //上枠
+                                  Container(
+                                    width: 350,
+                                    height: 30,
+                                    color:
+                                        const Color.fromARGB(255, 11, 198, 179),
+                                    child: Center(
+                                      child: Text(
+                                          widget.planId != 5
+                                              ? "契約希望月"
+                                              : "契約希望年",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15)),
+                                    ),
+                                  ),
+                                  //下文字
+                                  Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Text(
+                                        widget.planId != 5
+                                            ? "${widget.planPeriod}ヶ月"
+                                            : "${widget.planPeriod}年", //契約希望月
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
+                              ),
                             ),
+                          ],
+                        )
+                      else
+                        const SizedBox(
+                          height: 100,
+                        )
+                    else
+                      const SizedBox(
+                        height: 100,
+                      ),
+                    if (!widget.eventJobJedge)
+                      if (widget.planId != 2)
+                        Transform.rotate(
+                          angle: -3.14 / 2,
+                          child: const Text(
+                            "＝",
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 102, 102, 102)),
                           ),
-                        ],
-                      )
+                        ),
+                    //プラン基本料金
+                    if (!widget.eventJobJedge)
+                      if (widget.planId != 2)
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.bottomCenter, //下ぞろえ
+                              //影
+                              decoration: const BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey, //色
+                                    //spreadRadius: 5,//拡散
+                                    blurRadius: 5, //ぼかし
+                                    offset: Offset(3, 3), //影の位置
+                                  ),
+                                ],
+                                color: Colors.white,
+                              ),
+                              width: 350,
+                              height: 100,
+                              //height: width * 0.7 / 2.5,
+                              child: Column(
+                                children: [
+                                  //上枠
+                                  Container(
+                                    width: 350,
+                                    height: 30,
+                                    color:
+                                        const Color.fromARGB(255, 235, 168, 13),
+                                    child: const Center(
+                                      child: Text("合計金額",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15)),
+                                    ),
+                                  ),
+                                  //下文字
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                        "${plan["price"] * widget.planPeriod}円", //合計金額
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        const SizedBox(
+                          height: 100,
+                        )
                     else
                       const SizedBox(
                         height: 100,
@@ -296,7 +312,8 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         //pop
                         Navigator.of(context).pop();
                       },
-                      child: const Text("プラン選択に戻る"),
+                      child:
+                          Text(widget.botommBarJedge ? "プラン選択に戻る" : "詳細画面に戻る"),
                     ),
 
                     //空白

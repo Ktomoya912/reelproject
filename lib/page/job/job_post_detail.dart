@@ -465,13 +465,16 @@ class _JobPostDetailState extends State<JobPostDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 //タイトル
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    jobDetailList["title"],
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
+                                SizedBox(
+                                  width: width - 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      jobDetailList["title"],
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1050,8 +1053,9 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                         SingleChildScrollView(
                                                                       child:
                                                                           Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:
@@ -1112,8 +1116,9 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                         SingleChildScrollView(
                                                                       child:
                                                                           Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:

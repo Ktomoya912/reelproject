@@ -240,8 +240,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
 
   //レビュー
   Future reviewWrite(int id, ChangeGeneralCorporation store) async {
-    Uri url =
-        Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/review');
+    Uri url = Uri.parse('${ChangeGeneralCorporation.apiUrl}/events/$id/review');
     final response = await post(url,
         headers: {
           'accept': 'application/json',
@@ -393,13 +392,16 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   //タイトル
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      eventDetailList["title"],
-                                      style: const TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    width: width - 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        eventDetailList["title"],
+                                        style: const TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -958,8 +960,9 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                           SingleChildScrollView(
                                                                         child:
                                                                             Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(8.0),
+                                                                          padding: const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
@@ -1019,8 +1022,9 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                           SingleChildScrollView(
                                                                         child:
                                                                             Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(8.0),
+                                                                          padding: const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
