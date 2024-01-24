@@ -124,7 +124,7 @@ class ApplyConfState extends State<ApplyConf> {
                               ),
                               Text(
                                 '　${widget.advertisementList["user"]["email"]}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                   color: Colors.black,
@@ -145,7 +145,7 @@ class ApplyConfState extends State<ApplyConf> {
                               ),
                               Text(
                                 '　${widget.advertisementList["user"]["birthday"].substring(0, 4)}年${widget.advertisementList["user"]["birthday"].substring(5, 7)}月${widget.advertisementList["user"]["birthday"].substring(8, 10)}日',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                   color: Colors.black,
@@ -171,7 +171,7 @@ class ApplyConfState extends State<ApplyConf> {
                                             "f"
                                         ? "　女性"
                                         : "　その他",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                   color: Colors.black,
@@ -229,7 +229,7 @@ class ApplyConfState extends State<ApplyConf> {
                             //Navigator.pop(context);
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者確認済み",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "すでにこのユーザーは確認済みです。",
@@ -247,7 +247,7 @@ class ApplyConfState extends State<ApplyConf> {
                             //Navigator.pop(context);
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者不採用済み",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "すでにこのユーザーは不採用済みです。",
@@ -287,7 +287,7 @@ class ApplyConfState extends State<ApplyConf> {
                             Navigator.pop(context);
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者確認済み",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "すでにこのユーザーは確認済みです。",
@@ -305,7 +305,7 @@ class ApplyConfState extends State<ApplyConf> {
                             Navigator.pop(context);
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者不採用済み",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "すでにこのユーザーは不採用済みです。",

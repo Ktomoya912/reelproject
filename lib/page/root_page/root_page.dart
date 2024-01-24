@@ -174,7 +174,7 @@ class IconWithText extends StatelessWidget {
         BorderedText(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13,
               color: Colors.white,
             ),

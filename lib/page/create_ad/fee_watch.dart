@@ -72,7 +72,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
           jedgeBuck: widget.botommBarJedge ? false : true,
         ),
         bottomNavigationBar:
-            widget.botommBarJedge ? NormalBottomAppBar() : null,
+            widget.botommBarJedge ? const NormalBottomAppBar() : null,
         body: SizedBox(
           height: mediaQueryData.size.height,
           child: SingleChildScrollView(
@@ -121,9 +121,9 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                 width: 350,
                                 height: 30,
                                 color: Colors.blue,
-                                child: Center(
+                                child: const Center(
                                   child: Text("プラン基本料金",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: Colors.white, fontSize: 15)),
                                 ),
                               ),
@@ -185,7 +185,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                 ),
                                 //下文字
                                 Padding(
-                                  padding: EdgeInsets.all(20.0),
+                                  padding: const EdgeInsets.all(20.0),
                                   child: Text("${widget.planPeriod}ヶ月", //契約希望月
                                       style: const TextStyle(
                                           fontSize: 18,
@@ -197,7 +197,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         ],
                       )
                     else
-                      SizedBox(
+                      const SizedBox(
                         height: 100,
                       ),
                     if (!widget.eventJobJedge)
@@ -238,10 +238,10 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                 Container(
                                   width: 350,
                                   height: 30,
-                                  color: Color.fromARGB(255, 235, 168, 13),
-                                  child: Center(
+                                  color: const Color.fromARGB(255, 235, 168, 13),
+                                  child: const Center(
                                     child: Text("合計金額",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: Colors.white, fontSize: 15)),
                                   ),
                                 ),
@@ -260,17 +260,17 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         ],
                       )
                     else
-                      SizedBox(
+                      const SizedBox(
                         height: 100,
                       ),
                     //空白
                     const SizedBox(height: 20), //余白調整
-                    Text("※7日以内に指定の銀行口座に振込をお願いします。\n振込を確認次第投稿させていただきます。",
+                    const Text("※7日以内に指定の銀行口座に振込をお願いします。\n振込を確認次第投稿させていただきます。",
                         style:
                             TextStyle(color: Color.fromARGB(255, 226, 43, 30))),
                     //空白
                     const SizedBox(height: 20), //余白調整
-                    Text("振込先口座は、\nマイページの「振込口座確認」からご確認ください。"),
+                    const Text("振込先口座は、\nマイページの「振込口座確認」からご確認ください。"),
                     //空白
                     const SizedBox(height: 20), //余白調整
                     ElevatedButton(
@@ -285,7 +285,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                           ),
                         ),
                         minimumSize: MaterialStateProperty.all<Size>(
-                            Size(100, 50)), // ここでボタンの大きさを設定します
+                            const Size(100, 50)), // ここでボタンの大きさを設定します
                       ),
                       onPressed: () {
                         //pop

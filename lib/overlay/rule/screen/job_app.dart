@@ -37,7 +37,7 @@ class JobApp {
       JobApp().hide();
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => FinishScreen(
+          builder: (context) => const FinishScreen(
             appbarText: "求人応募完了",
             appIcon: Icons.playlist_add_check,
             finishText: "求人応募が完了しました。",
@@ -56,7 +56,7 @@ class JobApp {
       JobApp().hide();
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => FinishScreen(
+          builder: (context) => const FinishScreen(
             appbarText: "応募失敗",
             appIcon: Icons.playlist_add_check,
             finishText: "すでに応募済みです",

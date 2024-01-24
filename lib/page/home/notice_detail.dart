@@ -28,7 +28,7 @@ class NoticeDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       //アップバー
-      appBar: TitleAppBar(
+      appBar: const TitleAppBar(
         title: "通知詳細",
         jedgeBuck: true,
       ),
@@ -133,7 +133,7 @@ class NoticeContent extends StatelessWidget {
                       decoration: BoxDecoration(
                         //color: Colors.grey[100],
                         border: Border.all(
-                          color: Color.fromARGB(255, 207, 207, 207), // 枠線の色
+                          color: const Color.fromARGB(255, 207, 207, 207), // 枠線の色
                           width: 1, // 枠線の幅
                         ),
                       ),

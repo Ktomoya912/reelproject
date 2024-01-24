@@ -84,7 +84,7 @@ class DeleteConf {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: SingleChildScrollView(
                     child: ToggleRadio(id: id, eventJobJedge: eventJobJedge),
                   ),

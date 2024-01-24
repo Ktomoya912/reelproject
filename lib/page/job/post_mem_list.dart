@@ -160,7 +160,7 @@ class EventAdvertisementList extends StatelessWidget {
           //色
           color: advertisementList["users"][index]["status"] == "p"
               ? Colors.white
-              : Color.fromARGB(255, 238, 238, 238),
+              : const Color.fromARGB(255, 238, 238, 238),
           border: Border(
             bottom: BorderSide(color: store.greyColor),
           ),

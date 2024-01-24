@@ -1047,7 +1047,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            EdgeInsets.all(8.0),
+                                                                            const EdgeInsets.all(8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:
@@ -1109,7 +1109,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            EdgeInsets.all(8.0),
+                                                                            const EdgeInsets.all(8.0),
                                                                         child:
                                                                             TextField(
                                                                           keyboardType:
@@ -1580,7 +1580,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                     ),
                                                                                                     child: SingleChildScrollView(
                                                                                                       child: Padding(
-                                                                                                        padding: EdgeInsets.all(8.0),
+                                                                                                        padding: const EdgeInsets.all(8.0),
                                                                                                         child: TextField(
                                                                                                           keyboardType: TextInputType.multiline,
                                                                                                           controller: titleController,
@@ -1612,7 +1612,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                     ),
                                                                                                     child: SingleChildScrollView(
                                                                                                       child: Padding(
-                                                                                                        padding: EdgeInsets.all(8.0),
+                                                                                                        padding: const EdgeInsets.all(8.0),
                                                                                                         child: TextField(
                                                                                                           keyboardType: TextInputType.multiline,
                                                                                                           controller: detailController,
@@ -1946,7 +1946,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                       ),
 
                                     //空白
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 30,
                                     ),
                                   ],

@@ -955,7 +955,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              EdgeInsets.all(8.0),
+                                                                              const EdgeInsets.all(8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
@@ -1016,7 +1016,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                         child:
                                                                             Padding(
                                                                           padding:
-                                                                              EdgeInsets.all(8.0),
+                                                                              const EdgeInsets.all(8.0),
                                                                           child:
                                                                               TextField(
                                                                             maxLines:
@@ -1441,7 +1441,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                           child: Center(
                                                                                                             child: SingleChildScrollView(
                                                                                                               child: Padding(
-                                                                                                                padding: EdgeInsets.all(8.0),
+                                                                                                                padding: const EdgeInsets.all(8.0),
                                                                                                                 child: TextField(
                                                                                                                   controller: titleController,
                                                                                                                   maxLines: null,
@@ -1474,7 +1474,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                           child: Center(
                                                                                                             child: SingleChildScrollView(
                                                                                                               child: Padding(
-                                                                                                                padding: EdgeInsets.all(8.0),
+                                                                                                                padding: const EdgeInsets.all(8.0),
                                                                                                                 child: TextField(
                                                                                                                   controller: detailController,
                                                                                                                   maxLines: null,
@@ -1805,7 +1805,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                         ),
 
                                       //空白
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                     ],

@@ -121,7 +121,7 @@ class ConfDelete {
                             ConfDelete().hide();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => FinishScreen(
+                                builder: (context) => const FinishScreen(
                                   appbarText: "応募者確認",
                                   appIcon: Icons.playlist_add_check,
                                   finishText: "不採用完了",

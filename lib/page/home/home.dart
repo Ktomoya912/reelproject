@@ -920,7 +920,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             //空白
-                            SizedBox(height: 20), //ボタン間の空間
+                            const SizedBox(height: 20), //ボタン間の空間
                           ],
                         ),
                       ),
@@ -1038,7 +1038,7 @@ class HistoryButton extends StatelessWidget {
                 child: Center(
                     child: Text(
                   "${historyList[i]["name"]}",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
                 )),
               ),
             ]),

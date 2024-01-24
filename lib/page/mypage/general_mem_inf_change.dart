@@ -472,7 +472,7 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
                   //完了画面
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => FinishScreen(
+                      builder: (context) => const FinishScreen(
                         appbarText: "会員情報編集完了",
                         appIcon: Icons.playlist_add_check,
                         finishText: "会員情報の変更を確認しました。",

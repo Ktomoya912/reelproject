@@ -105,7 +105,7 @@ class PostComfOver {
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 17)),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               ElevatedButton(
