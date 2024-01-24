@@ -25,10 +25,12 @@ class _PostMemListState extends State<PostMemList> {
   static Map<String, dynamic> postMemList = {"users": []};
 
   void changeAdvertisementList(Map<String, dynamic> e) {
-    setState(() {
-      postMemList = e;
-      print(postMemList);
-    });
+    if (mounted) {
+      setState(() {
+        postMemList = e;
+        print(postMemList);
+      });
+    }
   }
 
   //応募者一覧取得
@@ -47,6 +49,12 @@ class _PostMemListState extends State<PostMemList> {
     } else {
       throw Exception("Failed");
     }
+  }
+
+  @override
+  void dispose() {
+    // タイマーやアニメーションのリスナーをここでキャンセルします
+    super.dispose();
   }
 
   //初期化
