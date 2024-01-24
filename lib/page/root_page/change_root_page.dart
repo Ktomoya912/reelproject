@@ -15,7 +15,8 @@ class ChangeRootPage extends StatelessWidget {
         routes: [
           skiplogin == "true" ? const RootRoute() : const LoginRoute(),
           const RootRoute(),
-          const SecessionFinishRoute()
+          const SecessionFinishRoute(),
+          const LoginRoute(),
         ], //このレイヤーから移動可能なRoute
         builder: (context, child) {
           // タブが切り替わると発火します
