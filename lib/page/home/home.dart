@@ -48,33 +48,41 @@ class _HomeState extends State<Home> {
   bool notJobJedge = false; //イベントがない場合の判定
 
   changeNotJedge() {
-    setState(() {
-      notEventJedge = false; //イベントがない場合の判定
-      notJobJedge = false; //イベントがない場合の判定
-    });
+    if (mounted) {
+      setState(() {
+        notEventJedge = false; //イベントがない場合の判定
+        notJobJedge = false; //イベントがない場合の判定
+      });
+    }
   }
 
   //閲覧履歴リスト
   List<dynamic> historyList = [];
 
   void changeHistoryList(List<dynamic> e) {
-    setState(() {
-      historyList = e;
-    });
+    if (mounted) {
+      setState(() {
+        historyList = e;
+      });
+    }
   }
 
   static List<dynamic> eventAdvertisementList = [];
   void changeEventAdvertisementList(List<dynamic> e) {
-    setState(() {
-      eventAdvertisementList = e;
-    });
+    if (mounted) {
+      setState(() {
+        eventAdvertisementList = e;
+      });
+    }
   }
 
   static List<dynamic> jobAdvertisementList = [];
   void changeJobAdvertisementList(List<dynamic> e) {
-    setState(() {
-      jobAdvertisementList = e;
-    });
+    if (mounted) {
+      setState(() {
+        jobAdvertisementList = e;
+      });
+    }
   }
 
   Future getEventList() async {
@@ -180,99 +188,101 @@ class _HomeState extends State<Home> {
   };
 
   changeJobDetailList(dynamic data, int id, ChangeGeneralCorporation store) {
-    setState(() {
-      jobDetailList["id"] = id; //id
-      jobDetailList["image_url"] = data["image_url"]; //画像
-      jobDetailList["title"] = data["name"]; //タイトル
-      jobDetailList["detail"] = data["description"]; //詳細
+    if (mounted) {
+      setState(() {
+        jobDetailList["id"] = id; //id
+        jobDetailList["image_url"] = data["image_url"]; //画像
+        jobDetailList["title"] = data["name"]; //タイトル
+        jobDetailList["detail"] = data["description"]; //詳細
 
-      //タグ
-      jobDetailList["tag"] = data["tags"];
+        //タグ
+        jobDetailList["tag"] = data["tags"];
 
-      //開催期間
-      jobDetailList["jobTimes"] = data["job_times"];
+        //開催期間
+        jobDetailList["jobTimes"] = data["job_times"];
 
-      //勤務体系
-      if (data["is_one_day"]) {
-        jobDetailList["term"] = "短期";
-      } else {
-        jobDetailList["term"] = "長期";
-      }
+        //勤務体系
+        if (data["is_one_day"]) {
+          jobDetailList["term"] = "短期";
+        } else {
+          jobDetailList["term"] = "長期";
+        }
 
-      //住所
-      jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
-      jobDetailList["prefecture"] = data["prefecture"]; //都道府県
-      jobDetailList["city"] = data["city"]; //市町村
-      jobDetailList["houseNumber"] = data["address"]; //番地・建物名
-      //時給
-      jobDetailList["pay"] = data["salary"]; //給料
-      //任意
-      //jobDetailList["phone"] = data["phone_number"]; //電話番号
-      //jobDetailList["mail"] = data["email"]; //メールアドレス
-      //jobDetailList["url"] = data["homepage"]; //URL
-      //jobDetailList["fee"] = data["participation_fee"]; //参加費
-      //jobDetailList["Capacity"] = data["capacity"]; //定員
-      jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
-      //jobDetailList["notes"] = data["caution"]; //注意事項
+        //住所
+        jobDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+        jobDetailList["prefecture"] = data["prefecture"]; //都道府県
+        jobDetailList["city"] = data["city"]; //市町村
+        jobDetailList["houseNumber"] = data["address"]; //番地・建物名
+        //時給
+        jobDetailList["pay"] = data["salary"]; //給料
+        //任意
+        //jobDetailList["phone"] = data["phone_number"]; //電話番号
+        //jobDetailList["mail"] = data["email"]; //メールアドレス
+        //jobDetailList["url"] = data["homepage"]; //URL
+        //jobDetailList["fee"] = data["participation_fee"]; //参加費
+        //jobDetailList["Capacity"] = data["capacity"]; //定員
+        jobDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+        //jobDetailList["notes"] = data["caution"]; //注意事項
 
-      //レビュー
-      jobDetailList["review"] = data["reviews"]; //評価
-      //初期化
-      jobDetailList["reviewPoint"] = 0; //平均点
-      jobDetailList["ratioStarReviews"] = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; //星の割合(前から1,2,3,4,5)
-      jobDetailList["reviewNumber"] = 0; //レビュー数
-      jobDetailList["reviewId"] = 0; //自分のレビューか否か
-      if (jobDetailList["review"].length != 0) {
-        //平均点
-        for (int i = 0; i < data["reviews"].length; i++) {
-          jobDetailList["reviewPoint"] +=
-              data["reviews"][i]["review_point"]; //平均点
-          jobDetailList["ratioStarReviews"]
-              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
-          //自分のレビューか否か
-          if (store.myID == data["reviews"][i]["user"]["id"]) {
-            jobDetailList["reviewId"] = data["reviews"][i]["id"];
+        //レビュー
+        jobDetailList["review"] = data["reviews"]; //評価
+        //初期化
+        jobDetailList["reviewPoint"] = 0; //平均点
+        jobDetailList["ratioStarReviews"] = [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]; //星の割合(前から1,2,3,4,5)
+        jobDetailList["reviewNumber"] = 0; //レビュー数
+        jobDetailList["reviewId"] = 0; //自分のレビューか否か
+        if (jobDetailList["review"].length != 0) {
+          //平均点
+          for (int i = 0; i < data["reviews"].length; i++) {
+            jobDetailList["reviewPoint"] +=
+                data["reviews"][i]["review_point"]; //平均点
+            jobDetailList["ratioStarReviews"]
+                [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+            //自分のレビューか否か
+            if (store.myID == data["reviews"][i]["user"]["id"]) {
+              jobDetailList["reviewId"] = data["reviews"][i]["id"];
+            }
+          }
+          //平均を出す
+          jobDetailList["reviewPoint"] =
+              jobDetailList["reviewPoint"] / data["reviews"].length;
+
+          //レビュー数
+          jobDetailList["reviewNumber"] = data["reviews"].length;
+
+          //割合計算
+          for (int i = 0; i < 5; i++) {
+            jobDetailList["ratioStarReviews"][i] =
+                jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
           }
         }
-        //平均を出す
-        jobDetailList["reviewPoint"] =
-            jobDetailList["reviewPoint"] / data["reviews"].length;
 
-        //レビュー数
-        jobDetailList["reviewNumber"] = data["reviews"].length;
+        jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
 
-        //割合計算
-        for (int i = 0; i < 5; i++) {
-          jobDetailList["ratioStarReviews"][i] =
-              jobDetailList["ratioStarReviews"][i] / data["reviews"].length;
+        //この広告を投稿したか
+        if (data["author"]["id"] == store.myID) {
+          jobDetailList["postJedge"] = true;
+        } else {
+          jobDetailList["postJedge"] = false;
         }
-      }
 
-      jobDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+        //未投稿か否か
+        jobDetailList["notPost"] = false;
 
-      //この広告を投稿したか
-      if (data["author"]["id"] == store.myID) {
-        jobDetailList["postJedge"] = true;
-      } else {
-        jobDetailList["postJedge"] = false;
-      }
+        //投稿期間
+        jobDetailList["postTerm"] =
+            "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
 
-      //未投稿か否か
-      jobDetailList["notPost"] = false;
-
-      //投稿期間
-      jobDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
-
-      //プラン情報
-      jobDetailList["parchase"] = data["purchase"];
-    });
+        //プラン情報
+        jobDetailList["parchase"] = data["purchase"];
+      });
+    }
   }
 
   Future getJobDetailList(int id, ChangeGeneralCorporation store) async {
@@ -354,90 +364,92 @@ class _HomeState extends State<Home> {
   //late bool favoriteJedge = eventDetailList["favoriteJedge"]; //お気に入り判定
 
   changeEventDetailList(dynamic data, int id, ChangeGeneralCorporation store) {
-    setState(() {
-      eventDetailList["id"] = id; //id
-      eventDetailList["image_url"] = data["image_url"]; //画像
-      eventDetailList["title"] = data["name"]; //タイトル
-      eventDetailList["detail"] = data["description"]; //詳細
+    if (mounted) {
+      setState(() {
+        eventDetailList["id"] = id; //id
+        eventDetailList["image_url"] = data["image_url"]; //画像
+        eventDetailList["title"] = data["name"]; //タイトル
+        eventDetailList["detail"] = data["description"]; //詳細
 
-      //タグ
-      eventDetailList["tag"] = data["tags"];
+        //タグ
+        eventDetailList["tag"] = data["tags"];
 
-      //開催日時
-      eventDetailList["eventTimes"] = data["event_times"];
+        //開催日時
+        eventDetailList["eventTimes"] = data["event_times"];
 
-      //住所
-      eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
-      eventDetailList["prefecture"] = data["prefecture"]; //都道府県
-      eventDetailList["city"] = data["city"]; //市町村
-      eventDetailList["houseNumber"] = data["address"]; //番地・建物名
-      //任意
-      eventDetailList["phone"] = data["phone_number"]; //電話番号
-      eventDetailList["mail"] = data["email"]; //メールアドレス
-      eventDetailList["url"] = data["homepage"]; //URL
-      eventDetailList["fee"] = data["participation_fee"]; //参加費
-      eventDetailList["Capacity"] = data["capacity"]; //定員
-      eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
-      eventDetailList["notes"] = data["caution"]; //注意事項
+        //住所
+        eventDetailList["postalNumber"] = data["postal_code"]; //郵便番号
+        eventDetailList["prefecture"] = data["prefecture"]; //都道府県
+        eventDetailList["city"] = data["city"]; //市町村
+        eventDetailList["houseNumber"] = data["address"]; //番地・建物名
+        //任意
+        eventDetailList["phone"] = data["phone_number"]; //電話番号
+        eventDetailList["mail"] = data["email"]; //メールアドレス
+        eventDetailList["url"] = data["homepage"]; //URL
+        eventDetailList["fee"] = data["participation_fee"]; //参加費
+        eventDetailList["Capacity"] = data["capacity"]; //定員
+        eventDetailList["addMessage"] = data["additional_message"]; //追加メッセージ
+        eventDetailList["notes"] = data["caution"]; //注意事項
 
-      //レビュー
-      eventDetailList["review"] = data["reviews"]; //評価
-      //初期化
-      eventDetailList["reviewPoint"] = 0; //平均点
-      eventDetailList["ratioStarReviews"] = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; //星の割合(前から1,2,3,4,5)
-      eventDetailList["reviewNumber"] = 0; //レビュー数
-      eventDetailList["reviewId"] = 0; //投稿ID
-      if (eventDetailList["review"].length != 0) {
-        //平均点
-        for (int i = 0; i < data["reviews"].length; i++) {
-          eventDetailList["reviewPoint"] +=
-              data["reviews"][i]["review_point"]; //平均点
-          eventDetailList["ratioStarReviews"]
-              [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
-          //自分のレビューか否か
-          if (store.myID == data["reviews"][i]["user"]["id"]) {
-            eventDetailList["reviewId"] = data["reviews"][i]["id"];
+        //レビュー
+        eventDetailList["review"] = data["reviews"]; //評価
+        //初期化
+        eventDetailList["reviewPoint"] = 0; //平均点
+        eventDetailList["ratioStarReviews"] = [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]; //星の割合(前から1,2,3,4,5)
+        eventDetailList["reviewNumber"] = 0; //レビュー数
+        eventDetailList["reviewId"] = 0; //投稿ID
+        if (eventDetailList["review"].length != 0) {
+          //平均点
+          for (int i = 0; i < data["reviews"].length; i++) {
+            eventDetailList["reviewPoint"] +=
+                data["reviews"][i]["review_point"]; //平均点
+            eventDetailList["ratioStarReviews"]
+                [data["reviews"][i]["review_point"] - 1]++; //星の割合(前から1,2,3,4,5)
+            //自分のレビューか否か
+            if (store.myID == data["reviews"][i]["user"]["id"]) {
+              eventDetailList["reviewId"] = data["reviews"][i]["id"];
+            }
+          }
+          //平均を出す
+          eventDetailList["reviewPoint"] =
+              eventDetailList["reviewPoint"] / data["reviews"].length;
+
+          //レビュー数
+          eventDetailList["reviewNumber"] = data["reviews"].length;
+
+          //割合計算
+          for (int i = 0; i < 5; i++) {
+            eventDetailList["ratioStarReviews"][i] =
+                eventDetailList["ratioStarReviews"][i] /
+                    eventDetailList["reviewNumber"];
           }
         }
-        //平均を出す
-        eventDetailList["reviewPoint"] =
-            eventDetailList["reviewPoint"] / data["reviews"].length;
 
-        //レビュー数
-        eventDetailList["reviewNumber"] = data["reviews"].length;
+        eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
 
-        //割合計算
-        for (int i = 0; i < 5; i++) {
-          eventDetailList["ratioStarReviews"][i] =
-              eventDetailList["ratioStarReviews"][i] /
-                  eventDetailList["reviewNumber"];
+        //この広告を投稿したか
+        if (data["author"]["id"] == store.myID) {
+          eventDetailList["postJedge"] = true;
+        } else {
+          eventDetailList["postJedge"] = false;
         }
-      }
 
-      eventDetailList["favoriteJedge"] = data["is_favorite"]; //お気に入りか否か
+        //未投稿か否か(true:未投稿,false:投稿済み)
+        eventDetailList["notPost"] = false;
+        //投稿期間
+        eventDetailList["postTerm"] =
+            "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
 
-      //この広告を投稿したか
-      if (data["author"]["id"] == store.myID) {
-        eventDetailList["postJedge"] = true;
-      } else {
-        eventDetailList["postJedge"] = false;
-      }
-
-      //未投稿か否か(true:未投稿,false:投稿済み)
-      eventDetailList["notPost"] = false;
-      //投稿期間
-      eventDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
-
-      //プラン情報
-      eventDetailList["parchase"] = data["purchase"];
-    });
+        //プラン情報
+        eventDetailList["parchase"] = data["purchase"];
+      });
+    }
   }
 
   Future getEventDetailList(int id, ChangeGeneralCorporation store) async {
@@ -458,6 +470,12 @@ class _HomeState extends State<Home> {
 
   //スクロール位置を取得するためのコントローラー
   ScrollController homeScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    // タイマーやアニメーションのリスナーをここでキャンセルします
+    super.dispose();
+  }
 
   @override
   void initState() {
