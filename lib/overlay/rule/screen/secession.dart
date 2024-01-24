@@ -6,6 +6,7 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 import 'package:auto_route/auto_route.dart';
 import 'package:reelproject/app_router/app_router.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
@@ -177,12 +178,14 @@ class ToggleRadioState extends State<ToggleRadio> {
         ElevatedButton(
           // ボタンを作る関数
           //ボタン設置
-          onPressed: () {
+          onPressed: () async {
             if (flag) {
               store.changeOverlay(false);
               Secession().hide();
               context.navigateTo(const SecessionFinishRoute());
-              DeleteUser(store);
+              await DeleteUser(store);
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove('ACCESS_TOKEN');
               //しょうえい
 
               //消す作業記述

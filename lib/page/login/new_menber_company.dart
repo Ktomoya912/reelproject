@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reelproject/component/bottom_appbar/normal_bottom_appbar.dart';
 import 'package:reelproject/component/loading/show_loading_dialog.dart';
@@ -127,7 +129,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
               'representative': '',
             }
           }),
-        );
+        ).timeout(const Duration(seconds: 10));
 
         if (response.statusCode == 200) {
           return true; // 成功時は true を返す
@@ -178,6 +180,24 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
             return false; // エラー時は false を返す
           }
         }
+      } on TimeoutException catch (_) {
+        // タイムアウトした場合
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('エラー'),
+              content: const Text('タイムアウトしました'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+        return false; // エラー時は false を返す
       } catch (error) {
         // 通信エラーなどの例外が発生した場合
         showDialog(
@@ -809,7 +829,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                   decoration: InputDecoration(
                     counterText: '',
                     labelText: 'パスワード',
-                    hintText: '8文字以上の英数字',
+                    hintText: '大文字含め8文字以上の英数字',
                     border: const OutlineInputBorder(),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -850,7 +870,7 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                   decoration: InputDecoration(
                     counterText: '',
                     labelText: 'パスワード確認用',
-                    hintText: '8文字以上の英数字',
+                    hintText: '大文字含めた8文字以上の英数字',
                     border: const OutlineInputBorder(),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -954,6 +974,24 @@ class NewMemberCompanyState extends State<NewMemberCompany> {
                       );
                     }
                   });
+                } else if (!ruleCheck) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('利用規約に同意してください。'),
+                        content: const Text('利用規約に同意してください。'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
                   showDialog(
                     context: context,

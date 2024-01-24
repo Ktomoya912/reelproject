@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -46,14 +47,48 @@ class PassChangeState extends State<PassChange> {
             'Content-Type': 'application/json',
           },
           body: requsetEmail,
-        );
+        ).timeout(const Duration(seconds: 10));
 
         if (response.statusCode == 200) {
           return true;
         } else {
           return false;
         }
+      } on TimeoutException catch (_) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("エラー"),
+              content: const Text("通信がタイムアウトしました。"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+        return false;
       } catch (error) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("エラー"),
+              content: const Text("通信に失敗しました。"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
         return false;
       }
     }
@@ -140,45 +175,42 @@ class PassChangeState extends State<PassChange> {
                         onPressed: () async {
                           showLoadingDialog(context: context);
 
-                          forgotPassword(email).then((success) {
+                          if (await forgotPassword(email)) {
                             Navigator.pop(context);
-
-                            if (success) {
-                              Navigator.pop(context, true);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => FinishScreen(
-                                    appbarText: "パスワード再設定",
-                                    appIcon: Icons.mail_outlined,
-                                    finishText: "送信完了",
-                                    text:
-                                        "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
-                                    buttonText: widget.loginJedge == true
-                                        ? "ログイン画面に戻る"
-                                        : "マイページに戻る",
-                                    jedgeBottomAppBar: widget.loginJedge,
-                                    popTimes: 0,
-                                  ),
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => FinishScreen(
+                                  appbarText: "パスワード再設定",
+                                  appIcon: Icons.mail_outlined,
+                                  finishText: "送信完了",
+                                  text:
+                                      "ご入力いただいた、メールアドレスに、\nパスワード再設定用URLを記載したメールを送信いたしました。\nURLの有効期限は30分です。\n30分以内にアクセスいただけない場合、再度お手続きをお願いします。",
+                                  buttonText: widget.loginJedge == true
+                                      ? "ログイン画面に戻る"
+                                      : "マイページに戻る",
+                                  jedgeBottomAppBar: widget.loginJedge,
+                                  popTimes: 0,
                                 ),
-                              );
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("エラー"),
-                                    content: const Text("メールアドレスが間違っています。"),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text("OK"),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          });
+                              ),
+                            );
+                          } else {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("エラー"),
+                                  content: const Text("メールアドレスが間違っています。"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text("OK"),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
