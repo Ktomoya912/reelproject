@@ -88,8 +88,8 @@ class ApplyConfState extends State<ApplyConf> {
                                 height: 20,
                               ),
                               Container(
-                                  height: 150, //アイコン高さ
-                                  width: 150, //アイコン幅
+                                  height: 140, //アイコン高さ
+                                  width: 140, //アイコン幅
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle, //円形に
                                       color: store.subColor), //アイコン周囲円の色
@@ -111,9 +111,9 @@ class ApplyConfState extends State<ApplyConf> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          width: 30,
-                        ),
+                        // const SizedBox(
+                        //   width: 30,
+                        // ),
                         SizedBox(
                           // 後にデータベースから情報を取得しその内容を反映させるようにするのでconstにはしない
                           width: 155,
