@@ -1083,7 +1083,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                       );
                                                                     },
                                                                   );
-                                                                } else
+                                                                } else {
                                                                   showDialog(
                                                                     context:
                                                                         context,
@@ -1149,6 +1149,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                       );
                                                                     },
                                                                   );
+                                                                }
                                                               },
                                                             ),
                                                             TextButton(
@@ -1523,7 +1524,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                             );
                                                                                                           },
                                                                                                         );
-                                                                                                      } else
+                                                                                                      } else {
                                                                                                         showDialog(
                                                                                                           context: context,
                                                                                                           builder: (BuildContext context) {
@@ -1582,6 +1583,7 @@ class _EventPostDetailState extends State<EventPostDetail> {
                                                                                                             );
                                                                                                           },
                                                                                                         );
+                                                                                                      }
                                                                                                     },
                                                                                                   ),
                                                                                                   TextButton(

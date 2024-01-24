@@ -1179,7 +1179,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       );
                                                                     },
                                                                   );
-                                                                } else
+                                                                } else {
                                                                   showDialog(
                                                                     context:
                                                                         context,
@@ -1247,6 +1247,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                       );
                                                                     },
                                                                   );
+                                                                }
                                                               },
                                                             ),
                                                             TextButton(
@@ -1661,7 +1662,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                       );
                                                                                                     },
                                                                                                   );
-                                                                                                } else
+                                                                                                } else {
                                                                                                   showDialog(
                                                                                                     context: context,
                                                                                                     builder: (BuildContext context) {
@@ -1720,6 +1721,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                                                                                       );
                                                                                                     },
                                                                                                   );
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             TextButton(
