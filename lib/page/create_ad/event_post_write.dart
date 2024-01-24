@@ -1305,13 +1305,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("必須",
-                        style: TextStyle(
-                          color: Colors.red,
-                        )),
                   ],
                 ),
               ),
@@ -1427,13 +1420,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text("必須",
-                            style: TextStyle(
-                              color: Colors.red,
-                            )),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -2131,8 +2117,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                                 if (posPrefecture == "") "都道府県",
                                 if (posCity == "") "市町村",
                                 if (posHouseNumber == "") "番地",
-                                if (phoneSh) "電話番号",
-                                if (email == "") "メールアドレス",
                                 if (feeEr) "イベント参加費",
                                 if (capaErr) "定員",
                               ];
@@ -2141,6 +2125,9 @@ class EventPostWriteState extends State<EventPostWrite> {
                                 judgePost = value;
                                 phoneNumber =
                                     "$firstPhone-$centralPhone-$backPhone";
+                                if (phoneSh) {
+                                  phoneNumber = "";
+                                }
                                 if (imageUrl == "NO") {
                                   imageUrl = null;
                                 }
