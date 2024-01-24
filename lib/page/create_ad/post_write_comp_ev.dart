@@ -311,7 +311,7 @@ class _PostWriteCompEvState extends State<PostWriteCompEv> {
                               if (eventDetailList["fee"] != "")
                                 Text("参加費：${eventDetailList["fee"]}円"),
                               //定員
-                              if (eventDetailList["Capacity"] != "")
+                              if (eventDetailList["Capacity"] != 0)
                                 Text("定員：${eventDetailList["Capacity"]}人"),
 
                               //空白
