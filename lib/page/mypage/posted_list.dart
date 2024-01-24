@@ -36,7 +36,6 @@ class _PostedListState extends State<PostedList> {
   Future getEventList(ChangeGeneralCorporation store) async {
     Uri url = Uri.parse(
         '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortId}&order=asc&offset=0&limit=50&${ChangeGeneralCorporation.typePosted}&user_id=${store.myID}&target=posted');
-
     final response = await http.get(url, headers: {
       'accept': 'application/json',
     });

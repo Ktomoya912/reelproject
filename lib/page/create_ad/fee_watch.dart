@@ -140,7 +140,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         ),
                       ],
                     ),
-                    if (!widget.eventJobJedge)
+                    if (!widget.eventJobJedge || widget.planId == 2)
                       const Text(
                         "×",
                         style: TextStyle(
@@ -149,7 +149,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                             color: Color.fromARGB(255, 102, 102, 102)),
                       ),
                     //合計金額
-                    if (!widget.eventJobJedge)
+                    if (!widget.eventJobJedge || widget.planId == 2)
                       Column(
                         children: [
                           Container(
@@ -177,8 +177,9 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                                   height: 30,
                                   color:
                                       const Color.fromARGB(255, 11, 198, 179),
-                                  child: const Center(
-                                    child: Text("契約希望月",
+                                  child: Center(
+                                    child: Text(
+                                        widget.planId != 5 ? "契約希望月" : "契約希望年",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 15)),
                                   ),
@@ -200,7 +201,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                       const SizedBox(
                         height: 100,
                       ),
-                    if (!widget.eventJobJedge)
+                    if (!widget.eventJobJedge || widget.planId == 2)
                       Transform.rotate(
                         angle: -3.14 / 2,
                         child: const Text(
@@ -212,7 +213,7 @@ class _JobFeeWatchState extends State<JobFeeWatch> {
                         ),
                       ),
                     //プラン基本料金
-                    if (!widget.eventJobJedge)
+                    if (!widget.eventJobJedge || widget.planId == 2)
                       Column(
                         children: [
                           Container(

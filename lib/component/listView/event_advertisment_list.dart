@@ -87,6 +87,9 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
 
     //お気に入りか否か
     "favoriteJedge": false,
+
+    //料金情報
+    "purchase": {}
   };
 
   bool notEventJedge = false; //イベント広告がないか否か
@@ -174,7 +177,10 @@ class _EventAdvertisementListState extends State<EventAdvertisementList> {
 
       //投稿期間
       eventDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
+
+      //投稿期間情報
+      eventDetailList["purchase"] = data["purchase"];
     });
   }
 

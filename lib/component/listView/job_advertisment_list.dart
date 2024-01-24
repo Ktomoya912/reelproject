@@ -90,7 +90,10 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
     "favoriteJedge": false,
 
     //掲載期間
-    "postTerm": "2023年12月10日"
+    "postTerm": "2023年12月10日",
+
+    //プラン情報
+    "parchase": {}
   };
 
   changeJobList(dynamic data, int id, ChangeGeneralCorporation store) {
@@ -182,7 +185,10 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
 
       //投稿期間
       jobDetailList["postTerm"] =
-          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(5, 7)}日";
+          "${data["purchase"]["expiration_date"].substring(0, 4)}年${data["purchase"]["expiration_date"].substring(5, 7)}月${data["purchase"]["expiration_date"].substring(8, 10)}日";
+
+      //プラン情報
+      jobDetailList["parchase"] = data["purchase"];
     });
   }
 

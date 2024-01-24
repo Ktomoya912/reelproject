@@ -16,6 +16,7 @@ import 'package:reelproject/page/create_ad/fee_watch.dart';
 class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
   const DetailAppbar({
     super.key,
+    required this.eventJobDetail,
     required this.postJedge,
     required this.eventJobJedge,
     required this.postTerm,
@@ -25,6 +26,7 @@ class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
     required this.callback,
   });
 
+  final Map<String, dynamic> eventJobDetail; //イベント、求人詳細Map
   final bool postJedge;
   final String eventJobJedge;
   final String postTerm;
@@ -161,6 +163,33 @@ class _DetailAppbarState extends State<DetailAppbar> {
     final data = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       changeImpressionData(data);
+    } else {
+      print("error");
+      throw Exception("Failed");
+    }
+  }
+
+  //プラン情報
+  Map<String, dynamic> planData = {};
+
+  //プラン情報更新
+  void changePlanData(Map<String, dynamic> data) {
+    setState(() {
+      planData = data;
+    });
+  }
+
+  //プラン情報取得
+  Future getPlan(ChangeGeneralCorporation store) async {
+    Uri url = Uri.parse(
+        '${ChangeGeneralCorporation.apiUrl}/plans/${widget.eventJobDetail["parchase"]["plan_id"]}');
+
+    final response = await http.get(url, headers: {
+      'accept': 'application/json',
+    });
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      changePlanData(data);
     } else {
       print("error");
       throw Exception("Failed");
@@ -358,6 +387,7 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                                       TextButton(
                                                         child: const Text('編集'),
                                                         onPressed: () {
+                                                          //こうた追加(widget.eventJobDetailがリスト)(widget.eventJobJedgeがイベントか求人かevent,jobが入っている)
                                                           Navigator.of(context)
                                                               .pop();
                                                           //ここに移動処理を書く
@@ -415,24 +445,39 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                           tileColor: Colors.white, //背景
                                           leading: const Icon(Icons.money),
                                           title: const Text('振込金額確認'),
-                                          onTap: () => {
-                                            Navigator.of(context).pop(),
+                                          onTap: () async {
+                                            //await getPlan(store);
+                                            Navigator.of(context).pop();
                                             Navigator.push(
                                               context,
                                               // MaterialPageRoute(builder: (context) => Home()),
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      JobFeeWatch(
-                                                        planId: 5,
-                                                        planPeriod: 5,
-                                                        eventJobJedge:
-                                                            widget.eventJobJedge ==
-                                                                    "event"
-                                                                ? true
-                                                                : false,
-                                                        botommBarJedge: false,
-                                                      )),
-                                            )
+                                                  builder:
+                                                      (context) => JobFeeWatch(
+                                                            planId: widget
+                                                                        .eventJobDetail[
+                                                                    "parchase"]
+                                                                ["plan_id"],
+                                                            planPeriod: ((DateTime.parse(widget
+                                                                            .eventJobDetail["parchase"][
+                                                                                "expiration_date"]
+                                                                            .substring(0,
+                                                                                10))
+                                                                        .difference(DateTime.parse("${DateTime.now()}".substring(
+                                                                            0,
+                                                                            10)))
+                                                                        .inDays) /
+                                                                    30)
+                                                                .ceil(),
+                                                            eventJobJedge:
+                                                                widget.eventJobJedge ==
+                                                                        "event"
+                                                                    ? true
+                                                                    : false,
+                                                            botommBarJedge:
+                                                                false,
+                                                          )),
+                                            );
                                           },
                                         ),
                                       ),
