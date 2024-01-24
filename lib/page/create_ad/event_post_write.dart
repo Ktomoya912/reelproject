@@ -861,6 +861,25 @@ class EventPostWriteState extends State<EventPostWrite> {
                           checkDay(finTime) &&
                           checkDay(finMinute)) {
                         dayErr = "";
+                        String thing = "";
+                        if (checkOne(stTime)) {
+                          stTime = "0$stTime";
+                        }
+                        if (checkOne(stMinute)) {
+                          stMinute = "0$stMinute";
+                        }
+                        if (checkOne(finTime)) {
+                          finTime = "0$finTime";
+                        }
+                        if (checkOne(finMinute)) {
+                          finMinute = "0$finMinute";
+                        }
+                        if (checkOne(inDay)) {
+                          inDay = "0$inDay";
+                        }
+                        if (checkOne(inMonth)) {
+                          inMonth = "0$inMonth";
+                        }
 
                         //日時分合成
                         dDay = "$inYear年 $inMonth月 $inDay日";
@@ -2455,7 +2474,7 @@ bool checkMonth(String month) {
   //月の正規表現
   final regMonth = RegExp(
     caseSensitive: false,
-    r"^[0-9]{2}$",
+    r"^[0-9]{1,2}$",
   );
   return regMonth.hasMatch(month) && int.parse(month) <= 12 && month != '';
 }
@@ -2464,7 +2483,16 @@ bool checkDay(String day) {
   //日の正規表現
   final regDay = RegExp(
     caseSensitive: false,
-    r"^[0-9]{2}$",
+    r"^[0-9]{1,2}$",
+  );
+  return regDay.hasMatch(day);
+}
+
+bool checkOne(String day) {
+  //日の正規表現
+  final regDay = RegExp(
+    caseSensitive: false,
+    r"^[0-9]{1}$",
   );
   return regDay.hasMatch(day);
 }
