@@ -1399,10 +1399,6 @@ class EventPostWriteState extends State<EventPostWrite> {
                   ],
                 ),
               ),
-              Text(phoneErTex,
-                  style: const TextStyle(
-                    color: Colors.red,
-                  )),
 
               // メールアドレス
               const SizedBox(height: 40),
