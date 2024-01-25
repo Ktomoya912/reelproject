@@ -157,7 +157,9 @@ class SelectFeeButton extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('プラン確認'),
-              content: const Text('本当にこのプランで進めますか？'),
+              content: Text((title == "1回の掲載料金")
+                  ? '本当にこのプランで進めますか？'
+                  : "このプランは現在使用できません。"),
               actions: <Widget>[
                 TextButton(
                   child: const Text('進める'),
@@ -169,11 +171,13 @@ class SelectFeeButton extends StatelessWidget {
                     }
                     Navigator.of(context).pop();
                     //Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EventPostWrite(
-                              planId: planId,
-                              planPeriod: planPeriod,
-                            )));
+                    if (planId == 1) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EventPostWrite(
+                                planId: planId,
+                                planPeriod: planPeriod,
+                              )));
+                    }
                   },
                 ),
                 TextButton(
