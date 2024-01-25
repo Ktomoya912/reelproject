@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 import 'package:reelproject/app_router/app_router.dart';
@@ -24,6 +25,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   print('test');
   // await getToken();
+  setUrlStrategy(PathUrlStrategy());
   runApp(
     ChangeNotifierProvider(
       create: (context) => ChangeGeneralCorporation(),
@@ -80,6 +82,7 @@ class MyApp extends StatelessWidget {
               textTheme: GoogleFonts.mPlus1pTextTheme(
                 Theme.of(context).textTheme,
               ),
+
               primarySwatch: Colors.blue,
             ),
             routerConfig: _appRouter.config(), //auto_route
