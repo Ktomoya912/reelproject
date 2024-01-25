@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:reelproject/app_router/app_router.dart';
@@ -76,9 +75,11 @@ class LoginPageState extends State<LoginPage> {
           }
         } else {
           jedgeGC = false;
+          context.popRoute();
+          ReturnWrite().show(context: context);
         }
       } on TimeoutException catch (e) {
-        print(e);
+        Navigator.pop(context);
         showDialog(
             context: context,
             builder: (context) {
@@ -96,7 +97,7 @@ class LoginPageState extends State<LoginPage> {
               );
             });
       } on Error catch (e) {
-        print(e);
+        Navigator.pop(context);
         showDialog(
             context: context,
             builder: (context) {
@@ -295,8 +296,8 @@ class LoginPageState extends State<LoginPage> {
                         }
                       } else {
                         //ログイン失敗
-                        context.popRoute();
-                        ReturnWrite().show(context: context);
+                        // context.popRoute();
+                        // ReturnWrite().show(context: context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
