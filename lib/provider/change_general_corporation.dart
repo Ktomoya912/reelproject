@@ -78,7 +78,7 @@ class ChangeGeneralCorporation with ChangeNotifier {
   static const String sortId = "sort=id";
   static const String sortLastWatched = "sort=last_watched";
   //ユーザ情報
-  String? accessToken = dotenv.env['ACCESS_TOKEN']; //初期値はnull
+  String? accessToken = ''; //初期値はnull
   bool skiplogin = true; //ログインスキップ判断
   int myID = 2; //自分のID(一般ID)
 

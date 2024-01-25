@@ -30,7 +30,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  bool _autoLogin = false; // チェックボックスの状態を管理する変数
+  //bool _autoLogin = false; // チェックボックスの状態を管理する変数
   late bool _isObscure;
   String name = ""; //ユーザー名
   String password = ''; //パスワード
@@ -61,18 +61,18 @@ class LoginPageState extends State<LoginPage> {
             .timeout(const Duration(seconds: 10));
         final Map<String, dynamic> data = json.decode(response.body);
         if (response.statusCode == 200) {
-          store.accessToken = data["access_token"];
+          // store.accessToken = data["access_token"];
           jedgeGC = true;
 
           isActive = data["user"]["is_active"];
           store.accessToken = data["access_token"]; //トークンをプロバイダに保存
           //トークンを保存
-          if (_autoLogin) {
-            // final SharedPreferences storage =
-            //     await SharedPreferences.getInstance();
-            // await storage.setString("ACCESS_TOKEN", data["access_token"]);
-            //print("トークンを保存しました");
-          }
+          // if (_autoLogin) {
+          //   // final SharedPreferences storage =
+          //   //     await SharedPreferences.getInstance();
+          //   // await storage.setString("ACCESS_TOKEN", data["access_token"]);
+          //   //print("トークンを保存しました");
+          // }
         } else {
           jedgeGC = false;
           context.popRoute();
