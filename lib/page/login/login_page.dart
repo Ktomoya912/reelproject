@@ -68,9 +68,9 @@ class LoginPageState extends State<LoginPage> {
           store.accessToken = data["access_token"]; //トークンをプロバイダに保存
           //トークンを保存
           if (_autoLogin) {
-            final SharedPreferences storage =
-                await SharedPreferences.getInstance();
-            await storage.setString("ACCESS_TOKEN", data["access_token"]);
+            // final SharedPreferences storage =
+            //     await SharedPreferences.getInstance();
+            // await storage.setString("ACCESS_TOKEN", data["access_token"]);
             //print("トークンを保存しました");
           }
         } else {
