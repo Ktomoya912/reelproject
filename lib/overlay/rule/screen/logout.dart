@@ -102,9 +102,9 @@ class Logout {
                               Logout().hide();
                               context.navigateTo(const LoginRoute());
 
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              await prefs.remove('ACCESS_TOKEN');
+                              // final prefs =
+                              //     await SharedPreferences.getInstance();
+                              // await prefs.remove('ACCESS_TOKEN');
                             } catch (e) {
                               showDialog(
                                 context: context,

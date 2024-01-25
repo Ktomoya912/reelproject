@@ -184,8 +184,8 @@ class ToggleRadioState extends State<ToggleRadio> {
               Secession().hide();
               context.navigateTo(const SecessionFinishRoute());
               await DeleteUser(store);
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.remove('ACCESS_TOKEN');
+              // final prefs = await SharedPreferences.getInstance();
+              // await prefs.remove('ACCESS_TOKEN');
               //しょうえい
 
               //消す作業記述

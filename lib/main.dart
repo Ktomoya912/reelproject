@@ -23,7 +23,7 @@ import 'dart:convert';
 void main() async {
   await dotenv.load(fileName: ".env");
   print('test');
-  await getToken();
+  // await getToken();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ChangeGeneralCorporation(),

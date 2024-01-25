@@ -10,10 +10,10 @@ class ChangeRootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? skiplogin = dotenv.env['SKIP_LOGIN'];
+    //String? skiplogin = dotenv.env['SKIP_LOGIN'];
     return AutoTabsRouter(
         routes: [
-          skiplogin == "true" ? const RootRoute() : const LoginRoute(),
+          //skiplogin == "true" ? const RootRoute() : const LoginRoute(),
           const RootRoute(),
           const SecessionFinishRoute(),
           const LoginRoute(),

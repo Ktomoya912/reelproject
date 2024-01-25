@@ -241,23 +241,23 @@ class LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Checkbox(
-                        value: _autoLogin,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _autoLogin = value ?? false;
-                          });
-                        },
-                      ),
-                      const Text(
-                        '次回から自動でログインする',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: [
+                  //     Checkbox(
+                  //       value: _autoLogin,
+                  //       onChanged: (bool? value) {
+                  //         setState(() {
+                  //           _autoLogin = value ?? false;
+                  //         });
+                  //       },
+                  //     ),
+                  //     const Text(
+                  //       '次回から自動でログインする',
+                  //       style: TextStyle(fontSize: 15),
+                  //     ),
+                  //   ],
+                  // ),
                   ElevatedButton(
                     onPressed: () async {
                       //context.navigateTo(const RootRoute()),
