@@ -52,7 +52,7 @@ class ImageOver {
           color: Colors.black.withAlpha(150),
           child: Center(
             child: Container(
-                height: 240,
+                height: 260,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
