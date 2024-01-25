@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'rule_screen.dart'; //オーバレイで表示される画面のファイル
+import 'screen/rule_screen.dart'; //オーバレイで表示される画面のファイル
 // import 'package:flutter/material.dart';
+
+// 使わない
 
 void main() {
   runApp(const MyApp());
@@ -54,7 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 RuleScreen().show(
                   //これでおーばーれい表示
                   context: context,
-                  text: 'Please wait a moment',
                 );
               },
 

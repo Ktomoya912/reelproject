@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'rule_screen_controller.dart';
+import '../over_screen_controller.dart';
 
 import 'package:reelproject/provider/change_general_corporation.dart';
 import 'package:provider/provider.dart'; //パッケージをインポート
@@ -10,25 +10,23 @@ import 'package:provider/provider.dart'; //パッケージをインポート
 // オーバーレイによって表示される画面である
 // controllerによってこの画面の表示、閉じるを制御している(rule_screen_controller.dart)
 
-class RuleScreen {
-  factory RuleScreen() => _shared;
-  static final RuleScreen _shared = RuleScreen._sharedInstance();
+class MoveConf {
+  factory MoveConf() => _shared;
+  static final MoveConf _shared = MoveConf._sharedInstance();
 
-  RuleScreen._sharedInstance();
+  MoveConf._sharedInstance();
 
-  RuleScreenControl? controller;
+  OverScreenControl? controller;
 
   void show({
     // オーバーレイ表示動作
     required BuildContext context,
-    required String text,
   }) {
-    if (controller?.update(text) ?? false) {
+    if (controller?.update() ?? false) {
       return;
     } else {
       controller = showOverlay(
         context: context,
-        text: text,
       );
     }
   }
@@ -39,12 +37,10 @@ class RuleScreen {
     controller = null;
   }
 
-  RuleScreenControl showOverlay({
+  OverScreenControl showOverlay({
     required BuildContext context,
-    required String text,
   }) {
     final text0 = StreamController<String>();
-    text0.add(text);
 
     final state = Overlay.of(context);
     // final renderBox = context.findRenderObject() as RenderBox;
@@ -62,7 +58,7 @@ class RuleScreen {
                 //   maxHeight: size.height * 1.5,
                 //   minWidth: size.width * 0.2,
                 // ),
-                height: 600,
+                height: 275,
                 width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -75,50 +71,54 @@ class RuleScreen {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 20),
+                        //ウィジェットを保管
                         const Text(
-                          "利用規約",
+                          "投稿文を記入中です\n本当に移動しますか？",
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontWeight: FontWeight.bold, fontSize: 24),
                         ),
-                        const SizedBox(height: 30),
-                        //-------利用規約（現在はtextのみ）を表示している部分------------
-                        Container(
-                          height: 400,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color.fromARGB(255, 203, 202, 202),
-                                width: 2.5),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: const SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Text("aaaaa"),
-                              ],
-                            ),
-                          ),
-                        ),
-                        //-----------------------------------------------------------
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20), //余白調整
                         ElevatedButton(
+                          // ボタンを作る関数
                           //ボタン設置
                           onPressed: () {
                             // ボタンが押されたときの処理をここに追加予定
-                            RuleScreen().hide();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            minimumSize: const Size(130, 40),
+                            minimumSize: const Size(240, 60), //ボタンの大きさ
                             backgroundColor: store.mainColor,
                           ),
-                          child: const Text("閉じる",
-                              style: TextStyle(color: Colors.white)),
+                          child: const Text(
+                            "移動する", //Elevateの子供
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                          ),
+                        ),
+                        const SizedBox(height: 20), //余白調整
+                        ElevatedButton(
+                          // ボタンを作る関数
+                          //ボタン設置
+                          onPressed: () {
+                            // ボタンが押されたときの処理をここに追加予定
+                            MoveConf().hide();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            minimumSize: const Size(240, 60),
+                            backgroundColor: Colors.grey,
+                          ),
+                          child: const Text("キャンセル", //Elevateの子供
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
                         ),
                       ],
                     ),
@@ -131,14 +131,13 @@ class RuleScreen {
 
     state.insert(overlay);
 
-    return RuleScreenControl(
+    return OverScreenControl(
       close: () {
         text0.close();
         overlay.remove();
         return true;
       },
-      update: (text) {
-        text0.add(text);
+      update: () {
         return true;
       },
     );

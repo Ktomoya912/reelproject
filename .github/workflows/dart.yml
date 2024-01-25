@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -22,4 +22,4 @@ jobs:
         channel: 'stable'
     - run: flutter --version
     - run: flutter pub get
-    - run: dart analyze
+    - run: flutter analyze

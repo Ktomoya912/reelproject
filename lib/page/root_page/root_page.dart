@@ -5,16 +5,32 @@ import 'package:provider/provider.dart';
 import '/provider/change_general_corporation.dart';
 
 import 'package:reelproject/app_router/app_router.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+//ローディング
+import 'package:reelproject/component/loading/show_loading_dialog.dart';
+import 'package:bordered_text/bordered_text.dart';
+
+// //オーバーレイ
+// import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/conf/conf_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/conf/conf_delete.dart';
+// import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
+// import 'package:reelproject/overlay/rule/screen/rule_screen.dart';
 
 //ログイン以外のアプリを包括するレイヤー
 //ボトムアップバーは共有で、それ以外が変更される
+
 @RoutePage()
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
 
   @override
+
+  //移動可能なRoutes
+
   Widget build(BuildContext context) {
     final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     return AutoTabsScaffold(
         //移動可能なRoutes
         routes: const [
@@ -23,96 +39,150 @@ class RootPage extends StatelessWidget {
           JobRouterRoute(),
           MyPageRouterRoute(),
         ],
+
         //ボトムアップバー
         bottomNavigationBuilder: (_, tabsRouter) {
-          // return ConvexAppBar(
-          //   //見た目
-          //   backgroundColor: store.mainColor, //背景
-          //   items: const [
-          //     TabItem(icon: Icons.home, title: 'ホーム'),
-          //     TabItem(icon: Icons.celebration, title: 'イベント'),
-          //     TabItem(icon: Icons.work, title: '求人'),
-          //     TabItem(icon: Icons.person, title: 'マイページ'),
-          //   ],
-          //   onTap: (int index) => {
-          //     // 選択中じゃないタブをTapした場合
-          //     if (tabsRouter.activeIndex != index)
-          //       {
-          //         //ネストされたルーターのスタック情報を破棄(初期化される)
-          //         tabsRouter
-          //             .innerRouterOf<StackRouter>(tabsRouter.current.name)
-          //             ?.popUntilRoot(),
-          //         //選択したタブへ移動
-          //         tabsRouter.setActiveIndex(index)
-          //       }
-          //     // 選択中のタブをTapした場合
-          //     else
-          //       {
-          //         // ネストされたルーターのスタック情報を破棄(初期化される)
-          //         tabsRouter
-          //             .innerRouterOf<StackRouter>(tabsRouter.current.name)
-          //             ?.popUntilRoot()
-          //       }
-          //   },
-          // );
-          //以前のボトムアップバー
-          return BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex, //現在の位置
-              type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
-              backgroundColor: store.subColor, //バーの色
+          return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
+            CurvedNavigationBar(
+                color: store.mainColor,
+                buttonBackgroundColor: store.mainColor,
+                backgroundColor: Colors.white,
+                animationCurve: Curves.easeInOutQuart,
+                animationDuration:
+                    const Duration(milliseconds: 400), //アニメーションの時間
+                index: tabsRouter.activeIndex, //現在の位置,
+                items: const <Widget>[
+                  IconWithText(icon: Icons.home, text: 'ホーム'),
+                  IconWithText(icon: Icons.celebration, text: 'イベント'),
+                  IconWithText(icon: Icons.work, text: '　求人　'),
+                  IconWithText(icon: Icons.person, text: 'マイページ'),
+                ],
+                onTap: (int index) async {
+                  showLoadingDialog(context: context); //ここでローディング画面を表示
+                  //現在のindexをstoreに保存
+                  store.changeRootIndex(index);
 
-              //選択されたアイコンとラベルの色
-              selectedItemColor: store.mainColor,
-
-              //選択されたアイコンのテーマ
-              selectedIconTheme: const IconThemeData(size: 45),
-              //選択されていないアイコンのテーマ
-              unselectedIconTheme: const IconThemeData(size: 30),
-
-              //選択されたタイトルのスタイル
-              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              //選択されていないタイトルのスタイル
-              unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.bold),
-              selectedFontSize: 12, //選択されたフォントのスタイル
-
-              //使用中アイコン情報
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'ホーム',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.celebration),
-                  label: 'イベント',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.work),
-                  label: '求人',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'マイページ',
-                ),
-              ],
-              onTap: (int index) {
-                // 選択中じゃないタブをTapした場合
-                if (tabsRouter.activeIndex != index) {
                   //ネストされたルーターのスタック情報を破棄(初期化される)
                   tabsRouter
                       .innerRouterOf<StackRouter>(tabsRouter.current.name)
                       ?.popUntilRoot();
                   //選択したタブへ移動
-                  tabsRouter.setActiveIndex(index);
-                }
-                // 選択中のタブをTapした場合
-                else {
-                  // ネストされたルーターのスタック情報を破棄(初期化される)
-                  tabsRouter
-                      .innerRouterOf<StackRouter>(tabsRouter.current.name)
-                      ?.popUntilRoot();
-                }
-              });
+                  // // 選択中じゃないタブをTapした場合
+                  if (tabsRouter.activeIndex != index) {
+                    //選択したタブへ移動
+                    //context.pushRoute(pushRoutes[index]);
+                    tabsRouter.setActiveIndex(index);
+                  }
+
+                  //await Future.delayed(Duration(milliseconds: 5));
+
+                  //ホーム画面のみリロードする
+                  if (index == 0) {
+                    store.changeReloadHomeJedgeOn(true);
+                  }
+                  //イベント画面のみリロードする
+                  else if (index == 1) {
+                    store.changeReloadEventJedgeOn(true);
+                  }
+                  //求人画面のみリロードする
+                  else if (index == 2) {
+                    store.changeReloadJobJedgeOn(true);
+                  }
+                  //マイページ画面のみリロードする
+                  else {
+                    store.changeReloadMypageJedgeOn(true);
+                  }
+                }),
+            //オーバーレイ表示時にボトムアップバーを触れなくする
+            if (store.jedgeOverlay)
+              Container(
+                color: Colors.black.withAlpha(150),
+                width: mediaQueryData.size.width,
+                height: 105,
+              ),
+          ]);
+          // return BottomNavigationBar(
+          //     currentIndex: tabsRouter.activeIndex, //現在の位置
+          //     type: BottomNavigationBarType.fixed, //見た目、動作をコントロール
+          //     backgroundColor: store.subColor, //バーの色
+
+          //     //選択されたアイコンとラベルの色
+          //     selectedItemColor: store.mainColor,
+
+          //     //選択されたアイコンのテーマ
+          //     selectedIconTheme: const IconThemeData(size: 45),
+          //     //選択されていないアイコンのテーマ
+          //     unselectedIconTheme: const IconThemeData(size: 30),
+
+          //     //選択されたタイトルのスタイル
+          //     selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          //     //選択されていないタイトルのスタイル
+          //     unselectedLabelStyle:
+          //         const TextStyle(fontWeight: FontWeight.bold),
+          //     selectedFontSize: 12, //選択されたフォントのスタイル
+
+          //     //使用中アイコン情報
+          //     items: const [
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.home),
+          //         label: 'ホーム',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.celebration),
+          //         label: 'イベント',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.work),
+          //         label: '求人',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.person),
+          //         label: 'マイページ',
+          //       ),
+          //     ],
+          //     onTap: (int index) {
+          //       //ネストされたルーターのスタック情報を破棄(初期化される)
+          //       tabsRouter
+          //           .innerRouterOf<StackRouter>(tabsRouter.current.name)
+          //           ?.popUntilRoot();
+          //       //選択したタブへ移動
+          //       // // 選択中じゃないタブをTapした場合
+          //       if (tabsRouter.activeIndex != index) {
+          //         //選択したタブへ移動
+          //         //context.pushRoute(pushRoutes[index]);
+          //         tabsRouter.setActiveIndex(index);
+          //       }
+          //       // // 選択中のタブをTapした場合
+          //     });
         });
+  }
+}
+
+class IconWithText extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const IconWithText({super.key, required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final store = Provider.of<ChangeGeneralCorporation>(context); //プロバイダ
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon, color: Colors.white),
+        BorderedText(
+          strokeWidth: 5.0, //縁の太さ
+          strokeColor: store.mainColor,
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.white,
+            ),
+          ), //縁の色
+        ),
+      ],
+    );
   }
 }
