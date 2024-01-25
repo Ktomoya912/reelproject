@@ -334,7 +334,7 @@ class _JobAdvertisementListState extends State<JobAdvertisementList> {
                               children: [
                                 //時給
                                 Text(
-                                    "時給 : ${widget.advertisementList.elementAt(index)["salary"].substring(2)}",
+                                    "${widget.advertisementList.elementAt(index)["salary"].substring(0, 2)} : ${widget.advertisementList.elementAt(index)["salary"].substring(2)}",
                                     style: const TextStyle(fontSize: 14)),
                                 //時間
                                 if (widget.advertisementList
