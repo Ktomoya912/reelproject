@@ -219,6 +219,10 @@ class _SelectFeeButtonState extends State<SelectFeeButton> {
                                             } else {
                                               planId = 4;
                                             }
+                                            if (planId == 4 &&
+                                                planPeriod == 1) {
+                                              planPeriod = 6;
+                                            }
                                           });
                                           Navigator.of(context).pop();
                                           Navigator.of(context).pop();

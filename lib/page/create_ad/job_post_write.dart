@@ -1430,7 +1430,7 @@ class JobPostWriteState extends State<JobPostWrite> {
                           onChanged: (String? value) {
                             setState(() {
                               selectedDay = value!;
-                              salary = "$selectedDay$value円";
+                              salary = "$selectedDay$salaryNum円";
                             });
                           },
                         ),
