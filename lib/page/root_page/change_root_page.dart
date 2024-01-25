@@ -14,6 +14,7 @@ class ChangeRootPage extends StatelessWidget {
     return AutoTabsRouter(
         routes: [
           //skiplogin == "true" ? const RootRoute() : const LoginRoute(),
+          const LoginRoute(),
           const RootRoute(),
           const SecessionFinishRoute(),
           const LoginRoute(),
