@@ -65,7 +65,7 @@ class _JobState extends State<Job> {
 
   Future getJobList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
+        '${ChangeGeneralCorporation.apiUrl}/jobs/?${ChangeGeneralCorporation.sortPv}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
     final data = utf8.decode(response.bodyBytes);
