@@ -63,7 +63,7 @@ class _EventState extends State<Event> {
 
   Future getEventList() async {
     Uri url = Uri.parse(
-        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortRecent}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
+        '${ChangeGeneralCorporation.apiUrl}/events/?${ChangeGeneralCorporation.sortPv}&order=asc&offset=0&limit=20&${ChangeGeneralCorporation.typeActive}');
 
     final response =
         await http.get(url, headers: {'accept': 'application/json'});
