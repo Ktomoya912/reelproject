@@ -247,7 +247,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.all(10)),
+                  // const Padding(padding: EdgeInsets.all(10)),
                   SizedBox(
                     width: 110,
                     child: Column(
@@ -271,7 +271,7 @@ class ScrollImpressionsDetail extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.all(10)),
+                  // const Padding(padding: EdgeInsets.all(10)),
                   SizedBox(
                     width: 110,
                     child: Column(
@@ -330,7 +330,7 @@ class MyPieChart extends StatelessWidget {
     return jedgeZero
         ? SizedBox(
             width: !mainflag
-                ? 150
+                ? 140
                 : MediaQuery.of(context).size.width *
                     MediaQuery.of(context).size.height /
                     5000,
@@ -360,10 +360,10 @@ class MyPieChart extends StatelessWidget {
                   animationDuration: const Duration(milliseconds: 800),
                   chartLegendSpacing: 64,
                   chartRadius: mainflag
-                      ? 150
+                      ? 140
                       : MediaQuery.of(context).size.width *
                           MediaQuery.of(context).size.height /
-                          5250,
+                          5000,
                   colorList: const [
                     Color(0xff6c5ce7),
                     Color(0xff0984e3),

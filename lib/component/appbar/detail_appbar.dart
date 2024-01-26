@@ -382,7 +382,8 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                                     ),
                                                     title: const Text('編集確認'),
                                                     content: const Text(
-                                                        '本当に投稿を編集しますか？'),
+                                                        // '本当に投稿を編集しますか？'
+                                                        "現在この機能は開発中です"),
                                                     actions: <Widget>[
                                                       TextButton(
                                                         child: const Text('編集'),
