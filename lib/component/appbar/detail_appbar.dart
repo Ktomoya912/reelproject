@@ -8,9 +8,10 @@ import '../../page/Job/post_mem_list.dart';
 import 'package:reelproject/overlay/rule/screen/delete_conf.dart';
 import 'package:reelproject/overlay/rule/screen/job_app.dart';
 import 'package:reelproject/overlay/rule/screen/notpost_delete_conf.dart';
+import 'package:reelproject/overlay/rule/screen/no_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:reelproject/page/edit_post/event_edit.dart';
 import 'package:reelproject/page/create_ad/fee_watch.dart';
 
 class DetailAppbar extends StatefulWidget implements PreferredSizeWidget {
@@ -389,16 +390,29 @@ class _DetailAppbarState extends State<DetailAppbar> {
                                                         child: const Text('編集'),
                                                         onPressed: () {
                                                           //こうた追加(widget.eventJobDetailがリスト)(widget.eventJobJedgeがイベントか求人かevent,jobが入っている)
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          //ここに移動処理を書く
-                                                          // Navigator.push(
-                                                          //   context,
-                                                          //   MaterialPageRoute(
-                                                          //     builder: (context) =>
-                                                          //         PostMemList(id: widget.id),
-                                                          //   ),
-                                                          // );
+                                                          if (widget
+                                                                  .eventJobJedge ==
+                                                              "event") {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            //ここに移動処理を書く
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        EventEdit(
+                                                                  eventList: widget
+                                                                      .eventJobDetail,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            NoScreen().show(
+                                                                context:
+                                                                    context);
+                                                          }
                                                         },
                                                       ),
                                                       TextButton(
