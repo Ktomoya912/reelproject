@@ -749,7 +749,7 @@ class _JobPostDetailState extends State<JobPostDetail> {
                                         .start, // 子ウィジェットを左詰めに配置
                                     children: [
                                       const Text(
-                                        "イベント詳細",
+                                        "求人詳細",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
