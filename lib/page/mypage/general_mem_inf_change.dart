@@ -8,6 +8,7 @@ import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
 import "package:reelproject/overlay/rule/screen/image_over.dart";
 import 'package:http_parser/http_parser.dart';
+import 'package:reelproject/overlay/rule/screen/no_screen.dart';
 
 //push先
 
@@ -106,45 +107,47 @@ class GeneralMemInfConfChangeState extends State<GeneralMemInfConfChange> {
             ),
             InkWell(
               onTap: () async {
-                final XFile? image =
-                    await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  setState(() {
-                    imageName = image.name;
-                    int length = imageName.length;
-                    String judge = imageName.substring(length - 5);
-                    if (judge.contains('.png') ||
-                        judge.contains('.jpeg') ||
-                        judge.contains('.jpg') ||
-                        judge.contains('.JPG')) {
-                      posImage = image;
-                      ImageOver().show(
-                        context: context,
-                        onInputChanged: (value) {
-                          // 入力値が変更されたときの処理
-                          setState(() {
-                            bool posImageJudge = value;
-                            if (posImageJudge && posImage != null) {
-                              postImage(context, store, posImage).then((url) {
-                                //AWS使用時解放
-                                //ここでローディング画面を表示
-                                if (url != "failed") {
-                                  imageUrl = url;
-                                } else {
-                                  imageUrl = store.userInfo["image_url"];
-                                }
-                              });
-                            } else {
-                              imageUrl = store.userInfo["image_url"];
-                            }
-                          });
-                        },
-                      );
-                    } else {
-                      posImage = null;
-                    }
-                  });
-                }
+                NoScreen().show(context: context);
+                //   final XFile? image =
+                //       await picker.pickImage(source: ImageSource.gallery);
+                //   if (image != null) {
+                //     setState(() {
+                //       imageName = image.name;
+                //       int length = imageName.length;
+                //       String judge = imageName.substring(length - 5);
+                //       if (judge.contains('.png') ||
+                //           judge.contains('.jpeg') ||
+                //           judge.contains('.jpg') ||
+                //           judge.contains('.JPG')) {
+                //         posImage = image;
+                //         ImageOver().show(
+                //           context: context,
+                //           onInputChanged: (value) {
+                //             // 入力値が変更されたときの処理
+                //             setState(() {
+                //               bool posImageJudge = value;
+                //               if (posImageJudge && posImage != null) {
+                //                 postImage(context, store, posImage).then((url) {
+                //                   //AWS使用時解放
+                //                   //ここでローディング画面を表示
+                //                   if (url != "failed") {
+                //                     imageUrl = url;
+                //                   } else {
+                //                     imageUrl = store.userInfo["image_url"];
+                //                   }
+                //                 });
+                //               } else {
+                //                 imageUrl = store.userInfo["image_url"];
+                //               }
+                //             });
+                //           },
+                //         );
+                //       } else {
+                //         posImage = null;
+                //       }
+                //     });
+                //   }
+                // },
               },
               splashColor: Colors.transparent,
               child: const Text(

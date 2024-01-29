@@ -6,6 +6,8 @@ import 'package:reelproject/component/appbar/title_appbar.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import "package:reelproject/component/finish_screen/finish_screen.dart";
+import 'package:reelproject/overlay/rule/screen/no_screen.dart';
+
 //push先
 
 class CompanyMemInfConfChange extends StatefulWidget {
@@ -104,14 +106,15 @@ class _CompanyMemInfConfChangeState extends State<CompanyMemInfConfChange> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PassChange(
-                      loginJedge: false,
-                    ), //写真編集画面を作成する必要あり
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const PassChange(
+                //       loginJedge: false,
+                //     ), //写真編集画面を作成する必要あり
+                //   ),
+                // );
+                NoScreen().show(context: context);
               },
               splashColor: Colors.transparent,
               child: const Text(
